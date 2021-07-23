@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.30.2: Merge 0.29.2: Fixed an issue with load and save buttons in the fight team filter. Added affection filter to the fight team filter.
 // 0.30.1: Reinstating market and team filters after formal approval from Kinkoid. Merging in minor fixes from old script 0.29.1.
 // 0.30.0: Removing market and teams filters to bring script back in line with HH Terms of Use after official ruling from Kinkoid.
 // 0.29.0: New battle system.
@@ -6917,27 +6918,31 @@ function moduleTeamsFilter() {
             var currentBoxDisplay = $("#arena_filter_box").css('display');
             $("#arena_filter_box").css('display', currentBoxDisplay == "none" ? 'block' : 'none');
         });
-        $("#sort_class").on('change', sortGirls);
-        $("#sort_rarity").on('change', sortGirls);
-        $("#sort_name").get(0).oninput = sortGirls;
+        $("#filter_class").on('change', filterGirls);
+        $("#filter_rarity").on('change', filterGirls);
+        $("#filter_name").get(0).oninput = filterGirls;
         $("#save_teamFilter").on('click', saveTeam);
         $("#load_team").on('click', loadTeam);
-        $("#sort_blessed_attributes").on('change', sortGirls);
+        $("#filter_blessed_attributes").on('change', filterGirls);
+        $("#filter_aff_category").on('change', filterGirls);
+        $("#filter_aff_lvl").on('change', filterGirls);
     }
 
-    function sortGirls() {
-        var sorterClass = $("#sort_class").get(0).selectedIndex;
-        var sorterRarity = $("#sort_rarity").get(0).value;
-        var sorterName = $("#sort_name").get(0).value;
-        var nameRegex = new RegExp(sorterName, "i");
-        var sorterBlessedAttributes = $("#sort_blessed_attributes").get(0).value;
+    function filterGirls() {
+        var filterClass = $("#filter_class").get(0).selectedIndex;
+        var filterRarity = $("#filter_rarity").get(0).value;
+        var filterName = $("#filter_name").get(0).value;
+        var nameRegex = new RegExp(filterName, "i");
+        var filterBlessedAttributes = $("#filter_blessed_attributes").get(0).value;
+        let filterAffCategory = $("#filter_aff_category").get(0).value;
+        let filterAffLvl = $("#filter_aff_lvl").get(0).value;
 
-        var girlsSorted = $.map(girlsData, function(girl, index) {
-            var matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
-            var matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
+        var girlsFiltered = $.map(girlsData, function(girl, index) {
+            var matchesClass = (girl.class == filterClass) || (filterClass == 0);
+            var matchesRarity = (girl.rarity == filterRarity) || (filterRarity == 'all');
             var matchesName = (girl.Name.search(nameRegex) > -1);
             var matchesBlessedAttributes;
-            switch (sorterBlessedAttributes) {
+            switch (filterBlessedAttributes) {
                 case 'blessed_attributes':
                     matchesBlessedAttributes = (girl.blessed_attributes != undefined);
                     break;
@@ -6945,15 +6950,23 @@ function moduleTeamsFilter() {
                     matchesBlessedAttributes = (girl.blessed_attributes == undefined);
                     break;
                 case 'all':
-                    matchesBlessedAttributes = (sorterBlessedAttributes == 'all');
+                    matchesBlessedAttributes = (filterBlessedAttributes == 'all');
                     break;
             }
 
-            return (matchesClass && matchesRarity && matchesName && matchesBlessedAttributes) ? index : null;
+            let affectionStr = girl.Graded2;
+            let affectionCategoryStr = affectionStr.split('</g>');
+            let affectionCategory = affectionCategoryStr.length-1;
+            let affectionLvlStr = affectionStr.split('<g >');
+            let affectionLvl = affectionLvlStr.length-1;
+            let matchesAffCategory = (affectionCategory == filterAffCategory) || (filterAffCategory == 'all');
+            let matchesAffLvl = (affectionLvl == filterAffLvl) || (filterAffLvl == 'all');
+
+            return (matchesClass && matchesRarity && matchesName && matchesBlessedAttributes && matchesAffCategory && matchesAffLvl) ? index : null;
         });
 
         $.each(arenaGirls, function(index, girlElem) {
-            $(girlElem).css('display', $.inArray(index, girlsSorted) > -1 ? 'block' : 'none');
+            $(girlElem).css('display', $.inArray(index, girlsFiltered) > -1 ? 'block' : 'none');
         });
 
         //update scroll display
@@ -6962,7 +6975,7 @@ function moduleTeamsFilter() {
     }
 
     function saveTeam() {
-        var selectedGirls = $('.harem-panel-girls .selected');
+        var selectedGirls = $('#change-team-page .change-team-panel .harem-panel-girls .selected');
         var selectedIds = $.map(selectedGirls, function(girl, index) {
             return $(girl).attr("id_girl");
         });
@@ -6983,8 +6996,8 @@ function moduleTeamsFilter() {
             });
 
             //update scroll display
-            $(".harem-panel-girls").css('overflow', '');
-            $(".harem-panel-girls").css('overflow', 'hidden');
+            $("#change-team-page .change-team-panel .harem-panel-girls").css('overflow', '');
+            $("#change-team-page .change-team-panel .harem-panel-girls").css('overflow', 'hidden');
         }
     }
 
@@ -7003,25 +7016,37 @@ function moduleTeamsFilter() {
                         );
 
         totalHTML += '<div class="form-control"><div class="input-group">'
-            + '<label class="head-group" for="sort_name">' + texts[lang].searched_name + '</label>'
-            + '<input type="text" autocomplete="off" id="sort_name" placeholder="' + texts[lang].girl_name + '" icon="search">'
+            + '<label class="head-group" for="filter_name">' + texts[lang].searched_name + '</label>'
+            + '<input type="text" autocomplete="off" id="filter_name" placeholder="' + texts[lang].girl_name + '" icon="search">'
             + '</div></div>';
 
         totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="sort_class">' + texts[lang].searched_class + '</label>'
-            + '<select name="sort_class" id="sort_class" icon="down-arrow">'
+            + '<label class="head-group" for="filter_class">' + texts[lang].searched_class + '</label>'
+            + '<select name="filter_class" id="filter_class" icon="down-arrow">'
             + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="hardcore">' + texts[lang].hardcore + '</option><option value="charm">' + texts[lang].charm + '</option><option value="knowhow">' + texts[lang].know_how + '</option>'
             + '</select></div></div>';
 
         totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="sort_rarity">' + texts[lang].searched_rarity + '</label>'
-            + '<select name="sort_rarity" id="sort_rarity" icon="down-arrow">'
+            + '<label class="head-group" for="filter_rarity">' + texts[lang].searched_rarity + '</label>'
+            + '<select name="filter_rarity" id="filter_rarity" icon="down-arrow">'
             + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="starting">' + texts[lang].starting + '</option><option value="common">' + texts[lang].common + '</option><option value="rare">' + texts[lang].rare + '</option><option value="epic">' + texts[lang].epic + '</option><option value="legendary">' + texts[lang].legendary + '</option><option value="mythic">' + texts[lang].mythic + '</option>'
             + '</select></div></div>';
 
         totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="sort_blessed_attributes">' + texts[lang].searched_blessed_attributes + '</label>'
-            + '<select name="sort_blessed_attributes" id="sort_blessed_attributes" icon="down-arrow">'
+            + '<label class="head-group" for="filter_aff_category">' + texts[lang].searched_aff_category + '</label>'
+            + '<select name="filter_aff_category" id="filter_aff_category" icon="down-arrow">'
+            + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="1">' + texts[lang].one_star + '</option><option value="3">' + texts[lang].three_stars + '</option><option value="5">' + texts[lang].five_stars + '</option><option value="6">' + texts[lang].six_stars + '</option>'
+            + '</select></div></div>';
+
+        totalHTML += '<div class="form-control"><div class="select-group">'
+            + '<label class="head-group" for="filter_aff_lvl">' + texts[lang].searched_aff_lvl + '</label>'
+            + '<select name="filter_aff_lvl" id="filter_aff_lvl" icon="down-arrow">'
+            + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="0">' + texts[lang].zero_star + '</option><option value="1">' + texts[lang].one_star + '</option><option value="2">' + texts[lang].two_stars + '</option><option value="3">' + texts[lang].three_stars + '</option><option value="4">' + texts[lang].four_stars + '</option><option value="5">' + texts[lang].five_stars + '</option><option value="6">' + texts[lang].six_stars + '</option>'
+            + '</select></div></div>';
+
+        totalHTML += '<div class="form-control"><div class="select-group">'
+            + '<label class="head-group" for="filter_blessed_attributes">' + texts[lang].searched_blessed_attributes + '</label>'
+            + '<select name="filter_blessed_attributes" id="filter_blessed_attributes" icon="down-arrow">'
             + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="blessed_attributes">' + texts[lang].blessed_attributes + '</option><option value="non_blessed_attributes">' + texts[lang].non_blessed_attributes + '</option>'
             + '</select></div></div>';
 
