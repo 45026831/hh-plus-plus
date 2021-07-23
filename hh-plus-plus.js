@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.30.0
+// @version			0.30.1
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -11,6 +11,8 @@
 // @match			https://www.comixharem.com/*
 // @match			https://nutaku.comixharem.com/*
 // @run-at			document-end
+// @updateURL		https://raw.githubusercontent.com/45026831/hh-plus-plus/main/hh-plus-plus.js
+// @downloadURL		https://raw.githubusercontent.com/45026831/hh-plus-plus/main/hh-plus-plus.js
 // @grant			none
 // @author			Raphael, 1121, Sluimerstand, shal, Tom208, test_anon
 // ==/UserScript==
@@ -19,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.30.1: Reinstating market and team filters after formal approval from Kinkoid. Merging in minor fixes from old script 0.29.1.
 // 0.30.0: Removing market and teams filters to bring script back in line with HH Terms of Use after official ruling from Kinkoid.
 // 0.29.0: New battle system.
 // 0.28.8: Removed support of test server for this script. A dedicated script for this test server is online. Fixed minor display issues.
@@ -1163,6 +1166,12 @@ try {
             moduleMarket();
         }
     }
+    if (localStorage.getItem('HHS.marketFilter') === '1') {
+        $('#hhsMarketFilter').attr('checked', 'checked');
+        if (CurrentPage.indexOf('shop') != -1) {
+            moduleMarketFilter();
+        }
+    }
     if (localStorage.getItem('HHS.market_xp_aff') === '1') {
         $('#hhsMarket_XP_Aff').attr('checked', 'checked');
         if (CurrentPage.indexOf('shop') != -1) {
@@ -1204,6 +1213,10 @@ try {
             moduleSeasonSim();
         if (window.location.href.indexOf('/troll-pre-battle') != -1)
             moduleBattleSim();
+    }
+    if (localStorage.getItem('HHS.teamsFilter') === '1') {
+        $('#hhsTeamsFilter').attr('checked', 'checked');
+        moduleTeamsFilter();
     }
     if (localStorage.getItem('HHS.champions') === '1') {
         $('#hhsChampions').attr('checked', 'checked');
@@ -1258,6 +1271,9 @@ function options() {
     if (localStorage.getItem('HHS.market') === null) {
         localStorage.setItem('HHS.market', '1');
     }
+    if (localStorage.getItem('HHS.marketFilter') === null) {
+        localStorage.setItem('HHS.marketFilter', '1');
+    }
     if (localStorage.getItem('HHS.market_xp_aff') === null) {
         localStorage.setItem('HHS.market_xp_aff', '1');
     }
@@ -1278,6 +1294,9 @@ function options() {
     }
     if (localStorage.getItem('HHS.simFight') === null) {
         localStorage.setItem('HHS.simFight', '1');
+    }
+    if (localStorage.getItem('HHS.teamsFilter') === null) {
+        localStorage.setItem('HHS.teamsFilter', '1');
     }
     if (localStorage.getItem('HHS.champions') === null) {
         localStorage.setItem('HHS.champions', '1');
@@ -1309,6 +1328,7 @@ function options() {
                                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsTiers"><span class="slider"></span></label>' + texts[lang].optionsTiers + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsXPMoney"><span class="slider"></span></label>' + texts[lang].optionsXPMoney + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsMarket"><span class="slider"></span></label>' + texts[lang].optionsMarket + '<br />'
+                                 + '<label class="switch"><input type="checkbox" id="hhsMarketFilter"><span class="slider"></span></label>' + texts[lang].optionsMarketFilter + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsMarket_XP_Aff"><span class="slider"></span></label>' + texts[lang].optionsMarket_XP_Aff + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsSortArmorItems"><span class="slider"></span></label>' + texts[lang].optionsSortArmorItems + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsHideSellButton"><span class="slider"></span></label>' + texts[lang].optionsHideSellButton + '<br />'
@@ -1316,6 +1336,7 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" id="hhsLeague"><span class="slider"></span></label>' + texts[lang].optionsLeague + '<br />'
                                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsLeagueBoard"><span class="slider"></span></label>' + texts[lang].optionsLeagueBoard + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsSimFight"><span class="slider"></span></label>' + texts[lang].optionsSimFight + '<br />'
+                                 + '<label class="switch"><input type="checkbox" id="hhsTeamsFilter"><span class="slider"></span></label>' + texts[lang].optionsTeamsFilter + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsChampions"><span class="slider"></span></label>' + texts[lang].optionsChampions + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsLinks"><span class="slider"></span></label>' + texts[lang].optionsLinks + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsSeasonStats"><span class="slider"></span></label>' + texts[lang].optionsSeasonStats + '<br />'
@@ -2362,6 +2383,279 @@ function moduleMarket() {
                      + 'height: 11px; '
                      + 'background-image: url("https://ch.hh-content.com/pictures/design/ic_topbar_soft_currency.png");}'
                      );
+}
+
+/* =========================================
+	MARKET GIRLS' FILTER (Credit: test_anon)
+   ========================================= */
+
+function moduleMarketFilter() {
+
+    let container = $('.g1>div');
+
+    let cur_id = parseInt(container.find('.number.selected').text().split('/')[0]);
+    container.find('.number').remove();
+
+    let allGirls = Array.from( container.find('.girl-ico').toArray(), e => $(e) );
+
+    let nb_girls = container.children().length;
+    let nav = $(`<span class="number selected">/</span>`);
+    container.append(nav);
+
+    let max_girl = $(`<span>${nb_girls}</span>`);
+    nav.append(max_girl);
+
+    function updateNavMax() {
+        nb_girls = container.children().length - 1;
+        max_girl.text(nb_girls);
+    }
+
+    let num_girl = $(`<span contenteditable>${cur_id}</span>`);
+    nav.prepend(num_girl);
+
+    num_girl.on('input', (ev) => {
+
+        let dst_num = parseInt(num_girl.text());
+
+        if(dst_num <= 0 || dst_num > nb_girls || ! Number.isFinite(dst_num) )
+            return;
+
+        goto_girl(dst_num, false);
+    });
+
+    function next_girl_id(id = cur_id) {
+        return ((id - 1 + 1)%nb_girls) + 1;
+    }
+    function prev_girl_id(id = cur_id) {
+        return ((id - 1 + nb_girls - 1)%nb_girls) + 1;
+    }
+
+    function girl_at(id = cur_id) {
+        return container.children().eq(id - 1);
+    }
+
+    function hideCurrentGirl() {
+        let cur_girl = girl_at();
+        cur_girl.addClass('not-selected');
+
+        girl_at(prev_girl_id()).css('left', '-145px');
+        cur_girl.css('left', '-145px');
+        girl_at(next_girl_id()).css('left', '-145px');
+    }
+
+    function goto_girl(id_girl, override_nav = true, hide_current = true) {
+        if(hide_current)
+            hideCurrentGirl();
+
+        let dst_girl = girl_at(id_girl);
+        dst_girl.removeClass('not-selected');
+
+        girl_at(prev_girl_id(id_girl)).css('left', '0px');
+        girl_at(next_girl_id(id_girl)).css('left', '290px');
+        dst_girl.css('left', '145px');
+
+        window.$girl = dst_girl;
+
+        if( override_nav )
+            num_girl.text(id_girl);
+
+        cur_id = id_girl;
+
+        update_header();
+
+        if (localStorage.getItem('HHS.market_xp_aff') === '1')
+            moduleMarket_XP_Aff();
+    }
+
+    function update_header() {
+        let $girl = window.$girl;
+
+        $("#girls_list>.level_target_squared>div>div").attr("chars", $girl.data("g")["level"].length);
+        $("#girls_list>.level_target_squared>div>div").text($girl.data("g")["level"]);
+        $("#girls_list>h3").text($girl.data("g")["Name"]);
+        $("#girls_list>.icon").attr("carac", $girl.data("g")["class"]);
+    }
+
+    let lnav = container.parent().find('span[nav="left"]');
+    lnav.off('click');
+    lnav.on('click', (ev) => { goto_girl( prev_girl_id() ); });
+
+    let rnav = container.parent().find('span[nav="right"]');
+    rnav.off('click');
+    rnav.on('click', (ev) => { goto_girl( next_girl_id() ); });
+
+    //TODO : REFACTORER !!!
+    function addGirlFilter() {
+
+        function getGirlData() {
+            return Array.from(allGirls, girl => JSON.parse($(girl).attr("new-girl-tooltip-data")) );
+        }
+
+        function createFilterBox() {
+            var totalHTML = '<div id="arena_filter_box" class="form-wrapper" style="'
+            + 'position: absolute; left: -242px; width: 225px; z-index: 99; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
+
+            totalHTML += '<div class="form-control"><div class="input-group">'
+                + '<label class="head-group" for="sort_name">' + texts[lang].searched_name + '</label>'
+                + '<input type="text" autocomplete="off" id="sort_name" placeholder="' + texts[lang].girl_name + '" icon="search">'
+                + '</div></div>';
+
+            totalHTML += '<div class="form-control"><div class="select-group">'
+                + '<label class="head-group" for="sort_class">' + texts[lang].searched_class + '</label>'
+                + '<select name="sort_class" id="sort_class" icon="down-arrow">'
+                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="hardcore">' + texts[lang].hardcore + '</option><option value="charm">' + texts[lang].charm + '</option><option value="knowhow">' + texts[lang].know_how + '</option>'
+                + '</select></div></div>';
+
+            totalHTML += '<div class="form-control"><div class="select-group">'
+                + '<label class="head-group" for="sort_rarity">' + texts[lang].searched_rarity + '</label>'
+                + '<select name="sort_rarity" id="sort_rarity" icon="down-arrow">'
+                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="starting">' + texts[lang].starting + '</option><option value="common">' + texts[lang].common + '</option><option value="rare">' + texts[lang].rare + '</option><option value="epic">' + texts[lang].epic + '</option><option value="legendary">' + texts[lang].legendary + '</option><option value="mythic">' + texts[lang].mythic + '</option>'
+                + '</select></div></div>';
+
+            totalHTML += '<div class="form-control"><div class="input-group">'
+                + '<label class="head-group" for="sort_level">' + texts[lang].level_range + '</label>'
+                + '<input type="text" autocomplete="off" id="sort_level" placeholder="1-500" icon="search">'
+                + '</div></div>';
+
+            totalHTML += '<div class="form-control"><div class="select-group">'
+                + '<label class="head-group" for="sort_aff_category">' + texts[lang].searched_aff_category + '</label>'
+                + '<select name="sort_aff_category" id="sort_aff_category" icon="down-arrow">'
+                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="1">' + texts[lang].one_star + '</option><option value="3">' + texts[lang].three_stars + '</option><option value="5">' + texts[lang].five_stars + '</option><option value="6">' + texts[lang].six_stars + '</option>'
+                + '</select></div></div>';
+
+            totalHTML += '<div class="form-control"><div class="select-group">'
+                + '<label class="head-group" for="sort_aff_lvl">' + texts[lang].searched_aff_lvl + '</label>'
+                + '<select name="sort_aff_lvl" id="sort_aff_lvl" icon="down-arrow">'
+                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="0">' + texts[lang].zero_star + '</option><option value="1">' + texts[lang].one_star + '</option><option value="2">' + texts[lang].two_stars + '</option><option value="3">' + texts[lang].three_stars + '</option><option value="4">' + texts[lang].four_stars + '</option><option value="5">' + texts[lang].five_stars + '</option><option value="6">' + texts[lang].six_stars + '</option>'
+                + '</select></div></div>';
+
+            totalHTML += '</div>';
+
+            return $(totalHTML);
+        }
+
+        function createFilterBtn() {
+            let btn = $('<input type="button" class="blue_text_button girl_filter" value="' + texts[lang].filter + '" />');
+            return btn;
+        }
+
+        function filterGirls(form, girlsData) {
+            let sorterClass = form.find("#sort_class").prop('selectedIndex');
+            let sorterRarity = form.find("#sort_rarity").val();
+            let sorterAffCategory = form.find("#sort_aff_category").val();
+            let sorterAffLvl = form.find("#sort_aff_lvl").val();
+            let sorterName = form.find("#sort_name").val();
+            let sorterRange = form.find("#sort_level").val().split('-');
+            let nameRegex = new RegExp(sorterName, "i");
+
+            hideCurrentGirl();
+
+            for(let i = 0; i < girlsData.length; ++i) {
+
+                let girl = girlsData[i];
+
+                let affectionStr = girl.Graded2;
+                let affectionCategoryStr = affectionStr.split('</g>');
+                let affectionCategory = affectionCategoryStr.length-1;
+                let affectionLvlStr = affectionStr.split('<g >');
+                let affectionLvl = affectionLvlStr.length-1;
+
+                let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
+                let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
+                let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
+                let matchesAffLvl = (affectionLvl == sorterAffLvl) || (sorterAffLvl == 'all');
+                let matchesName = (girl.Name.search(nameRegex) > -1);
+                let matchesLevel =  (sorterRange[0] == '' || girl.level >= parseInt(sorterRange[0]) )
+                && (sorterRange[1] == '' || sorterRange[1] === undefined || girl.level <= parseInt(sorterRange[1]) );
+                let matches
+
+                if(matchesClass && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
+                    nav.before(allGirls[i]);
+                } else {
+                    allGirls[i].detach();
+                }
+            }
+
+            updateNavMax();
+            goto_girl(1, true, false);
+        }
+
+        function createFilter(target, girlsData) {
+            let filterBox = createFilterBox();
+            let btn = createFilterBtn();
+
+            target.append(btn);
+            target.append(filterBox);
+
+            btn.on('click', function() {
+                filterBox.css('display', filterBox.css('display') == "none" ? 'block' : 'none');
+            });
+
+            let sortGirls = () => {
+                filterGirls(filterBox, girlsData);
+            };
+
+            filterBox.find("#sort_class") .on('change', sortGirls);
+            filterBox.find("#sort_rarity").on('change', sortGirls);
+            filterBox.find("#sort_aff_category").on('change', sortGirls);
+            filterBox.find("#sort_aff_lvl").on('change', sortGirls);
+            filterBox.find("#sort_name")  .on('input' , sortGirls );
+            filterBox.find("#sort_level") .on('input' , sortGirls );
+        }
+
+        let girlsData = getGirlData();
+
+        createFilter( $('#inventory .gift'), girlsData );
+        createFilter( $('#inventory .potion'), girlsData );
+    }
+
+    addGirlFilter();
+
+    //CSS
+    sheet.insertRule('#arena_filter_box label.head-group {'
+                     + 'display: block;'
+                     + 'position: relative;'
+                     + 'left: -5px;'
+                     + 'z-index: 15;'
+                     + 'margin-bottom: -8px;'
+                     + 'margin-top: -3px !important;'
+                     + 'padding-left: 7px;'
+                     + 'font-size: 14px;'
+                     + 'font-weight: 400;'
+                     + 'letter-spacing: .22px;'
+                     + 'text-align: left !important;'
+                     + 'color: #ffb827;'
+                     + 'background:transparent;'
+                     + 'text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,-2px -2px 5px rgba(255,159,0,.4),2px -2px 5px rgba(255,159,0,.4),-2px 2px 5px rgba(255,159,0,.4),2px 2px 5px rgba(255,159,0,.4),0 0 10px rgba(255,159,0,.4);}'
+                    );
+
+    sheet.insertRule('#shops #girls_list .g1 > div > .number {'
+                     + 'left: 0 !important;}'
+                    );
+
+    sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                     + 'input.blue_text_button.girl_filter {'
+                     + 'position: absolute;'
+                     + 'left: -15px;'
+                     + 'top: -230px;}}'
+                    );
+
+    sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                     + 'input.blue_text_button.girl_filter {'
+                     + 'position: absolute;'
+                     + 'left: -15px;'
+                     + 'top: -249px;}}'
+                    );
+
+    sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                     + '#arena_filter_box {'
+                     + 'bottom: 76px;}}'
+                    );
+
+    sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                     + '#arena_filter_box {'
+                     + 'bottom: 95px;}}'
+                    );
 }
 
 /* =====================================
@@ -6018,7 +6312,7 @@ function moduleSeasonSim() {
 
         let simu = simuFight(player, opponent);
 
-        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .average-lvl').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
+        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-average-level').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
     }
 
     calculateSeasonPower(1);
@@ -6146,7 +6440,6 @@ function moduleSeasonStats() {
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (($('#hh_hentai').attr('class') || $('#hh_gay').attr('class') || $('#hh_comix').attr('class')).includes('battle')) {
-                    console.log("coucou");
                     while (i<1) {
                         i++;
                         var fight_result = $('div.line.slide_left div.slot').attr('cur');
@@ -6560,8 +6853,200 @@ function moduleBattleSim() {
                     );
 }
 
+/* ========================================
+	TEAMS FILTER (Credit : randomfapper34)
+   ======================================== */
+
+function moduleTeamsFilter() {
+    var storage = window.localStorage;
+    var arenaGirls = undefined;
+    var girlsData = undefined;
+    var totalTooltips = 80;
+
+    $(document).ready(function() {
+        if (CurrentPage.indexOf('change-team') != -1) {
+            updateFilterGirlData("seasons");
+            $("h3.panel-title").after('<button id="arena_filter" class="blue_text_button">' + texts[lang].filter + '</button>');
+            $("h3.panel-title").after(createFilterBox("default"));
+            createFilterEvents();
+        }
+
+        sheet.insertRule('a[rel="season"] {'
+                         + 'top: 277px !important; }');
+        sheet.insertRule('.personal_info.hero {'
+                         + 'margin-top: 5px; }');
+        sheet.insertRule('#season-arena .season_arena_block.battle_hero .hero_stats div {'
+                         + 'margin: 0; }');
+
+        sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                         + '.change-team-panel #arena_filter {'
+                         + 'position: absolute;'
+                         + 'top: 99px;'
+                         + 'right: 98px;}}'
+                        );
+
+        sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                         + '.change-team-panel #arena_filter {'
+                         + 'position: absolute;'
+                         + 'top: 76px;'
+                         + 'right: 98px;}}'
+                        );
+
+        sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                         + '#change-team-page .change-team-panel.team-panel {'
+                         + 'margin-top: 20px;}}'
+                        );
+
+        sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                         + '#change-team-page .change-team-panel.harem-panel {'
+                         + 'margin-top: 17px;}}'
+                        );
+    });
+
+    function updateFilterGirlData(type) {
+        arenaGirls = $('.harem-panel-girls div.harem-girl-container');
+
+        girlsData = $.map(arenaGirls, function(girl, index) {
+            return JSON.parse($(girl).attr("new-girl-tooltip-data"));
+        });
+    }
+
+    function createFilterEvents() {
+        $("#arena_filter").on('click', function() {
+            if (typeof arenaGirls === 'undefined' || typeof girlsData === 'undefined') return;
+            var currentBoxDisplay = $("#arena_filter_box").css('display');
+            $("#arena_filter_box").css('display', currentBoxDisplay == "none" ? 'block' : 'none');
+        });
+        $("#sort_class").on('change', sortGirls);
+        $("#sort_rarity").on('change', sortGirls);
+        $("#sort_name").get(0).oninput = sortGirls;
+        $("#save_teamFilter").on('click', saveTeam);
+        $("#load_team").on('click', loadTeam);
+        $("#sort_blessed_attributes").on('change', sortGirls);
+    }
+
+    function sortGirls() {
+        var sorterClass = $("#sort_class").get(0).selectedIndex;
+        var sorterRarity = $("#sort_rarity").get(0).value;
+        var sorterName = $("#sort_name").get(0).value;
+        var nameRegex = new RegExp(sorterName, "i");
+        var sorterBlessedAttributes = $("#sort_blessed_attributes").get(0).value;
+
+        var girlsSorted = $.map(girlsData, function(girl, index) {
+            var matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
+            var matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
+            var matchesName = (girl.Name.search(nameRegex) > -1);
+            var matchesBlessedAttributes;
+            switch (sorterBlessedAttributes) {
+                case 'blessed_attributes':
+                    matchesBlessedAttributes = (girl.blessed_attributes != undefined);
+                    break;
+                case 'non_blessed_attributes':
+                    matchesBlessedAttributes = (girl.blessed_attributes == undefined);
+                    break;
+                case 'all':
+                    matchesBlessedAttributes = (sorterBlessedAttributes == 'all');
+                    break;
+            }
+
+            return (matchesClass && matchesRarity && matchesName && matchesBlessedAttributes) ? index : null;
+        });
+
+        $.each(arenaGirls, function(index, girlElem) {
+            $(girlElem).css('display', $.inArray(index, girlsSorted) > -1 ? 'block' : 'none');
+        });
+
+        //update scroll display
+        $(".harem-panel-girls").css('overflow', '');
+        $(".harem-panel-girls").css('overflow', 'hidden');
+    }
+
+    function saveTeam() {
+        var selectedGirls = $('.harem-panel-girls .selected');
+        var selectedIds = $.map(selectedGirls, function(girl, index) {
+            return $(girl).attr("id_girl");
+        });
+        var teamUsed = $("#save_team_select").get(0).selectedIndex;
+        localStorage.setItem('arenaSavedTeam' + teamUsed, JSON.stringify(selectedIds));
+    }
+
+    function loadTeam() {
+        var teamUsed = $("#load_team_select").get(0).selectedIndex;
+        var teamSaved = localStorage.getItem('arenaSavedTeam' + teamUsed);
+        if (teamSaved == null || typeof teamSaved == 'undefined') return;
+
+        var selectedIds = JSON.parse(teamSaved);
+        if (Array.isArray(selectedIds)) {
+            $.each(arenaGirls, function(index, girlElem) {
+                var girlId = $(girlElem).attr("id_girl");
+                $(girlElem).css('display', $.inArray(girlId, selectedIds) > -1 ? 'block' : 'none');
+            });
+
+            //update scroll display
+            $(".harem-panel-girls").css('overflow', '');
+            $(".harem-panel-girls").css('overflow', 'hidden');
+        }
+    }
+
+    function createFilterBox() {
+        totalHTML = '<div id="arena_filter_box" class="form-wrapper" style="'
+            + 'position: absolute; width: 275px; right: 408px; z-index: 99; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
+
+        sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                         + '#arena_filter_box {'
+                         + 'top: 98px;}}'
+                        );
+
+        sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                         + '#arena_filter_box {'
+                         + 'top: 66px;}}'
+                        );
+
+        totalHTML += '<div class="form-control"><div class="input-group">'
+            + '<label class="head-group" for="sort_name">' + texts[lang].searched_name + '</label>'
+            + '<input type="text" autocomplete="off" id="sort_name" placeholder="' + texts[lang].girl_name + '" icon="search">'
+            + '</div></div>';
+
+        totalHTML += '<div class="form-control"><div class="select-group">'
+            + '<label class="head-group" for="sort_class">' + texts[lang].searched_class + '</label>'
+            + '<select name="sort_class" id="sort_class" icon="down-arrow">'
+            + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="hardcore">' + texts[lang].hardcore + '</option><option value="charm">' + texts[lang].charm + '</option><option value="knowhow">' + texts[lang].know_how + '</option>'
+            + '</select></div></div>';
+
+        totalHTML += '<div class="form-control"><div class="select-group">'
+            + '<label class="head-group" for="sort_rarity">' + texts[lang].searched_rarity + '</label>'
+            + '<select name="sort_rarity" id="sort_rarity" icon="down-arrow">'
+            + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="starting">' + texts[lang].starting + '</option><option value="common">' + texts[lang].common + '</option><option value="rare">' + texts[lang].rare + '</option><option value="epic">' + texts[lang].epic + '</option><option value="legendary">' + texts[lang].legendary + '</option><option value="mythic">' + texts[lang].mythic + '</option>'
+            + '</select></div></div>';
+
+        totalHTML += '<div class="form-control"><div class="select-group">'
+            + '<label class="head-group" for="sort_blessed_attributes">' + texts[lang].searched_blessed_attributes + '</label>'
+            + '<select name="sort_blessed_attributes" id="sort_blessed_attributes" icon="down-arrow">'
+            + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="blessed_attributes">' + texts[lang].blessed_attributes + '</option><option value="non_blessed_attributes">' + texts[lang].non_blessed_attributes + '</option>'
+            + '</select></div></div>';
+
+        totalHTML += '<div class="form-control"><button id="save_teamFilter" class="blue_text_button" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].save_as + '</button>'
+            + '<div class="select-group" style="display: inline-block; float: right; width: 45%;">'
+            + '<label class="head-group" for="save_team_select">' + texts[lang].team_number + '</label>'
+            + '<select name="save_team_select" id="save_team_select" icon="down-arrow">'
+            + '<option value="1" selected="selected">' + texts[lang].team + ' 1</option><option value="2">' + texts[lang].team + ' 2</option><option value="3">' + texts[lang].team + ' 3</option>'
+            + '</select></div></div>';
+
+        totalHTML += '<div class="form-control"><button id="load_team" class="blue_text_button" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].load_from + '</button>'
+            + '<div class="select-group" style="display: inline-block; float: right; width: 45%;">'
+            + '<label class="head-group" for="load_team_select">' + texts[lang].team_number + '</label>'
+            + '<select name="load_team_select" id="load_team_select" icon="down-arrow">'
+            + '<option value="1" selected="selected">' + texts[lang].team + ' 1</option><option value="2">' + texts[lang].team + ' 2</option><option value="3">' + texts[lang].team + ' 3</option>'
+            + '</select></div></div>';
+
+        totalHTML += '</div>';
+
+        return totalHTML;
+    }
+}
+
 //Display your ranking at the bottom of the screen if you are in the top 200
-if (CurrentPage.indexOf('season') != -1 && CurrentPage.indexOf('season-arena') != 1) {
+if (CurrentPage == '/season.html') {
     let i=1;
     while((($('div.leaderboard_row:nth-child(' + i + '').css('color') != "rgb(34, 150, 228)") && ($('div.leaderboard_row:nth-child(' + i + '').css('color') != "rgb(55, 160, 231)")) && (i < 200)){
         i++;
@@ -6637,7 +7122,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
         displayClubChampionGirlsShards();
         setTimeout(function(){updateClubChampionGirlsShards();}, 2000);
     }
-    else if (CurrentPage.indexOf('tower-of-fame') != -1) {
+    else if (CurrentPage.indexOf('tower-of-fame') != -1 || CurrentPage.indexOf('season-battle') != -1) {
         updateTrollGirlsShards();
     }
 
