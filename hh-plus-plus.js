@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.30.2
+// @version			0.30.3
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.30.3: Merge 0.29.3: Fixed minor issues.
 // 0.30.2: Merge 0.29.2: Fixed an issue with load and save buttons in the fight team filter. Added affection filter to the fight team filter.
 // 0.30.1: Reinstating market and team filters after formal approval from Kinkoid. Merging in minor fixes from old script 0.29.1.
 // 0.30.0: Removing market and teams filters to bring script back in line with HH Terms of Use after official ruling from Kinkoid.
@@ -3623,20 +3624,20 @@ function moduleLeague() {
 
 
 
-        $('div.leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
-                                                        + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                                        + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                                        + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                                        + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                                        + '<span class="minTop4Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop4Display
-                                                        + '<span class="scriptMobileLeagueInfoTooltip minTop4MobileTooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '<span class="minTop15Mobile"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/France_road_sign_B14_%2815%29.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop15Display
-                                                        + '<span class="scriptMobileLeagueInfoTooltip minTop15MobileTooltip">' + textTop15 + nThousand(minTop15Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop30Display
-                                                        + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '<span class="maxDemoteMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxDemoteDisplay
-                                                        + '<span class="scriptMobileLeagueInfoTooltip maxDemoteMobileTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '</span>');
+        $('#tower_of_fame .border-gradient .lead_wrapper .leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
+                                                                                                   + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
+                                                                                                   + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
+                                                                                                   + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
+                                                                                                   + '<span class="minTop4Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop4Display
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop4MobileTooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '<span class="minTop15Mobile"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/France_road_sign_B14_%2815%29.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop15Display
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop15MobileTooltip">' + textTop15 + nThousand(minTop15Points) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop30Display
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '<span class="maxDemoteMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxDemoteDisplay
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxDemoteMobileTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '</span>');
 
         if (includeBoard == false) {
             $('.minTop4').empty();
@@ -3659,16 +3660,16 @@ function moduleLeague() {
                                       + '<span class="scriptLeagueInfoTooltip minTop30Tooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
                                       + '</span>');
 
-        $('div.leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
-                                                        + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                                        + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                                        + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                                        + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                                        + '<span class="maxStagnateMobile"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="margin-left: 7px; margin-bottom: 5px;"> ' + maxStagnateDisplay
-                                                        + '<span class="scriptMobileLeagueInfoTooltip maxStagnateMobileTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 5px;"> ' + minTop30Display
-                                                        + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '</span>');
+        $('#tower_of_fame .border-gradient .lead_wrapper .leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
+                                                                                                   + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
+                                                                                                   + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
+                                                                                                   + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
+                                                                                                   + '<span class="maxStagnateMobile"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="margin-left: 7px; margin-bottom: 5px;"> ' + maxStagnateDisplay
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxStagnateMobileTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 5px;"> ' + minTop30Display
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '</span>');
 
         if (includeBoard == false) {
             $('.minTop30').empty();
@@ -3691,20 +3692,20 @@ function moduleLeague() {
                                       + '<span class="scriptLeagueInfoTooltip maxDemoteTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
                                       + '</span>');
 
-        $('div.leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
-                                                        + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                                        + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                                        + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                                        + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                                        + '<span class="minTop4Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop4Display
-                                                        + '<span class="scriptMobileLeagueInfoTooltip minTop4MobileTooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '<span class="maxStagnateMobile"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + maxStagnateDisplay
-                                                        + '<span class="scriptMobileLeagueInfoTooltip maxStagnateMobileTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop30Display
-                                                        + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '<span class="maxDemoteMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxDemoteDisplay
-                                                        + '<span class="scriptMobileLeagueInfoTooltip maxDemoteMobileTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                        + '</span>');
+        $('#tower_of_fame .border-gradient .lead_wrapper .leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
+                                                                                                   + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
+                                                                                                   + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
+                                                                                                   + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
+                                                                                                   + '<span class="minTop4Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop4Display
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop4MobileTooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '<span class="maxStagnateMobile"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + maxStagnateDisplay
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxStagnateMobileTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop30Display
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '<span class="maxDemoteMobile"><img src="https://www.flaticon.com/svg/static/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxDemoteDisplay
+                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxDemoteMobileTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
+                                                                                                   + '</span>');
 
         if (includeBoard == false) {
             $('.minTop4').empty();
@@ -5407,8 +5408,8 @@ function moduleLinks() {
             setInterval(function(){$('.champions-bottom__rest > span:nth-child(1)').remove();
                                    $('.champions-bottom__rest').append('<span timer="' + date_club_champion + '" property="teamRest" rel="timer" style="color: #8ec3ff;">' + calculateTime(date_club_champion*1000) + '</span>');
                                   }, 1000);
-            if ($('champions-bottom__start-battle').length > 0) {
-                let button = document.querySelector('.champions-bottom__start-battle');
+            if ($('#club_champion_challenge_btn').length > 0) {
+                let button = document.querySelector('#club_champion_challenge_btn');
                 button.addEventListener('click', function(){
                     let club_champion_timer = new Date().getTime() + (15*60)*1000;
                     localStorage.setItem("clubChampionTime", club_champion_timer);
