@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.30.3
+// @version			0.30.4
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.30.4: Merge 0.29.4: Fixed minor bug in league info on mobile devices.
 // 0.30.3: Merge 0.29.3: Fixed minor issues.
 // 0.30.2: Merge 0.29.2: Fixed an issue with load and save buttons in the fight team filter. Added affection filter to the fight team filter.
 // 0.30.1: Reinstating market and team filters after formal approval from Kinkoid. Merging in minor fixes from old script 0.29.1.
@@ -1143,7 +1144,7 @@ GIRLS_EXP_LEVELS.mythic = [40, 81, 122, 163, 205, 247, 289, 332, 375, 418, 462, 
 if (CurrentPage.indexOf('home') != -1) options();
 
 // Show which modules are enabled and if so, run them when appropriate
-try {
+//try {
     if (localStorage.getItem('HHS.refresh') === '1') {
         $('#hhsRefresh').attr('checked', 'checked');
         if (CurrentPage.indexOf('home') != -1) {
@@ -1249,7 +1250,7 @@ try {
         $('#hhsCollectMoneyAnimation').attr('checked', 'checked');
         moduleCollectMoneyAnimation();
     }
-} catch(e) {}
+//} catch(e) {}
 
 
 /* =========
@@ -3384,13 +3385,14 @@ function moduleLeague() {
     challengesPossibleMinutes = parseInt(Math.floor(season_end_at/60), 10);
     challengesPossible = (Hero.energies.challenge.amount != Hero.energies.challenge.max_amount)? Math.floor((challengesPossibleMinutes + (35 - Hero.energies.challenge.next_refresh_ts / 60))/35) + parseInt(Hero.energies.challenge.amount, 10) : Math.floor(challengesPossibleMinutes/35) + parseInt(Hero.energies.challenge.amount, 10);
 
-    playersTotal = $('.leagues_table table tbody.leadTable')[0].children.length;
+    playersTotal = $('.leagues_table .lead_table_view tbody.leadTable')[0].children.length;
 
     for(var i=0; i<playersTotal; i++) {
-        var playerData = $('.leagues_table table tbody.leadTable')[0].children[i];
+        console.log("i: " + i);
+        var playerData = $('.leagues_table .lead_table_view tbody.leadTable')[0].children[i];
         var fightsDone = 0;
         if (playerData.className.indexOf('selected-player-leagues') != -1) {
-            var fightsData = playerData.childNodes[7].childNodes[1].childNodes[1].childNodes[8].childNodes
+            var fightsData = playerData.childNodes[7].childNodes[1].childNodes[3].childNodes[5].childNodes
             for (var j=0; j<fightsData.length; j++){
                 if (fightsData[j].className != 'result')
                     fightsDone ++;
