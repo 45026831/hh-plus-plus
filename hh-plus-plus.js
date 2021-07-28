@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.30.4
+// @version			0.30.5
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.30.5: Merge 0.29.5: Fixed minor issues. Plus making old PoA screen override configurable.
 // 0.30.4: Merge 0.29.4: Fixed minor bug in league info on mobile devices.
 // 0.30.3: Merge 0.29.3: Fixed minor issues.
 // 0.30.2: Merge 0.29.2: Fixed an issue with load and save buttons in the fight team filter. Added affection filter to the fight team filter.
@@ -350,6 +351,7 @@ texts.en = {
     optionsEpicPachinkoNames: 'Show names in Epic Pachinko',
     optionsMissionsBackground: 'Change missions background',
     optionsCollectMoneyAnimation: 'Delete the collect money animation',
+    optionsOldPoAView: 'Use legacy PoA screen',
     and: 'and',
     or: 'or',
     affection: 'affection',
@@ -1144,113 +1146,117 @@ GIRLS_EXP_LEVELS.mythic = [40, 81, 122, 163, 205, 247, 289, 332, 375, 418, 462, 
 if (CurrentPage.indexOf('home') != -1) options();
 
 // Show which modules are enabled and if so, run them when appropriate
-//try {
-    if (localStorage.getItem('HHS.refresh') === '1') {
-        $('#hhsRefresh').attr('checked', 'checked');
-        if (CurrentPage.indexOf('home') != -1) {
-            moduleRefresh();
-        }
+if (localStorage.getItem('HHS.refresh') === '1') {
+    $('#hhsRefresh').attr('checked', 'checked');
+    if (CurrentPage.indexOf('home') != -1) {
+        moduleRefresh();
     }
-    if (localStorage.getItem('HHS.villain') === '1') {
-        $('#hhsVillain').attr('checked', 'checked');
+}
+if (localStorage.getItem('HHS.villain') === '1') {
+    $('#hhsVillain').attr('checked', 'checked');
+    try {
         moduleVillain();
-    }
-    if (localStorage.getItem('HHS.tiers') === '1') {
-        $('#hhsTiers').attr('checked', 'checked');
-    }
-    if (localStorage.getItem('HHS.xpMoney') === '1') {
-        $('#hhsXPMoney').attr('checked', 'checked');
+    } catch(e) {}
+}
+if (localStorage.getItem('HHS.tiers') === '1') {
+    $('#hhsTiers').attr('checked', 'checked');
+}
+if (localStorage.getItem('HHS.xpMoney') === '1') {
+    $('#hhsXPMoney').attr('checked', 'checked');
+    try {
         moduleXP();
         moduleMoney();
+    } catch(e) {}
+}
+if (localStorage.getItem('HHS.market') === '1') {
+    $('#hhsMarket').attr('checked', 'checked');
+    if (CurrentPage.indexOf('shop') != -1) {
+        moduleMarket();
     }
-    if (localStorage.getItem('HHS.market') === '1') {
-        $('#hhsMarket').attr('checked', 'checked');
-        if (CurrentPage.indexOf('shop') != -1) {
-            moduleMarket();
-        }
+}
+if (localStorage.getItem('HHS.marketFilter') === '1') {
+    $('#hhsMarketFilter').attr('checked', 'checked');
+    if (CurrentPage.indexOf('shop') != -1) {
+        moduleMarketFilter();
     }
-    if (localStorage.getItem('HHS.marketFilter') === '1') {
-        $('#hhsMarketFilter').attr('checked', 'checked');
-        if (CurrentPage.indexOf('shop') != -1) {
-            moduleMarketFilter();
-        }
+}
+if (localStorage.getItem('HHS.market_xp_aff') === '1') {
+    $('#hhsMarket_XP_Aff').attr('checked', 'checked');
+    if (CurrentPage.indexOf('shop') != -1) {
+        moduleMarket_XP_Aff();
     }
-    if (localStorage.getItem('HHS.market_xp_aff') === '1') {
-        $('#hhsMarket_XP_Aff').attr('checked', 'checked');
-        if (CurrentPage.indexOf('shop') != -1) {
-            moduleMarket_XP_Aff();
-        }
+}
+if (localStorage.getItem('HHS.sortArmorItems') === '1') {
+    $('#hhsSortArmorItems').attr('checked', 'checked');
+    if (CurrentPage.indexOf('shop') != -1) {
+        moduleSortArmorItems();
     }
-    if (localStorage.getItem('HHS.sortArmorItems') === '1') {
-        $('#hhsSortArmorItems').attr('checked', 'checked');
-        if (CurrentPage.indexOf('shop') != -1) {
-            moduleSortArmorItems();
-        }
+}
+if (localStorage.getItem('HHS.hideSellButton') === '1') {
+    $('#hhsHideSellButton').attr('checked', 'checked');
+    if (CurrentPage.indexOf('shop') != -1) {
+        moduleHideSellButton();
     }
-    if (localStorage.getItem('HHS.hideSellButton') === '1') {
-        $('#hhsHideSellButton').attr('checked', 'checked');
-        if (CurrentPage.indexOf('shop') != -1) {
-            moduleHideSellButton();
-        }
+}
+if (localStorage.getItem('HHS.harem') === '1') {
+    $('#hhsHarem').attr('checked', 'checked');
+    if (CurrentPage.indexOf('harem') != -1) {
+        moduleHarem();
     }
-    if (localStorage.getItem('HHS.harem') === '1') {
-        $('#hhsHarem').attr('checked', 'checked');
-        if (CurrentPage.indexOf('harem') != -1) {
-            moduleHarem();
-        }
+}
+if (localStorage.getItem('HHS.league') === '1') {
+    $('#hhsLeague').attr('checked', 'checked');
+    if (CurrentPage.indexOf('tower-of-fame') != -1) {
+        moduleLeague();
     }
-    if (localStorage.getItem('HHS.league') === '1') {
-        $('#hhsLeague').attr('checked', 'checked');
-        if (CurrentPage.indexOf('tower-of-fame') != -1) {
-            moduleLeague();
-        }
-    }
-    if (localStorage.getItem('HHS.leagueBoard') === '1') {
-        $('#hhsLeagueBoard').attr('checked', 'checked');
-    }
-    if (localStorage.getItem('HHS.simFight') === '1') {
-        $('#hhsSimFight').attr('checked', 'checked');
-        if (CurrentPage.indexOf('tower-of-fame') != -1)
-            moduleSim();
-        if (CurrentPage.indexOf('season-arena') != -1)
-            moduleSeasonSim();
-        if (window.location.href.indexOf('/troll-pre-battle') != -1)
-            moduleBattleSim();
-    }
-    if (localStorage.getItem('HHS.teamsFilter') === '1') {
-        $('#hhsTeamsFilter').attr('checked', 'checked');
-        moduleTeamsFilter();
-    }
-    if (localStorage.getItem('HHS.champions') === '1') {
-        $('#hhsChampions').attr('checked', 'checked');
-        moduleChampions();
-    }
-    if (localStorage.getItem('HHS.links') === '1') {
-        $('#hhsLinks').attr('checked', 'checked');
+}
+if (localStorage.getItem('HHS.leagueBoard') === '1') {
+    $('#hhsLeagueBoard').attr('checked', 'checked');
+}
+if (localStorage.getItem('HHS.simFight') === '1') {
+    $('#hhsSimFight').attr('checked', 'checked');
+    if (CurrentPage.indexOf('tower-of-fame') != -1)
+        moduleSim();
+    if (CurrentPage.indexOf('season-arena') != -1)
+        moduleSeasonSim();
+    if (window.location.href.indexOf('/troll-pre-battle') != -1)
+        moduleBattleSim();
+}
+if (localStorage.getItem('HHS.teamsFilter') === '1') {
+    $('#hhsTeamsFilter').attr('checked', 'checked');
+    moduleTeamsFilter();
+}
+if (localStorage.getItem('HHS.champions') === '1') {
+    $('#hhsChampions').attr('checked', 'checked');
+    moduleChampions();
+}
+if (localStorage.getItem('HHS.links') === '1') {
+    $('#hhsLinks').attr('checked', 'checked');
+    try {
         moduleLinks();
+    } catch(e) {}
+}
+if (localStorage.getItem('HHS.seasonStats') === '1') {
+    $('#hhsSeasonStats').attr('checked', 'checked');
+    if (CurrentPage.indexOf('season-battle') != -1 || CurrentPage.indexOf('season') != -1) {
+        moduleSeasonStats();
     }
-    if (localStorage.getItem('HHS.seasonStats') === '1') {
-        $('#hhsSeasonStats').attr('checked', 'checked');
-        if (CurrentPage.indexOf('season-battle') != -1 || CurrentPage.indexOf('season') != -1) {
-            moduleSeasonStats();
-        }
-    }
-    if (localStorage.getItem('HHS.pachinkoNames') === '1') {
-        $('#hhsPachinkoNames').attr('checked', 'checked');
-        modulePachinkoNames();
-    }
-    if (localStorage.getItem('HHS.pachinkoNamesMulti') == '1') {
-        $('#hhsPachinkoNamesMulti').attr('checked', 'checked');
-    }
-    if (localStorage.getItem('HHS.missionsBackground') === '1') {
-        $('#hhsMissionsBackground').attr('checked', 'checked');
-        moduleMissionsBackground();
-    }
-    if (localStorage.getItem('HHS.collectMoneyAnimation') === '1') {
-        $('#hhsCollectMoneyAnimation').attr('checked', 'checked');
-        moduleCollectMoneyAnimation();
-    }
-//} catch(e) {}
+}
+if (localStorage.getItem('HHS.pachinkoNames') === '1') {
+    $('#hhsPachinkoNames').attr('checked', 'checked');
+    modulePachinkoNames();
+}
+if (localStorage.getItem('HHS.pachinkoNamesMulti') == '1') {
+    $('#hhsPachinkoNamesMulti').attr('checked', 'checked');
+}
+if (localStorage.getItem('HHS.missionsBackground') === '1') {
+    $('#hhsMissionsBackground').attr('checked', 'checked');
+    moduleMissionsBackground();
+}
+if (localStorage.getItem('HHS.collectMoneyAnimation') === '1') {
+    $('#hhsCollectMoneyAnimation').attr('checked', 'checked');
+    moduleCollectMoneyAnimation();
+}
 
 
 /* =========
@@ -1260,7 +1266,7 @@ if (CurrentPage.indexOf('home') != -1) options();
 function options() {
     // Create localStorage if it doesn't exist yet
     if (localStorage.getItem('HHS.refresh') === null) {
-        localStorage.setItem('HHS.refresh', '0');
+        localStorage.setItem('HHS.refresh', '1');
     }
     if (localStorage.getItem('HHS.villain') === null) {
         localStorage.setItem('HHS.villain', '1');
@@ -1346,7 +1352,8 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" id="hhsPachinkoNames"><span class="slider"></span></label>' + texts[lang].optionsPachinkoNames + '<br />'
                                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsPachinkoNamesMulti"><span class="slider"></span></label>' + texts[lang].optionsEpicPachinkoNames + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsMissionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsCollectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation
+                                 + '<label class="switch"><input type="checkbox" id="hhsCollectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
+                                 + '<label class="switch"><input type="checkbox" id="hhsOldPoAView"><span class="slider"></span></label>' + texts[lang].optionsOldPoAView || texts['en'].optionsOldPoAView
                                  + '</div>');
 
     // Show and hide options menu
@@ -1589,6 +1596,15 @@ function options() {
         }
         if (document.getElementById('hhsCollectMoneyAnimation').checked == false) {
             localStorage.setItem('HHS.collectMoneyAnimation', '0');
+        }
+    });
+
+    $('#hhsOldPoAView').click(function() {
+        if (document.getElementById('hhsOldPoAView').checked == true) {
+            localStorage.setItem('HHS.oldPoAView', '1');
+        }
+        if (document.getElementById('hhsOldPoAView').checked == false) {
+            localStorage.setItem('HHS.oldPoAView', '0');
         }
     });
 
@@ -5410,8 +5426,8 @@ function moduleLinks() {
             setInterval(function(){$('.champions-bottom__rest > span:nth-child(1)').remove();
                                    $('.champions-bottom__rest').append('<span timer="' + date_club_champion + '" property="teamRest" rel="timer" style="color: #8ec3ff;">' + calculateTime(date_club_champion*1000) + '</span>');
                                   }, 1000);
-            if ($('#club_champion_challenge_btn').length > 0) {
-                let button = document.querySelector('#club_champion_challenge_btn');
+            if ($('button.champions-bottom__start-battle').length > 0) {
+                let button = document.querySelector('button.champions-bottom__start-battle');
                 button.addEventListener('click', function(){
                     let club_champion_timer = new Date().getTime() + (15*60)*1000;
                     localStorage.setItem("clubChampionTime", club_champion_timer);
@@ -7696,4 +7712,13 @@ function moduleMissionsBackground() {
     sheet.insertRule('#missions .missions_wrap .mission_object.mission_entry.legendary {'
                      + 'background: #6ebeff40;}'
                     );
+}
+
+if (localStorage.getItem('HHS.oldPoAView') === '1') {
+    $('#hhsOldPoAView').attr('checked', 'checked');
+
+    //Old Path of attraction event window
+    if (CurrentPage.indexOf('home') != -1) {
+        $('.event-thumbnail [rel=path_event]')[0].href="/path-of-attraction.html";
+    }
 }
