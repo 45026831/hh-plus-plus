@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.30.6: Merge 0.29.6: Fixed minor bug. Added an option in the script menu to enable/disable old PoA event window.
 // 0.30.5: Merge 0.29.5: Fixed minor issues. Plus making old PoA screen override configurable.
 // 0.30.4: Merge 0.29.4: Fixed minor bug in league info on mobile devices.
 // 0.30.3: Merge 0.29.3: Fixed minor issues.
@@ -337,8 +338,8 @@ texts.en = {
     optionsMarket: 'Market information',
     optionsMarketFilter: 'Girls\' filter at the market',
     optionsMarket_XP_Aff: 'XP and affection at the market',
-    optionsSortArmorItems: 'Display a button to sort armor items<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;by rarity at the market',
-    optionsHideSellButton: 'Button to hide "Sell" button at the market',
+    optionsSortArmorItems: 'Button to sort armor items by rarity',
+    optionsHideSellButton: 'Button to hide "Sell" button',
     optionsHarem: 'Harem information',
     optionsLeague: 'League information',
     optionsLeagueBoard: 'Show the league tops',
@@ -348,10 +349,10 @@ texts.en = {
     optionsLinks: 'Shortcuts/Timers',
     optionsSeasonStats: 'Season stats',
     optionsPachinkoNames: 'Show names in Pachinko',
-    optionsEpicPachinkoNames: 'Show names in Epic Pachinko',
+    //optionsEpicPachinkoNames: 'Show names in Epic Pachinko',
     optionsMissionsBackground: 'Change missions background',
     optionsCollectMoneyAnimation: 'Delete the collect money animation',
-    optionsOldPoAView: 'Use legacy PoA screen',
+    optionsOldPoAWindow: 'Old PoA window',
     and: 'and',
     or: 'or',
     affection: 'affection',
@@ -486,14 +487,14 @@ texts.en = {
 
 texts.fr = {
     optionsRefresh: 'Rafraîchir page d\'accueil',
-    optionsVillain: 'Menu combats un troll',
+    optionsVillain: 'Menu des combats des trolls',
     optionsTiers: 'Montrer les paliers/filles',
     optionsXPMoney : 'XP / Argent + précis',
     optionsMarket: 'Infos marché',
     optionsMarketFilter: 'Filtre des filles au marché',
     optionsMarket_XP_Aff: 'XP et affection au marché',
-    optionsSortArmorItems: 'Affichage d\'un bouton pour trier<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;les articles par rareté au marché',
-    optionsHideSellButton: 'Bouton pour masquer le bouton "Vendre"<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;au marché',
+    optionsSortArmorItems: 'Bouton pour trier les équipements par rareté',
+    optionsHideSellButton: 'Bouton pour masquer le bouton "Vendre"',
     optionsHarem: 'Infos harem',
     optionsLeague: 'Infos ligue',
     optionsLeagueBoard: 'Montrer les tops ligue',
@@ -502,10 +503,11 @@ texts.fr = {
     optionsChampions: 'Infos champions',
     optionsLinks: 'Raccourcis/Timers',
     optionsSeasonStats: 'Stats de la saison',
-    optionsPachinkoNames: 'Montrer noms au Pachinko',
-    optionsEpicPachinkoNames: 'Montrer noms au PE',
+    optionsPachinkoNames: 'Montrer les noms au Pachinko',
+    //optionsEpicPachinkoNames: 'Montrer noms au PE',
     optionsMissionsBackground: 'Change l\'arrière-plan des missions',
     optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
+    optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
     and: 'et',
     or: 'ou',
     affection: 'affection',
@@ -646,8 +648,8 @@ texts.es = {
     optionsMarket: 'Informacion de Mercado',
     optionsMarketFilter: 'Filtro de chicas en el mercado',
     optionsMarket_XP_Aff: 'El XP y el afecto en el mercado',
-    optionsSortArmorItems: 'Mostrar un botón para ordenar los artículos<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;de armadura por rareza en el mercado',
-    optionsHideSellButton: 'Botón para ocultar el botón de "Venta" en el mercado',
+    optionsSortArmorItems: 'Botón para ordenar los artículos de armadura por rareza',
+    optionsHideSellButton: 'Botón para ocultar el botón de "Venta"',
     optionsHarem: 'Informacion de Harén',
     optionsLeague: 'Informacion de Liga',
     optionsLeagueBoard: 'Mostrar los mejores de la liga',
@@ -657,9 +659,10 @@ texts.es = {
     optionsLinks: 'Atajos/Temporizadores',
     optionsSeasonStats: 'Season stats',
     optionsPachinkoNames: 'Mostrar nombres en Pachinko',
-    optionsEpicPachinkoNames: 'Mostrar nombres en Epic Pachinko',
+    //optionsEpicPachinkoNames: 'Mostrar nombres en Epic Pachinko',
     optionsMissionsBackground: 'Cambiar el fondo de las misiones',
     optionsCollectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
+    optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
     and: 'y',
     or: 'o',
     in: 'en',
@@ -799,8 +802,8 @@ texts.it = {
     optionsMarket: 'Informazioni negozio',
     optionsMarketFilter: 'Filtro per ragazze al mercato',
     optionsMarket_XP_Aff: 'XP e affetto nel mercato',
-    optionsSortArmorItems: 'Visualizzare un pulsante per ordinare<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gli oggetti dell\'armatura per rarità al mercato',
-    optionsHideSellButton: 'Pulsante per nascondere il pulsante "Vendi" al mercato',
+    optionsSortArmorItems: 'Pulsante per ordinare gli oggetti dell\'armatura per rarità',
+    optionsHideSellButton: 'Pulsante per nascondere il pulsante "Vendi"',
     optionsHarem: 'Informazioni Harem',
     optionsLeague: 'Informazioni sulle Leghe',
     optionsLeagueBoard: 'Mostra i top della lega',
@@ -810,9 +813,10 @@ texts.it = {
     optionsLinks: 'Scorciatoie/Timer',
     optionsSeasonStats: 'Season stats',
     optionsPachinkoNames: 'Mostra i nomi in Pachinko',
-    optionsEpicPachinkoNames: 'Mostra i nomi in Epic Pachinko',
+    //optionsEpicPachinkoNames: 'Mostra i nomi in Epic Pachinko',
     optionsMissionsBackground: 'Cambiare lo sfondo delle missioni',
     optionsCollectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
+    optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
     and: 'e',
     or: 'o',
     in: 'in',
@@ -952,8 +956,8 @@ texts.de = {
     optionsMarket: 'Marktplatz-Informationen',
     optionsMarketFilter: 'Mädchenfilter auf dem Markt',
     optionsMarket_XP_Aff: 'XP und Zuneigung auf dem Markt',
-    optionsSortArmorItems: 'Anzeige einer Schaltfläche zum Sortieren<BR>von Rüstungsgegenständen nach Seltenheit auf dem Markt',
-    optionsHideSellButton: 'Schaltfläche zum Ausblenden der Schaltfläche "Verkaufen"<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auf dem Markt',
+    optionsSortArmorItems: 'Schaltfläche zum Sortieren von Rüstungsgegenständen nach Seltenheit',
+    optionsHideSellButton: 'Schaltfläche zum Ausblenden der Schaltfläche "Verkaufen"',
     optionsHarem: 'Harem-Informationen',
     optionsLeague: 'Liga-Informationen',
     optionsLeagueBoard: 'Die Liga-Spitzen anzeigen',
@@ -963,9 +967,10 @@ texts.de = {
     optionsLinks: 'Abkürzungen/Zeitgeber',
     optionsSeasonStats: 'Season stats',
     optionsPachinkoNames: 'Namen in Pachinko anzeigen',
-    optionsEpicPachinkoNames: 'Namen in Episch Pachinko anzeigen',
+    //optionsEpicPachinkoNames: 'Namen in Episch Pachinko anzeigen',
     optionsMissionsBackground: 'Missionshintergrund ändern',
     optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
+    optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
     and: 'und',
     or: 'oder',
     in: 'in',
@@ -1246,9 +1251,9 @@ if (localStorage.getItem('HHS.pachinkoNames') === '1') {
     $('#hhsPachinkoNames').attr('checked', 'checked');
     modulePachinkoNames();
 }
-if (localStorage.getItem('HHS.pachinkoNamesMulti') == '1') {
+/*if (localStorage.getItem('HHS.pachinkoNamesMulti') == '1') {
     $('#hhsPachinkoNamesMulti').attr('checked', 'checked');
-}
+}*/
 if (localStorage.getItem('HHS.missionsBackground') === '1') {
     $('#hhsMissionsBackground').attr('checked', 'checked');
     moduleMissionsBackground();
@@ -1256,6 +1261,9 @@ if (localStorage.getItem('HHS.missionsBackground') === '1') {
 if (localStorage.getItem('HHS.collectMoneyAnimation') === '1') {
     $('#hhsCollectMoneyAnimation').attr('checked', 'checked');
     moduleCollectMoneyAnimation();
+}
+if (localStorage.getItem('HHS.oldPoAWindow') === '1') {
+    $('#hhsOldPoAWindow').attr('checked', 'checked');
 }
 
 
@@ -1319,14 +1327,17 @@ function options() {
     if (localStorage.getItem('HHS.pachinkoNames') === null) {
         localStorage.setItem('HHS.pachinkoNames', '1');
     }
-    if (localStorage.getItem('HHS.pachinkoNamesMulti') === null) {
+    /*if (localStorage.getItem('HHS.pachinkoNamesMulti') === null) {
         localStorage.setItem('HHS.pachinkoNamesMulti', '1');
-    }
+    }*/
     if (localStorage.getItem('HHS.missionsBackground') === null) {
         localStorage.setItem('HHS.missionsBackground', '1');
     }
     if (localStorage.getItem('HHS.collectMoneyAnimation') === null) {
         localStorage.setItem('HHS.collectMoneyAnimation', '1');
+    }
+    if (localStorage.getItem('HHS.oldPoAWindow') === null) {
+        localStorage.setItem('HHS.oldPoAWindow', '0');
     }
 
     // Options menu
@@ -1350,10 +1361,10 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" id="hhsLinks"><span class="slider"></span></label>' + texts[lang].optionsLinks + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsSeasonStats"><span class="slider"></span></label>' + texts[lang].optionsSeasonStats + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsPachinkoNames"><span class="slider"></span></label>' + texts[lang].optionsPachinkoNames + '<br />'
-                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsPachinkoNamesMulti"><span class="slider"></span></label>' + texts[lang].optionsEpicPachinkoNames + '<br />'
+                                 //+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsPachinkoNamesMulti"><span class="slider"></span></label>' + texts[lang].optionsEpicPachinkoNames + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsMissionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
                                  + '<label class="switch"><input type="checkbox" id="hhsCollectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsOldPoAView"><span class="slider"></span></label>' + texts[lang].optionsOldPoAView || texts['en'].optionsOldPoAView
+                                 + '<label class="switch"><input type="checkbox" id="hhsOldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow
                                  + '</div>');
 
     // Show and hide options menu
@@ -1571,7 +1582,7 @@ function options() {
         }
     });
 
-    $('#hhsPachinkoNamesMulti').click(function() {
+    /*$('#hhsPachinkoNamesMulti').click(function() {
         if (document.getElementById('hhsPachinkoNamesMulti').checked == true) {
             localStorage.setItem('HHS.pachinkoNamesMulti', '1');
             localStorage.setItem('HHS.pachinkoNames', '1');
@@ -1579,7 +1590,7 @@ function options() {
         if (document.getElementById('hhsLeague').checked == false) {
             localStorage.setItem('HHS.pachinkoNamesMulti', '0');
         }
-    });
+    });*/
 
     $('#hhsMissionsBackground').click(function() {
         if (document.getElementById('hhsMissionsBackground').checked == true) {
@@ -1599,12 +1610,12 @@ function options() {
         }
     });
 
-    $('#hhsOldPoAView').click(function() {
-        if (document.getElementById('hhsOldPoAView').checked == true) {
-            localStorage.setItem('HHS.oldPoAView', '1');
+    $('#hhsOldPoAWindow').click(function() {
+        if (document.getElementById('hhsOldPoAWindow').checked == true) {
+            localStorage.setItem('HHS.oldPoAWindow', '1');
         }
-        if (document.getElementById('hhsOldPoAView').checked == false) {
-            localStorage.setItem('HHS.oldPoAView', '0');
+        if (document.getElementById('hhsOldPoAWindow').checked == false) {
+            localStorage.setItem('HHS.oldPoAWindow', '0');
         }
     });
 
@@ -6339,15 +6350,14 @@ function moduleSeasonSim() {
     calculateSeasonPower(2);
     calculateSeasonPower(3);
 
-    let div_button = document.querySelector('div.opponents_arena');
-    let button = div_button.querySelector('button');
+    let button = document.querySelector('#refresh_villains');
     button.addEventListener('click', function(){
-        setInterval(function(){
-            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(3) > div:nth-child(1) > div:nth-child(4) > div:nth-child(4) > span:nth-child(2) > div:nth-child(1)').remove();
+        setTimeout(function(){
+            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(3) .average-lvl .matchRating').remove();
             calculateSeasonPower(1);
-            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(5) > div:nth-child(1) > div:nth-child(4) > div:nth-child(4) > span:nth-child(2) > div:nth-child(1)').remove();
+            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(5) .average-lvl .matchRating').remove();
             calculateSeasonPower(2);
-            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(7) > div:nth-child(1) > div:nth-child(4) > div:nth-child(4) > span:nth-child(2) > div:nth-child(1)').remove();
+            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(7) .average-lvl .matchRating').remove();
             calculateSeasonPower(3);
         }, 5000);
     });
@@ -6650,7 +6660,8 @@ function modulePachinkoNames() {
                     }
                 }
 
-                if (found.length > 12 && (localStorage.getItem('HHS.pachinkoNamesMulti') == '1')){
+                //if (found.length > 12 && (localStorage.getItem('HHS.pachinkoNamesMulti') == '1')){
+                if (found.length > 12){
                     text = text.find('.game-rewards');
                     text.css("fontSize", "11px");
                     text.css("line-height", "13px");
@@ -6667,9 +6678,9 @@ function modulePachinkoNames() {
                     text.css("text-align", "center");
                     text.css("overflow-y", "scroll");
                 }
-                else if (found.length > 12){
+                /*else if (found.length > 12){
                     return
-                }
+                }*/
 
                 else if (found.length > 3){
                     text = text.find('.game-rewards');
@@ -7714,11 +7725,6 @@ function moduleMissionsBackground() {
                     );
 }
 
-if (localStorage.getItem('HHS.oldPoAView') === '1') {
-    $('#hhsOldPoAView').attr('checked', 'checked');
-
-    //Old Path of attraction event window
-    if (CurrentPage.indexOf('home') != -1) {
-        $('.event-thumbnail [rel=path_event]')[0].href="/path-of-attraction.html";
-    }
-}
+//Old Path of attraction event window
+if (CurrentPage.indexOf('home') != -1 && $('.event-thumbnail [rel=path_event]').length > 0 && localStorage.getItem('HHS.oldPoAWindow') == 1)
+    $('.event-thumbnail [rel=path_event]')[0].href="/path-of-attraction.html";
