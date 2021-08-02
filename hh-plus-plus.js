@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.30.6
+// @version			0.30.7
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.30.7: Fixing typo in event tab parsing for fight-a-villain
 // 0.30.6: Merge 0.29.6: Fixed minor bug. Added an option in the script menu to enable/disable old PoA event window.
 // 0.30.5: Merge 0.29.5: Fixed minor issues. Plus making old PoA screen override configurable.
 // 0.30.4: Merge 0.29.4: Fixed minor bug in league info on mobile devices.
@@ -1853,7 +1854,7 @@ function moduleVillain() {
             }
         }
         for (var k = 0, l = mythicEventTrolls.length; k < l; k++) {
-            let shards = (girlDictionary.get(mythicEventTrolls[j].id) != undefined) ? girlDictionary.get(mythicEventTrolls[j].id).shards : 0;
+            let shards = (girlDictionary.get(mythicEventTrolls[k].id) != undefined) ? girlDictionary.get(mythicEventTrolls[k].id).shards : 0;
             if (mythicEventTrolls[k].troll == (i + 1) && shards != 100) {
                 type = 'mythicEventTroll';
             }
