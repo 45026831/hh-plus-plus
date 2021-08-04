@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.2
+// @version			0.31.3
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.3: Moving all script-added buttons to the new-style button class. Changing all button selectors to use the functional attributes instead of the style class.
 // 0.31.2: Fixing typo in opponent selection in league
 // 0.31.1: Fixing CSS for market filter button after changing it to new-style
 // 0.31.0: Merge Tom-0.30.0: Refactored code of options menu (thanks to BenBrazke). Fixed issues following server-side code change. Fixed minor bugs. Added girl stats sum on tooltip window on change team page.
@@ -2488,7 +2489,7 @@ function moduleMarket_XP_Aff() {
         updateGirlAff(girl);
     });
 
-    let button = document.querySelector('#inventory button.blue_text_button');
+    let button = document.querySelector('#inventory button[rel=use]');
     button.addEventListener('click', function(){
         var girl = $('div.girl-ico:not(.not-selected)');
         if ($('#type_item [type="gift"]')[0].className == "selected") {
@@ -2526,7 +2527,7 @@ function moduleSortArmorItems() {
         target.append(Object.values(items));
     }
 
-    $('#shops_right #inventory .armor').prepend('<div id="sortArmorItems" class="blue_text_button" style="position:absolute; top:-15px; height:30px; width:80px; right:25px; text-align:center;">'
+    $('#shops_right #inventory .armor').prepend('<div id="sortArmorItems" class="blue_button_L" style="position:absolute; top:-15px; height:30px; width:80px; right:25px; text-align:center;">'
                                                 + '<span style="position:relative; top:-7px;">'+ texts[lang].sort + '</span>'
                                                 + '</div>');
 
@@ -2546,7 +2547,7 @@ function moduleHideSellButton() {
         $('#shops_right #inventory button[rel="sell"]')[0].style.display="";
     }
 
-    $('#shops_right #inventory').append('<div id="hideSellButton" class="blue_text_button" style="position:absolute; top:-15px; height:30px; width:80px; left:25px; text-align:center;">'
+    $('#shops_right #inventory').append('<div id="hideSellButton" class="blue_button_L" style="position:absolute; top:-15px; height:30px; width:80px; left:25px; text-align:center;">'
                                          + '<span id="hideText" style="position:relative; top:-7px; right:14px;"></span>'
                                          + '</div>');
 
@@ -3749,8 +3750,8 @@ function moduleLeague() {
     }
 
     let hidden = loadSetting('hide_beaten');
-    $(".league_end_in").append('<button id="beaten_opponents" class="blue_text_button"><span id="hide_beaten"></span></button>');
-    $('div.leagues-btn-mobile-refill-multi').append('<button id="beaten_opponents_mobile" class="blue_text_button"><span id="hide_beaten_mobile"></span></button>');
+    $(".league_end_in").append('<button id="beaten_opponents" class="blue_button_L"><span id="hide_beaten"></span></button>');
+    $('div.leagues-btn-mobile-refill-multi').append('<button id="beaten_opponents_mobile" class="blue_button_L"><span id="hide_beaten_mobile"></span></button>');
 
     if (hidden == 1) {
         removeBeatenOpponents();
@@ -4831,7 +4832,7 @@ function moduleLinks() {
             }
         }
 
-        let button = document.querySelector('#pop_info .pop_central_part.dark_subpanel_box button.blue_button_L');
+        let button = document.querySelector('#pop_info .pop_central_part.dark_subpanel_box button[rel=pop_action]');
         button.addEventListener('click', function(){
             popRemainingTime = parseTime($('.pop_remaining > span:nth-child(1)')[0].innerText);
             popDate = current_date_sec + popRemainingTime;
@@ -4875,7 +4876,7 @@ function moduleLinks() {
                             );
         }
 
-        let button2 = document.querySelector('#rewards_popup .popup_buttons button.blue_button_L');
+        let button2 = document.querySelector('#rewards_popup .popup_buttons button[confirm_blue_button]');
         button2.addEventListener('click', function(){
             displayClassGirl();
         });
@@ -4947,7 +4948,7 @@ function moduleLinks() {
             date_min = current_date_sec;
         localStorage.setItem("booster_date", date_min);
 
-        let button = document.querySelector('#inventory button.blue_text_button');
+        let button = document.querySelector('#inventory button[rel=use]');
         button.addEventListener('click', function(){
             if ($('#inventory .booster')[0].className == "booster selected" && $('#shops_right .sub_block .booster > div:nth-child(1)')[0].classList[1] == "empty") {
                 var boosterTime = parseInt($('#inventory .booster .inventory_slots .ui-droppable .selected').data("d").duration, 10);
@@ -5069,8 +5070,8 @@ function moduleLinks() {
         var pachinkoTime = server_now_ts*1000 + pachinkoVar.next_game*1000;
         localStorage.setItem("pachinkoTime", pachinkoTime);
 
-        if ($('#playzone-replace-info > div.btns-section > button.blue_button_L:nth-child(1)').length && $('.playing-zone')[0].attributes[1].value == "great") {
-            let button = document.querySelector('#playzone-replace-info > div.btns-section > button.blue_button_L:nth-child(1)');
+        if ($('#playzone-replace-info > div.btns-section > button[play]:nth-child(1)').length && $('.playing-zone')[0].attributes[1].value == "great") {
+            let button = document.querySelector('#playzone-replace-info > div.btns-section > button[play]:nth-child(1)');
             button.addEventListener('click', function(){
                 pachinkoTime = new Date().getTime() + (24*3600)*1000;
                 localStorage.setItem("pachinkoTime", pachinkoTime);
@@ -5083,8 +5084,8 @@ function moduleLinks() {
                 if ($('.playing-zone')[0].attributes[1].value != "great")
                     return;
 
-                if ($('#playzone-replace-info > div.btns-section > button.blue_button_L:nth-child(1)').length) {
-                    let button = document.querySelector('#playzone-replace-info > div.btns-section > button.blue_button_L:nth-child(1)');
+                if ($('#playzone-replace-info > div.btns-section > button[play]:nth-child(1)').length) {
+                    let button = document.querySelector('#playzone-replace-info > div.btns-section > button[play]:nth-child(1)');
                     button.addEventListener('click', function(){
                         pachinkoTime = new Date().getTime() + (24*3600)*1000;
                         localStorage.setItem("pachinkoTime", pachinkoTime);
@@ -6620,7 +6621,7 @@ function moduleTeamsFilter() {
     $(document).ready(function() {
         if (CurrentPage.indexOf('change-team') != -1) {
             updateFilterGirlData("seasons");
-            $("h3.panel-title").after('<button id="arena_filter" class="blue_text_button">' + texts[lang].filter + '</button>');
+            $("h3.panel-title").after('<button id="arena_filter" class="blue_button_L">' + texts[lang].filter + '</button>');
             $("h3.panel-title").after(createFilterBox("default"));
             createFilterEvents();
             displayGirlStatSum();
@@ -6824,14 +6825,14 @@ function moduleTeamsFilter() {
             + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="blessed_attributes">' + texts[lang].blessed_attributes + '</option><option value="non_blessed_attributes">' + texts[lang].non_blessed_attributes + '</option>'
             + '</select></div></div>';
 
-        totalHTML += '<div class="form-control"><button id="save_teamFilter" class="blue_text_button" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].save_as + '</button>'
+        totalHTML += '<div class="form-control"><button id="save_teamFilter" class="blue_button_L" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].save_as + '</button>'
             + '<div class="select-group" style="display: inline-block; float: right; width: 45%;">'
             + '<label class="head-group" for="save_team_select">' + texts[lang].team_number + '</label>'
             + '<select name="save_team_select" id="save_team_select" icon="down-arrow">'
             + '<option value="1" selected="selected">' + texts[lang].team + ' 1</option><option value="2">' + texts[lang].team + ' 2</option><option value="3">' + texts[lang].team + ' 3</option>'
             + '</select></div></div>';
 
-        totalHTML += '<div class="form-control"><button id="load_team" class="blue_text_button" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].load_from + '</button>'
+        totalHTML += '<div class="form-control"><button id="load_team" class="blue_button_L" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].load_from + '</button>'
             + '<div class="select-group" style="display: inline-block; float: right; width: 45%;">'
             + '<label class="head-group" for="load_team_select">' + texts[lang].team_number + '</label>'
             + '<select name="load_team_select" id="load_team_select" icon="down-arrow">'
