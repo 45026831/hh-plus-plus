@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.1
+// @version			0.31.2
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,7 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
-
+// 0.31.2: Fixing typo in opponent selection in league
 // 0.31.1: Fixing CSS for market filter button after changing it to new-style
 // 0.31.0: Merge Tom-0.30.0: Refactored code of options menu (thanks to BenBrazke). Fixed issues following server-side code change. Fixed minor bugs. Added girl stats sum on tooltip window on change team page.
 // 0.30.7: Fixing typo in event tab parsing for fight-a-villain
@@ -4002,7 +4002,7 @@ function moduleSim() {
 
     function waitOpnt() {
         setTimeout(function() {
-            if (JSON.parse($('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('new-girl-tooltip-data') || $('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('data-new-girl-tooltip-'))) {
+            if (JSON.parse($('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('new-girl-tooltip-data') || $('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('data-new-girl-tooltip'))) {
                 sessionStorage.setItem('opntName', opntName);
                 calculatePower();
             }
