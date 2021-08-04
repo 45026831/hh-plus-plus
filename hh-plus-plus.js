@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.30.7
+// @version			0.31.0
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.31.0: Merge Tom-0.30.0: Refactored code of options menu (thanks to BenBrazke). Fixed issues following server-side code change. Fixed minor bugs. Added girl stats sum on tooltip window on change team page.
 // 0.30.7: Fixing typo in event tab parsing for fight-a-villain
 // 0.30.6: Merge 0.29.6: Fixed minor bug. Added an option in the script menu to enable/disable old PoA event window.
 // 0.30.5: Merge 0.29.5: Fixed minor issues. Plus making old PoA screen override configurable.
@@ -1144,83 +1145,98 @@ GIRLS_EXP_LEVELS.legendary = [16, 33, 50, 67, 84, 101, 118, 135, 152, 170, 188, 
 
 GIRLS_EXP_LEVELS.mythic = [40, 81, 122, 163, 205, 247, 289, 332, 375, 418, 462, 506, 550, 595, 640, 685, 731, 777, 823, 870, 917, 964, 1012, 1060, 1108, 1157, 1206, 1255, 1305, 1355, 1406, 1457, 1508, 1560, 1612, 1664, 1717, 1770, 1824, 1878, 1932, 1987, 2042, 2098, 2154, 2210, 2267, 2324, 2382, 2440, 2499, 2558, 2617, 2677, 2737, 2798, 2859, 2921, 2983, 3046, 3109, 3173, 3237, 3302, 3367, 3433, 3499, 3565, 3632, 3699, 3767, 3835, 3904, 3974, 4044, 4115, 4186, 4258, 4330, 4403, 4476, 4550, 4624, 4699, 4774, 4850, 4927, 5004, 5082, 5160, 5239, 5318, 5398, 5479, 5560, 5642, 5724, 5807, 5891, 5975, 6060, 6146, 6232, 6319, 6407, 6495, 6584, 6673, 6763, 6854, 6945, 7037, 7130, 7224, 7318, 7413, 7509, 7605, 7702, 7800, 7899, 7998, 8098, 8199, 8301, 8403, 8506, 8610, 8715, 8820, 8926, 9033, 9141, 9250, 9359, 9469, 9580, 9692, 9805, 9919, 10033, 10148, 10264, 10381, 10499, 10618, 10738, 10858, 10979, 11101, 11224, 11348, 11473, 11599, 11726, 11854, 11983, 12113, 12244, 12376, 12509, 12643, 12778, 12914, 13051, 13189, 13328, 13468, 13609, 13751, 13894, 14038, 14183, 14329, 14476, 14624, 14774, 14925, 15077, 15230, 15384, 15539, 15695, 15853, 16012, 16172, 16333, 16495, 16658, 16823, 16989, 17156, 17324, 17494, 17665, 17837, 18011, 18186, 18362, 18539, 18718, 18898, 19079, 19262, 19446, 19632, 19819, 20007, 20197, 20388, 20581, 20775, 20970, 21167, 21365, 21565, 21766, 21969, 22173, 22379, 22587, 22796, 23007, 23219, 23433, 23648, 23865, 24084, 24304, 24526, 24750, 24975, 25202, 25431, 25661, 25893, 26127, 26363, 26600, 26839, 27080, 27323, 27567, 27813, 28061, 28311, 28563, 28817, 29073, 29331, 29591, 29852, 30115, 30380, 30647, 30916, 31187, 31460, 31735, 32013, 32293, 32575, 32859, 33145, 33433, 33723, 34015, 34310, 34607, 34906, 35207, 35511, 35817, 36125, 36435, 36748, 37063, 37380, 37700, 38022, 38347, 38674, 39003, 39335, 39669, 40006, 40345, 40687, 41032, 41379, 41729, 42081, 42436, 42794, 43154, 43517, 43883, 44251, 44622, 44996, 45373, 45753, 46136, 46521, 46909, 47300, 47694, 48091, 48491, 48894, 49300, 49709, 50121, 50536, 50954, 51375, 51800, 52228, 52659, 53093, 53530, 53971, 54415, 54862, 55313, 55767, 56225, 56686, 57150, 57618, 58089, 58564, 59042, 59524, 60010, 60499, 60992, 61489, 61989, 62493, 63001, 63513, 64029, 64548, 65071, 65598, 66129, 66664, 67203, 67746, 68293, 68844, 69400, 69960, 70524, 71092, 71664, 72241, 72822, 73407, 73997, 74591, 75190, 75793, 76401, 77013, 77630, 78251, 78877, 79508, 80143, 80783, 81428, 82078, 82733, 83393, 84058, 84728, 85403, 86083, 86768, 87458, 88153, 88853, 89558, 90269, 90985, 91706, 92433, 93165, 93903, 94646, 95395, 96149, 96909, 97675, 98447, 99224, 100007, 100796, 101591, 102392, 103199, 104012, 104831, 105656, 106487, 107325, 108169, 109019, 109876, 110739, 111609, 112485, 113368, 114257, 115153, 116056, 116965, 117881, 118804, 119734, 120671, 121615, 122566, 123524, 124489, 125462, 126442, 127429, 128424, 129426, 130436, 131453, 132478, 133510, 134550, 135598, 136654, 137718, 138790, 139870, 140958, 142054, 143158, 144271, 145392, 146521, 147659, 148805, 149960, 151123, 152295, 153476, 154666, 155865, 157073, 158290, 159516, 160751, 161995, 163249, 164512, 165785, 167067, 168359, 169660, 170971, 172292, 173623, 174964, 176315, 177676, 179047, 180429, 181821, 183223, 184636, 186059, 187493, 188938, 190394, 191861, 193339, 194828, 196328, 197839, 199361, 200895, 202440, 203997, 205566, 207146, 208738, 210342, 211958, 213586, 215227, 216880];
 
-
-/* ==================
-	WHEN TO RUN WHAT
-   ================== */
+/* =========
+	OPTIONS
+   ========= */
+function loadSetting(e){
+	try { var temp = JSON.parse(localStorage.getItem('HHS.'+e)) } catch(err) { temp = null }
+	if (temp === null){
+		if ( false
+			// default values - only for those not using the ingame settings (an ingame saved setting overrides this)
+			// leading '//' disables a feature by default
+			||e=='refresh'
+			||e=='villain'
+			||e=='tiers'
+			||e=='xpMoney'
+			||e=='market'
+			||e=='marketFilter'
+			||e=='market_XP_Aff'
+			||e=='sortArmorItems'
+			||e=='hideSellButton'
+			||e=='harem'
+			||e=='league'
+			||e=='leagueBoard'
+			||e=='simFight'
+			||e=='teamsFilter'
+			||e=='champions'
+			||e=='links'
+			||e=='seasonStats'
+			||e=='pachinkoNames'
+			//||e=='pachinkoNamesMulti'
+			||e=='missionsBackground'
+			||e=='collectMoneyAnimation'
+			||e=='oldPoAWindow'
+		   ) return true
+		return false
+	}
+	return temp
+}
 
 if (CurrentPage.indexOf('home') != -1) options();
 
 // Show which modules are enabled and if so, run them when appropriate
-if (localStorage.getItem('HHS.refresh') === '1') {
-    $('#hhsRefresh').attr('checked', 'checked');
+if (loadSetting('refresh')) {
     if (CurrentPage.indexOf('home') != -1) {
         moduleRefresh();
     }
 }
-if (localStorage.getItem('HHS.villain') === '1') {
-    $('#hhsVillain').attr('checked', 'checked');
+if (loadSetting('villain')) {
     try {
         moduleVillain();
     } catch(e) {}
 }
-if (localStorage.getItem('HHS.tiers') === '1') {
-    $('#hhsTiers').attr('checked', 'checked');
-}
-if (localStorage.getItem('HHS.xpMoney') === '1') {
-    $('#hhsXPMoney').attr('checked', 'checked');
+if (loadSetting('xpMoney')) {
     try {
         moduleXP();
         moduleMoney();
     } catch(e) {}
 }
-if (localStorage.getItem('HHS.market') === '1') {
-    $('#hhsMarket').attr('checked', 'checked');
+if (loadSetting('market')) {
     if (CurrentPage.indexOf('shop') != -1) {
         moduleMarket();
     }
 }
-if (localStorage.getItem('HHS.marketFilter') === '1') {
-    $('#hhsMarketFilter').attr('checked', 'checked');
+if (loadSetting('marketFilter')) {
     if (CurrentPage.indexOf('shop') != -1) {
         moduleMarketFilter();
     }
 }
-if (localStorage.getItem('HHS.market_xp_aff') === '1') {
-    $('#hhsMarket_XP_Aff').attr('checked', 'checked');
+if (loadSetting('market_XP_Aff')) {
     if (CurrentPage.indexOf('shop') != -1) {
         moduleMarket_XP_Aff();
     }
 }
-if (localStorage.getItem('HHS.sortArmorItems') === '1') {
-    $('#hhsSortArmorItems').attr('checked', 'checked');
+if (loadSetting('sortArmorItems')) {
     if (CurrentPage.indexOf('shop') != -1) {
         moduleSortArmorItems();
     }
 }
-if (localStorage.getItem('HHS.hideSellButton') === '1') {
-    $('#hhsHideSellButton').attr('checked', 'checked');
+if (loadSetting('hideSellButton')) {
     if (CurrentPage.indexOf('shop') != -1) {
         moduleHideSellButton();
     }
 }
-if (localStorage.getItem('HHS.harem') === '1') {
-    $('#hhsHarem').attr('checked', 'checked');
+if (loadSetting('harem')) {
     if (CurrentPage.indexOf('harem') != -1) {
         moduleHarem();
     }
 }
-if (localStorage.getItem('HHS.league') === '1') {
-    $('#hhsLeague').attr('checked', 'checked');
+if (loadSetting('league')) {
     if (CurrentPage.indexOf('tower-of-fame') != -1) {
         moduleLeague();
     }
 }
-if (localStorage.getItem('HHS.leagueBoard') === '1') {
-    $('#hhsLeagueBoard').attr('checked', 'checked');
-}
-if (localStorage.getItem('HHS.simFight') === '1') {
-    $('#hhsSimFight').attr('checked', 'checked');
+if (loadSetting('simFight')) {
     if (CurrentPage.indexOf('tower-of-fame') != -1)
         moduleSim();
     if (CurrentPage.indexOf('season-arena') != -1)
@@ -1228,144 +1244,59 @@ if (localStorage.getItem('HHS.simFight') === '1') {
     if (window.location.href.indexOf('/troll-pre-battle') != -1)
         moduleBattleSim();
 }
-if (localStorage.getItem('HHS.teamsFilter') === '1') {
-    $('#hhsTeamsFilter').attr('checked', 'checked');
+if (loadSetting('teamsFilter')) {
     moduleTeamsFilter();
 }
-if (localStorage.getItem('HHS.champions') === '1') {
-    $('#hhsChampions').attr('checked', 'checked');
+if (loadSetting('champions')) {
     moduleChampions();
 }
-if (localStorage.getItem('HHS.links') === '1') {
-    $('#hhsLinks').attr('checked', 'checked');
+if (loadSetting('links')) {
     try {
         moduleLinks();
     } catch(e) {}
 }
-if (localStorage.getItem('HHS.seasonStats') === '1') {
-    $('#hhsSeasonStats').attr('checked', 'checked');
+if (loadSetting('seasonStats')) {
     if (CurrentPage.indexOf('season-battle') != -1 || CurrentPage.indexOf('season') != -1) {
         moduleSeasonStats();
     }
 }
-if (localStorage.getItem('HHS.pachinkoNames') === '1') {
-    $('#hhsPachinkoNames').attr('checked', 'checked');
+if (loadSetting('pachinkoNames')) {
     modulePachinkoNames();
 }
-/*if (localStorage.getItem('HHS.pachinkoNamesMulti') == '1') {
-    $('#hhsPachinkoNamesMulti').attr('checked', 'checked');
-}*/
-if (localStorage.getItem('HHS.missionsBackground') === '1') {
-    $('#hhsMissionsBackground').attr('checked', 'checked');
+if (loadSetting('missionsBackground')) {
     moduleMissionsBackground();
 }
-if (localStorage.getItem('HHS.collectMoneyAnimation') === '1') {
-    $('#hhsCollectMoneyAnimation').attr('checked', 'checked');
+if (loadSetting('collectMoneyAnimation')) {
     moduleCollectMoneyAnimation();
 }
-if (localStorage.getItem('HHS.oldPoAWindow') === '1') {
-    $('#hhsOldPoAWindow').attr('checked', 'checked');
-}
-
-
-/* =========
-	OPTIONS
-   ========= */
 
 function options() {
-    // Create localStorage if it doesn't exist yet
-    if (localStorage.getItem('HHS.refresh') === null) {
-        localStorage.setItem('HHS.refresh', '1');
-    }
-    if (localStorage.getItem('HHS.villain') === null) {
-        localStorage.setItem('HHS.villain', '1');
-    }
-    if (localStorage.getItem('HHS.tiers') === null) {
-        localStorage.setItem('HHS.tiers', '1');
-    }
-    if (localStorage.getItem('HHS.xpMoney') === null) {
-        localStorage.setItem('HHS.xpMoney', '1');
-    }
-    if (localStorage.getItem('HHS.market') === null) {
-        localStorage.setItem('HHS.market', '1');
-    }
-    if (localStorage.getItem('HHS.marketFilter') === null) {
-        localStorage.setItem('HHS.marketFilter', '1');
-    }
-    if (localStorage.getItem('HHS.market_xp_aff') === null) {
-        localStorage.setItem('HHS.market_xp_aff', '1');
-    }
-    if (localStorage.getItem('HHS.sortArmorItems') === null) {
-        localStorage.setItem('HHS.sortArmorItems', '0');
-    }
-    if (localStorage.getItem('HHS.hideSellButton') === null) {
-        localStorage.setItem('HHS.hideSellButton', '0');
-    }
-    if (localStorage.getItem('HHS.harem') === null) {
-        localStorage.setItem('HHS.harem', '1');
-    }
-    if (localStorage.getItem('HHS.league') === null) {
-        localStorage.setItem('HHS.league', '1');
-    }
-    if (localStorage.getItem('HHS.leagueBoard') === null) {
-        localStorage.setItem('HHS.leagueBoard', '1');
-    }
-    if (localStorage.getItem('HHS.simFight') === null) {
-        localStorage.setItem('HHS.simFight', '1');
-    }
-    if (localStorage.getItem('HHS.teamsFilter') === null) {
-        localStorage.setItem('HHS.teamsFilter', '1');
-    }
-    if (localStorage.getItem('HHS.champions') === null) {
-        localStorage.setItem('HHS.champions', '1');
-    }
-    if (localStorage.getItem('HHS.links') === null) {
-        localStorage.setItem('HHS.links', '1');
-    }
-    if (localStorage.getItem('HHS.seasonStats') === null) {
-        localStorage.setItem('HHS.seasonStats', '1');
-    }
-    if (localStorage.getItem('HHS.pachinkoNames') === null) {
-        localStorage.setItem('HHS.pachinkoNames', '1');
-    }
-    /*if (localStorage.getItem('HHS.pachinkoNamesMulti') === null) {
-        localStorage.setItem('HHS.pachinkoNamesMulti', '1');
-    }*/
-    if (localStorage.getItem('HHS.missionsBackground') === null) {
-        localStorage.setItem('HHS.missionsBackground', '1');
-    }
-    if (localStorage.getItem('HHS.collectMoneyAnimation') === null) {
-        localStorage.setItem('HHS.collectMoneyAnimation', '1');
-    }
-    if (localStorage.getItem('HHS.oldPoAWindow') === null) {
-        localStorage.setItem('HHS.oldPoAWindow', '0');
-    }
 
     // Options menu
     $('div#contains_all').append('<a href="#"><img src="https://i.postimg.cc/c1F37PYz/icon-options.png" id="hhsButton"></a>');
     $('div#contains_all').append('<div id="hhsOptions" class="hhsTooltip" style="display: none;">'
-                                 + '<label class="switch"><input type="checkbox" id="hhsRefresh"><span class="slider"></span></label>' + texts[lang].optionsRefresh + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsVillain"><span class="slider"></span></label>' + texts[lang].optionsVillain + '<br />'
-                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsTiers"><span class="slider"></span></label>' + texts[lang].optionsTiers + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsXPMoney"><span class="slider"></span></label>' + texts[lang].optionsXPMoney + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsMarket"><span class="slider"></span></label>' + texts[lang].optionsMarket + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsMarketFilter"><span class="slider"></span></label>' + texts[lang].optionsMarketFilter + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsMarket_XP_Aff"><span class="slider"></span></label>' + texts[lang].optionsMarket_XP_Aff + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsSortArmorItems"><span class="slider"></span></label>' + texts[lang].optionsSortArmorItems + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsHideSellButton"><span class="slider"></span></label>' + texts[lang].optionsHideSellButton + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsHarem"><span class="slider"></span></label>' + texts[lang].optionsHarem + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsLeague"><span class="slider"></span></label>' + texts[lang].optionsLeague + '<br />'
-                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsLeagueBoard"><span class="slider"></span></label>' + texts[lang].optionsLeagueBoard + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsSimFight"><span class="slider"></span></label>' + texts[lang].optionsSimFight + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsTeamsFilter"><span class="slider"></span></label>' + texts[lang].optionsTeamsFilter + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsChampions"><span class="slider"></span></label>' + texts[lang].optionsChampions + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsLinks"><span class="slider"></span></label>' + texts[lang].optionsLinks + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsSeasonStats"><span class="slider"></span></label>' + texts[lang].optionsSeasonStats + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsPachinkoNames"><span class="slider"></span></label>' + texts[lang].optionsPachinkoNames + '<br />'
-                                 //+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" id="hhsPachinkoNamesMulti"><span class="slider"></span></label>' + texts[lang].optionsEpicPachinkoNames + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsMissionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsCollectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
-                                 + '<label class="switch"><input type="checkbox" id="hhsOldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow
+                                 + '<label class="switch"><input type="checkbox" hhs="refresh"><span class="slider"></span></label>' + texts[lang].optionsRefresh + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="villain"><span class="slider"></span></label>' + texts[lang].optionsVillain + '<br />'
+                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="tiers"><span class="slider"></span></label>' + texts[lang].optionsTiers + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="xpMoney"><span class="slider"></span></label>' + texts[lang].optionsXPMoney + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="market"><span class="slider"></span></label>' + texts[lang].optionsMarket + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="marketFilter"><span class="slider"></span></label>' + texts[lang].optionsMarketFilter + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="market_XP_Aff"><span class="slider"></span></label>' + texts[lang].optionsMarket_XP_Aff + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="sortArmorItems"><span class="slider"></span></label>' + texts[lang].optionsSortArmorItems + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="hideSellButton"><span class="slider"></span></label>' + texts[lang].optionsHideSellButton + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="harem"><span class="slider"></span></label>' + texts[lang].optionsHarem + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="league"><span class="slider"></span></label>' + texts[lang].optionsLeague + '<br />'
+                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="leagueBoard"><span class="slider"></span></label>' + texts[lang].optionsLeagueBoard + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="simFight"><span class="slider"></span></label>' + texts[lang].optionsSimFight + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="teamsFilter"><span class="slider"></span></label>' + texts[lang].optionsTeamsFilter + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="champions"><span class="slider"></span></label>' + texts[lang].optionsChampions + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="links"><span class="slider"></span></label>' + texts[lang].optionsLinks + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="seasonStats"><span class="slider"></span></label>' + texts[lang].optionsSeasonStats + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="pachinkoNames"><span class="slider"></span></label>' + texts[lang].optionsPachinkoNames + '<br />'
+                                 //+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="pachinkoNamesMulti"><span class="slider"></span></label>' + texts[lang].optionsEpicPachinkoNames + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="missionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="collectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="oldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow
                                  + '</div>');
 
     // Show and hide options menu
@@ -1378,248 +1309,40 @@ function options() {
             x.style.display = 'none';
         }
     });
+	$('[hhs]').each(function(){
+		$(this).attr('checked', loadSetting($(this).attr('hhs')))
+	})
+	$('[hhs]').click(function() {
+		localStorage.setItem('HHS.'+$(this).attr('hhs'), $(this).prop('checked'))
+	})
 
     // Dependency of villain menu options
-    $('#hhsVillain').click(function(event) {
+    $('[hhs=villain]').click(function() {
         if (!$(this).is(':checked')) {
-            $('#hhsTiers').prop('checked', false);
+            $('[hhs=tiers]').prop('checked', false);
+            localStorage.setItem('HHS.tiers', false)
         }
     });
-    $('#hhsTiers').click(function(event) {
+    $('[hhs=tiers]').click(function() {
         if ($(this).is(':checked')) {
-            $('#hhsVillain').prop('checked', true);
+            $('[hhs=villain]').prop('checked', true);
+            localStorage.setItem('HHS.villain', true)
         }
     });
 
     // Dependency of league info options
-    $('#hhsLeague').click(function(event) {
+    $('[hhs=league]').click(function() {
         if (!$(this).is(':checked')) {
-            $('#hhsLeagueBoard').prop('checked', false);
+            $('[hhs=leagueBoard]').prop('checked', false);
+            localStorage.setItem('HHS.leagueBoard', false)
         }
     });
-    $('#hhsLeagueBoard').click(function(event) {
+    $('[hhs=leagueBoard]').click(function() {
         if ($(this).is(':checked')) {
-            $('#hhsLeague').prop('checked', true);
+            $('[hhs=league]').prop('checked', true);
+            localStorage.setItem('HHS.league', true)
         }
     });
-
-    // Dependency of pachinko options
-    $('#hhsPachinkoNames').click(function(event) {
-        if (!$(this).is(':checked')) {
-            $('#hhsPachinkoNamesMulti').prop('checked', false);
-        }
-    });
-    $('#hhsPachinkoNamesMulti').click(function(event) {
-        if ($(this).is(':checked')) {
-            $('#hhsPachinkoNames').prop('checked', true);
-        }
-    });
-
-    // Save changed options
-    $('#hhsRefresh').click(function() {
-        if (document.getElementById('hhsRefresh').checked == true) {
-            localStorage.setItem('HHS.refresh', '1');
-        }
-        if (document.getElementById('hhsRefresh').checked == false) {
-            localStorage.setItem('HHS.refresh', '0');
-        }
-    });
-
-    $('#hhsVillain').click(function() {
-        if (document.getElementById('hhsVillain').checked == true) {
-            localStorage.setItem('HHS.villain', '1');
-        }
-        if (document.getElementById('hhsVillain').checked == false) {
-            localStorage.setItem('HHS.villain', '0');
-            localStorage.setItem('HHS.tiers', '0');
-        }
-    });
-
-    $('#hhsTiers').click(function() {
-        if (document.getElementById('hhsTiers').checked == true) {
-            localStorage.setItem('HHS.villain', '1');
-            localStorage.setItem('HHS.tiers', '1');
-        }
-        if (document.getElementById('hhsTiers').checked == false) {
-            localStorage.setItem('HHS.tiers', '0');
-        }
-    });
-
-    $('#hhsXPMoney').click(function() {
-        if (document.getElementById('hhsXPMoney').checked == true) {
-            localStorage.setItem('HHS.xpMoney', '1');
-        }
-        if (document.getElementById('hhsXPMoney').checked == false) {
-            localStorage.setItem('HHS.xpMoney', '0');
-        }
-    });
-
-    $('#hhsMarket').click(function() {
-        if (document.getElementById('hhsMarket').checked == true) {
-            localStorage.setItem('HHS.market', '1');
-        }
-        if (document.getElementById('hhsMarket').checked == false) {
-            localStorage.setItem('HHS.market', '0');
-        }
-    });
-
-    $('#hhsMarketFilter').click(function() {
-        if (document.getElementById('hhsMarketFilter').checked == true) {
-            localStorage.setItem('HHS.marketFilter', '1');
-        }
-        if (document.getElementById('hhsMarketFilter').checked == false) {
-            localStorage.setItem('HHS.marketFilter', '0');
-        }
-    });
-
-    $('#hhsMarket_XP_Aff').click(function() {
-        if (document.getElementById('hhsMarket_XP_Aff').checked == true) {
-            localStorage.setItem('HHS.market_xp_aff', '1');
-        }
-        if (document.getElementById('hhsMarket_XP_Aff').checked == false) {
-            localStorage.setItem('HHS.market_xp_aff', '0');
-        }
-    });
-
-    $('#hhsSortArmorItems').click(function() {
-        if (document.getElementById('hhsSortArmorItems').checked == true) {
-            localStorage.setItem('HHS.sortArmorItems', '1');
-        }
-        if (document.getElementById('hhsSortArmorItems').checked == false) {
-            localStorage.setItem('HHS.sortArmorItems', '0');
-        }
-    });
-
-    $('#hhsHideSellButton').click(function() {
-        if (document.getElementById('hhsHideSellButton').checked == true) {
-            localStorage.setItem('HHS.hideSellButton', '1');
-        }
-        if (document.getElementById('hhsHideSellButton').checked == false) {
-            localStorage.setItem('HHS.hideSellButton', '0');
-        }
-    });
-
-    $('#hhsHarem').click(function() {
-        if (document.getElementById('hhsHarem').checked == true) {
-            localStorage.setItem('HHS.harem', '1');
-        }
-        if (document.getElementById('hhsHarem').checked == false) {
-            localStorage.setItem('HHS.harem', '0');
-        }
-    });
-
-    $('#hhsLeague').click(function() {
-        if (document.getElementById('hhsLeague').checked == true) {
-            localStorage.setItem('HHS.league', '1');
-        }
-        if (document.getElementById('hhsLeague').checked == false) {
-            localStorage.setItem('HHS.league', '0');
-            localStorage.setItem('HHS.leagueBoard', '0');
-        }
-    });
-
-    $('#hhsLeagueBoard').click(function() {
-        if (document.getElementById('hhsLeagueBoard').checked == true) {
-            localStorage.setItem('HHS.leagueBoard', '1');
-            localStorage.setItem('HHS.league', '1');
-        }
-        if (document.getElementById('hhsLeagueBoard').checked == false) {
-            localStorage.setItem('HHS.leagueBoard', '0');
-        }
-    });
-
-    $('#hhsSimFight').click(function() {
-        if (document.getElementById('hhsSimFight').checked == true) {
-            localStorage.setItem('HHS.simFight', '1');
-        }
-        if (document.getElementById('hhsSimFight').checked == false) {
-            localStorage.setItem('HHS.simFight', '0');
-        }
-    });
-
-    $('#hhsTeamsFilter').click(function() {
-        if (document.getElementById('hhsTeamsFilter').checked == true) {
-            localStorage.setItem('HHS.teamsFilter', '1');
-        }
-        if (document.getElementById('hhsTeamsFilter').checked == false) {
-            localStorage.setItem('HHS.teamsFilter', '0');
-        }
-    });
-
-    $('#hhsChampions').click(function() {
-        if (document.getElementById('hhsChampions').checked == true) {
-            localStorage.setItem('HHS.champions', '1');
-        }
-        if (document.getElementById('hhsChampions').checked == false) {
-            localStorage.setItem('HHS.champions', '0');
-        }
-    });
-
-    $('#hhsLinks').click(function() {
-        if (document.getElementById('hhsLinks').checked == true) {
-            localStorage.setItem('HHS.links', '1');
-        }
-        if (document.getElementById('hhsLinks').checked == false) {
-            localStorage.setItem('HHS.links', '0');
-        }
-    });
-
-    $('#hhsSeasonStats').click(function() {
-        if (document.getElementById('hhsSeasonStats').checked == true) {
-            localStorage.setItem('HHS.seasonStats', '1');
-        }
-        if (document.getElementById('hhsSeasonStats').checked == false) {
-            localStorage.setItem('HHS.seasonStats', '0');
-        }
-    });
-
-    $('#hhsPachinkoNames').click(function() {
-        if (document.getElementById('hhsPachinkoNames').checked == true) {
-            localStorage.setItem('HHS.pachinkoNames', '1');
-        }
-        if (document.getElementById('hhsPachinkoNames').checked == false) {
-            localStorage.setItem('HHS.pachinkoNames', '0');
-            localStorage.setItem('HHS.pachinkoNamesMulti', '0');
-        }
-    });
-
-    /*$('#hhsPachinkoNamesMulti').click(function() {
-        if (document.getElementById('hhsPachinkoNamesMulti').checked == true) {
-            localStorage.setItem('HHS.pachinkoNamesMulti', '1');
-            localStorage.setItem('HHS.pachinkoNames', '1');
-        }
-        if (document.getElementById('hhsLeague').checked == false) {
-            localStorage.setItem('HHS.pachinkoNamesMulti', '0');
-        }
-    });*/
-
-    $('#hhsMissionsBackground').click(function() {
-        if (document.getElementById('hhsMissionsBackground').checked == true) {
-            localStorage.setItem('HHS.missionsBackground', '1');
-        }
-        if (document.getElementById('hhsMissionsBackground').checked == false) {
-            localStorage.setItem('HHS.missionsBackground', '0');
-        }
-    });
-
-    $('#hhsCollectMoneyAnimation').click(function() {
-        if (document.getElementById('hhsCollectMoneyAnimation').checked == true) {
-            localStorage.setItem('HHS.collectMoneyAnimation', '1');
-        }
-        if (document.getElementById('hhsCollectMoneyAnimation').checked == false) {
-            localStorage.setItem('HHS.collectMoneyAnimation', '0');
-        }
-    });
-
-    $('#hhsOldPoAWindow').click(function() {
-        if (document.getElementById('hhsOldPoAWindow').checked == true) {
-            localStorage.setItem('HHS.oldPoAWindow', '1');
-        }
-        if (document.getElementById('hhsOldPoAWindow').checked == false) {
-            localStorage.setItem('HHS.oldPoAWindow', '0');
-        }
-    });
-
 
     //CSS
     sheet.insertRule('#hhsButton {'
@@ -1720,7 +1443,7 @@ function moduleVillain() {
     let eventEndTime = localStorage.getItem('eventTime') || 0;
     let mythicEventEndTime = localStorage.getItem('mythicEventTime') || 0;
 
-    if (localStorage.getItem('HHS.tiers') === '1')
+    if (loadSetting('tiers'))
         includeTiers = true;
 
     if (Math.floor(new Date().getTime()/1000) > eventEndTime)
@@ -2494,17 +2217,19 @@ function moduleMarketFilter() {
 
         update_header();
 
-        if (localStorage.getItem('HHS.market_xp_aff') === '1')
+        if (loadSetting('market_XP_Aff'))
             moduleMarket_XP_Aff();
     }
 
     function update_header() {
         let $girl = window.$girl;
 
-        $("#girls_list>.level_target_squared>div>div").attr("chars", $girl.data("g")["level"].length);
-        $("#girls_list>.level_target_squared>div>div").text($girl.data("g")["level"]);
-        $("#girls_list>h3").text($girl.data("g")["Name"]);
-        $("#girls_list>.icon").attr("carac", $girl.data("g")["class"]);
+        if ($girl.attr('class').indexOf('girl') != -1) {
+            $("#girls_list>.level_target_squared>div>div").attr("chars", $girl.data("g")["level"].length);
+            $("#girls_list>.level_target_squared>div>div").text($girl.data("g")["level"]);
+            $("#girls_list>h3").text($girl.data("g")["Name"]);
+            $("#girls_list>.icon").attr("carac", $girl.data("g")["class"]);
+        }
     }
 
     let lnav = container.parent().find('span[nav="left"]');
@@ -2515,17 +2240,15 @@ function moduleMarketFilter() {
     rnav.off('click');
     rnav.on('click', (ev) => { goto_girl( next_girl_id() ); });
 
-    //TODO : REFACTORER !!!
     function addGirlFilter() {
 
         function getGirlData() {
-            return Array.from(allGirls, girl => JSON.parse($(girl).attr("new-girl-tooltip-data")) );
+            return Array.from(allGirls, girl => JSON.parse($(girl).attr("new-girl-tooltip-data") || $(girl).attr("data-new-girl-tooltip")) );
         }
 
         function createFilterBox() {
-            var totalHTML = '<div id="arena_filter_box" class="form-wrapper" style="'
-            + 'position: absolute; left: -242px; width: 225px; z-index: 99; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
-
+			var totalHTML = '<div style="position:relative"><div id="arena_filter_box" class="form-wrapper" style="'
+			+ 'position: absolute; left: -215px; bottom: -150px; width: 200px; heigth: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
             totalHTML += '<div class="form-control"><div class="input-group">'
                 + '<label class="head-group" for="sort_name">' + texts[lang].searched_name + '</label>'
                 + '<input type="text" autocomplete="off" id="sort_name" placeholder="' + texts[lang].girl_name + '" icon="search">'
@@ -2560,13 +2283,13 @@ function moduleMarketFilter() {
                 + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="0">' + texts[lang].zero_star + '</option><option value="1">' + texts[lang].one_star + '</option><option value="2">' + texts[lang].two_stars + '</option><option value="3">' + texts[lang].three_stars + '</option><option value="4">' + texts[lang].four_stars + '</option><option value="5">' + texts[lang].five_stars + '</option><option value="6">' + texts[lang].six_stars + '</option>'
                 + '</select></div></div>';
 
-            totalHTML += '</div>';
+            totalHTML += '</div></div>';
 
             return $(totalHTML);
         }
 
         function createFilterBtn() {
-            let btn = $('<input type="button" class="blue_text_button girl_filter" value="' + texts[lang].filter + '" />');
+            let btn = $('<input type="button" class="blue_button_L girl_filter" value="' + texts[lang].filter + '" />');
             return btn;
         }
 
@@ -2619,7 +2342,7 @@ function moduleMarketFilter() {
             target.append(filterBox);
 
             btn.on('click', function() {
-                filterBox.css('display', filterBox.css('display') == "none" ? 'block' : 'none');
+                $('#arena_filter_box').css('display', $('#arena_filter_box').css('display')=='block'?'none':'block');
             });
 
             let sortGirls = () => {
@@ -2635,9 +2358,7 @@ function moduleMarketFilter() {
         }
 
         let girlsData = getGirlData();
-
-        createFilter( $('#inventory .gift'), girlsData );
-        createFilter( $('#inventory .potion'), girlsData );
+		createFilter( $('#girls_list'), girlsData );
     }
 
     addGirlFilter();
@@ -2667,15 +2388,15 @@ function moduleMarketFilter() {
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
                      + 'input.blue_text_button.girl_filter {'
                      + 'position: absolute;'
-                     + 'left: -15px;'
-                     + 'top: -230px;}}'
+                     + 'left: -2px;'
+                     + 'top: 0px;}}'
                     );
 
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
                      + 'input.blue_text_button.girl_filter {'
                      + 'position: absolute;'
-                     + 'left: -15px;'
-                     + 'top: -249px;}}'
+                     + 'left: -2px;'
+                     + 'top: -30px;}}'
                     );
 
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
@@ -2698,7 +2419,7 @@ function moduleMarket_XP_Aff() {
     var nbItem = 0;
 
     function updateGirlXP(girl) {
-        var girl_data = JSON.parse(girl.attr('girl-tooltip-data') || girl.attr('new-girl-tooltip-data'));
+        var girl_data = JSON.parse(girl.attr('new-girl-tooltip-data') || girl.attr('data-new-girl-tooltip'));
         var girl_rarity = girl_data.rarity;
         var lvl_max = Hero.infos.level;
         var xp_total = 0;
@@ -2828,7 +2549,7 @@ function moduleHideSellButton() {
                                          + '<span id="hideText" style="position:relative; top:-7px; right:14px;"></span>'
                                          + '</div>');
 
-    let hidden = localStorage.getItem('HHS.hide_sell_button') || 0;
+    let hidden = loadSetting('hideSellButton');
 
     if (hidden == 1) {
         hideSellButton();
@@ -2843,13 +2564,13 @@ function moduleHideSellButton() {
         if (hidden == 0) {
             hideSellButton();
             hidden = 1;
-            localStorage.setItem('HHS.hide_sell_button', 1);
+            localStorage.setItem('HHS.hideSellButton', 1);
             $('#hideText').html(texts[lang].display);
         }
         else {
             displaySellButton();
             hidden = 0;
-            localStorage.setItem('HHS.hide_sell_button', 0);
+            localStorage.setItem('HHS.hideSellButton', 0);
             $('#hideText').html(texts[lang].hide);
         }
     });
@@ -3406,7 +3127,7 @@ function moduleLeague() {
 
     var	includeBoard = false;
 
-    if (localStorage.getItem('HHS.leagueBoard') === '1') {
+    if (loadSetting('leagueBoard')) {
         includeBoard = true;
     }
 
@@ -4026,7 +3747,7 @@ function moduleLeague() {
         }
     }
 
-    let hidden = localStorage.getItem('HHS.hide_beaten') || 0;
+    let hidden = loadSetting('hide_beaten');
     $(".league_end_in").append('<button id="beaten_opponents" class="blue_text_button"><span id="hide_beaten"></span></button>');
     $('div.leagues-btn-mobile-refill-multi').append('<button id="beaten_opponents_mobile" class="blue_text_button"><span id="hide_beaten_mobile"></span></button>');
 
@@ -4063,14 +3784,14 @@ function moduleLeague() {
         if (hidden == 0) {
             removeBeatenOpponents();
             hidden = 1;
-            localStorage.setItem('HHS.hide_beaten', 1);
+            localStorage.setItem('HHS.hhsHide_beaten', 1);
             $('#hide_beaten').html(texts[lang].display);
             $('#hide_beaten_mobile').html(texts[lang].display);
         }
         else {
             displayBeatenOpponents();
             hidden = 0;
-            localStorage.setItem('HHS.hide_beaten', 0);
+            localStorage.setItem('HHS.hhsHide_beaten', 0);
             $('#hide_beaten').html(texts[lang].hide);
             $('#hide_beaten_mobile').html(texts[lang].hide);
         }
@@ -4211,9 +3932,9 @@ function moduleSim() {
         playerEgo = Math.round(Hero.infos.caracs.ego);
         playerAtk = Math.round(Hero.infos.caracs.damage);
         playerDef = Math.round(Hero.infos.caracs.defense);
-        /*playerAlpha = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=1]').attr('new-girl-tooltip-data'));
-        playerBeta = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=2]').attr('new-girl-tooltip-data'));
-        playerOmega = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=3]').attr('new-girl-tooltip-data'));*/
+        /*playerAlpha = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=1]').attr('data-new-girl-tooltip'));
+        playerBeta = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=2]').attr('data-new-girl-tooltip'));
+        playerOmega = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=3]').attr('data-new-girl-tooltip'));*/
 
         opponentClass = $('#leagues_right .icon').attr('carac');
         opponentEgoStr = $('#leagues_right .stat')[1].innerText;
@@ -4224,9 +3945,9 @@ function moduleSim() {
         opponentDefStr = $('#leagues_right .stat')[2].innerText;
         opponentDef = (opponentDefStr.includes('.') || opponentDefStr.includes(',')) ? parseInt(opponentDefStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentDefStr.includes('K')) ? parseInt(opponentDefStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentDefStr.replace(/[^0-9]/gi, ''), 10);
 
-        /*opponentAlpha = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=1]').attr('new-girl-tooltip-data'));
-        opponentBeta = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=2]').attr('new-girl-tooltip-data'));
-        opponentOmega = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=3]').attr('new-girl-tooltip-data'));
+        /*opponentAlpha = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=1]').attr('data-new-girl-tooltip'));
+        opponentBeta = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=2]').attr('data-new-girl-tooltip'));
+        opponentOmega = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=3]').attr('data-new-girl-tooltip'));
 
         let playerTeam = [0, playerAlphaAdd, playerBetaAdd, playerOmegaAdd];
         let opponentTeam = [0, opponentAlphaAdd, opponentBetaAdd, opponentOmegaAdd];*/
@@ -4280,7 +4001,7 @@ function moduleSim() {
 
     function waitOpnt() {
         setTimeout(function() {
-            if (JSON.parse($('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('new-girl-tooltip-data'))) {
+            if (JSON.parse($('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('new-girl-tooltip-data') || $('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('data-new-girl-tooltip-'))) {
                 sessionStorage.setItem('opntName', opntName);
                 calculatePower();
             }
@@ -6297,18 +6018,18 @@ function moduleSeasonSim() {
         playerAtk = Math.round(Hero.infos.caracs.damage);
         playerDef = Math.round(Hero.infos.caracs.defense);
         /*let playerData = $('#season-arena .battle_hero .hero_team .team_girl');
-        playerAlpha = JSON.parse(playerData.find('.change_team_girls[rel=g1]').attr('new-girl-tooltip-data'));
-        playerBeta = JSON.parse(playerData.find('.change_team_girls[rel=g2]').attr('new-girl-tooltip-data'));
-        playerOmega = JSON.parse(playerData.find('.change_team_girls[rel=g3]').attr('new-girl-tooltip-data'));*/
+        playerAlpha = JSON.parse(playerData.find('.change_team_girls[rel=g1]').attr('data-new-girl-tooltip'));
+        playerBeta = JSON.parse(playerData.find('.change_team_girls[rel=g2]').attr('data-new-girl-tooltip'));
+        playerOmega = JSON.parse(playerData.find('.change_team_girls[rel=g3]').attr('data-new-girl-tooltip'));*/
 
         let opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
         opponentClass = opponentData.find('div:nth-child(1) div:nth-child(1) div:nth-child(2) div:nth-child(2) div:nth-child(2)').attr('carac');
         opponentEgo = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentDef = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentAtk = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        /*opponentAlpha = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g1]').attr('new-girl-tooltip-data'));
-        opponentBeta = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g2]').attr('new-girl-tooltip-data'));
-        opponentOmega = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g3]').attr('new-girl-tooltip-data'));*/
+        /*opponentAlpha = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g1]').attr('data-new-girl-tooltip'));
+        opponentBeta = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g2]').attr('data-new-girl-tooltip'));
+        opponentOmega = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g3]').attr('data-new-girl-tooltip'));*/
 
         //let playerTeam = [0, playerAlphaAdd, playerBetaAdd, playerOmegaAdd];
         //let opponentTeam = [0, opponentAlphaAdd, opponentBetaAdd, opponentOmegaAdd];
@@ -6661,7 +6382,7 @@ function modulePachinkoNames() {
                     }
                 }
 
-                //if (found.length > 12 && (localStorage.getItem('HHS.pachinkoNamesMulti') == '1')){
+                //if ((found.length > 12) && loadSetting('hhsPachinkoNamesMulti')){
                 if (found.length > 12){
                     text = text.find('.game-rewards');
                     text.css("fontSize", "11px");
@@ -6807,13 +6528,13 @@ function moduleBattleSim() {
         playerAtk = Math.round(Hero.infos.caracs.damage);
         playerDef = Math.round(Hero.infos.caracs.defense);
 
-        /*playerGirl1 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[3].attributes["new-girl-tooltip-data"].nodeValue);
-        playerGirl2 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[2].attributes["new-girl-tooltip-data"].nodeValue);
-        playerGirl3 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[5].attributes["new-girl-tooltip-data"].nodeValue);
-        playerGirl4 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[6].attributes["new-girl-tooltip-data"].nodeValue);
-        playerGirl5 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[4].attributes["new-girl-tooltip-data"].nodeValue);
-        playerGirl6 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[1].attributes["new-girl-tooltip-data"].nodeValue);
-        playerGirl7 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[0].attributes["new-girl-tooltip-data"].nodeValue);*/
+        /*playerGirl1 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[3].attributes["data-new-girl-tooltip"].nodeValue);
+        playerGirl2 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[2].attributes["data-new-girl-tooltip"].nodeValue);
+        playerGirl3 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[5].attributes["data-new-girl-tooltip"].nodeValue);
+        playerGirl4 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[6].attributes["data-new-girl-tooltip"].nodeValue);
+        playerGirl5 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[4].attributes["data-new-girl-tooltip"].nodeValue);
+        playerGirl6 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[1].attributes["data-new-girl-tooltip"].nodeValue);
+        playerGirl7 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[0].attributes["data-new-girl-tooltip"].nodeValue);*/
 
         opponentClass = $('#pre-battle #opponent-panel .hero-class-icon').attr('carac');
         opponentEgoStr = $('#pre-battle #opponent-panel .fighter-stats .stat')[1].innerText;
@@ -6824,9 +6545,9 @@ function moduleBattleSim() {
         opponentDefStr = $('#pre-battle #opponent-panel .fighter-stats .stat')[2].innerText;
         opponentDef = (opponentDefStr.includes('.') || opponentDefStr.includes(',')) ? parseInt(opponentDefStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentDefStr.includes('K')) ? parseInt(opponentDefStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentDefStr.replace(/[^0-9]/gi, ''), 10);
 
-        /*opponentGirl1 = JSON.parse($('#opponent-panel .team-member img')[1].attributes["new-girl-tooltip-data"].nodeValue);
-        opponentGirl2 = JSON.parse($('#opponent-panel .team-member img')[0].attributes["new-girl-tooltip-data"].nodeValue);
-        opponentGirl3 = JSON.parse($('#opponent-panel .team-member img')[2].attributes["new-girl-tooltip-data"].nodeValue);
+        /*opponentGirl1 = JSON.parse($('#opponent-panel .team-member img')[1].attributes["data-new-girl-tooltip"].nodeValue);
+        opponentGirl2 = JSON.parse($('#opponent-panel .team-member img')[0].attributes["data-new-girl-tooltip"].nodeValue);
+        opponentGirl3 = JSON.parse($('#opponent-panel .team-member img')[2].attributes["data-new-girl-tooltip"].nodeValue);
 
         let playerTeam = [0, playerGirl1, playerGirl2, playerGirl3, playerGirl4, playerGirl5, playerGirl6, playerGirl7];
         let opponentTeam = [0, opponentGirl1, opponentGirl2, opponentGirl3];*/
@@ -6901,6 +6622,7 @@ function moduleTeamsFilter() {
             $("h3.panel-title").after('<button id="arena_filter" class="blue_text_button">' + texts[lang].filter + '</button>');
             $("h3.panel-title").after(createFilterBox("default"));
             createFilterEvents();
+            displayGirlStatSum();
         }
 
         sheet.insertRule('a[rel="season"] {'
@@ -6935,11 +6657,31 @@ function moduleTeamsFilter() {
                         );
     });
 
+    function displayGirlStatSum() {
+        var observer = new MutationObserver(function(mutations) {
+                for (var i=0; i<1; i++) {
+                    let carac1 = parseInt($('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac1] span:nth-child(1)').text().replace(/[^0-9]/gi, ''), 10);
+                    let carac2 = parseInt($('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac2] span:nth-child(1)').text().replace(/[^0-9]/gi, ''), 10);
+                    let carac3 = parseInt($('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac3] span:nth-child(1)').text().replace(/[^0-9]/gi, ''), 10);
+                    let caracSum = carac1 + carac2 + carac3;
+
+                    $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
+                }
+        });
+
+        observer.observe($('.page-change-team')[0], {
+            childList: true
+            , subtree: false
+            , attributes: false
+            , characterData: false
+        });
+    }
+
     function updateFilterGirlData(type) {
         arenaGirls = $('.harem-panel-girls div.harem-girl-container');
 
         girlsData = $.map(arenaGirls, function(girl, index) {
-            return JSON.parse($(girl).attr("new-girl-tooltip-data"));
+            return JSON.parse($(girl).attr("new-girl-tooltip-data") || $(girl).attr("data-new-girl-tooltip"));
         });
     }
 
@@ -7727,5 +7469,5 @@ function moduleMissionsBackground() {
 }
 
 //Old Path of attraction event window
-if (CurrentPage.indexOf('home') != -1 && $('.event-thumbnail [rel=path_event]').length > 0 && localStorage.getItem('HHS.oldPoAWindow') == 1)
+if (CurrentPage.indexOf('home') != -1 && $('.event-thumbnail [rel=path_event]').length > 0 && loadSetting('oldPoAWindow'))
     $('.event-thumbnail [rel=path_event]')[0].href="/path-of-attraction.html";
