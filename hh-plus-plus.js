@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.0
+// @version			0.31.1
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -21,6 +21,7 @@
 	 CHANGELOG
 	=========== */
 
+// 0.31.1: Fixing CSS for market filter button after changing it to new-style
 // 0.31.0: Merge Tom-0.30.0: Refactored code of options menu (thanks to BenBrazke). Fixed issues following server-side code change. Fixed minor bugs. Added girl stats sum on tooltip window on change team page.
 // 0.30.7: Fixing typo in event tab parsing for fight-a-villain
 // 0.30.6: Merge 0.29.6: Fixed minor bug. Added an option in the script menu to enable/disable old PoA event window.
@@ -2386,14 +2387,14 @@ function moduleMarketFilter() {
                     );
 
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + 'input.blue_text_button.girl_filter {'
+                     + 'input.blue_button_L.girl_filter {'
                      + 'position: absolute;'
                      + 'left: -2px;'
                      + 'top: 0px;}}'
                     );
 
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + 'input.blue_text_button.girl_filter {'
+                     + 'input.blue_button_L.girl_filter {'
                      + 'position: absolute;'
                      + 'left: -2px;'
                      + 'top: -30px;}}'
