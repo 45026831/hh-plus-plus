@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.4
+// @version			0.31.5
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.5: Fixing team filter and market filter on CxH
 // 0.31.4: Merge 0.30.2: Fixed minor bugs. Also, fixed locale-specific number-parsing on girl stat sum.
 // 0.31.3: Moving all script-added buttons to the new-style button class. Changing all button selectors to use the functional attributes instead of the style class.
 // 0.31.2: Fixing typo in opponent selection in league
@@ -2249,7 +2250,7 @@ function moduleMarketFilter() {
     function addGirlFilter() {
 
         function getGirlData() {
-            return Array.from(allGirls, girl => JSON.parse($(girl).attr("data-new-girl-tooltip")) );
+            return Array.from(allGirls, girl => JSON.parse($(girl).attr("data-new-girl-tooltip") || $(girl).attr("new-girl-tooltip-data")) );
         }
 
         function createFilterBox() {
@@ -6686,7 +6687,8 @@ function moduleTeamsFilter() {
         arenaGirls = $('.harem-panel-girls div.harem-girl-container');
 
         girlsData = $.map(arenaGirls, function(girl, index) {
-            return JSON.parse($(girl).attr("data-new-girl-tooltip"));
+            // CxH still uses 'new-girl-tooltip-data' and is broken in the UI
+            return JSON.parse($(girl).attr("data-new-girl-tooltip") || $(girl).attr("new-girl-tooltip-data"));
         });
     }
 
