@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.3
+// @version			0.31.4
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.4: Merge 0.30.2: Fixed minor bugs. Also, fixed locale-specific number-parsing on girl stat sum.
 // 0.31.3: Moving all script-added buttons to the new-style button class. Changing all button selectors to use the functional attributes instead of the style class.
 // 0.31.2: Fixing typo in opponent selection in league
 // 0.31.1: Fixing CSS for market filter button after changing it to new-style
@@ -1107,6 +1108,9 @@ texts.de = {
 };
 
 var tierGirlsID;
+
+const localeThousandSep = Number(1000).toLocaleString().replace(/[0-9]/g, '')
+const localeDecimalSep = Number(1.1).toLocaleString().replace(/[0-9]/g, '')
 
 if ($('#hh_comix').length == 0) {
     tierGirlsID = [
@@ -2245,7 +2249,7 @@ function moduleMarketFilter() {
     function addGirlFilter() {
 
         function getGirlData() {
-            return Array.from(allGirls, girl => JSON.parse($(girl).attr("new-girl-tooltip-data") || $(girl).attr("data-new-girl-tooltip")) );
+            return Array.from(allGirls, girl => JSON.parse($(girl).attr("data-new-girl-tooltip")) );
         }
 
         function createFilterBox() {
@@ -3139,7 +3143,6 @@ function moduleLeague() {
     playersTotal = $('.leagues_table .lead_table_view tbody.leadTable')[0].children.length;
 
     for(var i=0; i<playersTotal; i++) {
-        console.log("i: " + i);
         var playerData = $('.leagues_table .lead_table_view tbody.leadTable')[0].children[i];
         var fightsDone = 0;
         if (playerData.className.indexOf('selected-player-leagues') != -1) {
@@ -3786,14 +3789,14 @@ function moduleLeague() {
         if (hidden == 0) {
             removeBeatenOpponents();
             hidden = 1;
-            localStorage.setItem('HHS.hhsHide_beaten', 1);
+            localStorage.setItem('HHS.hide_beaten', 1);
             $('#hide_beaten').html(texts[lang].display);
             $('#hide_beaten_mobile').html(texts[lang].display);
         }
         else {
             displayBeatenOpponents();
             hidden = 0;
-            localStorage.setItem('HHS.hhsHide_beaten', 0);
+            localStorage.setItem('HHS.hide_beaten', 0);
             $('#hide_beaten').html(texts[lang].hide);
             $('#hide_beaten_mobile').html(texts[lang].hide);
         }
@@ -4003,7 +4006,7 @@ function moduleSim() {
 
     function waitOpnt() {
         setTimeout(function() {
-            if (JSON.parse($('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('new-girl-tooltip-data') || $('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('data-new-girl-tooltip'))) {
+            if (JSON.parse($('#leagues_right .team-hexagon div:nth-child(2) div:nth-child(2) .team-member img').attr('data-new-girl-tooltip'))) {
                 sessionStorage.setItem('opntName', opntName);
                 calculatePower();
             }
@@ -6621,7 +6624,7 @@ function moduleTeamsFilter() {
     $(document).ready(function() {
         if (CurrentPage.indexOf('change-team') != -1) {
             updateFilterGirlData("seasons");
-            $("h3.panel-title").after('<button id="arena_filter" class="blue_button_L">' + texts[lang].filter + '</button>');
+            $("h3.panel-title").after('<button id="arena_filter" class="blue_text_button">' + texts[lang].filter + '</button>');
             $("h3.panel-title").after(createFilterBox("default"));
             createFilterEvents();
             displayGirlStatSum();
@@ -6661,21 +6664,21 @@ function moduleTeamsFilter() {
 
     function displayGirlStatSum() {
         var observer = new MutationObserver(function(mutations) {
-                for (var i=0; i<1; i++) {
-                    let carac1 = parseInt($('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac1] span:nth-child(1)').text().replace(/[^0-9]/gi, ''), 10);
-                    let carac2 = parseInt($('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac2] span:nth-child(1)').text().replace(/[^0-9]/gi, ''), 10);
-                    let carac3 = parseInt($('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac3] span:nth-child(1)').text().replace(/[^0-9]/gi, ''), 10);
-                    let caracSum = carac1 + carac2 + carac3;
+            let carac1Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac1] span:nth-child(1)').text();
+            let carac1 = (carac1Data.indexOf(localeDecimalSep) != -1) ? +carac1Data.replace(localeDecimalSep, '.') : parseInt(carac1Data.replace(localeThousandSep, ''), 10);
+            let carac2Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac2] span:nth-child(1)').text();
+            let carac2 = (carac2Data.indexOf(localeDecimalSep) != -1) ? +carac2Data.replace(localeDecimalSep, '.') : parseInt(carac2Data.replace(localeThousandSep, ''), 10);
+            let carac3Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac3] span:nth-child(1)').text();
+            let carac3 = (carac3Data.indexOf(localeDecimalSep) != -1) ? +carac3Data.replace(localeDecimalSep, '.') : parseInt(carac3Data.replace(localeThousandSep, ''), 10);
+            let caracSum = Number(carac1 + carac2 + carac3).toLocaleString()
 
-                    $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
-                }
+            $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
         });
 
         observer.observe($('.page-change-team')[0], {
             childList: true
             , subtree: false
             , attributes: false
-            , characterData: false
         });
     }
 
@@ -6683,7 +6686,7 @@ function moduleTeamsFilter() {
         arenaGirls = $('.harem-panel-girls div.harem-girl-container');
 
         girlsData = $.map(arenaGirls, function(girl, index) {
-            return JSON.parse($(girl).attr("new-girl-tooltip-data") || $(girl).attr("data-new-girl-tooltip"));
+            return JSON.parse($(girl).attr("data-new-girl-tooltip"));
         });
     }
 
