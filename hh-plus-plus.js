@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.5
+// @version			0.31.6
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.6: Fixing harem info details panel hooks disconnecting when sorting.
 // 0.31.5: Fixing team filter and market filter on CxH
 // 0.31.4: Merge 0.30.2: Fixed minor bugs. Also, fixed locale-specific number-parsing on girl stat sum.
 // 0.31.3: Moving all script-added buttons to the new-style button class. Changing all button selectors to use the functional attributes instead of the style class.
@@ -2793,11 +2794,22 @@ function moduleHarem() {
             nThousand(kobans) + ' <span class="imgKobans"></span><br />';
     }
 
-    $('.girls_list div[id_girl]').click(function() {
-        updateInfo();
-    });
+    function setupListeners () {
+        $('.girls_list div[id_girl]').click(function() {
+            updateInfo();
+        });
 
-    updateInfo();
+        updateInfo();
+    }
+
+    var observer = new MutationObserver(function() {
+        setTimeout(setupListeners, 100);
+    });
+    observer.observe($('.girls_list')[0], {
+        childList: true
+    })
+
+    setupListeners();
 
     function updateInfo() {
         setTimeout(function () {
