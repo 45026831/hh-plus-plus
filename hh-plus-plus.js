@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.8
+// @version			0.31.9
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.9: Fixing DRYed locale number parser for all locales
 // 0.31.8: Tidying up locale number parsing for girl stat sum
 // 0.31.7: Making a start on replacing unnecessarily external icons with icons already in the game.
 // 0.31.6: Fixing harem info details panel hooks disconnecting when sorting.
@@ -1115,7 +1116,7 @@ var tierGirlsID;
 
 const localeThousandSep = Number(1000).toLocaleString().replace(/[0-9]/g, '');
 const localeDecimalSep = Number(1.1).toLocaleString().replace(/[0-9]/g, '');
-const parseLocaleFloat = (numStr) => parseFloat(numStr.replace(localeDecimalSep, '.').replace(localeThousandSep, ''), 10);
+const parseLocaleFloat = (numStr) => parseFloat(numStr.split(localeDecimalSep).map(part => part.replace(localeThousandSep, '')).join('.'), 10);
 
 if ($('#hh_comix').length == 0) {
     tierGirlsID = [
