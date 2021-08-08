@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.6
+// @version			0.31.7
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.7: Making a start on replacing unnecessarily external icons with icons already in the game.
 // 0.31.6: Fixing harem info details panel hooks disconnecting when sorting.
 // 0.31.5: Fixing team filter and market filter on CxH
 // 0.31.4: Merge 0.30.2: Fixed minor bugs. Also, fixed locale-specific number-parsing on girl stat sum.
@@ -3071,15 +3072,15 @@ function moduleHarem() {
                     );
 
     sheet.insertRule('#harem_whole .imgStar, #harem_left .imgStar {'
-                     + 'background-image: url("https://i.postimg.cc/L6h1xv38/icon-star.png");}'
+                     + 'background-image: url("https://hh.hh-content.com/design_v2/affstar_S.png");}'
                     );
 
     sheet.insertRule('#harem_whole .imgMoney, #harem_left .imgMoney {'
-                     + 'background-image: url("https://i.postimg.cc/wv01VstN/icon-currency-ymen.png");}'
+                     + 'background-image: url("https://hh.hh-content.com/pictures/design/ic_topbar_soft_currency.png");}'
                     );
 
     sheet.insertRule('#harem_whole .imgKobans, #harem_left .imgKobans {'
-                     + 'background-image: url("https://i.postimg.cc/9fPRDkCJ/icon-currency-koban.png");}'
+                     + 'background-image: url("https://hh.hh-content.com/pictures/design/ic_topbar_hard_currency.png");}'
                     );
 
     sheet.insertRule('#hh_comix #harem_whole .imgMoney, #hh_comix #harem_left .imgMoney {'
@@ -7304,10 +7305,11 @@ if (window.location.href.includes('activities.html?tab=pop&index')) {
                      + 'height: 40px;'
                      + 'margin: 0;'
                      + 'padding: 0;'
-                     + 'background-image: url(https://www.flaticon.com/svg/2879/2879564.svg);'
-                     + 'background-size: 38px;'
+                     + 'background-image: url(https://hh.hh-content.com/design/menu/forward.svg);'
+                     + 'background-size: 20px;'
                      + 'background-position: center;'
-                     + 'background-repeat: no-repeat;}'
+                     + 'background-repeat: no-repeat;'
+                     + 'transform: scaleX(-1);}'
                     );
 
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
@@ -7330,8 +7332,8 @@ if (window.location.href.includes('activities.html?tab=pop&index')) {
                      + 'height: 40px;'
                      + 'margin: 0;'
                      + 'padding: 0;'
-                     + 'background-image: url(https://www.flaticon.com/svg/2879/2879593.svg);'
-                     + 'background-size: 38px;'
+                     + 'background-image: url(https://hh.hh-content.com/design/menu/forward.svg);'
+                     + 'background-size: 20px;'
                      + 'background-position: center;'
                      + 'background-repeat: no-repeat;}'
                     );
