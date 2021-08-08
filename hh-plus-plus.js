@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.7
+// @version			0.31.8
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.8: Tidying up locale number parsing for girl stat sum
 // 0.31.7: Making a start on replacing unnecessarily external icons with icons already in the game.
 // 0.31.6: Fixing harem info details panel hooks disconnecting when sorting.
 // 0.31.5: Fixing team filter and market filter on CxH
@@ -1112,8 +1113,9 @@ texts.de = {
 
 var tierGirlsID;
 
-const localeThousandSep = Number(1000).toLocaleString().replace(/[0-9]/g, '')
-const localeDecimalSep = Number(1.1).toLocaleString().replace(/[0-9]/g, '')
+const localeThousandSep = Number(1000).toLocaleString().replace(/[0-9]/g, '');
+const localeDecimalSep = Number(1.1).toLocaleString().replace(/[0-9]/g, '');
+const parseLocaleFloat = (numStr) => parseFloat(numStr.replace(localeDecimalSep, '.').replace(localeThousandSep, ''), 10);
 
 if ($('#hh_comix').length == 0) {
     tierGirlsID = [
@@ -6679,11 +6681,11 @@ function moduleTeamsFilter() {
     function displayGirlStatSum() {
         var observer = new MutationObserver(function(mutations) {
             let carac1Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac1] span:nth-child(1)').text();
-            let carac1 = (carac1Data.indexOf(localeDecimalSep) != -1) ? +carac1Data.replace(localeDecimalSep, '.') : parseInt(carac1Data.replace(localeThousandSep, ''), 10);
+            let carac1 = parseLocaleFloat(carac1Data);
             let carac2Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac2] span:nth-child(1)').text();
-            let carac2 = (carac2Data.indexOf(localeDecimalSep) != -1) ? +carac2Data.replace(localeDecimalSep, '.') : parseInt(carac2Data.replace(localeThousandSep, ''), 10);
+            let carac2 = parseLocaleFloat(carac2Data);
             let carac3Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac3] span:nth-child(1)').text();
-            let carac3 = (carac3Data.indexOf(localeDecimalSep) != -1) ? +carac3Data.replace(localeDecimalSep, '.') : parseInt(carac3Data.replace(localeThousandSep, ''), 10);
+            let carac3 = parseLocaleFloat(carac3Data);
             let caracSum = Number(carac1 + carac2 + carac3).toLocaleString()
 
             $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
