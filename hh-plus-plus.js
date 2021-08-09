@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.9
+// @version			0.31.10
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.10: Fixing DRYed locale number parse to match what the HH UI is doing
 // 0.31.9: Fixing DRYed locale number parser for all locales
 // 0.31.8: Tidying up locale number parsing for girl stat sum
 // 0.31.7: Making a start on replacing unnecessarily external icons with icons already in the game.
@@ -1114,9 +1115,12 @@ texts.de = {
 
 var tierGirlsID;
 
-const localeThousandSep = Number(1000).toLocaleString().replace(/[0-9]/g, '');
-const localeDecimalSep = Number(1.1).toLocaleString().replace(/[0-9]/g, '');
-const parseLocaleFloat = (numStr) => parseFloat(numStr.split(localeDecimalSep).map(part => part.replace(localeThousandSep, '')).join('.'), 10);
+let locale = 'fr';
+if (lang === 'en') {
+    locale = 'en'
+}
+const localeDecimalSep = Number(1.1).toLocaleString(locale).replace(/[0-9]/g, '');
+const parseLocaleFloat = (numStr) => parseFloat(numStr.split(localeDecimalSep).map(part => part.replace(/[^0-9]/g, '')).join('.'), 10);
 
 if ($('#hh_comix').length == 0) {
     tierGirlsID = [
@@ -6687,7 +6691,8 @@ function moduleTeamsFilter() {
             let carac2 = parseLocaleFloat(carac2Data);
             let carac3Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac3] span:nth-child(1)').text();
             let carac3 = parseLocaleFloat(carac3Data);
-            let caracSum = Number(carac1 + carac2 + carac3).toLocaleString()
+            let caracSum = Number(carac1 + carac2 + carac3).toLocaleString(locale).replace(' ', ' ');
+            // Note: replacing any spaces with an NBSP to match HH UI
 
             $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
         });
