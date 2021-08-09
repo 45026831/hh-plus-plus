@@ -4331,18 +4331,12 @@ function simuFight(player, opponent) {
     else if (matchRating > 0 && playerEgoCheck > 0)
         matchRatingClass = 'plus';
 
-    /*let points = matchRating >= 0 ? Math.min(25, 15+player.ego/player.originEgo*10) : Math.max(3, 3+(opponent.originEgo-opponent.ego)/opponent.originEgo*10);
+    let points = matchRating >= 0 ? Math.min(25, 15+player.ego/player.originEgo*10) : Math.max(3, 3+(opponent.originEgo-opponent.ego)/opponent.originEgo*10);
     let pointsInt = Math.floor( points * 10 )/10;
     if( Math.floor( points ) == points )
         pointsInt -= 1/10;
     pointsInt += 1;
-    pointsInt = Math.floor(pointsInt);*/
-
-    let pointsInt;
-    if (matchRating >= 0)
-        pointsInt = (player.ego/player.originEgo) > 0.5 ? 25 : 15;
-    else
-        pointsInt = ((opponent.originEgo-opponent.ego)/opponent.originEgo) > 0.5 ? 13 : 3;
+    pointsInt = Math.floor(pointsInt);
 
     let pointsStr = '+' + pointsInt;
 
