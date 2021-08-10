@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.10
+// @version			0.31.11
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.11: Removing wiki page override for Alt. Superia now that the wiki page title is fixed
 // 0.31.10: Fixing DRYed locale number parse to match what the HH UI is doing
 // 0.31.9: Fixing DRYed locale number parser for all locales
 // 0.31.8: Tidying up locale number parsing for girl stat sum
@@ -2825,8 +2826,6 @@ function moduleHarem() {
                 var girl = girlsDataList[$(this).attr('girl')];
                 //for Wiki FR
                 var girlName = girl.Name.replaceAll("’", "-").replaceAll("/", "-");
-                if (girl.id_girl == 145462484)
-                    girlName = girlName.concat('-', 'Usagi');
 
                 if ($('#hh_comix').length == 0) {
                     if (!girl.own) {
