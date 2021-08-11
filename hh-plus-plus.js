@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.12
+// @version			0.31.13
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.13: Removing override on menu now that menu has changed.
 // 0.31.12: Restoring the old league points scoring to the sim.
 // 0.31.11: Removing wiki page override for Alt. Superia now that the wiki page title is fixed
 // 0.31.10: Fixing DRYed locale number parse to match what the HH UI is doing
@@ -7432,12 +7433,6 @@ sheet.insertRule('.club_dashboard .members_requests_tables table thead th:nth-ch
 sheet.insertRule('.club_dashboard .members_requests_tables table thead th:nth-child(6), .club_dashboard .members_requests_tables table tbody tr td:nth-child(6) {'
                  + 'width: 21% !important;}'
                 );
-
-sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                 + '#contains_all>nav>[rel=content]>div>a {'
-                 + 'line-height: 26px; '
-                 + 'height: 26px;}}'
-                 );
 
 sheet.insertRule('@media only screen and (max-width: 1025px) {'
                  + '.girl-box__draggable .green-tick-icon.empty {'
