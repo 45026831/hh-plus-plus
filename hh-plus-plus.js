@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.11
+// @version			0.31.12
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.12: Restoring the old league points scoring to the sim.
 // 0.31.11: Removing wiki page override for Alt. Superia now that the wiki page title is fixed
 // 0.31.10: Fixing DRYed locale number parse to match what the HH UI is doing
 // 0.31.9: Fixing DRYed locale number parser for all locales
@@ -4330,18 +4331,12 @@ function simuFight(player, opponent) {
     else if (matchRating > 0 && playerEgoCheck > 0)
         matchRatingClass = 'plus';
 
-    /*let points = matchRating >= 0 ? Math.min(25, 15+player.ego/player.originEgo*10) : Math.max(3, 3+(opponent.originEgo-opponent.ego)/opponent.originEgo*10);
+    let points = matchRating >= 0 ? Math.min(25, 15+player.ego/player.originEgo*10) : Math.max(3, 3+(opponent.originEgo-opponent.ego)/opponent.originEgo*10);
     let pointsInt = Math.floor( points * 10 )/10;
     if( Math.floor( points ) == points )
         pointsInt -= 1/10;
     pointsInt += 1;
-    pointsInt = Math.floor(pointsInt);*/
-
-    let pointsInt;
-    if (matchRating >= 0)
-        pointsInt = (player.ego/player.originEgo) > 0.5 ? 25 : 15;
-    else
-        pointsInt = ((opponent.originEgo-opponent.ego)/opponent.originEgo) > 0.5 ? 13 : 3;
+    pointsInt = Math.floor(pointsInt);
 
     let pointsStr = '+' + pointsInt;
 
