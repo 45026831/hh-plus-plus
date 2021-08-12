@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ (OCD) Season version
 // @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.13
+// @version			0.31.14
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.14: Removing the other wiki page override for Alt. Superia
 // 0.31.13: Removing override on menu now that menu has changed.
 // 0.31.12: Restoring the old league points scoring to the sim.
 // 0.31.11: Removing wiki page override for Alt. Superia now that the wiki page title is fixed
@@ -6379,8 +6380,6 @@ function modulePachinkoNames() {
                     const id = raw.match(/\d+/g);
                     const name = (localizationMap.get(id.toString()) != undefined) ? localizationMap.get(id.toString()).name : 'Unknown';
                     let girlName = name.replaceAll("’", "-").replaceAll("/", "-");
-                    if (id == 145462484)
-                        girlName = girlName.concat('-', 'Usagi');
                     var element;
 
                     if (HH_UNIVERSE == 'gay') {
