@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name			Hentai Heroes++ (OCD) Season version
-// @description		Adding things here and there in the Hentai Heroes game.
-// @version			0.31.14
+// @name			Hentai Heroes++ BDSM version
+// @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
+// @version			0.31.15
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.15: Some code tidy up and improved support for GH
 // 0.31.14: Removing the other wiki page override for Alt. Superia
 // 0.31.13: Removing override on menu now that menu has changed.
 // 0.31.12: Restoring the old league points scoring to the sim.
@@ -278,41 +279,42 @@ var sheet = (function() {
     return style.sheet;
 })();
 
-var CurrentPage = window.location.pathname;
+var location = window.location
+var CurrentPage = location.pathname;
 
-// Numbers: thousand spacing
-function nThousand(x) {
-    if (typeof x != 'number') {
-        x = 0;
-    }
-    return x.toLocaleString();
-}
+const isHH = [
+    'www.hentaiheroes.com',
+    'nutaku.haremheroes.com',
+    'eroges.hentaiheroes.com',
+    'thrix.hentaiheroes.com'
+].includes(location.host)
+const isGH = [
+    'www.gayharem.com',
+    'nutaku.gayharem.com'
+].includes(location.host)
+const isCxH = [
+    'www.comixharem.com',
+    'nutaku.comixharem.com'
+].includes(location.host)
 
-// Numbers: rounding to K, M, G and T
-function nRounding(num, digits, updown) {
-    var power = [
-        { value: 1, symbol: '' },
-        { value: 1E3, symbol: 'K' },
-        { value: 1E6, symbol: 'M' },
-        { value: 1E9, symbol: 'B' },
-        { value: 1E12, symbol: 'T' },
-    ];
-    var i;
-    for (i = power.length - 1; i > 0; i--) {
-        if (num >= power[i].value) {
-            break;
-        }
-    }
-    if (updown == 1) {
-        return (Math.ceil(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
-    }
-    else if (updown == 0) {
-        return (Math.round(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
-    }
-    else if (updown == -1) {
-        return (Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
+const gameConfigs = {
+    HH: {
+        girl: 'girl',
+        Girl: 'Girl',
+        haremettes: 'haremettes'
+    },
+    GH: {
+        girl: 'guy',
+        Girl: 'Guy',
+        haremettes: 'harem guys'
+    },
+    CxH: {
+        girl: 'girl',
+        Girl: 'Girl',
+        haremettes: 'haremettes'
     }
 }
+const gameConfig = isHH ? gameConfigs.HH : isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : {}
 
 const HC = 1;
 const CH = 2;
@@ -348,10 +350,10 @@ var texts = [];
 texts.en = {
     optionsRefresh: 'Home screen refresh',
     optionsVillain: 'Fight a villain menu',
-    optionsTiers: 'Show tiers with girls',
+    optionsTiers: `Show tiers with ${gameConfig.girl}s`,
     optionsXPMoney : 'Better XP / Money',
     optionsMarket: 'Market information',
-    optionsMarketFilter: 'Girls\' filter at the market',
+    optionsMarketFilter: `${gameConfig.Girl}s filter at the market`,
     optionsMarket_XP_Aff: 'XP and affection at the market',
     optionsSortArmorItems: 'Button to sort armor items by rarity',
     optionsHideSellButton: 'Button to hide "Sell" button',
@@ -372,7 +374,7 @@ texts.en = {
     or: 'or',
     affection: 'affection',
     harem_stats: 'Harem Stats',
-    haremettes: 'haremettes',
+    haremettes: gameConfig.haremettes,
     hardcore: 'Hardcore',
     charm: 'Charm',
     know_how: 'Know-how',
@@ -387,8 +389,8 @@ texts.en = {
     money_income: 'Money income',
     per_hour: 'per hour',
     when_all_collectable: 'when all collectable',
-    required_to_unlock: 'Required to upgrade all haremettes',
-    required_to_get_max_level: 'Required to level all haremettes',
+    required_to_unlock: `Required to upgrade all ${gameConfig.haremettes}`,
+    required_to_get_max_level: `Required to level all ${gameConfig.haremettes}`,
     my_stocks: 'My stock',
     equipments: 'equipments',
     boosters: 'boosters',
@@ -462,7 +464,7 @@ texts.en = {
     current_league: 'Current league',
     averageScore: 'Average score per fight: ',
     scoreExpected: 'Score expected: ',
-    available_girls: 'Available girls: ',
+    available_girls: `Available ${gameConfig.girl}s: `,
     fights: 'Fights',
     won_mojo: 'Won mojo',
     lost_mojo: 'Lost mojo',
@@ -471,7 +473,7 @@ texts.en = {
     mojo_avg: 'Global mojo average',
     filter: 'Filter',
     searched_name : 'Searched name',
-    girl_name: 'Girl name',
+    girl_name: `${gameConfig.Girl} name`,
     searched_class: 'Searched class',
     searched_rarity: 'Searched rarity',
     team_number: 'Team number',
@@ -495,9 +497,9 @@ texts.en = {
     sort: 'Sort',
     hide: 'Hide',
     display: 'Display',
-    searched_blessed_attributes: 'Searched blessed girls',
-    blessed_attributes: 'Blessed girls',
-    non_blessed_attributes: 'Non-blessed girls'
+    searched_blessed_attributes: `Searched blessed ${gameConfig.girl}s`,
+    blessed_attributes: `Blessed ${gameConfig.girl}s`,
+    non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`
 };
 
 texts.fr = {
@@ -1126,7 +1128,41 @@ if (lang === 'en') {
 const localeDecimalSep = Number(1.1).toLocaleString(locale).replace(/[0-9]/g, '');
 const parseLocaleFloat = (numStr) => parseFloat(numStr.split(localeDecimalSep).map(part => part.replace(/[^0-9]/g, '')).join('.'), 10);
 
-if ($('#hh_comix').length == 0) {
+// Numbers: thousand spacing
+function nThousand(x) {
+    if (typeof x != 'number') {
+        x = 0;
+    }
+    return x.toLocaleString(locale).replace(' ', ' ');
+}
+
+// Numbers: rounding to K, M, G and T
+function nRounding(num, digits, updown) {
+    var power = [
+        { value: 1, symbol: '' },
+        { value: 1E3, symbol: 'K' },
+        { value: 1E6, symbol: 'M' },
+        { value: 1E9, symbol: 'B' },
+        { value: 1E12, symbol: 'T' },
+    ];
+    var i;
+    for (i = power.length - 1; i > 0; i--) {
+        if (num >= power[i].value) {
+            break;
+        }
+    }
+    if (updown == 1) {
+        return (Math.ceil(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
+    }
+    else if (updown == 0) {
+        return (Math.round(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
+    }
+    else if (updown == -1) {
+        return (Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
+    }
+}
+
+if (isHH) {
     tierGirlsID = [
         ['8', '9', '10', '7270263', '979916751'],
         ['14', '13', '12', '318292466', '936580004'],
@@ -1144,7 +1180,20 @@ if ($('#hh_comix').length == 0) {
         ['612527302', '167231135', '560979916', 0, 0]
     ];
 }
-else {
+else if (isGH) {
+    tierGirlsID = [
+        ['8', '9', '10', '7270263', '979916751'],
+        ['14', '13', '12', '318292466', '936580004'],
+        ['19', '16', '18', '610468472', '54950499'],
+        ['29', '28', '26', '4749652', '345655744'],
+        ['39', '40', '41', '267784162', '763020698'],
+        ['64', '63', '31', '406004250', '864899873'],
+        ['85', '86', '84', '267120960', '536361248'],
+        ['114', '115', '116', '379441499', '447396000'],
+        ['1247315', '4649579', '7968301', 0, 0]
+    ];
+}
+else if (isCxH) {
     tierGirlsID = [
         ['830009523', '907801218', '943323021', 0, 0],
         ['271746999', '303805209', '701946373', 0, 0]
@@ -1542,7 +1591,7 @@ function moduleVillain() {
 
     //Add the actual menu
     var trolls;
-    if ($('#hh_comix').length == 0) {
+    if (isHH) {
         trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edwarda', 'Donatien', 'Silvanus', 'Bremen', 'Finalmecia', 'Roko Senseï', 'Karole', 'Jackson&#8217;s Crew', 'Pandora Witch', 'Nike', 'Sake'];
         if (lang == 'fr') {
             trolls[1] = 'Espion Ninja';
@@ -1561,10 +1610,31 @@ function moduleVillain() {
         }
         if (lang == 'de') {
             trolls[0] = 'Dunkler Lord';
+            trolls[1] = 'Ninja Spion';
+            trolls[10] = 'Jacksons Crew';
+            trolls[11] = 'Pandora Hexe';
         }
     }
-    else {
+    else if (isCxH) {
         trolls = ['BodyHack', 'Grey Golem'];
+    }
+    else if (isGH) {
+        trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edward', 'Donatien', 'Silvanus', 'Bremen', 'Edernas', 'Roko Senseï'];
+        if (lang == 'fr') {
+            trolls[1] = 'Espion Ninja';
+        }
+        if (lang == 'es') {
+            trolls[0] = 'Señor Oscuro';
+            trolls[1] = 'Ninja espía';
+        }
+        if (lang == 'it') {
+            trolls[0] = 'Signore Oscuro';
+            trolls[1] = 'Spia Ninja';
+        }
+        if (lang == 'de') {
+            trolls[0] = 'Dunkler Lord';
+            trolls[1] = 'Ninja Spion';
+        }
     }
 
     var currentWorld = Hero.infos.questing.id_world,
@@ -6685,7 +6755,7 @@ function moduleTeamsFilter() {
             let carac2 = parseLocaleFloat(carac2Data);
             let carac3Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac3] span:nth-child(1)').text();
             let carac3 = parseLocaleFloat(carac3Data);
-            let caracSum = Number(carac1 + carac2 + carac3).toLocaleString(locale).replace(' ', ' ');
+            let caracSum = nThousand(carac1 + carac2 + carac3)
             // Note: replacing any spaces with an NBSP to match HH UI
 
             $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
