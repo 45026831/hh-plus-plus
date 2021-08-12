@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.15
+// @version			0.31.16
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.16: Making champion pose ticks consistent across the board
 // 0.31.15: Some code tidy up and improved support for GH
 // 0.31.14: Removing the other wiki page override for Alt. Superia
 // 0.31.13: Removing override on menu now that menu has changed.
@@ -4528,7 +4529,7 @@ function moduleChampions() {
                     if (currentGirlsPose.attr('src').indexOf(preparePositionImage(positions2[index % positions2.length])) >= 0) {
                         currentGirlsPose.next().removeClass('empty');
                         currentGirlsPose.next().addClass('green-tick-icon');
-                        currentGirlsPose.next().css('filter', 'none');
+                        currentGirlsPose.next().css('filter', 'hue-rotate(-45deg)');
                     }
                     else if (positions2.some((e) => (preparePositionImage(e) === currentGirlsPose.attr('src')))) {
                         currentGirlsPose.next().addClass('green-tick-icon empty');
@@ -4640,10 +4641,6 @@ function moduleChampions() {
         sheet.insertRule('.champions-bottom__ticket-amount.right {'
                          + 'text-align: left !important;}'
                         );
-
-        /*sheet.insertRule('.girl-box__draggable .green-tick-icon.empty {'
-                         + 'background-image: url(https://zupimages.net/up/21/25/t9f4.png);}'
-                        );*/
     }
 }
 
@@ -7501,14 +7498,6 @@ sheet.insertRule('.club_dashboard .members_requests_tables table thead th:nth-ch
 
 sheet.insertRule('.club_dashboard .members_requests_tables table thead th:nth-child(6), .club_dashboard .members_requests_tables table tbody tr td:nth-child(6) {'
                  + 'width: 21% !important;}'
-                );
-
-sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                 + '.girl-box__draggable .green-tick-icon.empty {'
-                 + '-webkit-mask: url(https://hh2.hh-content.com/design/ic_tick_white.svg) no-repeat 50% 50%;'
-                 + '-webkit-mask-size: contain;'
-                 + 'background-image: none;'
-                 + 'background-color: snow !important;}}'
                 );
 
 sheet.insertRule('#hh_comix #harem_left .girls_list.grid_view div[girl] .right .salary .loading .over.count {'
