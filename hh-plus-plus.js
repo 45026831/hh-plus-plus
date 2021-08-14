@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.16
+// @version			0.31.17
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.17: Changing the club champion shortcut icon to use the Champions icon to make it more visually distinct
 // 0.31.16: Making champion pose ticks consistent across the board
 // 0.31.15: Some code tidy up and improved support for GH
 // 0.31.14: Removing the other wiki page override for Alt. Superia
@@ -5307,7 +5308,7 @@ function moduleLinks() {
         }
 
         $('a[rel="clubs"]').append('<a class="round_blue_button" href="/club-champion.html" hh_title="Club Champion">'
-                                                  + '<span class="townForward_flat_icn"></span></a>');
+                                                  + '<span class="champions_icn"></span></a>');
 
         if ($('a[href$="tower-of-fame.html"]').length === 0)
             localStorage.setItem("LeagueExists", 0);
@@ -6043,8 +6044,21 @@ function moduleLinks() {
                      + 'left: 154px;}}'
                      );
 
+    sheet.insertRule('#homepage a[href="/club-champion.html"] .champions_icn {'
+                    + 'background-position: center;'
+                    + 'background-repeat: no-repeat;'
+                    + 'background-image: url(https://hh.hh-content.com/design/menu/ic_champions.svg);}'
+                    );
+
+    sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                    + '#homepage a[href="/club-champion.html"] .champions_icn {'
+                    + 'width:20px;'
+                    + 'height:20px;'
+                    + 'background-size: 14px;}}'
+                   );
+
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '#homepage a[href="/club-champion.html"] .townForward_flat_icn {'
+                     + '#homepage a[href="/club-champion.html"] .champions_icn {'
                      + 'position: absolute;'
                      + 'width:40px;'
                      + 'height:40px;'
