@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.17
+// @version			0.31.18
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.18: Minor adjustments around handling of special characters in girl names for wiki links
 // 0.31.17: Changing the club champion shortcut icon to use the Champions icon to make it more visually distinct
 // 0.31.16: Making champion pose ticks consistent across the board
 // 0.31.15: Some code tidy up and improved support for GH
@@ -2899,8 +2900,14 @@ function moduleHarem() {
         setTimeout(function () {
             haremRight.children('[girl]').each(function() {
                 var girl = girlsDataList[$(this).attr('girl')];
-                //for Wiki FR
-                var girlName = girl.Name.replaceAll("’", "-").replaceAll("/", "-");
+                let girlName = girl.Name.replaceAll("/", "-");
+                
+                if (lang === 'fr') {
+                    //for Wiki FR
+                    girlName = girlName.replaceAll("’", "-");
+                } else {
+                    girlName = girlName.replaceAll("’", "");
+                }
 
                 if ($('#hh_comix').length == 0) {
                     if (!girl.own) {
