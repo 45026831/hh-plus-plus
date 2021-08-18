@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.18
+// @version			0.31.19
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.19: Fixing position of hide beaten opponents button
 // 0.31.18: Minor adjustments around handling of special characters in girl names for wiki links
 // 0.31.17: Changing the club champion shortcut icon to use the Champions icon to make it more visually distinct
 // 0.31.16: Making champion pose ticks consistent across the board
@@ -3936,14 +3937,14 @@ function moduleLeague() {
                      + '#beaten_opponents {'
                      + 'position: absolute;'
                      + 'height: 28px;'
-                     + 'top: 7px;'
-                     + 'right: 696px;}}'
+                     + 'top: -40px;'
+                     + 'left: 10px;}}'
                     );
 
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
                      + '#hide_beaten {'
                      + 'position: relative;'
-                     + 'top: -5px;}}'
+                     + 'top: -3px;}}'
                     );
 
     function displayLeaguePlayersClass() {
