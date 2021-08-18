@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.19
+// @version			0.31.20
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.20: Fixing positions of league info tooltips
 // 0.31.19: Fixing position of hide beaten opponents button
 // 0.31.18: Minor adjustments around handling of special characters in girl names for wiki links
 // 0.31.17: Changing the club champion shortcut icon to use the Champions icon to make it more visually distinct
@@ -3619,17 +3620,8 @@ function moduleLeague() {
                      + 'border-color: transparent transparent #905312 transparent;}'
                     );
 
-    sheet.insertRule('.kobanWinningsTooltip {'
-                     + 'top: 65px; '
-                     + 'margin-left: -95px;}'
-                    );
-
-    sheet.insertRule('.kobanWinnings:hover .kobanWinningsTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
     sheet.insertRule('.averageScoreTooltip {'
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -135px;}'
                     );
 
@@ -3638,7 +3630,7 @@ function moduleLeague() {
                     );
 
     sheet.insertRule('.possibleChallengesTooltip {'
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -110px;}'
                     );
 
@@ -3648,7 +3640,7 @@ function moduleLeague() {
 
     sheet.insertRule('.maxStagnateTooltip {'
                      + 'max-width: 190px; '
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -115px;}'
                     );
 
@@ -3658,7 +3650,7 @@ function moduleLeague() {
 
     sheet.insertRule('.minTop4Tooltip {'
                      + 'max-width: 190px; '
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -115px;}'
                     );
 
@@ -3668,7 +3660,7 @@ function moduleLeague() {
 
     sheet.insertRule('.minTop15Tooltip {'
                      + 'max-width: 190px; '
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -115px;}'
                     );
 
@@ -3678,7 +3670,7 @@ function moduleLeague() {
 
     sheet.insertRule('.minTop30Tooltip {'
                      + 'max-width: 190px; '
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -115px;}'
                     );
 
@@ -3688,7 +3680,7 @@ function moduleLeague() {
 
     sheet.insertRule('.minTop45Tooltip {'
                      + 'max-width: 190px; '
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -115px;}'
                     );
 
@@ -3698,7 +3690,7 @@ function moduleLeague() {
 
     sheet.insertRule('.maxDemoteTooltip {'
                      + 'max-width: 170px; '
-                     + 'top: 65px; '
+                     + 'top: 22px; '
                      + 'margin-left: -100px;}'
                     );
 
