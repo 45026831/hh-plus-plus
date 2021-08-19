@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.20
+// @version			0.31.21
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.21: Fixing position of PoP girl class icons when girl power levels are low
 // 0.31.20: Fixing positions of league info tooltips
 // 0.31.19: Fixing position of hide beaten opponents button
 // 0.31.18: Minor adjustments around handling of special characters in girl names for wiki links
@@ -4958,8 +4959,9 @@ function moduleLinks() {
                              + 'position: relative;'
                              + 'height: 17px !important;'
                              + 'width: 17px !important;'
-                             + 'top: -98px;'
-                             + 'left: 25px;'
+                             + 'top: -91px;'
+                             + 'left: 45px;'
+                             + 'display: block;'
                              + 'border: none;}'
                             );
         }
