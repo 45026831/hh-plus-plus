@@ -4426,6 +4426,108 @@ function simuFight(player, opponent) {
     };
 }
 
+// Calculate the chance to win the fight
+function calcWinProbability(player, opponent) {
+    // check edge cases and shortcuts
+    if (player.dmg <= 0) {
+        return {
+            scoreStr: "0%",
+            scoreClass: "minus"
+        };
+    } else if (opponent.dmg <= 0) {
+        return {
+            scoreStr: "100%",
+            scoreClass: "plus"
+        };
+    } else if (Math.floor(1+player.hp/opponent.dmg)*2*player.dmg < opponent.hp) {
+        // guaranteed loss
+        return {
+            scoreStr: "0%",
+            scoreClass: "minus"
+        };
+    } else if (Math.ceil(opponent.hp/player.dmg-1)*2*opponent.dmg < player.hp) {
+        // guaranteed win
+        return {
+            scoreStr: "100%",
+            scoreClass: "plus"
+        };
+    }
+
+    // Amount of non-crit hits we can take without losing
+    const tolerableHits = Math.ceil(player.hp/opponent.dmg)-1;
+
+    // == Helper functions ==
+
+    // Calculate the chance to get a sequence with given amount of crits and non-crits at a given critchance
+    function calculateChance(crits, hits, critchance) {
+        // returns (crits+hits)!/(crits!*hits!) * critchance^crits * (1-critchance)^hits
+        
+        let binCoeffNumerator = 1;
+        for(let i = crits+hits; i>crits; i--) {
+            binCoeffNumerator *= i;
+        }
+        
+        let binCoeffDenominator = 1;
+        for(let j = 1; j<=hits; j++) {
+            binCoeffDenominator *= j;
+        }
+
+        return binCoeffNumerator/binCoeffDenominator * Math.pow(critchance, crits) * Math.pow(1-critchance, hits);
+    }
+
+    // Calculate the chance to finish a match with a crit even though a normal hit would have been enough
+    function calculateOverkillChance(crits, hits, critchance) {
+        if (hits==0) return 0;
+        return calculateChance(crits, hits-1, critchance)*critchance;
+    }
+
+    let winChance = 0;
+    let loseChance = 0;
+    let playerCrits = 0;
+    let playerNormalHits = Math.ceil(opponent.hp/player.dmg);
+
+    console.log('Probability calculation log for: ' + opponent.name);
+    do {
+        console.log(' Scenario: ' + playerCrits + ' crits and ' + playerNormalHits + ' hits');
+        let scenarioLikelihood = calculateChance(playerCrits, playerNormalHits, player.critchance);
+        let overkillChance = calculateOverkillChance(playerCrits, playerNormalHits, player.critchance);
+        console.log('  Scenario likelihood: ' + 100*scenarioLikelihood + ' % + ' + 100*overkillChance + ' % chance for overkill');
+        scenarioLikelihood += overkillChance;
+
+        let rounds = playerCrits + playerNormalHits;
+        let tolerableCrits = tolerableHits-rounds+1;
+        console.log('  Opponent is allowed to crit ' + tolerableCrits + ' times');
+
+        if (tolerableCrits < 0) {
+            console.log('  => impossible, we lose');
+            loseChance += scenarioLikelihood;
+        } else if (tolerableCrits >= rounds-1) {
+            console.log ('  => guaranteed, we win');
+            winChance += scenarioLikelihood;
+        } else {
+            let opponentLikelihood = 0;
+            for(let i=0; i<=tolerableCrits; i++) {
+                let tmp = calculateChance(i, rounds-i-1, opponent.critchance);
+                console.log('   probability for ' + i + ' crits and ' + (rounds-i-1) + ' hits: ' + 100*tmp + ' %');
+                opponentLikelihood += tmp;
+            }
+            console.log('  ' + 100*opponentLikelihood + ' % chance that this condition is fulfilled');
+            console.log('  => ' + 100*opponentLikelihood*scenarioLikelihood + ' % to win through this scenario');
+            winChance += opponentLikelihood*scenarioLikelihood;
+            loseChance += (1-opponentLikelihood)*scenarioLikelihood;
+        }
+
+        playerCrits++;
+        playerNormalHits-=2;
+    } while (playerNormalHits >= 0);
+
+    console.log(100*winChance+ ' % chance to win vs. ' + 100*loseChance + ' % chance to lose => ' + 100*(winChance+loseChance) + ' % total coverage.');
+
+    return {
+        scoreStr: (100*winChance).toFixed(2) + '%',
+        scoreClass: winChance>0.9?"plus":winChance<0.5?"minus":"close"
+    };
+}
 /* =========================================
 	CHAMPIONS INFORMATION (Credit: Entwine)
    ========================================= */
@@ -6123,6 +6225,7 @@ function moduleSeasonSim() {
         playerEgo = Math.round(Hero.infos.caracs.ego);
         playerAtk = Math.round(Hero.infos.caracs.damage);
         playerDef = Math.round(Hero.infos.caracs.defense);
+	playerCrit = Math.round(Hero.infos.caracs.chance);
         /*let playerData = $('#season-arena .battle_hero .hero_team .team_girl');
         playerAlpha = JSON.parse(playerData.find('.change_team_girls[rel=g1]').attr('data-new-girl-tooltip'));
         playerBeta = JSON.parse(playerData.find('.change_team_girls[rel=g2]').attr('data-new-girl-tooltip'));
@@ -6133,6 +6236,7 @@ function moduleSeasonSim() {
         opponentEgo = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentDef = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentAtk = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentCrit = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         /*opponentAlpha = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g1]').attr('data-new-girl-tooltip'));
         opponentBeta = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g2]').attr('data-new-girl-tooltip'));
         opponentOmega = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g3]').attr('data-new-girl-tooltip'));*/
@@ -6145,6 +6249,7 @@ function moduleSeasonSim() {
             originEgo: Math.round(Hero.infos.caracs.ego),
             atk: playerAtk,
             def: playerDef,
+	    crit: playerCrit,
 
             /*alpha: playerAlpha,
             beta: playerBeta,
@@ -6159,6 +6264,7 @@ function moduleSeasonSim() {
             originEgo: parseInt($('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') div:nth-child(1) div:nth-child(4) div:nth-child(3) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10),
             atk: opponentAtk,
             def: opponentDef,
+	    crit: opponentCrit,
 
             /*alpha: opponentAlpha,
             beta: opponentBeta,
@@ -6172,6 +6278,23 @@ function moduleSeasonSim() {
         let simu = simuFight(player, opponent);
 
         $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-average-level').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
+	
+
+        player = {
+            hp: playerEgo,
+            dmg: playerAtk - opponentDef,
+            critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
+        };
+        opponent = {
+            hp: opponentEgo,
+            dmg: opponentAtk - playerDef,
+            critchance: 0.3-player.critchance,
+            name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text()
+        };
+
+        simu = calcWinProbability(player, opponent);
+	
+        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .personal_info').append('<div class="matchRating ' + simu.scoreClass + '" style="margin-left:auto;margin-right:-15px">' + simu.scoreStr + '</div>');
     }
 
     calculateSeasonPower(1);
