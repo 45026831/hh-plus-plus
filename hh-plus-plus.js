@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.25
+// @version			0.31.26
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.26: Fixing Better Money to only apply when player has over 1M SC
 // 0.31.25: Fixing market info tooltips after global var was removed by Kinkoid
 // 0.31.24: Adding tier girl IDs for The Nymph (CxH)
 // 0.31.23: Adding font family to gameConfig, so script-added text looks more consistent in CxH
@@ -1865,7 +1866,9 @@ function moduleXP() {
 
 function moduleMoney() {
     function betterMoney() {
-        $('div[hero="soft_currency"]').empty().append(nRounding(Hero.infos.soft_currency, 3, -1));
+        if (Hero.infos.soft_currency >= 1000000) {
+            $('div[hero="soft_currency"]').empty().append(nRounding(Hero.infos.soft_currency, 3, -1));
+        }
     };
 
     betterMoney();
