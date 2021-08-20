@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.23
+// @version			0.31.24
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.24: Adding tier girl IDs for The Nymph (CxH)
 // 0.31.23: Adding font family to gameConfig, so script-added text looks more consistent in CxH
 // 0.31.22: Adding CxH world 4 villain to the menu
 // 0.31.21: Fixing position of PoP girl class icons when girl power levels are low
@@ -1207,7 +1208,8 @@ else if (isGH) {
 else if (isCxH) {
     tierGirlsID = [
         ['830009523', '907801218', '943323021', 0, 0],
-        ['271746999', '303805209', '701946373', 0, 0]
+        ['271746999', '303805209', '701946373', 0, 0],
+        ['943255266', '977228200', '743748788', 0, 0]
     ];
 }
 
