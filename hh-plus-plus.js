@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.21
+// @version			0.31.22
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.22: Adding CxH world 4 villain to the menu
 // 0.31.21: Fixing position of PoP girl class icons when girl power levels are low
 // 0.31.20: Fixing positions of league info tooltips
 // 0.31.19: Fixing position of hide beaten opponents button
@@ -1622,7 +1623,7 @@ function moduleVillain() {
         }
     }
     else if (isCxH) {
-        trolls = ['BodyHack', 'Grey Golem'];
+        trolls = ['BodyHack', 'Grey Golem', 'The Nymph'];
     }
     else if (isGH) {
         trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edward', 'Donatien', 'Silvanus', 'Bremen', 'Edernas', 'Roko Senseï'];
