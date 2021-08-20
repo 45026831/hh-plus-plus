@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.22
+// @version			0.31.23
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.23: Adding font family to gameConfig, so script-added text looks more consistent in CxH
 // 0.31.22: Adding CxH world 4 villain to the menu
 // 0.31.21: Fixing position of PoP girl class icons when girl power levels are low
 // 0.31.20: Fixing positions of league info tooltips
@@ -308,17 +309,20 @@ const gameConfigs = {
     HH: {
         girl: 'girl',
         Girl: 'Girl',
-        haremettes: 'haremettes'
+        haremettes: 'haremettes',
+        fontFamily: `'Carter One','Alegreya Sans',sans-serif`
     },
     GH: {
         girl: 'guy',
         Girl: 'Guy',
-        haremettes: 'harem guys'
+        haremettes: 'harem guys',
+        fontFamily: `'Carter One','Alegreya Sans',sans-serif`
     },
     CxH: {
         girl: 'girl',
         Girl: 'Girl',
-        haremettes: 'haremettes'
+        haremettes: 'haremettes',
+        fontFamily: 'Montserrat'
     }
 }
 const gameConfig = isHH ? gameConfigs.HH : isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : {}
@@ -1722,7 +1726,7 @@ function moduleVillain() {
                     );
 
     sheet.insertRule('.TrollsMenu a {'
-                     + 'font-family: \'Carter One\', \'Alegreya Sans\', cursive !important; '
+                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5378,7 +5382,7 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.scriptSeasonInfo a {'
-                     + 'font-family: \'Carter One\', \'Alegreya Sans\', cursive !important; '
+                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5488,7 +5492,7 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.league_counter a {'
-                     + 'font-family: \'Carter One\', \'Alegreya Sans\', cursive !important; '
+                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5603,7 +5607,7 @@ function moduleLinks() {
 
 
     sheet.insertRule('.pop_timer a {'
-                     + 'font-family: \'Carter One\', \'Alegreya Sans\', cursive !important; '
+                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5710,7 +5714,7 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.booster_timer a {'
-                     + 'font-family: \'Carter One\', \'Alegreya Sans\', cursive !important; '
+                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
