@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.24
+// @version			0.31.25
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.25: Fixing market info tooltips after global var was removed by Kinkoid
 // 0.31.24: Adding tier girl IDs for The Nymph (CxH)
 // 0.31.23: Adding font family to gameConfig, so script-added text looks more consistent in CxH
 // 0.31.22: Adding CxH world 4 villain to the menu
@@ -331,6 +332,20 @@ const gameConfig = isHH ? gameConfigs.HH : isGH ? gameConfigs.GH : isCxH ? gameC
 const HC = 1;
 const CH = 2;
 const KH = 3;
+const classRelationships = {
+    [HC]: {
+        s: KH,
+        t: CH
+    },
+    [CH]: {
+        s: HC,
+        t: KH
+    },
+    [KH]: {
+        s: CH,
+        t: HC
+    }
+};
 
 const DST = true;
 
@@ -1904,8 +1919,19 @@ function moduleMarket() {
                     spentMoney = calculateTotalPrice(boughtPoints),
                     remainingMoney = levelMoney - spentMoney;
 
-                var totalPoints = Hero.infos.caracs[stat],
-                    skillPoints = Hero.infos.caracs['stat' + stat.substr(5)] - boughtPoints;
+                var totalPoints = Hero.infos.caracs[stat];
+
+                let perLevelBase = 9;
+                const caracNum = parseInt(stat.substr(5), 10);
+                switch(caracNum) {
+                    case classRelationships[Hero.infos.class].s:
+                        perLevelBase = 7;
+                        break;
+                    case classRelationships[Hero.infos.class].t:
+                        perLevelBase = 5;
+                        break;
+                }
+                var skillPoints = Hero.infos.level * perLevelBase;
 
                 var equipmentsData = $('.armor#equiped .armor').children(),
                     itemPoints = 0;
@@ -2911,7 +2937,7 @@ function moduleHarem() {
             haremRight.children('[girl]').each(function() {
                 var girl = girlsDataList[$(this).attr('girl')];
                 let girlName = girl.Name.replaceAll("/", "-");
-                
+
                 if (lang === 'fr') {
                     //for Wiki FR
                     girlName = girlName.replaceAll("’", "-");
