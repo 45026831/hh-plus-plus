@@ -4318,6 +4318,7 @@ function moduleSim() {
 
 //Battle simulation
 function simuFight(player, opponent) {
+    const logging = false;
     let playerEgoCheck = 0;
     let opponentEgoCheck = 0;
 
@@ -4349,19 +4350,21 @@ function simuFight(player, opponent) {
     player.ego -= Math.max(0, opponent.atk - player.def);
 
     //Log opponent name and starting egos for sim
-    console.log('Simulation log for: ' + opponent.name);
-    console.log('Starting Egos adjusted for the case proc scenario (0 for you and 1 for the opponent):');
-    console.log('Player Ego: ' + player.ego);
-    console.log('Opponent Ego: ' + opponent.ego);
+    if (logging) {
+        console.log('Simulation log for: ' + opponent.name);
+        console.log('Starting Egos adjusted for the case proc scenario (0 for you and 1 for the opponent):');
+        console.log('Player Ego: ' + player.ego);
+        console.log('Opponent Ego: ' + opponent.ego);
+    }
 
     function play_turn(cur) {
         let o = cur === player ? opponent : player;
 
         o.ego -= Math.max(0, cur.atk - o.def);
-        console.log('Round ' + (turns + 1) + ': ' + cur.text + ' hit! -' + Math.max(0, (cur.atk - o.def)));
+        if(logging) console.log('Round ' + (turns + 1) + ': ' + cur.text + ' hit! -' + Math.max(0, (cur.atk - o.def)));
 
         //Log results
-        console.log('after Round ' + (turns + 1) + ': ' + o.text + ' ego: ' + o.ego);
+        if(logging) console.log('after Round ' + (turns + 1) + ': ' + o.text + ' ego: ' + o.ego);
     }
 
     //Simulate challenge
@@ -4372,7 +4375,7 @@ function simuFight(player, opponent) {
             opponentEgoCheck = opponent.ego;
             opponentEgoCheck -= player.atk - opponent.def;
 
-            if (opponentEgoCheck <= 0)
+            if (logging && opponentEgoCheck <= 0)
                 console.log('Victory! With 1 critical hit for player, Opponent ego: ' + opponentEgoCheck);
 
             player.ego = 0;
@@ -4385,7 +4388,7 @@ function simuFight(player, opponent) {
             playerEgoCheck = player.ego;
             playerEgoCheck -= opponent.atk - player.def;
 
-            if (playerEgoCheck <= 0)
+            if (logging && playerEgoCheck <= 0)
                 console.log('Defeat! With 1 more critical hit for opponent, Player ego: ' + playerEgoCheck);
 
             opponent.ego = 0;
@@ -4428,6 +4431,7 @@ function simuFight(player, opponent) {
 
 // Calculate the chance to win the fight
 function calcWinProbability(player, opponent) {
+    const logging = true;
     // check edge cases and shortcuts
     if (player.dmg <= 0) {
         return {
@@ -4486,33 +4490,33 @@ function calcWinProbability(player, opponent) {
     let playerCrits = 0;
     let playerNormalHits = Math.ceil(opponent.hp/player.dmg);
 
-    console.log('Probability calculation log for: ' + opponent.name);
+    if(logging) console.log('Probability calculation log for: ' + opponent.name);
     do {
-        console.log(' Scenario: ' + playerCrits + ' crits and ' + playerNormalHits + ' hits');
+        if(logging) console.log(' Scenario: ' + playerCrits + ' crits and ' + playerNormalHits + ' hits');
         let scenarioLikelihood = calculateChance(playerCrits, playerNormalHits, player.critchance);
         let overkillChance = calculateOverkillChance(playerCrits, playerNormalHits, player.critchance);
-        console.log('  Scenario likelihood: ' + 100*scenarioLikelihood + ' % + ' + 100*overkillChance + ' % chance for overkill');
+        if(logging) console.log('  Scenario likelihood: ' + 100*scenarioLikelihood + ' % + ' + 100*overkillChance + ' % chance for overkill');
         scenarioLikelihood += overkillChance;
 
         let rounds = playerCrits + playerNormalHits;
         let tolerableCrits = tolerableHits-rounds+1;
-        console.log('  Opponent is allowed to crit ' + tolerableCrits + ' times');
+        if(logging) console.log('  Opponent is allowed to crit ' + tolerableCrits + ' times');
 
         if (tolerableCrits < 0) {
-            console.log('  => impossible, we lose');
+            if(logging) console.log('  => impossible, we lose');
             loseChance += scenarioLikelihood;
         } else if (tolerableCrits >= rounds-1) {
-            console.log ('  => guaranteed, we win');
+            if(logging) console.log ('  => guaranteed, we win');
             winChance += scenarioLikelihood;
         } else {
             let opponentLikelihood = 0;
             for(let i=0; i<=tolerableCrits; i++) {
                 let tmp = calculateChance(i, rounds-i-1, opponent.critchance);
-                console.log('   probability for ' + i + ' crits and ' + (rounds-i-1) + ' hits: ' + 100*tmp + ' %');
+                if(logging) console.log('   probability for ' + i + ' crits and ' + (rounds-i-1) + ' hits: ' + 100*tmp + ' %');
                 opponentLikelihood += tmp;
             }
-            console.log('  ' + 100*opponentLikelihood + ' % chance that this condition is fulfilled');
-            console.log('  => ' + 100*opponentLikelihood*scenarioLikelihood + ' % to win through this scenario');
+            if(logging) console.log('  ' + 100*opponentLikelihood + ' % chance that this condition is fulfilled');
+            if(logging) console.log('  => ' + 100*opponentLikelihood*scenarioLikelihood + ' % to win through this scenario');
             winChance += opponentLikelihood*scenarioLikelihood;
             loseChance += (1-opponentLikelihood)*scenarioLikelihood;
         }
@@ -4521,7 +4525,7 @@ function calcWinProbability(player, opponent) {
         playerNormalHits-=2;
     } while (playerNormalHits >= 0);
 
-    console.log(100*winChance+ ' % chance to win vs. ' + 100*loseChance + ' % chance to lose => ' + 100*(winChance+loseChance) + ' % total coverage.');
+    if(logging) console.log(100*winChance+ ' % chance to win vs. ' + 100*loseChance + ' % chance to lose => ' + 100*(winChance+loseChance) + ' % total coverage.');
 
     return {
         scoreStr: (100*winChance).toFixed(2) + '%',
