@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.26
+// @version			0.31.27
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.27: Hiding ghost stats in market info
 // 0.31.26: Fixing Better Money to only apply when player has over 1M SC
 // 0.31.25: Fixing market info tooltips after global var was removed by Kinkoid
 // 0.31.24: Adding tier girl IDs for The Nymph (CxH)
@@ -2234,7 +2235,7 @@ function moduleMarket() {
                      + 'background-repeat: no-repeat; '
                      + 'width: 18px; '
                      + 'height: 100%; '
-                     + 'visibility: none;}'
+                     + 'font-size: 0;}'
                     );
 
     sheet.insertRule('.hero_stats .CustomStats:hover + div {'
