@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.27
+// @version			0.31.28
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.28: Adjusting league view on mobile now that league_end_in is visible
 // 0.31.27: Hiding ghost stats in market info
 // 0.31.26: Fixing Better Money to only apply when player has over 1M SC
 // 0.31.25: Fixing market info tooltips after global var was removed by Kinkoid
@@ -3949,6 +3950,7 @@ function moduleLeague() {
                      + 'position: absolute;'
                      + 'height: 32px;'
                      + 'top: 50px;'
+                     + 'z-index: 1;'
                      + 'right: 517px;}}'
                     );
 
@@ -3969,6 +3971,11 @@ function moduleLeague() {
                      + 'height: 28px;'
                      + 'top: -40px;'
                      + 'left: 10px;}}'
+                    );
+
+    sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                     + '#beaten_opponents {'
+                     + 'display:none;}}'
                     );
 
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
@@ -6049,6 +6056,10 @@ function moduleLinks() {
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
                      + '#tower_of_fame .tabs {'
                      + 'top: 15px !important;}}'
+                    );
+    sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                    + '#tower_of_fame .league_end_in {'
+                    + 'margin-top: 5px;}}'
                     );
 
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
