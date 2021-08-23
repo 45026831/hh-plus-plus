@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.28
+// @version			0.31.29
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.29: Changing show/hide button in league to icon from game. De-duping for mobile.
 // 0.31.28: Adjusting league view on mobile now that league_end_in is visible
 // 0.31.27: Hiding ghost stats in market info
 // 0.31.26: Fixing Better Money to only apply when player has over 1M SC
@@ -352,6 +353,8 @@ const classRelationships = {
 
 const DST = true;
 
+const mediaMobile = '@media only screen and (max-width: 1025px)';
+const mediaDesktop = '@media only screen and (min-width: 1026px)';
 
 /* ==============
 	TRANSLATIONS
@@ -3887,17 +3890,21 @@ function moduleLeague() {
     }
 
     let hidden = loadSetting('hide_beaten');
-    $(".league_end_in").append('<button id="beaten_opponents" class="blue_button_L"><span id="hide_beaten"></span></button>');
-    $('div.leagues-btn-mobile-refill-multi').append('<button id="beaten_opponents_mobile" class="blue_button_L"><span id="hide_beaten_mobile"></span></button>');
+    $(".league_end_in").append('<button id="beaten_opponents" class=""><span id="hide_beaten"></span></button>');
+
+    const setButtonDisplay = () => {
+        $('#hide_beaten').html(`<img alt="${texts[lang].display}" title="${texts[lang].display}" src="https://hh.hh-content.com/quest/ic_eyeopen.svg">`);
+    }
+    const setButtonHide = () => {
+        $('#hide_beaten').html(`<img alt="${texts[lang].hide}" title="${texts[lang].hide}" src="https://hh.hh-content.com/quest/ic_eyeclosed.svg">`);
+    }
 
     if (hidden == 1) {
         removeBeatenOpponents();
-        $('#hide_beaten').html(texts[lang].display);
-        $('#hide_beaten_mobile').html(texts[lang].display);
+        setButtonDisplay();
     }
     else {
-        $('#hide_beaten').html(texts[lang].hide);
-        $('#hide_beaten_mobile').html(texts[lang].hide);
+        setButtonHide();
     }
 
     let button = document.querySelector('#beaten_opponents');
@@ -3906,33 +3913,13 @@ function moduleLeague() {
             removeBeatenOpponents();
             hidden = 1;
             localStorage.setItem('HHS.hide_beaten', 1);
-            $('#hide_beaten').html(texts[lang].display);
-            $('#hide_beaten_mobile').html(texts[lang].display);
+            setButtonDisplay();
         }
         else {
             displayBeatenOpponents();
             hidden = 0;
             localStorage.setItem('HHS.hide_beaten', 0);
-            $('#hide_beaten').html(texts[lang].hide);
-            $('#hide_beaten_mobile').html(texts[lang].hide);
-        }
-    });
-
-    let buttonMobile = document.querySelector('#beaten_opponents_mobile');
-    buttonMobile.addEventListener('click', function(){
-        if (hidden == 0) {
-            removeBeatenOpponents();
-            hidden = 1;
-            localStorage.setItem('HHS.hide_beaten', 1);
-            $('#hide_beaten').html(texts[lang].display);
-            $('#hide_beaten_mobile').html(texts[lang].display);
-        }
-        else {
-            displayBeatenOpponents();
-            hidden = 0;
-            localStorage.setItem('HHS.hide_beaten', 0);
-            $('#hide_beaten').html(texts[lang].hide);
-            $('#hide_beaten_mobile').html(texts[lang].hide);
+            setButtonHide();
         }
     });
 
@@ -3945,44 +3932,58 @@ function moduleLeague() {
         });
     }
 
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '#beaten_opponents_mobile {'
-                     + 'position: absolute;'
-                     + 'height: 32px;'
-                     + 'top: 50px;'
-                     + 'z-index: 1;'
-                     + 'right: 517px;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '#beaten_opponents_mobile {'
-                     + 'display: none;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '#hide_beaten_mobile {'
-                     + 'position: relative;'
-                     + 'top: -8px;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '#beaten_opponents {'
-                     + 'position: absolute;'
-                     + 'height: 28px;'
-                     + 'top: -40px;'
-                     + 'left: 10px;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '#beaten_opponents {'
-                     + 'display:none;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '#hide_beaten {'
-                     + 'position: relative;'
-                     + 'top: -3px;}}'
-                    );
+    sheet.insertRule(`
+        #beaten_opponents {
+            position: absolute;
+            padding-left: 5px;
+            padding-right: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+    `)
+    sheet.insertRule(`
+        ${mediaMobile} {
+            #beaten_opponents {
+                height: 32px;
+                z-index: 1;
+                right: 517px;
+            }
+        }
+    `);
+    sheet.insertRule(`
+        ${mediaDesktop} {
+            #beaten_opponents {
+                height: 28px;
+                top: -40px;
+                left: 10px;
+            }
+        }
+    `);
+    sheet.insertRule(`
+        #hide_beaten {
+            position: relative;
+        }
+    `);
+    sheet.insertRule(`
+        #hide_beaten img, #hide_beaten_mobile img {
+            width: auto;
+        }
+    `);
+    sheet.insertRule(`
+        ${mediaMobile} {
+            #hide_beaten img, #hide_beaten_mobile img {
+                height: 26px;
+            }
+        }
+    `);
+    sheet.insertRule(`
+        ${mediaDesktop} {
+            #hide_beaten img, #hide_beaten_mobile img {
+                height: 20px;
+            }
+        }
+    `);
 
     function displayLeaguePlayersClass() {
         if (localStorage.getItem('newLeagueResults') == null) {
