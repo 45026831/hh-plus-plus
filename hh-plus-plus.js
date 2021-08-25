@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.29
+// @version			0.31.30
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.30: Adding GH world 11 villain to the menu, and tier guys for world 10.
 // 0.31.29: Changing show/hide button in league to icon from game. De-duping for mobile.
 // 0.31.28: Adjusting league view on mobile now that league_end_in is visible
 // 0.31.27: Hiding ghost stats in market info
@@ -1223,7 +1224,8 @@ else if (isGH) {
         ['64', '63', '31', '406004250', '864899873'],
         ['85', '86', '84', '267120960', '536361248'],
         ['114', '115', '116', '379441499', '447396000'],
-        ['1247315', '4649579', '7968301', 0, 0]
+        ['1247315', '4649579', '7968301', '46227677', '933487713'],
+        ['1379661', '4479579', '1800186', 0, 0],
     ];
 }
 else if (isCxH) {
@@ -1653,7 +1655,7 @@ function moduleVillain() {
         trolls = ['BodyHack', 'Grey Golem', 'The Nymph'];
     }
     else if (isGH) {
-        trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edward', 'Donatien', 'Silvanus', 'Bremen', 'Edernas', 'Roko Senseï'];
+        trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edward', 'Donatien', 'Silvanus', 'Bremen', 'Edernas', 'Roko Senseï', 'Maro'];
         if (lang == 'fr') {
             trolls[1] = 'Espion Ninja';
         }
