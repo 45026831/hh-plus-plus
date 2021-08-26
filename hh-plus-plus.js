@@ -6735,9 +6735,9 @@ function moduleTeamsFilter() {
     var totalTooltips = 80;
 
     $(document).ready(function() {
-        if (CurrentPage.indexOf('change-team') != -1) {
+        if (CurrentPage.indexOf('edit-team') != -1) {
             updateFilterGirlData("seasons");
-            $("h3.panel-title").after('<button id="arena_filter" class="blue_text_button">' + texts[lang].filter + '</button>');
+            $("h3.panel-title").after('<button id="arena_filter" class="blue_button_L">' + texts[lang].filter + '</button>');
             $("h3.panel-title").after(createFilterBox("default"));
             createFilterEvents();
             displayGirlStatSum();
@@ -6765,12 +6765,12 @@ function moduleTeamsFilter() {
                         );
 
         sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                         + '#change-team-page .change-team-panel.team-panel {'
+                         + '#edit-team-page .change-team-panel.team-panel {'
                          + 'margin-top: 20px;}}'
                         );
 
         sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                         + '#change-team-page .change-team-panel.harem-panel {'
+                         + '#edit-team-page .change-team-panel.harem-panel {'
                          + 'margin-top: 17px;}}'
                         );
     });
@@ -6789,7 +6789,7 @@ function moduleTeamsFilter() {
             $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
         });
 
-        observer.observe($('.page-change-team')[0], {
+        observer.observe($('.page-edit-team')[0], {
             childList: true
             , subtree: false
             , attributes: false
@@ -6859,7 +6859,7 @@ function moduleTeamsFilter() {
         });
 
         $.each(arenaGirls, function(index, girlElem) {
-            $(girlElem).css('display', $.inArray(index, girlsFiltered) > -1 ? 'block' : 'none');
+            $(girlElem).css('display', $.inArray(index, girlsFiltered) > -1 ? 'flex' : 'none');
         });
 
         //update scroll display
