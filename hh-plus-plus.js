@@ -1162,6 +1162,9 @@ if (lang === 'en') {
 const localeDecimalSep = Number(1.1).toLocaleString(locale).replace(/[0-9]/g, '');
 const parseLocaleFloat = (numStr) => parseFloat(numStr.split(localeDecimalSep).map(part => part.replace(/[^0-9]/g, '')).join('.'), 10);
 
+// Parser for League stats
+const parseLocaleRoundedInt = (numStr) => numStr.includes(localeDecimalSep) ? parseInt(numStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (numStr.includes('K')) ? parseInt(numStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(numStr.replace(/[^0-9]/gi, ''), 10);
+
 // Numbers: thousand spacing
 function nThousand(x) {
     if (typeof x != 'number') {
@@ -6147,73 +6150,40 @@ function moduleLinks() {
 
 function moduleSeasonSim() {
     var playerEgo;
-    //var playerEgoCheck;
     var playerAtk;
     var playerDef;
-    var playerClass;
-    /*var playerAlpha;
-    var playerBeta;
-    var playerOmega;*/
 
     var opponentEgo;
     var opponentAtk;
     var opponentDef;
     var opponentClass;
-    /*var opponentAlpha;
-    var opponentBeta;
-    var opponentOmega;*/
-
-    var matchRating;
-
-    var turns;
 
     function calculateSeasonPower(idOpponent) {
         // INIT
-        playerClass = $('#season-arena .battle_hero .class_change_btn').attr('carac');
-        playerEgo = Math.round(Hero.infos.caracs.ego);
-        playerAtk = Math.round(Hero.infos.caracs.damage);
-        playerDef = Math.round(Hero.infos.caracs.defense);
-        /*let playerData = $('#season-arena .battle_hero .hero_team .team_girl');
-        playerAlpha = JSON.parse(playerData.find('.change_team_girls[rel=g1]').attr('data-new-girl-tooltip'));
-        playerBeta = JSON.parse(playerData.find('.change_team_girls[rel=g2]').attr('data-new-girl-tooltip'));
-        playerOmega = JSON.parse(playerData.find('.change_team_girls[rel=g3]').attr('data-new-girl-tooltip'));*/
+        playerEgo = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerAtk = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerDef = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);;
 
         let opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
         opponentClass = opponentData.find('div:nth-child(1) div:nth-child(1) div:nth-child(2) div:nth-child(2) div:nth-child(2)').attr('carac');
         opponentEgo = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentDef = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentAtk = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        /*opponentAlpha = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g1]').attr('data-new-girl-tooltip'));
-        opponentBeta = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g2]').attr('data-new-girl-tooltip'));
-        opponentOmega = JSON.parse(opponentData.find('.opponent .hero_team .change_team_girls[rel=g3]').attr('data-new-girl-tooltip'));*/
-
-        //let playerTeam = [0, playerAlphaAdd, playerBetaAdd, playerOmegaAdd];
-        //let opponentTeam = [0, opponentAlphaAdd, opponentBetaAdd, opponentOmegaAdd];
 
         let player = {
             ego: playerEgo,
-            originEgo: Math.round(Hero.infos.caracs.ego),
+            originEgo: playerEgo,
             atk: playerAtk,
             def: playerDef,
-
-            /*alpha: playerAlpha,
-            beta: playerBeta,
-            omega: playerOmega,
-            team: playerTeam,*/
 
             text: 'Player',
         };
 
         let opponent = {
             ego: opponentEgo,
-            originEgo: parseInt($('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') div:nth-child(1) div:nth-child(4) div:nth-child(3) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10),
+            originEgo: opponentEgo,
             atk: opponentAtk,
             def: opponentDef,
-
-            /*alpha: opponentAlpha,
-            beta: opponentBeta,
-            omega: opponentOmega,
-            team: opponentTeam,*/
 
             text: 'Opponent',
             name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
@@ -6221,7 +6191,7 @@ function moduleSeasonSim() {
 
         let simu = simuFight(player, opponent);
 
-        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-average-level').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
+        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
     }
 
     calculateSeasonPower(1);
@@ -6260,12 +6230,6 @@ function moduleSeasonSim() {
 
     sheet.insertRule('.close {'
                      + 'color: #FFA500;}'
-                    );
-
-    sheet.insertRule('#powerLevelScouter {'
-                     + 'margin-left: 3px; '
-                     + 'margin-right: 1px; '
-                     + 'width: 30px;}'
                     );
 
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
