@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.31
+// @version			0.31.32
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.32: Adding own player class icon in league to be consistent.
 // 0.31.31: Fixing market stat summary to update correctly when buying stats in bulk.
 // 0.31.30: Adding GH world 11 villain to the menu, and tier guys for world 10.
 // 0.31.29: Changing show/hide button in league to icon from game. De-duping for mobile.
@@ -3989,6 +3990,20 @@ function moduleLeague() {
         if (localStorage.getItem('newLeagueResults') == null) {
             localStorage.removeItem('leagueResults');
             localStorage.setItem('newLeagueResults', 1)
+        }
+
+        const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
+        const heroClass = Hero.infos.class
+        switch (heroClass) {
+        case 1:
+            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
+            break;
+        case 2:
+            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
+            break;
+        case 3:
+            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
+            break;
         }
 
         for(var i=0; i<playersTotal; i++) {
