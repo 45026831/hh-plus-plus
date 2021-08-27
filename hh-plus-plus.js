@@ -4050,83 +4050,39 @@ function moduleLeague() {
 
 function moduleSim() {
     var playerEgo;
-    //var playerEgoCheck;
     var playerDef;
     var playerAtk;
-    var playerDef;
-    var playerClass;
-    /*var playerGirl1;
-    var playerGirl2;
-    var playerGirl3;
-    var playerGirl4;
-    var playerGirl5;
-    var playerGirl6;
-    var playerGirl7;*/
 
     var opponentEgo;
-    var opponentEgoStr;
-    var opponentOriginEgo;
     var opponentDef;
-    var opponentDefStr;
     var opponentAtk;
-    var opponentAtkStr;
-    var opponentClass;
-    /*var opponentAlpha;
-    var opponentBeta;
-    var opponentOmega;*/
-
-    var matchRating;
 
     function calculatePower() {
         // INIT
-        playerClass = $('#leagues_left .icon').attr('carac');
-        playerEgo = Math.round(Hero.infos.caracs.ego);
-        playerAtk = Math.round(Hero.infos.caracs.damage);
-        playerDef = Math.round(Hero.infos.caracs.defense);
-        /*playerAlpha = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=1]').attr('data-new-girl-tooltip'));
-        playerBeta = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=2]').attr('data-new-girl-tooltip'));
-        playerOmega = JSON.parse($('#leagues_left .girls_wrapper .team_girl[g=3]').attr('data-new-girl-tooltip'));*/
+        const playerStats = $('#leagues_left .stat');
+        playerAtk = parseLocaleRoundedInt(playerStats[0].innerText);
+        playerEgo = parseLocaleRoundedInt(playerStats[1].innerText);
+        playerDef = parseLocaleRoundedInt(playerStats[2].innerText);
 
-        opponentClass = $('#leagues_right .icon').attr('carac');
-        opponentEgoStr = $('#leagues_right .stat')[1].innerText;
-        opponentEgo = (opponentEgoStr.includes('.') || opponentEgoStr.includes(',')) ? parseInt(opponentEgoStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentEgoStr.includes('K')) ? parseInt(opponentEgoStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentEgoStr.replace(/[^0-9]/gi, ''), 10);
-        opponentOriginEgo = (opponentEgoStr.includes('.') || opponentEgoStr.includes(',')) ? parseInt(opponentEgoStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentEgoStr.includes('K')) ? parseInt(opponentEgoStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentEgoStr.replace(/[^0-9]/gi, ''), 10);
-        opponentAtkStr = $('#leagues_right .stat')[0].innerText;
-        opponentAtk = (opponentAtkStr.includes('.') || opponentAtkStr.includes(',')) ? parseInt(opponentAtkStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentAtkStr.includes('K')) ? parseInt(opponentAtkStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentAtkStr.replace(/[^0-9]/gi, ''), 10);
-        opponentDefStr = $('#leagues_right .stat')[2].innerText;
-        opponentDef = (opponentDefStr.includes('.') || opponentDefStr.includes(',')) ? parseInt(opponentDefStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentDefStr.includes('K')) ? parseInt(opponentDefStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentDefStr.replace(/[^0-9]/gi, ''), 10);
-
-        /*opponentAlpha = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=1]').attr('data-new-girl-tooltip'));
-        opponentBeta = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=2]').attr('data-new-girl-tooltip'));
-        opponentOmega = JSON.parse($('#leagues_right .girls_wrapper .team_girl[g=3]').attr('data-new-girl-tooltip'));
-
-        let playerTeam = [0, playerAlphaAdd, playerBetaAdd, playerOmegaAdd];
-        let opponentTeam = [0, opponentAlphaAdd, opponentBetaAdd, opponentOmegaAdd];*/
+        const opponentStats = $('#leagues_right .stat');
+        opponentAtk = parseLocaleRoundedInt(opponentStats[0].innerText);
+        opponentEgo = parseLocaleRoundedInt(opponentStats[1].innerText);
+        opponentDef = parseLocaleRoundedInt(opponentStats[2].innerText);
 
         let player = {
             ego: playerEgo,
-            originEgo: Math.round(Hero.infos.caracs.ego),
+            originEgo: playerEgo,
             atk: playerAtk,
             def: playerDef,
-
-            /*alpha: playerAlpha,
-            beta: playerBeta,
-            omega: playerOmega,
-            team: playerTeam,*/
 
             text: 'Player',
         };
 
         let opponent = {
             ego: opponentEgo,
-            originEgo: opponentOriginEgo,
+            originEgo: opponentEgo,
             atk: opponentAtk,
             def: opponentDef,
-
-            /*alpha: opponentAlpha,
-            beta: opponentBeta,
-            omega: opponentOmega,
-            team: opponentTeam,*/
 
             text: 'Opponent',
             name: $('#leagues_right .player_block .title').text()
