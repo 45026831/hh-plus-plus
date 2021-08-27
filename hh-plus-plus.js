@@ -316,23 +316,20 @@ const gameConfigs = {
     HH: {
         girl: 'girl',
         Girl: 'Girl',
-        haremettes: 'haremettes',
-        fontFamily: `'Carter One','Alegreya Sans',sans-serif`
+        haremettes: 'haremettes'
     },
     GH: {
         girl: 'guy',
         Girl: 'Guy',
-        haremettes: 'harem guys',
-        fontFamily: `'Carter One','Alegreya Sans',sans-serif`
+        haremettes: 'harem guys'
     },
     CxH: {
         girl: 'girl',
         Girl: 'Girl',
-        haremettes: 'haremettes',
-        fontFamily: 'Montserrat'
+        haremettes: 'haremettes'
     }
 }
-const gameConfig = isHH ? gameConfigs.HH : isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : {}
+const gameConfig = isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : gameConfigs.HH
 
 const HC = 1;
 const CH = 2;
@@ -1751,7 +1748,6 @@ function moduleVillain() {
                     );
 
     sheet.insertRule('.TrollsMenu a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5424,7 +5420,6 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.scriptSeasonInfo a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5534,7 +5529,6 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.league_counter a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5649,7 +5643,6 @@ function moduleLinks() {
 
 
     sheet.insertRule('.pop_timer a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5756,7 +5749,6 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.booster_timer a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
