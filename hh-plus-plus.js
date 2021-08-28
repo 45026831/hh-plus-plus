@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.32
+// @version			0.32.0
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.0: Adding probabilistic battle simulator by 0renge
 // 0.31.32: Adding own player class icon in league to be consistent.
 // 0.31.31: Fixing market stat summary to update correctly when buying stats in bulk.
 // 0.31.30: Adding GH world 11 villain to the menu, and tier guys for world 10.
