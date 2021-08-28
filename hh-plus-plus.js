@@ -368,6 +368,7 @@ texts.en = {
     optionsLeague: 'League information',
     optionsLeagueBoard: 'Show the league tops',
     optionsSimFight : 'League / Season / Villains sim',
+    optionsLogSimFight : 'Detailed logging in the browser console',
     optionsTeamsFilter: 'Teams filter',
     optionsChampions: 'Champions information',
     optionsLinks: 'Shortcuts/Timers',
@@ -523,6 +524,7 @@ texts.fr = {
     optionsLeague: 'Infos ligue',
     optionsLeagueBoard: 'Montrer les tops ligue',
     optionsSimFight: 'Simu ligue / saison / combats de troll',
+    optionsLogSimFight : 'Journalisation détaillée dans la console du navigateur',
     optionsTeamsFilter: 'Filtre d\'équipes',
     optionsChampions: 'Infos champions',
     optionsLinks: 'Raccourcis/Timers',
@@ -678,6 +680,7 @@ texts.es = {
     optionsLeague: 'Informacion de Liga',
     optionsLeagueBoard: 'Mostrar los mejores de la liga',
     optionsSimFight: 'Simulacion de Liga / Temporada / Villano',
+    optionsLogSimFight: 'Registro detallado en la consola del navegador',
     optionsTeamsFilter: 'Filtro de equipos',
     optionsChampions: 'Informacion de Campeones',
     optionsLinks: 'Atajos/Temporizadores',
@@ -832,6 +835,7 @@ texts.it = {
     optionsLeague: 'Informazioni sulle Leghe',
     optionsLeagueBoard: 'Mostra i top della lega',
     optionsSimFight: 'Simulazione Leghe / Stagione / Troll',
+    optionsLogSimFight : 'Accesso dettagliato nella console del browser',
     optionsTeamsFilter: 'Filtro delle squadre',
     optionsChampions: 'Informazioni sui Campioni',
     optionsLinks: 'Scorciatoie/Timer',
@@ -986,6 +990,7 @@ texts.de = {
     optionsLeague: 'Liga-Informationen',
     optionsLeagueBoard: 'Die Liga-Spitzen anzeigen',
     optionsSimFight: 'Liga/Saison/Widersacher-Simulation',
+    optionsLogSimFight: 'Detaillierte Protokollierung in der Browserkonsole',
     optionsTeamsFilter: 'Mannschaften filtern',
     optionsChampions: 'Champion-Informationen',
     optionsLinks: 'Abkürzungen/Zeitgeber',
@@ -1243,6 +1248,7 @@ function loadSetting(e){
 			||e=='league'
 			||e=='leagueBoard'
 			||e=='simFight'
+			//||e=='logSimFight'
 			||e=='teamsFilter'
 			||e=='champions'
 			||e=='links'
@@ -1364,6 +1370,7 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" hhs="league"><span class="slider"></span></label>' + texts[lang].optionsLeague + '<br />'
                                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="leagueBoard"><span class="slider"></span></label>' + texts[lang].optionsLeagueBoard + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="simFight"><span class="slider"></span></label>' + texts[lang].optionsSimFight + '<br />'
+                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="logSimFight"><span class="slider"></span></label>' + texts[lang].optionsLogSimFight + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="teamsFilter"><span class="slider"></span></label>' + texts[lang].optionsTeamsFilter + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="champions"><span class="slider"></span></label>' + texts[lang].optionsChampions + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="links"><span class="slider"></span></label>' + texts[lang].optionsLinks + '<br />'
@@ -1417,6 +1424,20 @@ function options() {
         if ($(this).is(':checked')) {
             $('[hhs=league]').prop('checked', true);
             localStorage.setItem('HHS.league', true)
+        }
+    });
+
+    // Dependency of fight simulation options
+    $('[hhs=simFight]').click(function() {
+        if (!$(this).is(':checked')) {
+            $('[hhs=logSimFight]').prop('checked', false);
+            localStorage.setItem('HHS.logSimFight', false)
+        }
+    });
+    $('[hhs=logSimFight]').click(function() {
+        if ($(this).is(':checked')) {
+            $('[hhs=simFight]').prop('checked', true);
+            localStorage.setItem('HHS.simFight', true)
         }
     });
 
@@ -4344,7 +4365,7 @@ function moduleSim() {
 
 //Battle simulation
 function simuFight(player, opponent) {
-    const logging = false;
+    const logging = loadSetting("logSimFight");
     let playerEgoCheck = 0;
     let opponentEgoCheck = 0;
 
@@ -4479,7 +4500,7 @@ function calculateOverkillChance(crits, hits, critchance) {
 
 // Calculate the chance to win the fight
 function calcWinProbability(player, opponent) {
-    const logging = true;
+    const logging = loadSetting("logSimFight");
     // check edge cases and shortcuts
     if (player.dmg <= 0) {
         return {
@@ -4551,13 +4572,13 @@ function calcWinProbability(player, opponent) {
     if(logging) console.log(100*winChance+ ' % chance to win vs. ' + 100*loseChance + ' % chance to lose => ' + 100*(winChance+loseChance) + ' % total coverage.');
 
     return {
-        scoreStr: (100*winChance).toFixed(2) + '%',
+        scoreStr: nRounding(100*winChance, 2, -1) + '%',
         scoreClass: winChance>0.9?"plus":winChance<0.5?"minus":"close"
     };
 }
 
 function calcLeagueProbabilities(player, opponent) {
-    const logging=true;
+    const logging = loadSetting("logSimFight");
     let ret = new Array(26); // Array with probabilities, key = points
 
     if (player.dmg <= 0) {
@@ -4637,7 +4658,7 @@ function calcLeagueProbabilities(player, opponent) {
         playerCrits--;
         playerHits+=2;
     } while (playerCrits >= 0);
-    if(logging) console.log('Total % covered (should be 100): ' + 100*ret.reduce((a,b)=>a+b,0);
+    if(logging) console.log('Total % covered (should be 100): ' + 100*ret.reduce((a,b)=>a+b,0));
     return ret;
 }
 /* =========================================
