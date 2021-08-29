@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.0
+// @version			0.32.1
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.1: Fixing error handling in harem info module when visiting with a fresh session.
 // 0.32.0: Adding probabilistic battle simulator by 0renge
 // 0.31.32: Adding own player class icon in league to be consistent.
 // 0.31.31: Fixing market stat summary to update correctly when buying stats in bulk.
@@ -2751,6 +2752,20 @@ function moduleHideSellButton() {
    =================== */
 
 function moduleHarem() {
+    // is localstorage available?
+    function lsTest() {
+        try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            return true;
+        } catch(e) {
+            return false;
+        }
+    }
+
+    // verify localstorage
+    var lsAvailable = (lsTest() === true) ? 'yes' : 'no';
+
     var stats = [];
     var girlsList = [];
     var haremRight = $('#harem_right');
@@ -4951,19 +4966,6 @@ function moduleLinks() {
     var time_now = server_now_ts;
     const options = {hour: '2-digit', minute: '2-digit'};
 
-    // is localstorage available?
-    function lsTest() {
-        try {
-            localStorage.setItem('test', 'test');
-            localStorage.removeItem('test');
-            return true;
-        } catch(e) {
-            return false;
-        }
-    }
-
-    // verify localstorage
-    var lsAvailable = (lsTest() === true) ? 'yes' : 'no';
     if (CurrentPage.indexOf('home') != -1) home();               // Current page: Homepage
     else if (CurrentPage.indexOf('log_in') != -1) home();        // Current page: Homepage
     else if (CurrentPage.indexOf('pachinko') != -1) pachinko();	 // Current page: Pachinko
