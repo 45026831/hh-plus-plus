@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.2
+// @version			0.32.3
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,7 +20,8 @@
 /*	===========
 	 CHANGELOG
 	=========== */
-// 0.31.2: Improving (and DRYing up) styling for Fight-a-villain menu on both desktop and mobile.
+// 0.32.3: Adding line to probabilistic sim log to show opponent ego just before and after player victory.
+// 0.32.2: Improving (and DRYing up) styling for Fight-a-villain menu on both desktop and mobile.
 // 0.32.1: Fixing error handling in harem info module when visiting with a fresh session.
 // 0.32.0: Adding probabilistic battle simulator by 0renge
 // 0.31.32: Adding own player class icon in league to be consistent.
@@ -4719,6 +4720,7 @@ function calcLeagueProbabilities(player, opponent) {
         playerCrits--;
         playerHits+=2;
     } while (playerCrits >= 0);
+    if(logging) console.log(`If you win: opponent ego at end [${nThousand(opponent.hp - (requiredHitsForOpponentDeath * player.dmg))}]; ego just before loss [${nThousand(opponent.hp - ((requiredHitsForOpponentDeath - 1) * player.dmg))}]`)
     if(logging) console.log('Total % covered (should be 100): ' + 100*ret.reduce((a,b)=>a+b,0));
     return ret;
 }
