@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.1
+// @version			0.32.2
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.31.2: Improving (and DRYing up) styling for Fight-a-villain menu on both desktop and mobile.
 // 0.32.1: Fixing error handling in harem info module when visiting with a fresh session.
 // 0.32.0: Adding probabilistic battle simulator by 0renge
 // 0.31.32: Adding own player class icon in league to be consistent.
@@ -320,17 +321,20 @@ const gameConfigs = {
     HH: {
         girl: 'girl',
         Girl: 'Girl',
-        haremettes: 'haremettes'
+        haremettes: 'haremettes',
+        trollMenuFontWeight: '400'
     },
     GH: {
         girl: 'guy',
         Girl: 'Guy',
-        haremettes: 'harem guys'
+        haremettes: 'harem guys',
+        trollMenuFontWeight: '400'
     },
     CxH: {
         girl: 'girl',
         Girl: 'Girl',
-        haremettes: 'haremettes'
+        haremettes: 'haremettes',
+        trollMenuFontWeight: '800'
     }
 }
 const gameConfig = isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : gameConfigs.HH
@@ -1730,46 +1734,70 @@ function moduleVillain() {
                 type = 'mythicEventTroll';
             }
         }
-        trollsMenu += '<a class="' + type + '" href="/troll-pre-battle.html?id_opponent=' + (i + 1) + '">' + trollName + trollNameTiers + '</a><br />';
+        trollsMenu += '<a class="' + type + '" href="/troll-pre-battle.html?id_opponent=' + (i + 1) + '">' + trollName + trollNameTiers + '</a>';
     }
 
     $('#contains_all > header').children('[type=fight]').append('<div class="TrollsMenu" id="TrollsID">' + trollsMenu + '</div>');
 
     //CSS
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'z-index: 35; '
-                     + 'display: none; '
-                     + 'margin: 0 0 0 13px; '
-                     + 'border-radius: 8px 10px 10px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'box-shadow: 0 0 0 1px rgba(255,255,255,0.73); '
-                     + 'font-size: 14px; '
-                     + 'font-weight: 400; '
-                     + 'letter-spacing: .22px; '
-                     + 'color: #fff; '
-                     + 'text-align: center;}}'
+    sheet.insertRule(`
+        .TrollsMenu {
+            position: absolute;
+            z-index: 35;
+            display: none;
+            border-radius: 0px 0px 8px 8px;
+            background-color: rgba(0,0,0,.8);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.73);
+            font-weight: ${gameConfig.trollMenuFontWeight};
+            letter-spacing: .22px;
+            color: #fff;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 400ms, visibility 400ms;
+        }
+    `);
+
+    sheet.insertRule(`
+        ${mediaDesktop} {
+            .TrollsMenu {
+                width: 88%;
+                margin: 34px 0 0 34px;
+                font-size: 14px;
+                line-height: 22px;
+            }
+        }
+    `);
+
+    sheet.insertRule(`
+        ${mediaMobile} {
+            .TrollsMenu {
+                width: 200%;
+                margin: 64px 0 0 -79px;
+                font-size: 16px;
+                line-height: 45px;
+                grid-template-columns: 1fr 1fr;
+                grid-auto-flow: row;
+            }
+        }
+    `);
+
+    sheet.insertRule(`
+        .energy_counter:hover > .TrollsMenu {
+            opacity: 1;
+            display: grid;
+            visibility: visible;
+        }
+    `);
+
+    sheet.insertRule('#TrollsID a {'
+                     + 'color: rgb(255, 255, 255); '
+                     + 'text-decoration: none;}'
                     );
 
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'z-index: 35; '
-                     + 'display: none; '
-                     + 'margin: 0 0 0 13px; '
-                     + 'border-radius: 8px 10px 10px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'box-shadow: 0 0 0 1px rgba(255,255,255,0.73); '
-                     + 'font-size: 16px !important; '
-                     + 'font-weight: 400; '
-                     + 'letter-spacing: .22px; '
-                     + 'color: #fff; '
-                     + 'text-align: center;}}'
-                    );
-
-    sheet.insertRule('#hh_comix .TrollsMenu {'
-                     + 'font-weight: 800 !important;}'
+    sheet.insertRule('#TrollsID a:hover {'
+                     + 'color: rgb(255, 247, 204); '
+                     + 'text-decoration: underline;}'
                     );
 
     sheet.insertRule('.TrollsMenu a {'
@@ -1823,48 +1851,6 @@ function moduleVillain() {
 
     sheet.insertRule('.mythicEventTroll:hover {'
                      + 'color: #ff003e !important;}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.energy_counter > .TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'width: 105%; '
-                     + 'margin: 64px 0 0 17px; '
-                     + 'border-radius: 0px 0 8px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'line-height: 40px !important; '
-                     + 'opacity: 0; '
-                     + 'visibility: hidden;'
-                     + 'transition: opacity 400ms, visibility 400ms;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.energy_counter > .TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'width: 88%; '
-                     + 'margin: 34px 0 0 34px; '
-                     + 'border-radius: 0px 0 8px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'line-height: 22px; '
-                     + 'opacity: 0; '
-                     + 'visibility: hidden;'
-                     + 'transition: opacity 400ms, visibility 400ms;}}'
-                    );
-
-    sheet.insertRule('.energy_counter:hover > .TrollsMenu {'
-                     + 'opacity: 1; '
-                     + 'display: block; '
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('#TrollsID a {'
-                     + 'color: rgb(255, 255, 255); '
-                     + 'text-decoration: none;}'
-                    );
-
-    sheet.insertRule('#TrollsID a:hover {'
-                     + 'color: rgb(255, 247, 204); '
-                     + 'text-decoration: underline;}'
                     );
 }
 
