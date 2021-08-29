@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.31.30
+// @version			0.32.3
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,12 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.3: Adding line to probabilistic sim log to show opponent ego just before and after player victory.
+// 0.32.2: Improving (and DRYing up) styling for Fight-a-villain menu on both desktop and mobile.
+// 0.32.1: Fixing error handling in harem info module when visiting with a fresh session.
+// 0.32.0: Adding probabilistic battle simulator by 0renge
+// 0.31.32: Adding own player class icon in league to be consistent.
+// 0.31.31: Fixing market stat summary to update correctly when buying stats in bulk.
 // 0.31.30: Adding GH world 11 villain to the menu, and tier guys for world 10.
 // 0.31.29: Changing show/hide button in league to icon from game. De-duping for mobile.
 // 0.31.28: Adjusting league view on mobile now that league_end_in is visible
@@ -317,22 +323,22 @@ const gameConfigs = {
         girl: 'girl',
         Girl: 'Girl',
         haremettes: 'haremettes',
-        fontFamily: `'Carter One','Alegreya Sans',sans-serif`
+        trollMenuFontWeight: '400'
     },
     GH: {
         girl: 'guy',
         Girl: 'Guy',
         haremettes: 'harem guys',
-        fontFamily: `'Carter One','Alegreya Sans',sans-serif`
+        trollMenuFontWeight: '400'
     },
     CxH: {
         girl: 'girl',
         Girl: 'Girl',
         haremettes: 'haremettes',
-        fontFamily: 'Montserrat'
+        trollMenuFontWeight: '800'
     }
 }
-const gameConfig = isHH ? gameConfigs.HH : isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : {}
+const gameConfig = isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : gameConfigs.HH
 
 const HC = 1;
 const CH = 2;
@@ -395,6 +401,7 @@ texts.en = {
     optionsLeague: 'League information',
     optionsLeagueBoard: 'Show the league tops',
     optionsSimFight : 'League / Season / Villains sim',
+    optionsLogSimFight : 'Detailed logging in the browser console',
     optionsTeamsFilter: 'Teams filter',
     optionsChampions: 'Champions information',
     optionsLinks: 'Shortcuts/Timers',
@@ -550,6 +557,7 @@ texts.fr = {
     optionsLeague: 'Infos ligue',
     optionsLeagueBoard: 'Montrer les tops ligue',
     optionsSimFight: 'Simu ligue / saison / combats de troll',
+    optionsLogSimFight : 'Journalisation détaillée dans la console du navigateur',
     optionsTeamsFilter: 'Filtre d\'équipes',
     optionsChampions: 'Infos champions',
     optionsLinks: 'Raccourcis/Timers',
@@ -705,6 +713,7 @@ texts.es = {
     optionsLeague: 'Informacion de Liga',
     optionsLeagueBoard: 'Mostrar los mejores de la liga',
     optionsSimFight: 'Simulacion de Liga / Temporada / Villano',
+    optionsLogSimFight: 'Registro detallado en la consola del navegador',
     optionsTeamsFilter: 'Filtro de equipos',
     optionsChampions: 'Informacion de Campeones',
     optionsLinks: 'Atajos/Temporizadores',
@@ -859,6 +868,7 @@ texts.it = {
     optionsLeague: 'Informazioni sulle Leghe',
     optionsLeagueBoard: 'Mostra i top della lega',
     optionsSimFight: 'Simulazione Leghe / Stagione / Troll',
+    optionsLogSimFight : 'Accesso dettagliato nella console del browser',
     optionsTeamsFilter: 'Filtro delle squadre',
     optionsChampions: 'Informazioni sui Campioni',
     optionsLinks: 'Scorciatoie/Timer',
@@ -1013,6 +1023,7 @@ texts.de = {
     optionsLeague: 'Liga-Informationen',
     optionsLeagueBoard: 'Die Liga-Spitzen anzeigen',
     optionsSimFight: 'Liga/Saison/Widersacher-Simulation',
+    optionsLogSimFight: 'Detaillierte Protokollierung in der Browserkonsole',
     optionsTeamsFilter: 'Mannschaften filtern',
     optionsChampions: 'Champion-Informationen',
     optionsLinks: 'Abkürzungen/Zeitgeber',
@@ -1275,6 +1286,7 @@ function loadSetting(e){
 			||e=='league'
 			||e=='leagueBoard'
 			||e=='simFight'
+			//||e=='logSimFight'
 			||e=='teamsFilter'
 			||e=='champions'
 			||e=='links'
@@ -1396,6 +1408,7 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" hhs="league"><span class="slider"></span></label>' + texts[lang].optionsLeague + '<br />'
                                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="leagueBoard"><span class="slider"></span></label>' + texts[lang].optionsLeagueBoard + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="simFight"><span class="slider"></span></label>' + texts[lang].optionsSimFight + '<br />'
+                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="logSimFight"><span class="slider"></span></label>' + texts[lang].optionsLogSimFight + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="teamsFilter"><span class="slider"></span></label>' + texts[lang].optionsTeamsFilter + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="champions"><span class="slider"></span></label>' + texts[lang].optionsChampions + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="links"><span class="slider"></span></label>' + texts[lang].optionsLinks + '<br />'
@@ -1449,6 +1462,20 @@ function options() {
         if ($(this).is(':checked')) {
             $('[hhs=league]').prop('checked', true);
             localStorage.setItem('HHS.league', true)
+        }
+    });
+
+    // Dependency of fight simulation options
+    $('[hhs=simFight]').click(function() {
+        if (!$(this).is(':checked')) {
+            $('[hhs=logSimFight]').prop('checked', false);
+            localStorage.setItem('HHS.logSimFight', false)
+        }
+    });
+    $('[hhs=logSimFight]').click(function() {
+        if ($(this).is(':checked')) {
+            $('[hhs=simFight]').prop('checked', true);
+            localStorage.setItem('HHS.simFight', true)
         }
     });
 
@@ -1711,50 +1738,73 @@ function moduleVillain() {
                 type = 'mythicEventTroll';
             }
         }
-        trollsMenu += '<a class="' + type + '" href="/troll-pre-battle.html?id_opponent=' + (i + 1) + '">' + trollName + trollNameTiers + '</a><br />';
+        trollsMenu += '<a class="' + type + '" href="/troll-pre-battle.html?id_opponent=' + (i + 1) + '">' + trollName + trollNameTiers + '</a>';
     }
 
     $('#contains_all > header').children('[type=fight]').append('<div class="TrollsMenu" id="TrollsID">' + trollsMenu + '</div>');
 
     //CSS
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'z-index: 35; '
-                     + 'display: none; '
-                     + 'margin: 0 0 0 13px; '
-                     + 'border-radius: 8px 10px 10px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'box-shadow: 0 0 0 1px rgba(255,255,255,0.73); '
-                     + 'font-size: 14px; '
-                     + 'font-weight: 400; '
-                     + 'letter-spacing: .22px; '
-                     + 'color: #fff; '
-                     + 'text-align: center;}}'
+    sheet.insertRule(`
+        .TrollsMenu {
+            position: absolute;
+            z-index: 35;
+            display: none;
+            border-radius: 0px 0px 8px 8px;
+            background-color: rgba(0,0,0,.8);
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.73);
+            font-weight: ${gameConfig.trollMenuFontWeight};
+            letter-spacing: .22px;
+            color: #fff;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 400ms, visibility 400ms;
+        }
+    `);
+
+    sheet.insertRule(`
+        ${mediaDesktop} {
+            .TrollsMenu {
+                width: 88%;
+                margin: 34px 0 0 34px;
+                font-size: 14px;
+                line-height: 22px;
+            }
+        }
+    `);
+
+    sheet.insertRule(`
+        ${mediaMobile} {
+            .TrollsMenu {
+                width: 200%;
+                margin: 64px 0 0 -79px;
+                font-size: 16px;
+                line-height: 45px;
+                grid-template-columns: 1fr 1fr;
+                grid-auto-flow: row;
+            }
+        }
+    `);
+
+    sheet.insertRule(`
+        .energy_counter:hover > .TrollsMenu {
+            opacity: 1;
+            display: grid;
+            visibility: visible;
+        }
+    `);
+
+    sheet.insertRule('#TrollsID a {'
+                     + 'color: rgb(255, 255, 255); '
+                     + 'text-decoration: none;}'
                     );
 
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'z-index: 35; '
-                     + 'display: none; '
-                     + 'margin: 0 0 0 13px; '
-                     + 'border-radius: 8px 10px 10px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'box-shadow: 0 0 0 1px rgba(255,255,255,0.73); '
-                     + 'font-size: 16px !important; '
-                     + 'font-weight: 400; '
-                     + 'letter-spacing: .22px; '
-                     + 'color: #fff; '
-                     + 'text-align: center;}}'
-                    );
-
-    sheet.insertRule('#hh_comix .TrollsMenu {'
-                     + 'font-weight: 800 !important;}'
+    sheet.insertRule('#TrollsID a:hover {'
+                     + 'color: rgb(255, 247, 204); '
+                     + 'text-decoration: underline;}'
                     );
 
     sheet.insertRule('.TrollsMenu a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -1805,48 +1855,6 @@ function moduleVillain() {
 
     sheet.insertRule('.mythicEventTroll:hover {'
                      + 'color: #ff003e !important;}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.energy_counter > .TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'width: 105%; '
-                     + 'margin: 64px 0 0 17px; '
-                     + 'border-radius: 0px 0 8px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'line-height: 40px !important; '
-                     + 'opacity: 0; '
-                     + 'visibility: hidden;'
-                     + 'transition: opacity 400ms, visibility 400ms;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.energy_counter > .TrollsMenu {'
-                     + 'position: absolute; '
-                     + 'width: 88%; '
-                     + 'margin: 34px 0 0 34px; '
-                     + 'border-radius: 0px 0 8px 8px; '
-                     + 'background-color: rgba(0,0,0,.8); '
-                     + 'line-height: 22px; '
-                     + 'opacity: 0; '
-                     + 'visibility: hidden;'
-                     + 'transition: opacity 400ms, visibility 400ms;}}'
-                    );
-
-    sheet.insertRule('.energy_counter:hover > .TrollsMenu {'
-                     + 'opacity: 1; '
-                     + 'display: block; '
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('#TrollsID a {'
-                     + 'color: rgb(255, 255, 255); '
-                     + 'text-decoration: none;}'
-                    );
-
-    sheet.insertRule('#TrollsID a:hover {'
-                     + 'color: rgb(255, 247, 204); '
-                     + 'text-decoration: underline;}'
                     );
 }
 
@@ -2165,7 +2173,8 @@ function moduleMarket() {
     }
     $('plus').on('click', function (event) {
         var stat = 'carac' + $(this).attr('for_carac');
-        Hero.infos[stat]++;
+        var amount = parseInt($('[rel=buy-stats-multiplier').text().replace(/[^0-9]/g, ''), 10);
+        Hero.infos[stat] += amount;
         timer = setTimeout(function() {
             updateStats();
         }, 400);
@@ -2733,6 +2742,20 @@ function moduleHideSellButton() {
    =================== */
 
 function moduleHarem() {
+    // is localstorage available?
+    function lsTest() {
+        try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            return true;
+        } catch(e) {
+            return false;
+        }
+    }
+
+    // verify localstorage
+    var lsAvailable = (lsTest() === true) ? 'yes' : 'no';
+
     var stats = [];
     var girlsList = [];
     var haremRight = $('#harem_right');
@@ -3996,6 +4019,20 @@ function moduleLeague() {
             localStorage.setItem('newLeagueResults', 1)
         }
 
+        const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
+        const heroClass = Hero.infos.class
+        switch (heroClass) {
+        case 1:
+            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
+            break;
+        case 2:
+            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
+            break;
+        case 3:
+            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
+            break;
+        }
+
         for(var i=0; i<playersTotal; i++) {
             var playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
             var playerId = playerData.attr('sorting_id');
@@ -4052,10 +4089,12 @@ function moduleSim() {
     var playerEgo;
     var playerDef;
     var playerAtk;
+    var playerCrit;
 
     var opponentEgo;
     var opponentDef;
     var opponentAtk;
+    var opponentCrit;
 
     function calculatePower() {
         // INIT
@@ -4063,11 +4102,13 @@ function moduleSim() {
         playerAtk = parseLocaleRoundedInt(playerStats[0].innerText);
         playerEgo = parseLocaleRoundedInt(playerStats[1].innerText);
         playerDef = parseLocaleRoundedInt(playerStats[2].innerText);
+        playerCrit = parseLocaleRoundedInt(playerStats[3].innerText);
 
         const opponentStats = $('#leagues_right .stat');
         opponentAtk = parseLocaleRoundedInt(opponentStats[0].innerText);
         opponentEgo = parseLocaleRoundedInt(opponentStats[1].innerText);
         opponentDef = parseLocaleRoundedInt(opponentStats[2].innerText);
+        opponentCrit = parseLocaleRoundedInt(opponentStats[3].innerText);
 
         let player = {
             ego: playerEgo,
@@ -4090,9 +4131,32 @@ function moduleSim() {
 
         let simu = simuFight(player, opponent);
 
+        player = {
+            hp: playerEgo,
+            dmg: playerAtk - opponentDef,
+            critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
+        };
+        opponent = {
+            hp: opponentEgo,
+            dmg: opponentAtk - playerDef,
+            critchance: 0.3-player.critchance,
+            name: $('#leagues_right .player_block .title').text()
+        };
+
+        let calc = calcLeagueProbabilities(player, opponent);
+        let probabilityTooltip = '<table>';
+        let expectedValue = 0;
+        for (let i=25; i>=3; i--) {
+            if (calc[i]) {
+                probabilityTooltip += '<tr><td>'+(100*calc[i]).toFixed(2)+'%</td><td>+'+i+'</td></tr>';
+                expectedValue += i*calc[i];
+            }
+        }
+        probabilityTooltip += '</table>Expected value: +'+expectedValue.toFixed(2);
+
         $('.matchRating').remove();
 
-        $('#leagues_right .average-lvl').append('<div class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + ' / ' + simu.pointsStr + '</div>');
+        $('#leagues_right .average-lvl').append('<div class="matchRating ' + simu.scoreClass + '" hh_title="'+probabilityTooltip+'">' + simu.scoreStr + ' / ' + simu.pointsStr + '</div>');
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + ' / ' + simu.pointsStr + '</span>');
 
         saveVictories();
@@ -4323,6 +4387,7 @@ function moduleSim() {
 
 //Battle simulation
 function simuFight(player, opponent) {
+    const logging = loadSetting("logSimFight");
     let playerEgoCheck = 0;
     let opponentEgoCheck = 0;
 
@@ -4354,19 +4419,21 @@ function simuFight(player, opponent) {
     player.ego -= Math.max(0, opponent.atk - player.def);
 
     //Log opponent name and starting egos for sim
-    console.log('Simulation log for: ' + opponent.name);
-    console.log('Starting Egos adjusted for the case proc scenario (0 for you and 1 for the opponent):');
-    console.log('Player Ego: ' + player.ego);
-    console.log('Opponent Ego: ' + opponent.ego);
+    if (logging) {
+        console.log('Simulation log for: ' + opponent.name);
+        console.log('Starting Egos adjusted for the case proc scenario (0 for you and 1 for the opponent):');
+        console.log('Player Ego: ' + player.ego);
+        console.log('Opponent Ego: ' + opponent.ego);
+    }
 
     function play_turn(cur) {
         let o = cur === player ? opponent : player;
 
         o.ego -= Math.max(0, cur.atk - o.def);
-        console.log('Round ' + (turns + 1) + ': ' + cur.text + ' hit! -' + Math.max(0, (cur.atk - o.def)));
+        if(logging) console.log('Round ' + (turns + 1) + ': ' + cur.text + ' hit! -' + Math.max(0, (cur.atk - o.def)));
 
         //Log results
-        console.log('after Round ' + (turns + 1) + ': ' + o.text + ' ego: ' + o.ego);
+        if(logging) console.log('after Round ' + (turns + 1) + ': ' + o.text + ' ego: ' + o.ego);
     }
 
     //Simulate challenge
@@ -4377,7 +4444,7 @@ function simuFight(player, opponent) {
             opponentEgoCheck = opponent.ego;
             opponentEgoCheck -= player.atk - opponent.def;
 
-            if (opponentEgoCheck <= 0)
+            if (logging && opponentEgoCheck <= 0)
                 console.log('Victory! With 1 critical hit for player, Opponent ego: ' + opponentEgoCheck);
 
             player.ego = 0;
@@ -4390,7 +4457,7 @@ function simuFight(player, opponent) {
             playerEgoCheck = player.ego;
             playerEgoCheck -= opponent.atk - player.def;
 
-            if (playerEgoCheck <= 0)
+            if (logging && playerEgoCheck <= 0)
                 console.log('Defeat! With 1 more critical hit for opponent, Player ego: ' + playerEgoCheck);
 
             opponent.ego = 0;
@@ -4431,6 +4498,192 @@ function simuFight(player, opponent) {
     };
 }
 
+// == Helper functions for probability calculations ==
+// Calculate the chance to get a sequence with given amount of crits and non-crits at a given critchance
+function calculateChance(crits, hits, critchance) {
+    // returns (crits+hits)!/(crits!*hits!) * critchance^crits * (1-critchance)^hits
+    let binCoeffNumerator = 1;
+    for(let i = crits+hits; i>crits; i--) {
+        binCoeffNumerator *= i;
+    }
+
+    let binCoeffDenominator = 1;
+    for(let j = 1; j<=hits; j++) {
+        binCoeffDenominator *= j;
+    }
+
+    return binCoeffNumerator/binCoeffDenominator * Math.pow(critchance, crits) * Math.pow(1-critchance, hits);
+}
+// Calculate the chance to finish a match with a crit even though a normal hit would have been enough
+function calculateOverkillChance(crits, hits, critchance) {
+    if (hits==0) return 0;
+    return calculateChance(crits, hits-1, critchance)*critchance;
+}
+
+// Calculate the chance to win the fight
+function calcWinProbability(player, opponent) {
+    const logging = loadSetting("logSimFight");
+    // check edge cases and shortcuts
+    if (player.dmg <= 0) {
+        return {
+            scoreStr: "0%",
+            scoreClass: "minus"
+        };
+    } else if (opponent.dmg <= 0) {
+        return {
+            scoreStr: "100%",
+            scoreClass: "plus"
+        };
+    } else if (Math.floor(1+player.hp/opponent.dmg)*2*player.dmg < opponent.hp) {
+        // guaranteed loss
+        return {
+            scoreStr: "0%",
+            scoreClass: "minus"
+        };
+    } else if (Math.ceil(opponent.hp/player.dmg-1)*2*opponent.dmg < player.hp) {
+        // guaranteed win
+        return {
+            scoreStr: "100%",
+            scoreClass: "plus"
+        };
+    }
+
+    // Amount of non-crit hits we can take without losing
+    const tolerableHits = Math.ceil(player.hp/opponent.dmg)-1;
+
+    let winChance = 0;
+    let loseChance = 0;
+    let playerCrits = 0;
+    let playerNormalHits = Math.ceil(opponent.hp/player.dmg);
+
+    if(logging) console.log('Probability calculation log for: ' + opponent.name);
+    do {
+        if(logging) console.log(' Scenario: ' + playerCrits + ' crits and ' + playerNormalHits + ' hits');
+        let scenarioLikelihood = calculateChance(playerCrits, playerNormalHits, player.critchance);
+        let overkillChance = calculateOverkillChance(playerCrits, playerNormalHits, player.critchance);
+        if(logging) console.log('  Scenario likelihood: ' + 100*scenarioLikelihood + ' % + ' + 100*overkillChance + ' % chance for overkill');
+        scenarioLikelihood += overkillChance;
+
+        let rounds = playerCrits + playerNormalHits;
+        let tolerableCrits = tolerableHits-rounds+1;
+        if(logging) console.log('  Opponent is allowed to crit ' + tolerableCrits + ' times');
+
+        if (tolerableCrits < 0) {
+            if(logging) console.log('  => impossible, we lose');
+            loseChance += scenarioLikelihood;
+        } else if (tolerableCrits >= rounds-1) {
+            if(logging) console.log ('  => guaranteed, we win');
+            winChance += scenarioLikelihood;
+        } else {
+            let opponentLikelihood = 0;
+            for(let i=0; i<=tolerableCrits; i++) {
+                let tmp = calculateChance(i, rounds-i-1, opponent.critchance);
+                if(logging) console.log('   probability for ' + i + ' crits and ' + (rounds-i-1) + ' hits: ' + 100*tmp + ' %');
+                opponentLikelihood += tmp;
+            }
+            if(logging) console.log('  ' + 100*opponentLikelihood + ' % chance that this condition is fulfilled');
+            if(logging) console.log('  => ' + 100*opponentLikelihood*scenarioLikelihood + ' % to win through this scenario');
+            winChance += opponentLikelihood*scenarioLikelihood;
+            loseChance += (1-opponentLikelihood)*scenarioLikelihood;
+        }
+
+        playerCrits++;
+        playerNormalHits-=2;
+    } while (playerNormalHits >= 0);
+
+    if(logging) console.log(100*winChance+ ' % chance to win vs. ' + 100*loseChance + ' % chance to lose => ' + 100*(winChance+loseChance) + ' % total coverage.');
+
+    return {
+        scoreStr: nRounding(100*winChance, 2, -1) + '%',
+        scoreClass: winChance>0.9?"plus":winChance<0.5?"minus":"close"
+    };
+}
+
+function calcLeagueProbabilities(player, opponent) {
+    const logging = loadSetting("logSimFight");
+    let ret = new Array(26); // Array with probabilities, key = points
+
+    if (player.dmg <= 0) {
+        ret[3]=1;
+        return ret;
+    } else if (opponent.dmg <= 0) {
+        ret[25]=1;
+        return ret;
+    }
+
+    const requiredHitsForPlayerDeath = Math.ceil(player.hp/opponent.dmg);
+    const requiredHitsForOpponentDeath = Math.ceil(opponent.hp/player.dmg);
+
+    if(logging) console.log('Probability calculation log for: ' + opponent.name);
+    // Lose scenarios
+    let opponentCrits = Math.floor(requiredHitsForPlayerDeath/2);
+    let opponentHits = requiredHitsForPlayerDeath%2;
+    do {
+        let scenarioLikelihood = calculateChance(opponentCrits, opponentHits, opponent.critchance)
+            + calculateOverkillChance(opponentCrits, opponentHits, opponent.critchance);
+        let rounds = opponentCrits+opponentHits;
+        let tolerablePlayerCrits = Math.min(rounds, requiredHitsForOpponentDeath-rounds-1);
+        if(logging) {
+            console.log(' Scenario: Opponent crits ' + opponentCrits + ' and hits ' + opponentHits + ' times (' + 100*scenarioLikelihood + ' %)');
+            console.log('  Opponent wins if player crits ' + tolerablePlayerCrits + ' times or less');
+        }
+        if(tolerablePlayerCrits < 0) {
+            if(logging) console.log('   => impossible');
+            break; // less crits won't make it better
+        }
+        for(let playerCrits=0; playerCrits <= tolerablePlayerCrits; playerCrits++) {
+            let playerHits = rounds-playerCrits;
+            let opponentHpLeft = opponent.hp-player.dmg*(playerHits+2*playerCrits);
+            let points = 3 + Math.ceil(10-10*opponentHpLeft/opponent.hp);
+            let totalResultChance = scenarioLikelihood * calculateChance(playerCrits, playerHits, player.critchance);
+            if(logging) {
+                console.log('   If player crits ' + playerCrits + ' and hits ' + playerHits + ' times, opponent has ' + opponentHpLeft +
+                    ' Hp left (' + (100*opponentHpLeft/opponent.hp).toFixed(2) + ' %) => ' + points +
+                    ' points (Probability for this outcome: ' + 100*totalResultChance + ' %)');
+            }
+            ret[points] = (ret[points]||0) + totalResultChance;
+        }
+
+        opponentCrits--;
+        opponentHits+=2;
+    } while (opponentCrits >= 0);
+
+    // Win scenarios
+    let playerCrits = Math.floor(requiredHitsForOpponentDeath/2);
+    let playerHits = requiredHitsForOpponentDeath%2;
+    do {
+        let scenarioLikelihood = calculateChance(playerCrits, playerHits, player.critchance)
+            + calculateOverkillChance(playerCrits, playerHits, player.critchance);
+        let rounds = playerCrits+playerHits;
+        let tolerableOpponentCrits = Math.min(rounds-1, requiredHitsForPlayerDeath-rounds);
+        if(logging) {
+            console.log(' Scenario: Player crits ' + playerCrits + ' and hits ' + playerHits + ' times (' + 100*scenarioLikelihood + ' %)');
+            console.log('  Player wins if opponent crits ' + tolerableOpponentCrits + ' times or less');
+        }
+        if(tolerableOpponentCrits < 0) {
+            if(logging) console.log('   => impossible');
+            break; // less crits won't make it better
+        }
+        for(opponentCrits=0; opponentCrits <= tolerableOpponentCrits; opponentCrits++) {
+            opponentHits = rounds-opponentCrits-1;
+            let playerHpLeft = player.hp-opponent.dmg*(opponentHits+2*opponentCrits);
+            let points = 15 + Math.ceil(10*playerHpLeft/player.hp);
+            let totalResultChance = scenarioLikelihood * calculateChance(opponentCrits, opponentHits, opponent.critchance);
+            if(logging) {
+                console.log('   If opponent crits ' + opponentCrits + ' and hits ' + opponentHits + ' times, player has ' + playerHpLeft +
+                    ' Hp left (' + (100*playerHpLeft/player.hp).toFixed(2) + ' %) => ' + points +
+                    ' points (Probability for this outcome: ' + 100*totalResultChance + ' %)');
+            }
+            ret[points] = (ret[points]||0) + totalResultChance;
+        }
+
+        playerCrits--;
+        playerHits+=2;
+    } while (playerCrits >= 0);
+    if(logging) console.log(`If you win: opponent ego at end [${nThousand(opponent.hp - (requiredHitsForOpponentDeath * player.dmg))}]; ego just before loss [${nThousand(opponent.hp - ((requiredHitsForOpponentDeath - 1) * player.dmg))}]`)
+    if(logging) console.log('Total % covered (should be 100): ' + 100*ret.reduce((a,b)=>a+b,0));
+    return ret;
+}
 /* =========================================
 	CHAMPIONS INFORMATION (Credit: Entwine)
    ========================================= */
@@ -4661,19 +4914,6 @@ function moduleLinks() {
     var time_now = server_now_ts;
     const options = {hour: '2-digit', minute: '2-digit'};
 
-    // is localstorage available?
-    function lsTest() {
-        try {
-            localStorage.setItem('test', 'test');
-            localStorage.removeItem('test');
-            return true;
-        } catch(e) {
-            return false;
-        }
-    }
-
-    // verify localstorage
-    var lsAvailable = (lsTest() === true) ? 'yes' : 'no';
     if (CurrentPage.indexOf('home') != -1) home();               // Current page: Homepage
     else if (CurrentPage.indexOf('log_in') != -1) home();        // Current page: Homepage
     else if (CurrentPage.indexOf('pachinko') != -1) pachinko();	 // Current page: Pachinko
@@ -5383,7 +5623,6 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.scriptSeasonInfo a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5493,7 +5732,6 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.league_counter a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5608,7 +5846,6 @@ function moduleLinks() {
 
 
     sheet.insertRule('.pop_timer a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -5715,7 +5952,6 @@ function moduleLinks() {
                     );
 
     sheet.insertRule('.booster_timer a {'
-                     + `font-family: ${gameConfig.fontFamily} !important;`
                      + 'color: rgb(255, 255, 255); '
                      + 'text-decoration: none;}'
                     );
@@ -6108,29 +6344,32 @@ function moduleSeasonSim() {
     var playerEgo;
     var playerAtk;
     var playerDef;
+    var playerCrit;
 
     var opponentEgo;
     var opponentAtk;
     var opponentDef;
-    var opponentClass;
+    var opponentCrit;
 
     function calculateSeasonPower(idOpponent) {
         // INIT
         playerEgo = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         playerAtk = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerDef = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);;
+        playerDef = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerCrit = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
 
         let opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
-        opponentClass = opponentData.find('div:nth-child(1) div:nth-child(1) div:nth-child(2) div:nth-child(2) div:nth-child(2)').attr('carac');
         opponentEgo = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentDef = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentAtk = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentCrit = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
 
         let player = {
             ego: playerEgo,
             originEgo: playerEgo,
             atk: playerAtk,
             def: playerDef,
+            crit: playerCrit,
 
             text: 'Player',
         };
@@ -6140,6 +6379,7 @@ function moduleSeasonSim() {
             originEgo: opponentEgo,
             atk: opponentAtk,
             def: opponentDef,
+            crit: opponentCrit,
 
             text: 'Opponent',
             name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
@@ -6148,6 +6388,23 @@ function moduleSeasonSim() {
         let simu = simuFight(player, opponent);
 
         $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
+
+
+        player = {
+            hp: playerEgo,
+            dmg: playerAtk - opponentDef,
+            critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
+        };
+        opponent = {
+            hp: opponentEgo,
+            dmg: opponentAtk - playerDef,
+            critchance: 0.3-player.critchance,
+            name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text()
+        };
+
+        simu = calcWinProbability(player, opponent);
+
+        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .personal_info').append('<div class="matchRating ' + simu.scoreClass + '" style="margin-left:auto;margin-right:-15px">' + simu.scoreStr + '</div>');
     }
 
     calculateSeasonPower(1);
@@ -6563,97 +6820,39 @@ function modulePachinkoNames() {
 
 function moduleBattleSim() {
     var playerEgo;
-    var playerEgoCheck;
     var playerAtk;
     var playerDef;
-    var playerClass;
-    var playerGirl1;
-    var playerGirl2;
-    var playerGirl3;
-    var playerGirl4;
-    var playerGirl5;
-    var playerGirl6;
-    var playerGirl7;
-    var playerAlphaAdd;
-    var playerBetaAdd;
-    var playerOmegaAdd;
 
     var opponentEgo;
-    var opponentOriginEgo;
-    var opponentEgoStr;
     var opponentAtk;
-    var opponentAtkStr;
     var opponentDef;
-    var opponentDefStr;
-    var opponentClass;
-    var opponentGirl1;
-    var opponentGirl2;
-    var opponentGirl3;
-    var opponentAlphaAdd;
-    var opponentBetaAdd;
-    var opponentOmegaAdd;
-
-    var matchRating;
 
     function calculatePower() {
         // INIT
-        playerClass = $('#pre-battle #player-panel .hero-class-icon').attr('carac');
-        playerEgo = Math.round(Hero.infos.caracs.ego);
-        playerAtk = Math.round(Hero.infos.caracs.damage);
-        playerDef = Math.round(Hero.infos.caracs.defense);
+        const playerStats = $('#pre-battle #player-panel .stat');
+        playerAtk = parseLocaleRoundedInt(playerStats[0].innerText);
+        playerEgo = parseLocaleRoundedInt(playerStats[1].innerText);
+        playerDef = parseLocaleRoundedInt(playerStats[2].innerText);
 
-        /*playerGirl1 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[3].attributes["data-new-girl-tooltip"].nodeValue);
-        playerGirl2 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[2].attributes["data-new-girl-tooltip"].nodeValue);
-        playerGirl3 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[5].attributes["data-new-girl-tooltip"].nodeValue);
-        playerGirl4 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[6].attributes["data-new-girl-tooltip"].nodeValue);
-        playerGirl5 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[4].attributes["data-new-girl-tooltip"].nodeValue);
-        playerGirl6 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[1].attributes["data-new-girl-tooltip"].nodeValue);
-        playerGirl7 = JSON.parse($('#player-panel .team-member.base-hexagon a img')[0].attributes["data-new-girl-tooltip"].nodeValue);*/
-
-        opponentClass = $('#pre-battle #opponent-panel .hero-class-icon').attr('carac');
-        opponentEgoStr = $('#pre-battle #opponent-panel .fighter-stats .stat')[1].innerText;
-        opponentEgo = (opponentEgoStr.includes('.') || opponentEgoStr.includes(',')) ? parseInt(opponentEgoStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentEgoStr.includes('K')) ? parseInt(opponentEgoStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentEgoStr.replace(/[^0-9]/gi, ''), 10);
-        opponentOriginEgo = (opponentEgoStr.includes('.') || opponentEgoStr.includes(',')) ? parseInt(opponentEgoStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentEgoStr.includes('K')) ? parseInt(opponentEgoStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentEgoStr.replace(/[^0-9]/gi, ''), 10);
-        opponentAtkStr = $('#pre-battle #opponent-panel .fighter-stats .stat')[0].innerText;
-        opponentAtk = (opponentAtkStr.includes('.') || opponentAtkStr.includes(',')) ? parseInt(opponentAtkStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentAtkStr.includes('K')) ? parseInt(opponentAtkStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentAtkStr.replace(/[^0-9]/gi, ''), 10);
-        opponentDefStr = $('#pre-battle #opponent-panel .fighter-stats .stat')[2].innerText;
-        opponentDef = (opponentDefStr.includes('.') || opponentDefStr.includes(',')) ? parseInt(opponentDefStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10) : (opponentDefStr.includes('K')) ? parseInt(opponentDefStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10) : parseInt(opponentDefStr.replace(/[^0-9]/gi, ''), 10);
-
-        /*opponentGirl1 = JSON.parse($('#opponent-panel .team-member img')[1].attributes["data-new-girl-tooltip"].nodeValue);
-        opponentGirl2 = JSON.parse($('#opponent-panel .team-member img')[0].attributes["data-new-girl-tooltip"].nodeValue);
-        opponentGirl3 = JSON.parse($('#opponent-panel .team-member img')[2].attributes["data-new-girl-tooltip"].nodeValue);
-
-        let playerTeam = [0, playerGirl1, playerGirl2, playerGirl3, playerGirl4, playerGirl5, playerGirl6, playerGirl7];
-        let opponentTeam = [0, opponentGirl1, opponentGirl2, opponentGirl3];*/
+        const opponentStats = $('#pre-battle #opponent-panel .stat');
+        opponentAtk = parseLocaleRoundedInt(opponentStats[0].innerText);
+        opponentEgo = parseLocaleRoundedInt(opponentStats[1].innerText);
+        opponentDef = parseLocaleRoundedInt(opponentStats[2].innerText);
 
         let player = {
             ego: playerEgo,
-            originEgo: Math.round(Hero.infos.caracs.ego),
+            originEgo: playerEgo,
             atk: playerAtk,
             def: playerDef,
-
-            /*girl1: playerGirl1,
-            girl2: playerGirl2,
-            girl3: playerGirl3,
-            girl4: playerGirl4,
-            girl5: playerGirl5,
-            girl6: playerGirl6,
-            girl7: playerGirl7,
-            team: playerTeam,*/
 
             text: 'Player',
         };
 
         let opponent = {
             ego: opponentEgo,
-            originEgo: opponentOriginEgo,
+            originEgo: opponentEgo,
             atk: opponentAtk,
             def: opponentDef,
-
-            /*girl1: opponentGirl1,
-            girl2: opponentGirl2,
-            girl3: opponentGirl3,
-            team: opponentTeam,*/
 
             text: 'Opponent',
             name: $('#opponent-panel .hero-name-container').text()
