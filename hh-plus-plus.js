@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.6
+// @version			0.32.7
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.7: Merging updated German translations from Tom208's version of the script.
 // 0.32.6: Fixing styling on girls in Teams filter when loading team.
 // 0.32.5: Adding slightly friendlier handling of error pages.
 // 0.32.4: Code fixes for battle sims and teams filters after change in game UI code.
@@ -1068,7 +1069,7 @@ texts.de = {
     boosters: 'Booster',
     books: 'Bücher',
     gifts: 'Geschenke',
-    currently_buyable: 'Aktuelle Bestände am Marktplatz',
+    currently_buyable: 'Aktuelle Marktangebote',
     visit_the: 'Besuche zuerst den <a href="../shop.html">Marktplatz</a>.',
     not_compatible: 'Dein Browser ist nicht kompatibel.',
     or_level: 'oder Level',
@@ -1081,17 +1082,17 @@ texts.de = {
     you_own: 'Du besitzt',
     you_can_give: 'Insgesamt verteilbar:',
     you_can_sell: 'Du kannst alles verkaufen für',
-    stat_points_need: 'bis Maximum käufliche Statpunkte',
-    money_need: 'zum Maximieren nötiges Geld',
-    money_spent: 'bisher ausgegebenes Geld',
-    points_from_level: 'Statpunkte durch Heldenlevel',
-    bought_points: 'Statpunkte durch Markt-Käufe',
-    equipment_points: 'Statpunkte durch Ausrüstungen',
-    ginseng_points: 'Statpunkte durch Booster',
-    club_points: 'Statpunkte durch Club-Boni',
+    stat_points_need: 'benötigte Statuspunkte bis Maximum',
+    money_need: 'nötiges Geld bis Maximum',
+    money_spent: 'bisher ausgegeben',
+    points_from_level: 'Statuspunkte durch Heldenlevel',
+    bought_points: 'gekaufte Statuspunkte',
+    equipment_points: 'Statuspunkte durch Ausrüstung',
+    ginseng_points: 'Statuspunkte durch Booster',
+    club_points: 'Statuspunkte durch Club-Boni',
     Xp: 'XP',
-    starting: 'Starting',
-    common: 'Gemeinsame',
+    starting: 'Starter',
+    common: 'Gewöhnliche',
     rare: 'Seltene',
     epic: 'Epische',
     legendary: 'Legendäre',
@@ -1099,7 +1100,7 @@ texts.de = {
     day: 'd',
     hour: 'h',
     minute: 'm',
-    second: 'z',
+    second: 's',
     demote_up: 'Für den <u>Abstieg</u> maximal möglich: ',
     demote_down: 'Für den <u>Abstieg</u> musst du überholt werden von Spielern mit höchstens ',
     demote_holdzero: 'Für den <u>Abstieg</u> musst du verbleiben bei ',
@@ -1113,7 +1114,7 @@ texts.de = {
     top30_up: 'Um <u>in den Top 30 zu kommen</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
     top30_hold: 'Um <u>in den Top 30 zu bleiben</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
     points: 'Punkte',
-    challenges_regen: 'Natürliche Regeneration: ',
+    challenges_regen: 'Regeneration: ',
     challenges_left: '<br />verbleibende Kämpfe: ',
     pop: 'Orte',
     season: 'Saison',
@@ -1121,40 +1122,40 @@ texts.de = {
     ends_at: 'Endet um',
     full: 'Voll',
     league: 'Liga',
-    boosters_end: 'Ende boosters',
-    victories: 'Siegen',
+    boosters_end: 'Booster enden',
+    victories: 'Siege',
     defeats: 'Niederlagen',
     unknown: 'Unbekannt',
-    opponents: 'Gegenspieler',
+    opponents: 'Gegner',
     notPlayed: 'Nicht gespielt',
     leaguePoints: 'Punkte',
     avg: 'Mittelwert',
     league_ending: 'Liga Ende ',
     league_finished: 'Liga endete am',
     current_league: 'Aktuelle Liga',
-    averageScore: 'Durchschnittsnote pro Kampf: ',
+    averageScore: 'Durchschnitt pro Kampf: ',
     scoreExpected: 'Erwartetes Ergebnis: ',
     available_girls: 'Freie Mädchen: ',
-    fights: 'Fights',
-    won_mojo: 'Won mojo',
-    lost_mojo: 'Lost mojo',
-    won_mojo_avg: 'Won mojo average',
-    lost_mojo_avg: 'Lost mojo average',
-    mojo_avg: 'Global mojo average',
+    fights: 'Kämpfe',
+    won_mojo: 'gewonnenes Mojo',
+    lost_mojo: 'verlorenes Mojo',
+    won_mojo_avg: 'im Mittel gewonnenes Mojo',
+    lost_mojo_avg: 'im Mittel verlorenes Mojo',
+    mojo_avg: 'Globales mittleres Mojo',
     filter: 'Filter',
-    searched_name : 'Gesuchter Name',
+    searched_name : 'Name',
     girl_name: 'Mädchen Name',
-    searched_class: 'Gesuchte Klasse',
-    searched_rarity: 'Gesuchte Seltenheit',
+    searched_class: 'Klasse',
+    searched_rarity: 'Seltenheit',
     team_number: 'Team #',
     all: 'Alle',
     team: 'Team',
-    save_as: 'Speichern unter',
+    save_as: 'Speichern',
     load_from: 'Laden',
-    level_range: 'Pegelbereich',
-    searched_aff_category: 'Gesuchte Zuneigungskategorie',
-    searched_aff_lvl: 'Gesuchtes Zuneigungslevel',
-    zero_star: '0 Stern',
+    level_range: 'Level',
+    searched_aff_category: 'maximale Zuneigung',
+    searched_aff_lvl: 'aktuelle Zuneigung',
+    zero_star: '0 Sterne',
     one_star: '1 Stern',
     two_stars: '2 Sterne',
     three_stars: '3 Sterne',
@@ -1167,9 +1168,9 @@ texts.de = {
     sort: 'Sortieren',
     hide: 'Ausblenden',
     display: 'Anzeigen',
-    searched_blessed_attributes: 'Gesuchte Selige Mädchen',
-    blessed_attributes: 'Gesegnete Mädchen',
-    non_blessed_attributes: 'Nicht-gesegnete Mädchen'
+    searched_blessed_attributes: 'Segnungen',
+    blessed_attributes: 'gesegnet',
+    non_blessed_attributes: 'nicht gesegnet'
 };
 
 var tierGirlsID;
