@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.5
+// @version			0.32.6
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.6: Fixing styling on girls in Teams filter when loading team.
 // 0.32.5: Adding slightly friendlier handling of error pages.
 // 0.32.4: Code fixes for battle sims and teams filters after change in game UI code.
 // 0.32.3: Adding line to probabilistic sim log to show opponent ego just before and after player victory.
@@ -7047,7 +7048,7 @@ function moduleTeamsFilter() {
         if (Array.isArray(selectedIds)) {
             $.each(arenaGirls, function(index, girlElem) {
                 var girlId = $(girlElem).attr("id_girl");
-                $(girlElem).css('display', $.inArray(girlId, selectedIds) > -1 ? 'block' : 'none');
+                $(girlElem).css('display', $.inArray(girlId, selectedIds) > -1 ? 'flex' : 'none');
             });
 
             //update scroll display
