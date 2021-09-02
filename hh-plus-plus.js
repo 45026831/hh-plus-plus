@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.9
+// @version			0.32.10
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.10: Updating German translations further after review from Bellanaris
 // 0.32.9: Changing URLs of soon-to-be-removed flaticons
 // 0.32.8: Swapping out stat scraping for making use of heroLeaguesData and playerLeaguesData now that they're symmetrical again.
 // 0.32.7: Merging updated German translations from Tom208's version of the script.
@@ -1094,11 +1095,11 @@ texts.de = {
     club_points: 'Statuspunkte durch Club-Boni',
     Xp: 'XP',
     starting: 'Starter',
-    common: 'Gewöhnliche',
-    rare: 'Seltene',
-    epic: 'Epische',
-    legendary: 'Legendäre',
-    mythic: 'Mythische',
+    common: 'Gewöhnlich',
+    rare: 'Selten',
+    epic: 'Episch',
+    legendary: 'Legendär',
+    mythic: 'Mythisch',
     day: 'd',
     hour: 'h',
     minute: 'm',
@@ -1146,7 +1147,7 @@ texts.de = {
     mojo_avg: 'Globales mittleres Mojo',
     filter: 'Filter',
     searched_name : 'Name',
-    girl_name: 'Mädchen Name',
+    girl_name: 'Name',
     searched_class: 'Klasse',
     searched_rarity: 'Seltenheit',
     team_number: 'Team #',
