@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.7
+// @version			0.32.8
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.8: Swapping out stat scraping for making use of heroLeaguesData and playerLeaguesData now that they're symmetrical again.
 // 0.32.7: Merging updated German translations from Tom208's version of the script.
 // 0.32.6: Fixing styling on girls in Teams filter when loading team.
 // 0.32.5: Adding slightly friendlier handling of error pages.
@@ -394,7 +395,7 @@ else if ($('html')[0].lang === 'de_DE') {
     lang = 'de';
 }
 
-var texts = [];
+var texts = {};
 
 texts.en = {
     optionsRefresh: 'Home screen refresh',
@@ -4095,29 +4096,21 @@ function moduleLeague() {
    ============ */
 
 function moduleSim() {
-    var playerEgo;
-    var playerDef;
-    var playerAtk;
-    var playerCrit;
-
-    var opponentEgo;
-    var opponentDef;
-    var opponentAtk;
-    var opponentCrit;
-
     function calculatePower() {
         // INIT
-        const playerStats = $('#leagues_left .stat');
-        playerAtk = parseLocaleRoundedInt(playerStats[0].innerText);
-        playerEgo = parseLocaleRoundedInt(playerStats[1].innerText);
-        playerDef = parseLocaleRoundedInt(playerStats[2].innerText);
-        playerCrit = parseLocaleRoundedInt(playerStats[3].innerText);
+        const {
+            chance: playerCrit,
+            damage: playerAtk,
+            defense: playerDef,
+            ego: playerEgo
+        } = heroLeaguesData.caracs
 
-        const opponentStats = $('#leagues_right .stat');
-        opponentAtk = parseLocaleRoundedInt(opponentStats[0].innerText);
-        opponentEgo = parseLocaleRoundedInt(opponentStats[1].innerText);
-        opponentDef = parseLocaleRoundedInt(opponentStats[2].innerText);
-        opponentCrit = parseLocaleRoundedInt(opponentStats[3].innerText);
+        const {
+            chance: opponentCrit,
+            damage: opponentAtk,
+            defense: opponentDef,
+            ego: opponentEgo
+        } = playerLeaguesData.caracs
 
         let player = {
             ego: playerEgo,
