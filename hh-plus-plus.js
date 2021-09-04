@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.11
+// @version			0.32.12
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.12: Swapping out villain battle sim for probabilistic sim.
 // 0.32.11: Pre-empting next update to leagues background data
 // 0.32.10: Updating German translations further after review from Bellanaris
 // 0.32.9: Changing URLs of soon-to-be-removed flaticons
@@ -6833,10 +6834,12 @@ function moduleBattleSim() {
     var playerEgo;
     var playerAtk;
     var playerDef;
+    var playerHarmony;
 
     var opponentEgo;
     var opponentAtk;
     var opponentDef;
+    var opponentHarmony;
 
     function calculatePower() {
         // INIT
@@ -6844,32 +6847,27 @@ function moduleBattleSim() {
         playerAtk = parseLocaleRoundedInt(playerStats[0].innerText);
         playerEgo = parseLocaleRoundedInt(playerStats[1].innerText);
         playerDef = parseLocaleRoundedInt(playerStats[2].innerText);
+        playerHarmony = parseLocaleRoundedInt(playerStats[3].innerText);
 
         const opponentStats = $('#pre-battle #opponent-panel .stat');
         opponentAtk = parseLocaleRoundedInt(opponentStats[0].innerText);
         opponentEgo = parseLocaleRoundedInt(opponentStats[1].innerText);
         opponentDef = parseLocaleRoundedInt(opponentStats[2].innerText);
+        opponentHarmony = parseLocaleRoundedInt(opponentStats[3].innerText);
 
-        let player = {
-            ego: playerEgo,
-            originEgo: playerEgo,
-            atk: playerAtk,
-            def: playerDef,
-
-            text: 'Player',
+        const player = {
+            hp: playerEgo,
+            dmg: playerAtk - opponentDef,
+            critchance: 0.3*playerHarmony/(playerHarmony+opponentHarmony)
         };
-
-        let opponent = {
-            ego: opponentEgo,
-            originEgo: opponentEgo,
-            atk: opponentAtk,
-            def: opponentDef,
-
-            text: 'Opponent',
+        const opponent = {
+            hp: opponentEgo,
+            dmg: opponentAtk - playerDef,
+            critchance: 0.3-player.critchance,
             name: $('#opponent-panel .hero-name-container').text()
         };
 
-        let simu = simuFight(player, opponent);
+        const simu = calcWinProbability(player, opponent);
 
         $('#opponent-panel .average-lvl').append('<div style="text-align : center; font-size : 16px" class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</div>');
     }
