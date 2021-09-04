@@ -316,12 +316,6 @@ var sheet = (function() {
 var location = window.location
 var CurrentPage = location.pathname;
 
-const isHH = [
-    'www.hentaiheroes.com',
-    'nutaku.haremheroes.com',
-    'eroges.hentaiheroes.com',
-    'thrix.hentaiheroes.com'
-].includes(location.host)
 const isGH = [
     'www.gayharem.com',
     'nutaku.gayharem.com'
@@ -330,6 +324,7 @@ const isCxH = [
     'www.comixharem.com',
     'nutaku.comixharem.com'
 ].includes(location.host)
+const isHH = !(isGH || isCxH)
 
 const gameConfigs = {
     HH: {
