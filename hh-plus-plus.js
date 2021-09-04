@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.12
+// @version			0.32.13
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.13: Fixing bug with duplicate wiki links on unobtained girls speech bubbles.
 // 0.32.12: Swapping out villain battle sim for probabilistic sim.
 // 0.32.11: Pre-empting next update to leagues background data
 // 0.32.10: Updating German translations further after review from Bellanaris
@@ -2993,13 +2994,13 @@ function moduleHarem() {
                 if ($('#hh_comix').length == 0) {
                     if (!girl.own) {
                         if (HH_UNIVERSE == 'gay') {
-                            $(this).find('.middle_part.missing_girl .dialog-box p').after('<div class="WikiLinkDialogbox"><a href="https://harem-battle.club/wiki/Gay-Harem/GH:' + girl.Name + '" target="_blank"> ' + girl.Name + texts[lang].wiki + ' </a></div>');
+                            $(this).find('.middle_part.missing_girl .dialog-box').append('<div class="WikiLinkDialogbox"><a href="https://harem-battle.club/wiki/Gay-Harem/GH:' + girl.Name + '" target="_blank"> ' + girl.Name + texts[lang].wiki + ' </a></div>');
                         }
                         else if (lang == 'fr') {
-                            $(this).find('.middle_part.missing_girl .dialog-box p').after('<div class="WikiLinkDialogbox"><a href="http://hentaiheroes.wikidot.com/' + girlName + '" target="_blank"> ' + texts[lang].wiki + girl.Name + ' </a></div>');
+                            $(this).find('.middle_part.missing_girl .dialog-box').append('<div class="WikiLinkDialogbox"><a href="http://hentaiheroes.wikidot.com/' + girlName + '" target="_blank"> ' + texts[lang].wiki + girl.Name + ' </a></div>');
                         }
                         else {
-                            $(this).find('.middle_part.missing_girl .dialog-box p').after('<div class="WikiLinkDialogbox"><a href="https://harem-battle.club/wiki/Harem-Heroes/HH:' + girlName + '" target="_blank"> ' + girl.Name + texts[lang].wiki + ' </a></div>');
+                            $(this).find('.middle_part.missing_girl .dialog-box').append('<div class="WikiLinkDialogbox"><a href="https://harem-battle.club/wiki/Harem-Heroes/HH:' + girlName + '" target="_blank"> ' + girl.Name + texts[lang].wiki + ' </a></div>');
                         }
                     }
                     if (girl.own) {
