@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.14
+// @version			0.32.15
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -20,6 +20,7 @@
 /*	===========
 	 CHANGELOG
 	=========== */
+// 0.32.15: Removing old sim from seasons, moving probability result to where old sim result was.
 // 0.32.14: Fixing harem wiki link duplication bug (#16) and moving the wiki link to the name to be less obtrusive.
 // 0.32.13: Fixing bug with duplicate wiki links on unobtained girls speech bubbles.
 // 0.32.12: Swapping out villain battle sim for probabilistic sim.
@@ -6382,47 +6383,21 @@ function moduleSeasonSim() {
         opponentAtk = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentCrit = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
 
-        let player = {
-            ego: playerEgo,
-            originEgo: playerEgo,
-            atk: playerAtk,
-            def: playerDef,
-            crit: playerCrit,
-
-            text: 'Player',
-        };
-
-        let opponent = {
-            ego: opponentEgo,
-            originEgo: opponentEgo,
-            atk: opponentAtk,
-            def: opponentDef,
-            crit: opponentCrit,
-
-            text: 'Opponent',
-            name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
-        };
-
-        let simu = simuFight(player, opponent);
-
-        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
-
-
-        player = {
+        const player = {
             hp: playerEgo,
             dmg: playerAtk - opponentDef,
             critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
         };
-        opponent = {
+        const opponent = {
             hp: opponentEgo,
             dmg: opponentAtk - playerDef,
             critchance: 0.3-player.critchance,
             name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text()
         };
 
-        simu = calcWinProbability(player, opponent);
+        const simu = calcWinProbability(player, opponent);
 
-        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .personal_info').append('<div class="matchRating ' + simu.scoreClass + '" style="margin-left:auto;margin-right:-15px">' + simu.scoreStr + '</div>');
+        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
     }
 
     calculateSeasonPower(1);
