@@ -1,3 +1,4 @@
+0.32.16: Fixing bug where script can't work out duration when mythic boosters are applied
 0.32.15: Removing old sim from seasons, moving probability result to where old sim result was.
 0.32.14: Fixing harem wiki link duplication bug (#16) and moving the wiki link to the name to be less obtrusive.
 0.32.13: Fixing bug with duplicate wiki links on unobtained girls speech bubbles.
