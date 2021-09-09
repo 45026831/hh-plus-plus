@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name			Hentai Heroes++ BDSM version
 // @description		Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version			0.32.16
+// @version			0.33.0
 // @match			https://www.hentaiheroes.com/*
 // @match			https://nutaku.haremheroes.com/*
 // @match			https://eroges.hentaiheroes.com/*
@@ -100,806 +100,800 @@ const DST = true;
 const mediaMobile = '@media only screen and (max-width: 1025px)';
 const mediaDesktop = '@media only screen and (min-width: 1026px)';
 
+const CDNs = {
+    'nutaku.haremheroes.com': 'hh.hh-content.com',
+    'www.hentaiheroes.com': 'hh2.hh-content.com',
+    'www.comixharem.com': 'ch.hh-content.com',
+    'nutaku.comixharem.com': 'ch.hh-content.com',
+    'www.gayharem.com': 'gh1.hh-content.com',
+    'nutaku.gayharem.com': 'gh.hh-content.com'
+}
+const cdnHost = CDNs[location.host] || 'hh.hh-content.com'
+
 /* ==============
 	TRANSLATIONS
    ============== */
 
-var lang = 'en';
+const supportedLanguages = ['en', 'fr', 'es', 'it', 'de']
+const htmlLang = $('html').attr('lang').substring(0,2)
+const lang = supportedLanguages.includes(htmlLang) ? htmlLang : supportedLanguages[0];
 
-if ($('html')[0].lang === 'en') {
-    lang = 'en';
-}
-else if ($('html')[0].lang === 'fr') {
-    lang = 'fr';
-}
-else if ($('html')[0].lang === 'es_ES') {
-    lang = 'es';
-}
-else if ($('html')[0].lang === 'it_IT') {
-    lang = 'it';
-}
-else if ($('html')[0].lang === 'de_DE') {
-    lang = 'de';
-}
-
-var texts = {};
-
-texts.en = {
-    optionsRefresh: 'Home screen refresh',
-    optionsVillain: 'Fight a villain menu',
-    optionsTiers: `Show tiers with ${gameConfig.girl}s`,
-    optionsXPMoney : 'Better XP / Money',
-    optionsMarket: 'Market information',
-    optionsMarketFilter: `${gameConfig.Girl}s filter at the market`,
-    optionsMarket_XP_Aff: 'XP and affection at the market',
-    optionsSortArmorItems: 'Button to sort armor items by rarity',
-    optionsHideSellButton: 'Button to hide "Sell" button',
-    optionsHarem: 'Harem information',
-    optionsLeague: 'League information',
-    optionsLeagueBoard: 'Show the league tops',
-    optionsSimFight : 'League / Season / Villains sim',
-    optionsLogSimFight : 'Detailed logging in the browser console',
-    optionsTeamsFilter: 'Teams filter',
-    optionsChampions: 'Champions information',
-    optionsLinks: 'Shortcuts/Timers',
-    optionsSeasonStats: 'Season stats',
-    optionsPachinkoNames: 'Show names in Pachinko',
-    //optionsEpicPachinkoNames: 'Show names in Epic Pachinko',
-    optionsMissionsBackground: 'Change missions background',
-    optionsCollectMoneyAnimation: 'Delete the collect money animation',
-    optionsOldPoAWindow: 'Old PoA window',
-    and: 'and',
-    or: 'or',
-    affection: 'affection',
-    harem_stats: 'Harem Stats',
-    haremettes: gameConfig.haremettes,
-    hardcore: 'Hardcore',
-    charm: 'Charm',
-    know_how: 'Know-how',
-    shagger: 'Shagger',
-    lover: 'Lover',
-    expert: 'Expert',
-    Defense_against: 'Defense against ',
-    specialist_in: 'specialist in ',
-    harem_level: 'harem level',
-    to_go: 'to go',
-    unlocked_scenes: 'scenes unlocked',
-    money_income: 'Money income',
-    per_hour: 'per hour',
-    when_all_collectable: 'when all collectable',
-    required_to_unlock: `Required to upgrade all ${gameConfig.haremettes}`,
-    required_to_get_max_level: `Required to level all ${gameConfig.haremettes}`,
-    my_stocks: 'My stock',
-    equipments: 'equipments',
-    boosters: 'boosters',
-    books: 'books',
-    gifts: 'gifts',
-    currently_buyable: 'Currently buyable stock',
-    visit_the: 'Visit the <a href="../shop.html">Market</a> first.',
-    not_compatible: 'Your webbrowser is not compatible.',
-    or_level: 'or level',
-    restock: 'Restock',
-    wiki: '\'s wiki page',
-    evolution_costs: 'Upgrade costs are',
-    world: 'World ',
-    villain: ' villain',
-    fight_villain: 'Fight a villain',
-    you_own: 'You own',
-    you_can_give: 'You can give a total of',
-    you_can_sell: 'You can sell everything for',
-    stat_points_need: 'Stat points buyable to max',
-    money_need: 'Money required to max',
-    money_spent: 'Money spent in market',
-    points_from_level: 'Level-based stat points',
-    bought_points: 'Market-bought stat points',
-    equipment_points: 'Equipments stat points',
-    ginseng_points: 'Boosters stat points',
-    club_points: 'Club bonus stat points',
-    Xp: 'XP',
-    starting: 'Starting',
-    common: 'Common',
-    rare: 'Rare',
-    epic: 'Epic',
-    legendary: 'Legendary',
-    mythic: 'Mythic',
-    day: 'd',
-    hour: 'h',
-    minute: 'm',
-    second: 's',
-    demote_up: 'To <u>demote</u> you can have a maximum of ',
-    demote_down: 'To <u>demote</u> you must be passed by players with as few as ',
-    demote_holdzero: 'To <u>demote</u> you must remain at ',
-    stagnate_up: 'To <u>not promote</u> you can have a maximum of ',
-    stagnate_down: 'To <u>not promote</u> you must be passed by players with as few as ',
-    stagnate_holdzero: 'To <u>not promote</u> you must remain at ',
-    top4_up: 'To <u>be in the top 4</u> you must have a minimum of ',
-    top4_hold: 'To <u>stay in the top 4</u> you must have a minimum of ',
-    top15_up: 'To <u>be in the top 15</u> you must have a minimum of ',
-    top15_hold: 'To <u>stay in the top 15</u> you must have a minimum of ',
-    top30_up: 'To <u>be in the top 30</u> you must have a minimum of ',
-    top30_hold: 'To <u>stay in the top 30</u> you must have a minimum of ',
-    points: 'points',
-    challenges_regen: 'Natural regeneration: ',
-    challenges_left: '<br />Challenges left: ',
-    season_fights: 'Season fights: ',
-    in: 'in',
-    pop: 'Places',
-    season: 'Season',
-    full_in: 'Full in',
-    ends_at: 'Ends at',
-    full: 'Full',
-    league: 'League',
-    boosters_end: 'Boosters end',
-    victories: 'Victories',
-    defeats: 'Defeats',
-    unknown: 'Unknown',
-    opponents: 'Opponents',
-    notPlayed: 'Not played',
-    leaguePoints: 'Points',
-    avg: 'Average',
-    league_ending: 'League ending on ',
-    league_finished: 'League finished on ',
-    current_league: 'Current league',
-    averageScore: 'Average score per fight: ',
-    scoreExpected: 'Score expected: ',
-    available_girls: `Available ${gameConfig.girl}s: `,
-    fights: 'Fights',
-    won_mojo: 'Won mojo',
-    lost_mojo: 'Lost mojo',
-    won_mojo_avg: 'Won mojo average',
-    lost_mojo_avg: 'Lost mojo average',
-    mojo_avg: 'Global mojo average',
-    filter: 'Filter',
-    searched_name : 'Searched name',
-    girl_name: `${gameConfig.Girl} name`,
-    searched_class: 'Searched class',
-    searched_rarity: 'Searched rarity',
-    team_number: 'Team number',
-    all: 'All',
-    team: 'Team',
-    save_as: 'Save as',
-    load_from: 'Load from',
-    level_range: 'Level range',
-    searched_aff_category: 'Searched affection category',
-    searched_aff_lvl: 'Searched affection <BR>level',
-    zero_star: '0 star',
-    one_star: '1 star',
-    two_stars: '2 stars',
-    three_stars: '3 stars',
-    four_stars: '4 stars',
-    five_stars: '5 stars',
-    six_stars: '6 stars',
-    time_passed: 'time has passed',
-    combativity: 'Combativity',
-    energy: 'Energy',
-    sort: 'Sort',
-    hide: 'Hide',
-    display: 'Display',
-    searched_blessed_attributes: `Searched blessed ${gameConfig.girl}s`,
-    blessed_attributes: `Blessed ${gameConfig.girl}s`,
-    non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`
+const texts = {
+    en: {
+        optionsRefresh: 'Home screen refresh',
+        optionsVillain: 'Fight a villain menu',
+        optionsTiers: `Show tiers with ${gameConfig.girl}s`,
+        optionsXPMoney : 'Better XP / Money',
+        optionsMarket: 'Market information',
+        optionsMarketFilter: `${gameConfig.Girl}s filter at the market`,
+        optionsMarket_XP_Aff: 'XP and affection at the market',
+        optionsSortArmorItems: 'Button to sort armor items by rarity',
+        optionsHideSellButton: 'Button to hide "Sell" button',
+        optionsHarem: 'Harem information',
+        optionsLeague: 'League information',
+        optionsLeagueBoard: 'Show the league tops',
+        optionsLeaguePromo: 'Show promotion information',
+        optionsSimFight : 'League / Season / Villains sim',
+        optionsLogSimFight : 'Detailed logging in the browser console',
+        optionsTeamsFilter: 'Teams filter',
+        optionsChampions: 'Champions information',
+        optionsLinks: 'Shortcuts/Timers',
+        optionsSeasonStats: 'Season stats',
+        optionsPachinkoNames: 'Show names in Pachinko',
+        //optionsEpicPachinkoNames: 'Show names in Epic Pachinko',
+        optionsMissionsBackground: 'Change missions background',
+        optionsCollectMoneyAnimation: 'Delete the collect money animation',
+        optionsOldPoAWindow: 'Old PoA window',
+        and: 'and',
+        or: 'or',
+        affection: 'affection',
+        harem_stats: 'Harem Stats',
+        haremettes: gameConfig.haremettes,
+        hardcore: 'Hardcore',
+        charm: 'Charm',
+        know_how: 'Know-how',
+        shagger: 'Shagger',
+        lover: 'Lover',
+        expert: 'Expert',
+        Defense_against: 'Defense against ',
+        specialist_in: 'specialist in ',
+        harem_level: 'harem level',
+        to_go: 'to go',
+        unlocked_scenes: 'scenes unlocked',
+        money_income: 'Money income',
+        per_hour: 'per hour',
+        when_all_collectable: 'when all collectable',
+        required_to_unlock: `Required to upgrade all ${gameConfig.haremettes}`,
+        required_to_get_max_level: `Required to level all ${gameConfig.haremettes}`,
+        my_stocks: 'My stock',
+        equipments: 'equipments',
+        boosters: 'boosters',
+        books: 'books',
+        gifts: 'gifts',
+        currently_buyable: 'Currently buyable stock',
+        visit_the: 'Visit the <a href="../shop.html">Market</a> first.',
+        not_compatible: 'Your webbrowser is not compatible.',
+        or_level: 'or level',
+        restock: 'Restock',
+        wiki: '\'s wiki page',
+        evolution_costs: 'Upgrade costs are',
+        world: 'World ',
+        villain: ' villain',
+        fight_villain: 'Fight a villain',
+        you_own: 'You own',
+        you_can_give: 'You can give a total of',
+        you_can_sell: 'You can sell everything for',
+        stat_points_need: 'Stat points buyable to max',
+        money_need: 'Money required to max',
+        money_spent: 'Money spent in market',
+        points_from_level: 'Level-based stat points',
+        bought_points: 'Market-bought stat points',
+        equipment_points: 'Equipments stat points',
+        ginseng_points: 'Boosters stat points',
+        club_points: 'Club bonus stat points',
+        Xp: 'XP',
+        starting: 'Starting',
+        common: 'Common',
+        rare: 'Rare',
+        epic: 'Epic',
+        legendary: 'Legendary',
+        mythic: 'Mythic',
+        day: 'd',
+        hour: 'h',
+        minute: 'm',
+        second: 's',
+        demote_up: 'To <em><u>demote</u></em>, you can have a maximum of <em>{{points}}</em> points',
+        demote_down: 'To <em><u>demote</u></em>, you must be passed by <em>{{players}}</em> players',
+        demote_holdzero: 'To <em><u>demote</u></em>, you must remain at <em>0</em> points',
+        stagnate_up: 'To <em><u>not promote</u></em>, you can have a maximum of <em>{{points}}</em> points',
+        stagnate_down: 'To <em><u>not promote</u></em>, you must be passed by <em>{{players}}</em> players',
+        stagnate_atzero: 'To <em><u>not demote</u></em>, you must have more than <em>0</em> points',
+        top4_up: 'To <em><u>be in the top 4</u></em>, you must have a minimum of <em>{{points}}</em> points',
+        top4_hold: 'To <em><u>stay in the top 4</u></em>, you must have a minimum of <em>{{points}}</em> points',
+        top15_up: 'To <em><u>be in the top 15</u></em>, you must have a minimum of <em>{{points}}</em> points',
+        top15_hold: 'To <em><u>stay in the top 15</u></em>, you must have a minimum of <em>{{points}}</em> points',
+        top30_up: 'To <em><u>be in the top 30</u></em>, you must have a minimum of <em>{{points}}</em> points',
+        top30_hold: 'To <em><u>stay in the top 30</u></em>, you must have a minimum of <em>{{points}}</em> points',
+        challenges_regen: 'Natural regeneration: ',
+        challenges_left: '<br />Challenges left: ',
+        season_fights: 'Season fights: ',
+        in: 'in',
+        pop: 'Places',
+        season: 'Season',
+        full_in: 'Full in',
+        ends_at: 'Ends at',
+        full: 'Full',
+        league: 'League',
+        boosters_end: 'Boosters end',
+        victories: 'Victories',
+        defeats: 'Defeats',
+        unknown: 'Unknown',
+        opponents: 'Opponents',
+        notPlayed: 'Not played',
+        leaguePoints: 'Points',
+        avg: 'Average',
+        league_ending: 'League ending on ',
+        league_finished: 'League finished on ',
+        current_league: 'Current league',
+        averageScore: 'Average score per fight: ',
+        scoreExpected: 'Score expected: ',
+        available_girls: `Available ${gameConfig.girl}s: `,
+        fights: 'Fights',
+        won_mojo: 'Won mojo',
+        lost_mojo: 'Lost mojo',
+        won_mojo_avg: 'Won mojo average',
+        lost_mojo_avg: 'Lost mojo average',
+        mojo_avg: 'Global mojo average',
+        filter: 'Filter',
+        searched_name : 'Searched name',
+        girl_name: `${gameConfig.Girl} name`,
+        searched_class: 'Searched class',
+        searched_rarity: 'Searched rarity',
+        team_number: 'Team number',
+        all: 'All',
+        team: 'Team',
+        save_as: 'Save as',
+        load_from: 'Load from',
+        level_range: 'Level range',
+        searched_aff_category: 'Searched affection category',
+        searched_aff_lvl: 'Searched affection <BR>level',
+        zero_star: '0 star',
+        one_star: '1 star',
+        two_stars: '2 stars',
+        three_stars: '3 stars',
+        four_stars: '4 stars',
+        five_stars: '5 stars',
+        six_stars: '6 stars',
+        time_passed: 'time has passed',
+        combativity: 'Combativity',
+        energy: 'Energy',
+        sort: 'Sort',
+        hide: 'Hide',
+        display: 'Display',
+        searched_blessed_attributes: `Searched blessed ${gameConfig.girl}s`,
+        blessed_attributes: `Blessed ${gameConfig.girl}s`,
+        non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`
+    },
+    fr: {
+        optionsRefresh: 'Rafraîchir page d\'accueil',
+        optionsVillain: 'Menu des combats des trolls',
+        optionsTiers: 'Montrer les paliers/filles',
+        optionsXPMoney : 'XP / Argent + précis',
+        optionsMarket: 'Infos marché',
+        optionsMarketFilter: 'Filtre des filles au marché',
+        optionsMarket_XP_Aff: 'XP et affection au marché',
+        optionsSortArmorItems: 'Bouton pour trier les équipements par rareté',
+        optionsHideSellButton: 'Bouton pour masquer le bouton "Vendre"',
+        optionsHarem: 'Infos harem',
+        optionsLeague: 'Infos ligue',
+        optionsLeagueBoard: 'Montrer les tops ligue',
+        optionsLeaguePromo: 'Montrer les informations sur la promotion',
+        optionsSimFight: 'Simu ligue / saison / combats de troll',
+        optionsLogSimFight : 'Journalisation détaillée dans la console du navigateur',
+        optionsTeamsFilter: 'Filtre d\'équipes',
+        optionsChampions: 'Infos champions',
+        optionsLinks: 'Raccourcis/Timers',
+        optionsSeasonStats: 'Stats de la saison',
+        optionsPachinkoNames: 'Montrer les noms au Pachinko',
+        //optionsEpicPachinkoNames: 'Montrer noms au PE',
+        optionsMissionsBackground: 'Change l\'arrière-plan des missions',
+        optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
+        optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
+        and: 'et',
+        or: 'ou',
+        affection: 'affection',
+        harem_stats: 'Stats du harem',
+        haremettes: 'haremettes',
+        hardcore: 'Hardcore',
+        charm: 'Charme',
+        know_how: 'Savoir-faire',
+        shagger: 'Niqueur',
+        lover: 'Romantique',
+        expert: 'Expert',
+        Defense_against: 'Défense contre les ',
+        specialist_in: 'spécialiste du ',
+        harem_level: 'niveau de harem',
+        to_go: 'restant',
+        unlocked_scenes: 'scènes débloquées',
+        money_income: 'Revenus',
+        per_hour: 'par heure',
+        when_all_collectable: 'quand tout est disponible',
+        required_to_unlock: 'Requis pour débloquer la scène',
+        required_to_get_max_level: 'Requis pour obtenir toutes les filles au niveau maximum',
+        my_stocks: 'Mes stocks',
+        equipments: 'équipements',
+        boosters: 'boosters',
+        books: 'livres',
+        gifts: 'cadeaux',
+        currently_buyable: 'Stock disponible au marché',
+        visit_the: 'Visite le <a href="../shop.html">marché</a> first.',
+        not_compatible: 'Votre navigateur n\'est pas compatible.',
+        or_level: 'ou niveau',
+        restock: 'Restock',
+        wiki: 'Page wiki de ',
+        evolution_costs: 'Ses couts d\'évolution sont',
+        world: 'Monde ',
+        villain: ' troll',
+        fight_villain: 'Combats un troll',
+        you_own: 'Tu possèdes',
+        you_can_give: 'Tu peux donner un total de',
+        you_can_sell: 'Tu peux tout vendre pour',
+        stat_points_need: 'Nombre de points requis pour max',
+        money_need: 'Argent demandé pour max',
+        money_spent: 'Argent dépensé dans le marché',
+        points_from_level: 'Points donnés par ton niveau',
+        bought_points: 'Points achetés au marché',
+        equipment_points: 'Points donnés par ton équipement',
+        ginseng_points: 'Points donnés par tes boosters',
+        club_points: 'Points donnés par ton club',
+        Xp: 'XP',
+        starting: 'Fille de départ',
+        common: 'Commun',
+        rare: 'Rare',
+        epic: 'Épique',
+        legendary: 'Légendaire',
+        mythic: 'Mythique',
+        day: 'j',
+        hour: 'h',
+        minute: 'm',
+        second: 's',
+        demote_up: 'Pour <em><u>être rétrogradé</u></em>, vous pouvez avoir un maximum de <em>{{points}}</em> points',
+        demote_down: 'Pour <em><u>être rétrogradé</u></em>, vous devez être dépassé par <em>{{players}}</em> joueurs',
+        demote_holdzero: 'Pour <em><u>être rétrogradé</u></em>, vous devez rester avec <em>0</em> points',
+        stagnate_up: 'Pour <em><u>ne pas être promu</u></em>, vous pouvez avoir un maximum de <em>{{points}}</em> points',
+        stagnate_down: 'Pour <em><u>ne pas être promu</u></em>, vous devez être dépassé par <em>{{players}}</em> joueurs',
+        stagnate_atzero: 'Pour <em><u>ne pas être rétrogradé</u></em>, vous devez avoir plus de <em>0</em> points',
+        top4_up: 'Pour <em><u>être dans le top 4</u></em>, vous devez avoir un minimum de <em>{{points}}</em> points',
+        top4_hold: 'Pour <em><u>rester dans le top 4</u></em>, vous devez avoir un minimum de <em>{{points}}</em> points',
+        top15_up: 'Pour <em><u>être dans le top 15</u></em>, vous devez avoir un minimum de <em>{{points}}</em> points',
+        top15_hold: 'Pour <em><u>rester dans le top 15</u></em>, vous devez avoir un minimum de <em>{{points}}</em> points',
+        top30_up: 'Pour <em><u>être dans le top 30</u></em>, vous devez avoir un minimum de <em>{{points}}</em> points',
+        top30_hold: 'Pour <em><u>rester dans le top 30</u></em>, vous devez avoir un minimum de <em>{{points}}</em> points',
+        challenges_regen: 'Régénération naturelle: ',
+        challenges_left: '<br />Défis restants: ',
+        season_fights: 'Combats de Saison: ',
+        in: 'dans',
+        pop: 'Lieux',
+        season: 'Saison',
+        full_in: 'Remplie dans',
+        ends_at: 'Fin à',
+        full: 'Remplie',
+        league: 'Ligue',
+        boosters_end: 'Fin boosters',
+        victories: 'Victoires',
+        defeats: 'Defaites',
+        unknown: 'Inconnus',
+        opponents: 'Adversaires',
+        notPlayed: 'Non joués',
+        leaguePoints: 'Points',
+        avg: 'Moyenne',
+        league_ending: 'Ligue terminant le ',
+        league_finished: 'Ligue terminée le ',
+        current_league: 'Ligue actuelle',
+        averageScore: 'Score moyen par combat: ',
+        scoreExpected: 'Score attendu: ',
+        available_girls: 'Filles disponibles: ',
+        fights: 'Combats',
+        won_mojo: 'Mojo gagnés',
+        lost_mojo: 'Mojo perdus',
+        won_mojo_avg: 'Moyenne mojo gagnés',
+        lost_mojo_avg: 'Moyenne mojo perdus',
+        mojo_avg: 'Moyenne mojo globale',
+        filter: 'Filtre',
+        searched_name : 'Nom recherché',
+        girl_name: 'Nom de la fille',
+        searched_class: 'Classe recherchée',
+        searched_rarity: 'Rareté recherchée',
+        team_number: 'Équipe #',
+        all: 'Toutes',
+        team: 'Équipe',
+        save_as: 'Sauver sous',
+        load_from: 'Charger',
+        level_range: 'Intervalle de niveaux',
+        searched_aff_category: 'Catégorie d\'affection recherchée',
+        searched_aff_lvl: 'Niveau d\'affection recherché',
+        zero_star: '0 étoile',
+        one_star: '1 étoile',
+        two_stars: '2 étoiles',
+        three_stars: '3 étoiles',
+        four_stars: '4 étoiles',
+        five_stars: '5 étoiles',
+        six_stars: '6 étoiles',
+        time_passed: 'du temps a passé',
+        combativity: 'Combativité',
+        energy: 'Énergie',
+        sort: 'Trier',
+        hide: 'Masquer',
+        display: 'Afficher',
+        searched_blessed_attributes: 'Filles bénies recherchées',
+        blessed_attributes: 'Filles bénies',
+        non_blessed_attributes: 'Filles non bénies'
+    },
+    es: {
+        optionsRefresh: 'Actualizacion Menu principal',
+        optionsVillain: 'Menu Pelear contra villano',
+        optionsTiers: 'Mostrar Rangos con Chicas',
+        optionsXPMoney : 'Mejor XP / Dinero',
+        optionsMarket: 'Informacion de Mercado',
+        optionsMarketFilter: 'Filtro de chicas en el mercado',
+        optionsMarket_XP_Aff: 'El XP y el afecto en el mercado',
+        optionsSortArmorItems: 'Botón para ordenar los artículos de armadura por rareza',
+        optionsHideSellButton: 'Botón para ocultar el botón de "Venta"',
+        optionsHarem: 'Informacion de Harén',
+        optionsLeague: 'Informacion de Liga',
+        optionsLeagueBoard: 'Mostrar los mejores de la liga',
+        optionsLeaguePromo: 'Mostrar información de promoción',
+        optionsSimFight: 'Simulacion de Liga / Temporada / Villano',
+        optionsLogSimFight: 'Registro detallado en la consola del navegador',
+        optionsTeamsFilter: 'Filtro de equipos',
+        optionsChampions: 'Informacion de Campeones',
+        optionsLinks: 'Atajos/Temporizadores',
+        optionsSeasonStats: 'Season stats',
+        optionsPachinkoNames: 'Mostrar nombres en Pachinko',
+        //optionsEpicPachinkoNames: 'Mostrar nombres en Epic Pachinko',
+        optionsMissionsBackground: 'Cambiar el fondo de las misiones',
+        optionsCollectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
+        optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
+        and: 'y',
+        or: 'o',
+        in: 'en',
+        affection: 'afecto',
+        harem_stats: 'Estatus del Harén',
+        haremettes: 'haremettes',
+        hardcore: 'Folladas',
+        charm: 'Encanto',
+        know_how: 'Saber-hacer',
+        shagger: 'Follador',
+        lover: 'Amante',
+        expert: 'Experto',
+        Defense_against: 'Defensa contra ',
+        specialist_in: 'especialista en ',
+        harem_level: 'nivel de harén',
+        to_go: 'restante',
+        unlocked_scenes: 'escenas desbloqueadas',
+        money_income: 'Ingreso de dinero',
+        per_hour: 'por hora',
+        when_all_collectable: 'cuando todo es coleccionable',
+        required_to_unlock: 'Requerido para desbloquear todas las escenas bloqueadas',
+        required_to_get_max_level: 'Requerido para obtener el máximo nivel de todas las chicas',
+        my_stocks: 'Mi Stock',
+        equipments: 'equipamiento',
+        boosters: 'potenciadores',
+        books: 'libros',
+        gifts: 'regalos',
+        currently_buyable: 'Stocks Comprables Actualmente',
+        visit_the: 'Visita el <a href="../shop.html">Mercado</a> primero.',
+        not_compatible: 'Tu navegador no es compatible.',
+        or_level: 'o nivel',
+        restock: 'Restock',
+        wiki: ' wiki',
+        evolution_costs: 'Sus costo de evolucion son',
+        world: 'Mundo ',
+        villain: ' villano',
+        fight_villain: 'Pelear un villano',
+        you_own: 'Tienes',
+        you_can_give: 'Puedes dar un total de',
+        you_can_sell: 'Puedes vender todo por',
+        stat_points_need: 'Puntos de estatus necesarios para maximo',
+        money_need: 'Dinero necesario para maximo',
+        money_spent: 'Dinero usado en el mercado',
+        points_from_level: 'Puntos de estatus de nivel',
+        bought_points: 'Puntos comprados del mercado',
+        equipment_points: 'Puntos de estatus de equipamiento',
+        ginseng_points: 'Puntos de estatus de los potenciadores',
+        club_points: 'Puntos de estatus del club',
+        Xp: 'XP',
+        starting: 'Principiante',
+        common: 'Común',
+        rare: 'Raro',
+        epic: 'Épico',
+        legendary: 'Legendario',
+        mythic: 'Mítica',
+        day: 'd',
+        hour: 'h',
+        minute: 'm',
+        second: 's',
+        demote_up: 'Para <em><u>descender</u></em>, puedes tener un máximo de <em>{{points}}</em> puntos',
+        demote_down: 'Para <em><u>descender</u></em>, debes ser superado por <em>{{players}}</em> jugadores',
+        demote_holdzero: 'Para <em><u>descender</u></em>, debes mantenerte en <em>0</em> puntos',
+        stagnate_up: 'Para <em><u>no promocionar</u></em>, puedes tener un máximo de <em>{{points}}</em> puntos',
+        stagnate_down: 'Para <em><u>no promocionar</u></em>, debes ser superado por <em>{{players}}</em> jugadores',
+        stagnate_atzero: 'Para <em><u>no descender</u></em>, debes tener más de <em>0</em> puntos',
+        top4_up: 'Para <em><u>estar entre los 4 primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+        top4_hold: 'Para <em><u>quedar entre los 4 primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+        top15_up: 'Para <em><u>estar entre los 15 primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+        top15_hold: 'Para <em><u>quedar entre los 15 primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+        top30_up: 'Para <em><u>estar entre los 30 primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+        top30_hold: 'Para <em><u>quedar entre los 30 primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+        challenges_regen: 'Regeneracion naturel: ',
+        challenges_left: '<br />Retos pendientes: ',
+        pop: 'Lugares',
+        season: 'Temporada',
+        full_in: 'Completa',
+        ends_at: 'Termina a',
+        full: 'Completa',
+        league: 'Liga',
+        boosters_end: 'Fin potenciadores',
+        victories: 'Victorias',
+        defeats: 'Derrota',
+        unknown: 'Desconocido',
+        opponents: 'Opositores',
+        notPlayed: 'No jugado',
+        leaguePoints: 'Puntos',
+        avg: 'Media',
+        league_ending: 'Liga termina el ',
+        league_finished: 'Liga terminó el ',
+        current_league: 'Liga actual',
+        averageScore: 'Puntuación media por combate: ',
+        scoreExpected: 'Puntuación esperada: ',
+        available_girls: 'Chicas disponibles: ',
+        fights: 'Fights',
+        won_mojo: 'Won mojo',
+        lost_mojo: 'Lost mojo',
+        won_mojo_avg: 'Won mojo average',
+        lost_mojo_avg: 'Lost mojo average',
+        mojo_avg: 'Global mojo average',
+        filter: 'Filtro',
+        searched_name : 'Nombre buscado',
+        girl_name: 'Nombre de la chica',
+        searched_class: 'Clase buscada',
+        searched_rarity: 'Rareza buscada',
+        team_number: 'Equipo #',
+        all: 'Todo',
+        team: 'Equipo',
+        save_as: 'Guardar como',
+        load_from: 'Carga',
+        level_range: 'Rango de nivel',
+        searched_aff_category: 'Categoría de afecto buscada',
+        searched_aff_lvl: 'Nivel de afecto buscado',
+        zero_star: '0 estrella',
+        one_star: '1 estrella',
+        two_stars: '2 estrellas',
+        three_stars: '3 estrellas',
+        four_stars: '4 estrellas',
+        five_stars: '5 estrellas',
+        six_stars: '6 estrellas',
+        time_passed: 'del tiempo ha pasado',
+        combativity: 'Combatividad',
+        energy: 'Energía',
+        sort: 'Ordenar',
+        hide: 'Ocultar',
+        display: 'Mostrar',
+        searched_blessed_attributes: 'Buscar chicas bendecidas',
+        blessed_attributes: 'Benditas chicas',
+        non_blessed_attributes: 'Chicas no bendecidas'
+    },
+    it: {
+        optionsRefresh: 'Refresh pagina Home',
+        optionsVillain: 'Menù battaglia Troll',
+        optionsTiers: 'Mostra battaglie con ragazze',
+        optionsXPMoney : 'Migliora XP / soldi',
+        optionsMarket: 'Informazioni negozio',
+        optionsMarketFilter: 'Filtro per ragazze al mercato',
+        optionsMarket_XP_Aff: 'XP e affetto nel mercato',
+        optionsSortArmorItems: 'Pulsante per ordinare gli oggetti dell\'armatura per rarità',
+        optionsHideSellButton: 'Pulsante per nascondere il pulsante "Vendi"',
+        optionsHarem: 'Informazioni Harem',
+        optionsLeague: 'Informazioni sulle Leghe',
+        optionsLeagueBoard: 'Mostra i top della lega',
+        optionsLeaguePromo: 'Mostra informazioni sulla promozione',
+        optionsSimFight: 'Simulazione Leghe / Stagione / Troll',
+        optionsLogSimFight : 'Accesso dettagliato nella console del browser',
+        optionsTeamsFilter: 'Filtro delle squadre',
+        optionsChampions: 'Informazioni sui Campioni',
+        optionsLinks: 'Scorciatoie/Timer',
+        optionsSeasonStats: 'Season stats',
+        optionsPachinkoNames: 'Mostra i nomi in Pachinko',
+        //optionsEpicPachinkoNames: 'Mostra i nomi in Epic Pachinko',
+        optionsMissionsBackground: 'Cambiare lo sfondo delle missioni',
+        optionsCollectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
+        optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
+        and: 'e',
+        or: 'o',
+        in: 'in',
+        affection: 'affetto',
+        harem_stats: 'Stato dell Harem',
+        haremettes: 'ragazze dell harem',
+        hardcore: 'Prono',
+        charm: 'Fascino',
+        know_how: 'Competenza',
+        shagger: 'Scopata',
+        lover: 'Amante',
+        expert: 'Esperto',
+        Defense_against: 'Difesa contro ',
+        specialist_in: 'specialista in ',
+        harem_level: 'livello harem',
+        to_go: 'mancanti',
+        unlocked_scenes: 'scene sbloccate',
+        money_income: 'Guadagni',
+        per_hour: 'orario',
+        when_all_collectable: 'quando si può raccogliere tutto',
+        required_to_unlock: 'Necessario per sbloccare tutte le scene',
+        required_to_get_max_level: 'Necessario per livellare tutte le ragazze',
+        my_stocks: 'Mio inventario',
+        equipments: 'equipaggiamento',
+        boosters: 'potenziamenti',
+        books: 'libri',
+        gifts: 'regali',
+        currently_buyable: 'Correntemente acquistabili',
+        visit_the: 'Visita il <a href="../shop.html">negozio</a> prima.',
+        not_compatible: 'Il tuo browser non è compatibile.',
+        or_level: 'o livello',
+        restock: 'Rifornimento',
+        wiki: ' -> wiki',
+        evolution_costs: 'Il costo del potenziamento è',
+        world: 'Mondo ',
+        villain: ' nemico',
+        fight_villain: 'Combattimenti',
+        you_own: 'Possiedi',
+        you_can_give: 'Puoi dare il massimo a',
+        you_can_sell: 'Puoi vendere tutto per',
+        stat_points_need: 'Punti statistica necessari per il massimo',
+        money_need: 'Soldi necessari per il massimo',
+        money_spent: 'Soldi spesi al negozio',
+        points_from_level: 'Punti acquisiti da aumento livello',
+        bought_points: 'Punti comprati al negozio',
+        equipment_points: 'Punti statistica da equipaggiamento',
+        ginseng_points: 'Punti statistica dei potenziamenti',
+        club_points: 'Punti statistica bonus del Club',
+        Xp: 'XP',
+        starting: 'Starter',
+        common: 'Comuni',
+        rare: 'Rare',
+        epic: 'Epiche',
+        legendary: 'Leggendarie',
+        mythic: 'Mitica',
+        day: 'g',
+        hour: 'h',
+        minute: 'm',
+        second: 's',
+        demote_up: 'Per <em><u>la retrocessione</u></em>, devi avere al massimo <em>{{points}}</em> punti',
+        demote_down: 'Per <em><u>la retrocessione</u></em>, devi essere sorpassato da <em>{{players}}</em> giocatori',
+        demote_holdzero: 'Per <em><u>la retrocessione</u></em>, devi rimanere a <em>0</em> punti',
+        stagnate_up: 'Per <em><u>restare</u></em>, devi avere al massimo <em>{{points}}</em> punti',
+        stagnate_down: 'Per <em><u>restare</u></em>, devi essere sorpassato da <em>{{players}}</em> giocatori',
+        stagnate_atzero: 'Per <em><u>non retrocedere</u></em>, devi avere più di <em>0</em> punti',
+        top4_up: 'Per <em><u>essere tra i primi 4</u></em>, devi avere un minimo di <em>{{points}}</em> punti',
+        top4_hold: 'Per <em><u>rimanere tra i primi 4</u></em>, devi avere un minimo di <em>{{points}}</em> punti',
+        top15_up: 'Per <em><u>essere tra i primi 15</u></em>, devi avere un minimo di <em>{{points}}</em> punti',
+        top15_hold: 'Per <em><u>rimanere tra i primi 15</u></em>, devi avere un minimo di <em>{{points}}</em> punti',
+        top30_up: 'Per <em><u>essere tra i primi 30</u></em>, devi avere un minimo di <em>{{points}}</em> punti',
+        top30_hold: 'Per <em><u>rimanere tra i primi 30</u></em>, devi avere un minimo di <em>{{points}}</em> punti',
+        challenges_regen: 'Rigenerazione naturale: ',
+        challenges_left: '<br />Combattimenti mancanti: ',
+        pop: 'Luoghi',
+        season: 'Stagione',
+        full_in: 'Piena tra',
+        ends_at: 'Fine a',
+        full: 'Piena',
+        league: 'Leghe',
+        boosters_end: 'Fine potenz.',
+        victories: 'Vittorie',
+        defeats: 'Sconfitte',
+        unknown: 'Sconosciuto',
+        opponents: 'Avversari',
+        notPlayed: 'Non giocato',
+        leaguePoints: 'Punti',
+        avg: 'Medio',
+        league_ending: 'Fine della lega il ',
+        league_finished: 'Lega finita il ',
+        current_league: 'Lega attuale',
+        averageScore: 'Punteggio medio per combattimento: ',
+        scoreExpected: 'Punteggio previsto: ',
+        available_girls: 'Ragazze disponibili: ',
+        fights: 'Fights',
+        won_mojo: 'Won mojo',
+        lost_mojo: 'Lost mojo',
+        won_mojo_avg: 'Won mojo average',
+        lost_mojo_avg: 'Lost mojo average',
+        mojo_avg: 'Global mojo average',
+        filter: 'Filtro',
+        searched_name : 'Nome ricercato',
+        girl_name: 'Nome della ragazza',
+        searched_class: 'Classe ricercata',
+        searched_rarity: 'Rarità ricercata',
+        team_number: 'Squadra #',
+        all: 'Tutti',
+        team: 'Squadra',
+        save_as: 'Salvare come',
+        load_from: 'Caricare',
+        level_range: 'Gamma di livelli',
+        searched_aff_category: 'Categoria di affetto ricercata',
+        searched_aff_lvl: 'Livello di affetto ricercato',
+        zero_star: '0 stella',
+        one_star: '1 stella',
+        two_stars: '2 stelle',
+        three_stars: '3 stelle',
+        four_stars: '4 stelle',
+        five_stars: '5 stelle',
+        six_stars: '6 stelle',
+        time_passed: 'del tempo è passato',
+        combativity: 'Combattività',
+        energy: 'Energia',
+        sort: 'Ordinare',
+        hide: 'Nascondere',
+        display: 'Visualizzare',
+        searched_blessed_attributes: 'Cercato ragazze benedette',
+        blessed_attributes: 'Ragazze benedette',
+        non_blessed_attributes: 'Ragazze non benedette'
+    },
+    de: {
+        optionsRefresh: 'Homepage aktualisieren',
+        optionsVillain: 'Widersacher-Menü',
+        optionsTiers: 'Stufen mit Girls anzeigen',
+        optionsXPMoney : 'Migliora XP / soldi',
+        optionsMarket: 'Marktplatz-Informationen',
+        optionsMarketFilter: 'Mädchenfilter auf dem Markt',
+        optionsMarket_XP_Aff: 'XP und Zuneigung auf dem Markt',
+        optionsSortArmorItems: 'Schaltfläche zum Sortieren von Rüstungsgegenständen nach Seltenheit',
+        optionsHideSellButton: 'Schaltfläche zum Ausblenden der Schaltfläche "Verkaufen"',
+        optionsHarem: 'Harem-Informationen',
+        optionsLeague: 'Liga-Informationen',
+        optionsLeagueBoard: 'Die Liga-Spitzen anzeigen',
+        optionsLeaguePromo: 'Werbeinformationen anzeigen',
+        optionsSimFight: 'Liga/Saison/Widersacher-Simulation',
+        optionsLogSimFight: 'Detaillierte Protokollierung in der Browserkonsole',
+        optionsTeamsFilter: 'Mannschaften filtern',
+        optionsChampions: 'Champion-Informationen',
+        optionsLinks: 'Abkürzungen/Zeitgeber',
+        optionsSeasonStats: 'Season stats',
+        optionsPachinkoNames: 'Namen in Pachinko anzeigen',
+        //optionsEpicPachinkoNames: 'Namen in Episch Pachinko anzeigen',
+        optionsMissionsBackground: 'Missionshintergrund ändern',
+        optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
+        optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
+        and: 'und',
+        or: 'oder',
+        in: 'in',
+        affection: 'Zuneigung',
+        harem_stats: 'Harem-Statistiken',
+        haremettes: 'Harem-Mädchen',
+        hardcore: 'Hardcore',
+        charm: 'Charme',
+        know_how: 'Wissen',
+        shagger: 'Stecher',
+        lover: 'Liebhaber',
+        expert: 'Experte',
+        Defense_against: 'Verteidigung gegen ',
+        specialist_in: 'spezialisiert auf ',
+        harem_level: 'Harem-Level',
+        to_go: 'übrig',
+        unlocked_scenes: 'Szenen freigeschaltet',
+        money_income: 'Einkommen',
+        per_hour: 'pro Stunde',
+        when_all_collectable: 'wenn komplett einsammelbar',
+        required_to_unlock: 'Erforderlich für alle Mädchen-Upgrades',
+        required_to_get_max_level: 'Erforderlich für maximale Mädchen-Level',
+        my_stocks: 'Meine Bestände',
+        equipments: 'Ausrüstungen',
+        boosters: 'Booster',
+        books: 'Bücher',
+        gifts: 'Geschenke',
+        currently_buyable: 'Aktuelle Marktangebote',
+        visit_the: 'Besuche zuerst den <a href="../shop.html">Marktplatz</a>.',
+        not_compatible: 'Dein Browser ist nicht kompatibel.',
+        or_level: 'oder Level',
+        restock: 'neue Angebote',
+        wiki: '-Wikiseite',
+        evolution_costs: 'Die Upgradekosten betragen',
+        world: 'Welt ',
+        villain: ' Widersacher',
+        fight_villain: 'Widersacher',
+        you_own: 'Du besitzt',
+        you_can_give: 'Insgesamt verteilbar:',
+        you_can_sell: 'Du kannst alles verkaufen für',
+        stat_points_need: 'benötigte Statuspunkte bis Maximum',
+        money_need: 'nötiges Geld bis Maximum',
+        money_spent: 'bisher ausgegeben',
+        points_from_level: 'Statuspunkte durch Heldenlevel',
+        bought_points: 'gekaufte Statuspunkte',
+        equipment_points: 'Statuspunkte durch Ausrüstung',
+        ginseng_points: 'Statuspunkte durch Booster',
+        club_points: 'Statuspunkte durch Club-Boni',
+        Xp: 'XP',
+        starting: 'Starter',
+        common: 'Gewöhnlich',
+        rare: 'Selten',
+        epic: 'Episch',
+        legendary: 'Legendär',
+        mythic: 'Mythisch',
+        day: 'd',
+        hour: 'h',
+        minute: 'm',
+        second: 's',
+        demote_up: 'Um <em><u>abzusteigen</u></em>, darfst du maximal <em>{{points}}</em> Punkte haben',
+        demote_down: 'Um <em><u>abzusteigen</u></em>, musst du von <em>{{players}}</em> Spielern überholt werden',
+        demote_holdzero: 'Um <em><u>abzusteigen</u></em>, musst du bei <em>0</em> Punkten bleiben',
+        stagnate_up: 'Um <em><u>nicht aufzusteigen</u></em>, darfst du maximal <em>{{points}}</em> Punkte haben',
+        stagnate_down: 'Um <em><u>nicht aufzusteigen</u></em>, musst du von <em>{{players}}</em> Spielern überholt werden',
+        stagnate_atzero: 'Um <em><u>nicht abzusteigen</u></em>, musst du mehr als <em>0</em> Punkte',
+        top4_up: 'Um <em><u>in die Top 4 zu kommen</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
+        top4_hold: 'Um <em><u>in den Top 4 zu bleiben</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
+        top15_up: 'Um <em><u>in die Top 15 zu kommen</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
+        top15_hold: 'Um <em><u>in den Top 15 zu bleiben</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
+        top30_up: 'Um <em><u>in die Top 30 zu kommen</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
+        top30_hold: 'Um <em><u>in den Top 30 zu bleiben</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
+        challenges_regen: 'Regeneration: ',
+        challenges_left: '<br />verbleibende Kämpfe: ',
+        pop: 'Orte',
+        season: 'Saison',
+        full_in: 'Voll in',
+        ends_at: 'Endet um',
+        full: 'Voll',
+        league: 'Liga',
+        boosters_end: 'Booster enden',
+        victories: 'Siege',
+        defeats: 'Niederlagen',
+        unknown: 'Unbekannt',
+        opponents: 'Gegner',
+        notPlayed: 'Nicht gespielt',
+        leaguePoints: 'Punkte',
+        avg: 'Mittelwert',
+        league_ending: 'Liga Ende ',
+        league_finished: 'Liga endete am',
+        current_league: 'Aktuelle Liga',
+        averageScore: 'Durchschnitt pro Kampf: ',
+        scoreExpected: 'Erwartetes Ergebnis: ',
+        available_girls: 'Freie Mädchen: ',
+        fights: 'Kämpfe',
+        won_mojo: 'gewonnenes Mojo',
+        lost_mojo: 'verlorenes Mojo',
+        won_mojo_avg: 'im Mittel gewonnenes Mojo',
+        lost_mojo_avg: 'im Mittel verlorenes Mojo',
+        mojo_avg: 'Globales mittleres Mojo',
+        filter: 'Filter',
+        searched_name : 'Name',
+        girl_name: 'Name',
+        searched_class: 'Klasse',
+        searched_rarity: 'Seltenheit',
+        team_number: 'Team #',
+        all: 'Alle',
+        team: 'Team',
+        save_as: 'Speichern',
+        load_from: 'Laden',
+        level_range: 'Level',
+        searched_aff_category: 'maximale Zuneigung',
+        searched_aff_lvl: 'aktuelle Zuneigung',
+        zero_star: '0 Sterne',
+        one_star: '1 Stern',
+        two_stars: '2 Sterne',
+        three_stars: '3 Sterne',
+        four_stars: '4 Sterne',
+        five_stars: '5 Sterne',
+        six_stars: '6 Sterne',
+        time_passed: 'Zeit ist vergangen',
+        combativity: 'Kampflust',
+        energy: 'Energie',
+        sort: 'Sortieren',
+        hide: 'Ausblenden',
+        display: 'Anzeigen',
+        searched_blessed_attributes: 'Segnungen',
+        blessed_attributes: 'gesegnet',
+        non_blessed_attributes: 'nicht gesegnet'
+    }
 };
 
-texts.fr = {
-    optionsRefresh: 'Rafraîchir page d\'accueil',
-    optionsVillain: 'Menu des combats des trolls',
-    optionsTiers: 'Montrer les paliers/filles',
-    optionsXPMoney : 'XP / Argent + précis',
-    optionsMarket: 'Infos marché',
-    optionsMarketFilter: 'Filtre des filles au marché',
-    optionsMarket_XP_Aff: 'XP et affection au marché',
-    optionsSortArmorItems: 'Bouton pour trier les équipements par rareté',
-    optionsHideSellButton: 'Bouton pour masquer le bouton "Vendre"',
-    optionsHarem: 'Infos harem',
-    optionsLeague: 'Infos ligue',
-    optionsLeagueBoard: 'Montrer les tops ligue',
-    optionsSimFight: 'Simu ligue / saison / combats de troll',
-    optionsLogSimFight : 'Journalisation détaillée dans la console du navigateur',
-    optionsTeamsFilter: 'Filtre d\'équipes',
-    optionsChampions: 'Infos champions',
-    optionsLinks: 'Raccourcis/Timers',
-    optionsSeasonStats: 'Stats de la saison',
-    optionsPachinkoNames: 'Montrer les noms au Pachinko',
-    //optionsEpicPachinkoNames: 'Montrer noms au PE',
-    optionsMissionsBackground: 'Change l\'arrière-plan des missions',
-    optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
-    optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
-    and: 'et',
-    or: 'ou',
-    affection: 'affection',
-    harem_stats: 'Stats du harem',
-    haremettes: 'haremettes',
-    hardcore: 'Hardcore',
-    charm: 'Charme',
-    know_how: 'Savoir-faire',
-    shagger: 'Niqueur',
-    lover: 'Romantique',
-    expert: 'Expert',
-    Defense_against: 'Défense contre les ',
-    specialist_in: 'spécialiste du ',
-    harem_level: 'niveau de harem',
-    to_go: 'restant',
-    unlocked_scenes: 'scènes débloquées',
-    money_income: 'Revenus',
-    per_hour: 'par heure',
-    when_all_collectable: 'quand tout est disponible',
-    required_to_unlock: 'Requis pour débloquer la scène',
-    required_to_get_max_level: 'Requis pour obtenir toutes les filles au niveau maximum',
-    my_stocks: 'Mes stocks',
-    equipments: 'équipements',
-    boosters: 'boosters',
-    books: 'livres',
-    gifts: 'cadeaux',
-    currently_buyable: 'Stock disponible au marché',
-    visit_the: 'Visite le <a href="../shop.html">marché</a> first.',
-    not_compatible: 'Votre navigateur n\'est pas compatible.',
-    or_level: 'ou niveau',
-    restock: 'Restock',
-    wiki: 'Page wiki de ',
-    evolution_costs: 'Ses couts d\'évolution sont',
-    world: 'Monde ',
-    villain: ' troll',
-    fight_villain: 'Combats un troll',
-    you_own: 'Tu possèdes',
-    you_can_give: 'Tu peux donner un total de',
-    you_can_sell: 'Tu peux tout vendre pour',
-    stat_points_need: 'Nombre de points requis pour max',
-    money_need: 'Argent demandé pour max',
-    money_spent: 'Argent dépensé dans le marché',
-    points_from_level: 'Points donnés par ton niveau',
-    bought_points: 'Points achetés au marché',
-    equipment_points: 'Points donnés par ton équipement',
-    ginseng_points: 'Points donnés par tes boosters',
-    club_points: 'Points donnés par ton club',
-    Xp: 'XP',
-    starting: 'Fille de départ',
-    common: 'Commun',
-    rare: 'Rare',
-    epic: 'Épique',
-    legendary: 'Légendaire',
-    mythic: 'Mythique',
-    day: 'j',
-    hour: 'h',
-    minute: 'm',
-    second: 's',
-    demote_up: 'Pour <u>être rétrogradé</u> vous pouvez avoir un maximum de ',
-    demote_down: 'Pour <u>être rétrogradé</u> vous devez être dépassé par les joueurs qui ont ',
-    demote_holdzero: 'Pour <u>être rétrogradé</u> vous devez rester avec ',
-    stagnate_up: 'Pour <u>ne pas être promu</u> vous pouvez avoir un maximum de ',
-    stagnate_down: 'Pour <u>ne pas être promu</u> vous devez être dépassé par les joueurs qui ont ',
-    stagnate_holdzero: 'Pour <u>ne pas être promu</u> vous devez rester avec ',
-    top4_up: 'Pour <u>être dans le top 4</u> vous devez avoir un minimum de ',
-    top4_hold: 'Pour <u>rester dans le top 4</u> vous devez avoir un minimum de ',
-    top15_up: 'Pour <u>être dans le top 15</u> vous devez avoir un minimum de ',
-    top15_hold: 'Pour <u>rester dans le top 15</u> vous devez avoir un minimum de ',
-    top30_up: 'Pour <u>être dans le top 30</u> vous devez avoir un minimum de ',
-    top30_hold: 'Pour <u>rester dans le top 30</u> vous devez avoir un minimum de ',
-    points: 'points',
-    challenges_regen: 'Régénération naturelle: ',
-    challenges_left: '<br />Défis restants: ',
-    season_fights: 'Combats de Saison: ',
-    in: 'dans',
-    pop: 'Lieux',
-    season: 'Saison',
-    full_in: 'Remplie dans',
-    ends_at: 'Fin à',
-    full: 'Remplie',
-    league: 'Ligue',
-    boosters_end: 'Fin boosters',
-    victories: 'Victoires',
-    defeats: 'Defaites',
-    unknown: 'Inconnus',
-    opponents: 'Adversaires',
-    notPlayed: 'Non joués',
-    leaguePoints: 'Points',
-    avg: 'Moyenne',
-    league_ending: 'Ligue terminant le ',
-    league_finished: 'Ligue terminée le ',
-    current_league: 'Ligue actuelle',
-    averageScore: 'Score moyen par combat: ',
-    scoreExpected: 'Score attendu: ',
-    available_girls: 'Filles disponibles: ',
-    fights: 'Combats',
-    won_mojo: 'Mojo gagnés',
-    lost_mojo: 'Mojo perdus',
-    won_mojo_avg: 'Moyenne mojo gagnés',
-    lost_mojo_avg: 'Moyenne mojo perdus',
-    mojo_avg: 'Moyenne mojo globale',
-    filter: 'Filtre',
-    searched_name : 'Nom recherché',
-    girl_name: 'Nom de la fille',
-    searched_class: 'Classe recherchée',
-    searched_rarity: 'Rareté recherchée',
-    team_number: 'Équipe #',
-    all: 'Toutes',
-    team: 'Équipe',
-    save_as: 'Sauver sous',
-    load_from: 'Charger',
-    level_range: 'Intervalle de niveaux',
-    searched_aff_category: 'Catégorie d\'affection recherchée',
-    searched_aff_lvl: 'Niveau d\'affection recherché',
-    zero_star: '0 étoile',
-    one_star: '1 étoile',
-    two_stars: '2 étoiles',
-    three_stars: '3 étoiles',
-    four_stars: '4 étoiles',
-    five_stars: '5 étoiles',
-    six_stars: '6 étoiles',
-    time_passed: 'du temps a passé',
-    combativity: 'Combativité',
-    energy: 'Énergie',
-    sort: 'Trier',
-    hide: 'Masquer',
-    display: 'Afficher',
-    searched_blessed_attributes: 'Filles bénies recherchées',
-    blessed_attributes: 'Filles bénies',
-    non_blessed_attributes: 'Filles non bénies'
-};
-
-texts.es = {
-    optionsRefresh: 'Actualizacion Menu principal',
-    optionsVillain: 'Menu Pelear contra villano',
-    optionsTiers: 'Mostrar Rangos con Chicas',
-    optionsXPMoney : 'Mejor XP / Dinero',
-    optionsMarket: 'Informacion de Mercado',
-    optionsMarketFilter: 'Filtro de chicas en el mercado',
-    optionsMarket_XP_Aff: 'El XP y el afecto en el mercado',
-    optionsSortArmorItems: 'Botón para ordenar los artículos de armadura por rareza',
-    optionsHideSellButton: 'Botón para ocultar el botón de "Venta"',
-    optionsHarem: 'Informacion de Harén',
-    optionsLeague: 'Informacion de Liga',
-    optionsLeagueBoard: 'Mostrar los mejores de la liga',
-    optionsSimFight: 'Simulacion de Liga / Temporada / Villano',
-    optionsLogSimFight: 'Registro detallado en la consola del navegador',
-    optionsTeamsFilter: 'Filtro de equipos',
-    optionsChampions: 'Informacion de Campeones',
-    optionsLinks: 'Atajos/Temporizadores',
-    optionsSeasonStats: 'Season stats',
-    optionsPachinkoNames: 'Mostrar nombres en Pachinko',
-    //optionsEpicPachinkoNames: 'Mostrar nombres en Epic Pachinko',
-    optionsMissionsBackground: 'Cambiar el fondo de las misiones',
-    optionsCollectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
-    optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
-    and: 'y',
-    or: 'o',
-    in: 'en',
-    affection: 'afecto',
-    harem_stats: 'Estatus del Harén',
-    haremettes: 'haremettes',
-    hardcore: 'Folladas',
-    charm: 'Encanto',
-    know_how: 'Saber-hacer',
-    shagger: 'Follador',
-    lover: 'Amante',
-    expert: 'Experto',
-    Defense_against: 'Defensa contra ',
-    specialist_in: 'especialista en ',
-    harem_level: 'nivel de harén',
-    to_go: 'restante',
-    unlocked_scenes: 'escenas desbloqueadas',
-    money_income: 'Ingreso de dinero',
-    per_hour: 'por hora',
-    when_all_collectable: 'cuando todo es coleccionable',
-    required_to_unlock: 'Requerido para desbloquear todas las escenas bloqueadas',
-    required_to_get_max_level: 'Requerido para obtener el máximo nivel de todas las chicas',
-    my_stocks: 'Mi Stock',
-    equipments: 'equipamiento',
-    boosters: 'potenciadores',
-    books: 'libros',
-    gifts: 'regalos',
-    currently_buyable: 'Stocks Comprables Actualmente',
-    visit_the: 'Visita el <a href="../shop.html">Mercado</a> primero.',
-    not_compatible: 'Tu navegador no es compatible.',
-    or_level: 'o nivel',
-    restock: 'Restock',
-    wiki: ' wiki',
-    evolution_costs: 'Sus costo de evolucion son',
-    world: 'Mundo ',
-    villain: ' villano',
-    fight_villain: 'Pelear un villano',
-    you_own: 'Tienes',
-    you_can_give: 'Puedes dar un total de',
-    you_can_sell: 'Puedes vender todo por',
-    stat_points_need: 'Puntos de estatus necesarios para maximo',
-    money_need: 'Dinero necesario para maximo',
-    money_spent: 'Dinero usado en el mercado',
-    points_from_level: 'Puntos de estatus de nivel',
-    bought_points: 'Puntos comprados del mercado',
-    equipment_points: 'Puntos de estatus de equipamiento',
-    ginseng_points: 'Puntos de estatus de los potenciadores',
-    club_points: 'Puntos de estatus del club',
-    Xp: 'XP',
-    starting: 'Principiante',
-    common: 'Común',
-    rare: 'Raro',
-    epic: 'Épico',
-    legendary: 'Legendario',
-    mythic: 'Mítica',
-    day: 'd',
-    hour: 'h',
-    minute: 'm',
-    second: 's',
-    demote_up: 'Para <u>degradar</u> puedes tener un máximo de ',
-    demote_down: 'Para <u>degradar</u> debes ser superado por jugadores con tan solo ',
-    demote_holdzero: 'Para <u>degradar</u> debes mantenerte en ',
-    stagnate_up: 'Para <u>no promocionar</u> puedes tener un máximo de ',
-    stagnate_down: 'Para <u>no promocionar</u> debes ser superado por jugadores con tan solo ',
-    stagnate_holdzero: 'Para <u>no promocionar</u> debes mantenerte en ',
-    top4_up: 'Para <u>estar entre los 4 primeros</u> debes tener un mínimo de  ',
-    top4_hold: 'Para <u>quedar entre los 4 primeros</u> debes tener un mínimo de  ',
-    top15_up: 'Para <u>estar entre los 15 primeros</u> debes tener un mínimo de  ',
-    top15_hold: 'Para <u>quedar entre los 15 primeros</u> debes tener un mínimo de  ',
-    top30_up: 'Para <u>estar entre los 30 primeros</u> debes tener un mínimo de  ',
-    top30_hold: 'Para <u>quedar entre los 30 primeros</u> debes tener un mínimo de  ',
-    points: 'puntos',
-    challenges_regen: 'Regeneracion naturel: ',
-    challenges_left: '<br />Retos pendientes: ',
-    pop: 'Lugares',
-    season: 'Temporada',
-    full_in: 'Completa',
-    ends_at: 'Termina a',
-    full: 'Completa',
-    league: 'Liga',
-    boosters_end: 'Fin potenciadores',
-    victories: 'Victorias',
-    defeats: 'Derrota',
-    unknown: 'Desconocido',
-    opponents: 'Opositores',
-    notPlayed: 'No jugado',
-    leaguePoints: 'Puntos',
-    avg: 'Media',
-    league_ending: 'Liga termina el ',
-    league_finished: 'Liga terminó el ',
-    current_league: 'Liga actual',
-    averageScore: 'Puntuación media por combate: ',
-    scoreExpected: 'Puntuación esperada: ',
-    available_girls: 'Chicas disponibles: ',
-    fights: 'Fights',
-    won_mojo: 'Won mojo',
-    lost_mojo: 'Lost mojo',
-    won_mojo_avg: 'Won mojo average',
-    lost_mojo_avg: 'Lost mojo average',
-    mojo_avg: 'Global mojo average',
-    filter: 'Filtro',
-    searched_name : 'Nombre buscado',
-    girl_name: 'Nombre de la chica',
-    searched_class: 'Clase buscada',
-    searched_rarity: 'Rareza buscada',
-    team_number: 'Equipo #',
-    all: 'Todo',
-    team: 'Equipo',
-    save_as: 'Guardar como',
-    load_from: 'Carga',
-    level_range: 'Rango de nivel',
-    searched_aff_category: 'Categoría de afecto buscada',
-    searched_aff_lvl: 'Nivel de afecto buscado',
-    zero_star: '0 estrella',
-    one_star: '1 estrella',
-    two_stars: '2 estrellas',
-    three_stars: '3 estrellas',
-    four_stars: '4 estrellas',
-    five_stars: '5 estrellas',
-    six_stars: '6 estrellas',
-    time_passed: 'del tiempo ha pasado',
-    combativity: 'Combatividad',
-    energy: 'Energía',
-    sort: 'Ordenar',
-    hide: 'Ocultar',
-    display: 'Mostrar',
-    searched_blessed_attributes: 'Buscar chicas bendecidas',
-    blessed_attributes: 'Benditas chicas',
-    non_blessed_attributes: 'Chicas no bendecidas'
-};
-
-texts.it = {
-    optionsRefresh: 'Refresh pagina Home',
-    optionsVillain: 'Menù battaglia Troll',
-    optionsTiers: 'Mostra battaglie con ragazze',
-    optionsXPMoney : 'Migliora XP / soldi',
-    optionsMarket: 'Informazioni negozio',
-    optionsMarketFilter: 'Filtro per ragazze al mercato',
-    optionsMarket_XP_Aff: 'XP e affetto nel mercato',
-    optionsSortArmorItems: 'Pulsante per ordinare gli oggetti dell\'armatura per rarità',
-    optionsHideSellButton: 'Pulsante per nascondere il pulsante "Vendi"',
-    optionsHarem: 'Informazioni Harem',
-    optionsLeague: 'Informazioni sulle Leghe',
-    optionsLeagueBoard: 'Mostra i top della lega',
-    optionsSimFight: 'Simulazione Leghe / Stagione / Troll',
-    optionsLogSimFight : 'Accesso dettagliato nella console del browser',
-    optionsTeamsFilter: 'Filtro delle squadre',
-    optionsChampions: 'Informazioni sui Campioni',
-    optionsLinks: 'Scorciatoie/Timer',
-    optionsSeasonStats: 'Season stats',
-    optionsPachinkoNames: 'Mostra i nomi in Pachinko',
-    //optionsEpicPachinkoNames: 'Mostra i nomi in Epic Pachinko',
-    optionsMissionsBackground: 'Cambiare lo sfondo delle missioni',
-    optionsCollectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
-    optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
-    and: 'e',
-    or: 'o',
-    in: 'in',
-    affection: 'affetto',
-    harem_stats: 'Stato dell Harem',
-    haremettes: 'ragazze dell harem',
-    hardcore: 'Prono',
-    charm: 'Fascino',
-    know_how: 'Competenza',
-    shagger: 'Scopata',
-    lover: 'Amante',
-    expert: 'Esperto',
-    Defense_against: 'Difesa contro ',
-    specialist_in: 'specialista in ',
-    harem_level: 'livello harem',
-    to_go: 'mancanti',
-    unlocked_scenes: 'scene sbloccate',
-    money_income: 'Guadagni',
-    per_hour: 'orario',
-    when_all_collectable: 'quando si può raccogliere tutto',
-    required_to_unlock: 'Necessario per sbloccare tutte le scene',
-    required_to_get_max_level: 'Necessario per livellare tutte le ragazze',
-    my_stocks: 'Mio inventario',
-    equipments: 'equipaggiamento',
-    boosters: 'potenziamenti',
-    books: 'libri',
-    gifts: 'regali',
-    currently_buyable: 'Correntemente acquistabili',
-    visit_the: 'Visita il <a href="../shop.html">negozio</a> prima.',
-    not_compatible: 'Il tuo browser non è compatibile.',
-    or_level: 'o livello',
-    restock: 'Rifornimento',
-    wiki: ' -> wiki',
-    evolution_costs: 'Il costo del potenziamento è',
-    world: 'Mondo ',
-    villain: ' nemico',
-    fight_villain: 'Combattimenti',
-    you_own: 'Possiedi',
-    you_can_give: 'Puoi dare il massimo a',
-    you_can_sell: 'Puoi vendere tutto per',
-    stat_points_need: 'Punti statistica necessari per il massimo',
-    money_need: 'Soldi necessari per il massimo',
-    money_spent: 'Soldi spesi al negozio',
-    points_from_level: 'Punti acquisiti da aumento livello',
-    bought_points: 'Punti comprati al negozio',
-    equipment_points: 'Punti statistica da equipaggiamento',
-    ginseng_points: 'Punti statistica dei potenziamenti',
-    club_points: 'Punti statistica bonus del Club',
-    Xp: 'XP',
-    starting: 'Starter',
-    common: 'Comuni',
-    rare: 'Rare',
-    epic: 'Epiche',
-    legendary: 'Leggendarie',
-    mythic: 'Mitica',
-    day: 'g',
-    hour: 'h',
-    minute: 'm',
-    second: 's',
-    demote_up: 'Per <u>il degrado</u> devi avere al massimo ',
-    demote_down: 'Per <u>il degrado</u> devi essere sorpassato da giocatori con ',
-    demote_holdzero: 'Per <u>il degrado</u> devi rimanere a ',
-    stagnate_up: 'Per <u>restare</u> devi avere al massimo ',
-    stagnate_down: 'Per <u>restare</u> devi essere sorpassato da giocatori con ',
-    stagnate_holdzero: 'Per <u>restare</u> devi rimanere a ',
-    top4_up: 'Per <u>essere tra i primi 4</u> devi avere un minimo di ',
-    top4_hold: 'Per <u>rimanere tra i primi 4</u> devi avere un minimo di ',
-    top15_up: 'Per <u>essere tra i primi 15</u> devi avere un minimo di ',
-    top15_hold: 'Per <u>rimanere tra i primi 15</u> devi avere un minimo di ',
-    top30_up: 'Per <u>essere tra i primi 30</u> devi avere un minimo di ',
-    top30_hold: 'Per <u>rimanere tra i primi 30</u> devi avere un minimo di ',
-    points: 'punti',
-    challenges_regen: 'Rigenerazione naturale: ',
-    challenges_left: '<br />Combattimenti mancanti: ',
-    pop: 'Luoghi',
-    season: 'Stagione',
-    full_in: 'Piena tra',
-    ends_at: 'Fine a',
-    full: 'Piena',
-    league: 'Leghe',
-    boosters_end: 'Fine potenz.',
-    victories: 'Vittorie',
-    defeats: 'Sconfitte',
-    unknown: 'Sconosciuto',
-    opponents: 'Avversari',
-    notPlayed: 'Non giocato',
-    leaguePoints: 'Punti',
-    avg: 'Medio',
-    league_ending: 'Fine della lega il ',
-    league_finished: 'Lega finita il ',
-    current_league: 'Lega attuale',
-    averageScore: 'Punteggio medio per combattimento: ',
-    scoreExpected: 'Punteggio previsto: ',
-    available_girls: 'Ragazze disponibili: ',
-    fights: 'Fights',
-    won_mojo: 'Won mojo',
-    lost_mojo: 'Lost mojo',
-    won_mojo_avg: 'Won mojo average',
-    lost_mojo_avg: 'Lost mojo average',
-    mojo_avg: 'Global mojo average',
-    filter: 'Filtro',
-    searched_name : 'Nome ricercato',
-    girl_name: 'Nome della ragazza',
-    searched_class: 'Classe ricercata',
-    searched_rarity: 'Rarità ricercata',
-    team_number: 'Squadra #',
-    all: 'Tutti',
-    team: 'Squadra',
-    save_as: 'Salvare come',
-    load_from: 'Caricare',
-    level_range: 'Gamma di livelli',
-    searched_aff_category: 'Categoria di affetto ricercata',
-    searched_aff_lvl: 'Livello di affetto ricercato',
-    zero_star: '0 stella',
-    one_star: '1 stella',
-    two_stars: '2 stelle',
-    three_stars: '3 stelle',
-    four_stars: '4 stelle',
-    five_stars: '5 stelle',
-    six_stars: '6 stelle',
-    time_passed: 'del tempo è passato',
-    combativity: 'Combattività',
-    energy: 'Energia',
-    sort: 'Ordinare',
-    hide: 'Nascondere',
-    display: 'Visualizzare',
-    searched_blessed_attributes: 'Cercato ragazze benedette',
-    blessed_attributes: 'Ragazze benedette',
-    non_blessed_attributes: 'Ragazze non benedette'
-};
-
-texts.de = {
-    optionsRefresh: 'Homepage aktualisieren',
-    optionsVillain: 'Widersacher-Menü',
-    optionsTiers: 'Stufen mit Girls anzeigen',
-    optionsXPMoney : 'Migliora XP / soldi',
-    optionsMarket: 'Marktplatz-Informationen',
-    optionsMarketFilter: 'Mädchenfilter auf dem Markt',
-    optionsMarket_XP_Aff: 'XP und Zuneigung auf dem Markt',
-    optionsSortArmorItems: 'Schaltfläche zum Sortieren von Rüstungsgegenständen nach Seltenheit',
-    optionsHideSellButton: 'Schaltfläche zum Ausblenden der Schaltfläche "Verkaufen"',
-    optionsHarem: 'Harem-Informationen',
-    optionsLeague: 'Liga-Informationen',
-    optionsLeagueBoard: 'Die Liga-Spitzen anzeigen',
-    optionsSimFight: 'Liga/Saison/Widersacher-Simulation',
-    optionsLogSimFight: 'Detaillierte Protokollierung in der Browserkonsole',
-    optionsTeamsFilter: 'Mannschaften filtern',
-    optionsChampions: 'Champion-Informationen',
-    optionsLinks: 'Abkürzungen/Zeitgeber',
-    optionsSeasonStats: 'Season stats',
-    optionsPachinkoNames: 'Namen in Pachinko anzeigen',
-    //optionsEpicPachinkoNames: 'Namen in Episch Pachinko anzeigen',
-    optionsMissionsBackground: 'Missionshintergrund ändern',
-    optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
-    optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
-    and: 'und',
-    or: 'oder',
-    in: 'in',
-    affection: 'Zuneigung',
-    harem_stats: 'Harem-Statistiken',
-    haremettes: 'Harem-Mädchen',
-    hardcore: 'Hardcore',
-    charm: 'Charme',
-    know_how: 'Wissen',
-    shagger: 'Stecher',
-    lover: 'Liebhaber',
-    expert: 'Experte',
-    Defense_against: 'Verteidigung gegen ',
-    specialist_in: 'spezialisiert auf ',
-    harem_level: 'Harem-Level',
-    to_go: 'übrig',
-    unlocked_scenes: 'Szenen freigeschaltet',
-    money_income: 'Einkommen',
-    per_hour: 'pro Stunde',
-    when_all_collectable: 'wenn komplett einsammelbar',
-    required_to_unlock: 'Erforderlich für alle Mädchen-Upgrades',
-    required_to_get_max_level: 'Erforderlich für maximale Mädchen-Level',
-    my_stocks: 'Meine Bestände',
-    equipments: 'Ausrüstungen',
-    boosters: 'Booster',
-    books: 'Bücher',
-    gifts: 'Geschenke',
-    currently_buyable: 'Aktuelle Marktangebote',
-    visit_the: 'Besuche zuerst den <a href="../shop.html">Marktplatz</a>.',
-    not_compatible: 'Dein Browser ist nicht kompatibel.',
-    or_level: 'oder Level',
-    restock: 'neue Angebote',
-    wiki: '-Wikiseite',
-    evolution_costs: 'Die Upgradekosten betragen',
-    world: 'Welt ',
-    villain: ' Widersacher',
-    fight_villain: 'Widersacher',
-    you_own: 'Du besitzt',
-    you_can_give: 'Insgesamt verteilbar:',
-    you_can_sell: 'Du kannst alles verkaufen für',
-    stat_points_need: 'benötigte Statuspunkte bis Maximum',
-    money_need: 'nötiges Geld bis Maximum',
-    money_spent: 'bisher ausgegeben',
-    points_from_level: 'Statuspunkte durch Heldenlevel',
-    bought_points: 'gekaufte Statuspunkte',
-    equipment_points: 'Statuspunkte durch Ausrüstung',
-    ginseng_points: 'Statuspunkte durch Booster',
-    club_points: 'Statuspunkte durch Club-Boni',
-    Xp: 'XP',
-    starting: 'Starter',
-    common: 'Gewöhnlich',
-    rare: 'Selten',
-    epic: 'Episch',
-    legendary: 'Legendär',
-    mythic: 'Mythisch',
-    day: 'd',
-    hour: 'h',
-    minute: 'm',
-    second: 's',
-    demote_up: 'Für den <u>Abstieg</u> maximal möglich: ',
-    demote_down: 'Für den <u>Abstieg</u> musst du überholt werden von Spielern mit höchstens ',
-    demote_holdzero: 'Für den <u>Abstieg</u> musst du verbleiben bei ',
-    stagnate_up: 'Für den <u>Nichtaufstieg</u> maximal möglich: ',
-    stagnate_down: 'Für den <u>Nichtaufstieg</u> musst du überholt werden von Spielern mit höchstens ',
-    stagnate_holdzero: 'Für den <u>Nichtaufstieg</u> musst du verbleiben bei ',
-    top4_up: 'Um <u>in den Top 4 zu kommen</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
-    top4_hold: 'Um <u>in den Top 4 zu bleiben</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
-    top15_up: 'Um <u>in den Top 15 zu kommen</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
-    top15_hold: 'Um <u>in den Top 15 zu bleiben</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
-    top30_up: 'Um <u>in den Top 30 zu kommen</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
-    top30_hold: 'Um <u>in den Top 30 zu bleiben</u>, musst du mindestens folgende Voraussetzungen erfüllen  ',
-    points: 'Punkte',
-    challenges_regen: 'Regeneration: ',
-    challenges_left: '<br />verbleibende Kämpfe: ',
-    pop: 'Orte',
-    season: 'Saison',
-    full_in: 'Voll in',
-    ends_at: 'Endet um',
-    full: 'Voll',
-    league: 'Liga',
-    boosters_end: 'Booster enden',
-    victories: 'Siege',
-    defeats: 'Niederlagen',
-    unknown: 'Unbekannt',
-    opponents: 'Gegner',
-    notPlayed: 'Nicht gespielt',
-    leaguePoints: 'Punkte',
-    avg: 'Mittelwert',
-    league_ending: 'Liga Ende ',
-    league_finished: 'Liga endete am',
-    current_league: 'Aktuelle Liga',
-    averageScore: 'Durchschnitt pro Kampf: ',
-    scoreExpected: 'Erwartetes Ergebnis: ',
-    available_girls: 'Freie Mädchen: ',
-    fights: 'Kämpfe',
-    won_mojo: 'gewonnenes Mojo',
-    lost_mojo: 'verlorenes Mojo',
-    won_mojo_avg: 'im Mittel gewonnenes Mojo',
-    lost_mojo_avg: 'im Mittel verlorenes Mojo',
-    mojo_avg: 'Globales mittleres Mojo',
-    filter: 'Filter',
-    searched_name : 'Name',
-    girl_name: 'Name',
-    searched_class: 'Klasse',
-    searched_rarity: 'Seltenheit',
-    team_number: 'Team #',
-    all: 'Alle',
-    team: 'Team',
-    save_as: 'Speichern',
-    load_from: 'Laden',
-    level_range: 'Level',
-    searched_aff_category: 'maximale Zuneigung',
-    searched_aff_lvl: 'aktuelle Zuneigung',
-    zero_star: '0 Sterne',
-    one_star: '1 Stern',
-    two_stars: '2 Sterne',
-    three_stars: '3 Sterne',
-    four_stars: '4 Sterne',
-    five_stars: '5 Sterne',
-    six_stars: '6 Sterne',
-    time_passed: 'Zeit ist vergangen',
-    combativity: 'Kampflust',
-    energy: 'Energie',
-    sort: 'Sortieren',
-    hide: 'Ausblenden',
-    display: 'Anzeigen',
-    searched_blessed_attributes: 'Segnungen',
-    blessed_attributes: 'gesegnet',
-    non_blessed_attributes: 'nicht gesegnet'
-};
+const labels = texts[lang]
 
 var tierGirlsID;
 
@@ -1001,6 +995,8 @@ GIRLS_EXP_LEVELS.legendary = [16, 33, 50, 67, 84, 101, 118, 135, 152, 170, 188, 
 
 GIRLS_EXP_LEVELS.mythic = [40, 81, 122, 163, 205, 247, 289, 332, 375, 418, 462, 506, 550, 595, 640, 685, 731, 777, 823, 870, 917, 964, 1012, 1060, 1108, 1157, 1206, 1255, 1305, 1355, 1406, 1457, 1508, 1560, 1612, 1664, 1717, 1770, 1824, 1878, 1932, 1987, 2042, 2098, 2154, 2210, 2267, 2324, 2382, 2440, 2499, 2558, 2617, 2677, 2737, 2798, 2859, 2921, 2983, 3046, 3109, 3173, 3237, 3302, 3367, 3433, 3499, 3565, 3632, 3699, 3767, 3835, 3904, 3974, 4044, 4115, 4186, 4258, 4330, 4403, 4476, 4550, 4624, 4699, 4774, 4850, 4927, 5004, 5082, 5160, 5239, 5318, 5398, 5479, 5560, 5642, 5724, 5807, 5891, 5975, 6060, 6146, 6232, 6319, 6407, 6495, 6584, 6673, 6763, 6854, 6945, 7037, 7130, 7224, 7318, 7413, 7509, 7605, 7702, 7800, 7899, 7998, 8098, 8199, 8301, 8403, 8506, 8610, 8715, 8820, 8926, 9033, 9141, 9250, 9359, 9469, 9580, 9692, 9805, 9919, 10033, 10148, 10264, 10381, 10499, 10618, 10738, 10858, 10979, 11101, 11224, 11348, 11473, 11599, 11726, 11854, 11983, 12113, 12244, 12376, 12509, 12643, 12778, 12914, 13051, 13189, 13328, 13468, 13609, 13751, 13894, 14038, 14183, 14329, 14476, 14624, 14774, 14925, 15077, 15230, 15384, 15539, 15695, 15853, 16012, 16172, 16333, 16495, 16658, 16823, 16989, 17156, 17324, 17494, 17665, 17837, 18011, 18186, 18362, 18539, 18718, 18898, 19079, 19262, 19446, 19632, 19819, 20007, 20197, 20388, 20581, 20775, 20970, 21167, 21365, 21565, 21766, 21969, 22173, 22379, 22587, 22796, 23007, 23219, 23433, 23648, 23865, 24084, 24304, 24526, 24750, 24975, 25202, 25431, 25661, 25893, 26127, 26363, 26600, 26839, 27080, 27323, 27567, 27813, 28061, 28311, 28563, 28817, 29073, 29331, 29591, 29852, 30115, 30380, 30647, 30916, 31187, 31460, 31735, 32013, 32293, 32575, 32859, 33145, 33433, 33723, 34015, 34310, 34607, 34906, 35207, 35511, 35817, 36125, 36435, 36748, 37063, 37380, 37700, 38022, 38347, 38674, 39003, 39335, 39669, 40006, 40345, 40687, 41032, 41379, 41729, 42081, 42436, 42794, 43154, 43517, 43883, 44251, 44622, 44996, 45373, 45753, 46136, 46521, 46909, 47300, 47694, 48091, 48491, 48894, 49300, 49709, 50121, 50536, 50954, 51375, 51800, 52228, 52659, 53093, 53530, 53971, 54415, 54862, 55313, 55767, 56225, 56686, 57150, 57618, 58089, 58564, 59042, 59524, 60010, 60499, 60992, 61489, 61989, 62493, 63001, 63513, 64029, 64548, 65071, 65598, 66129, 66664, 67203, 67746, 68293, 68844, 69400, 69960, 70524, 71092, 71664, 72241, 72822, 73407, 73997, 74591, 75190, 75793, 76401, 77013, 77630, 78251, 78877, 79508, 80143, 80783, 81428, 82078, 82733, 83393, 84058, 84728, 85403, 86083, 86768, 87458, 88153, 88853, 89558, 90269, 90985, 91706, 92433, 93165, 93903, 94646, 95395, 96149, 96909, 97675, 98447, 99224, 100007, 100796, 101591, 102392, 103199, 104012, 104831, 105656, 106487, 107325, 108169, 109019, 109876, 110739, 111609, 112485, 113368, 114257, 115153, 116056, 116965, 117881, 118804, 119734, 120671, 121615, 122566, 123524, 124489, 125462, 126442, 127429, 128424, 129426, 130436, 131453, 132478, 133510, 134550, 135598, 136654, 137718, 138790, 139870, 140958, 142054, 143158, 144271, 145392, 146521, 147659, 148805, 149960, 151123, 152295, 153476, 154666, 155865, 157073, 158290, 159516, 160751, 161995, 163249, 164512, 165785, 167067, 168359, 169660, 170971, 172292, 173623, 174964, 176315, 177676, 179047, 180429, 181821, 183223, 184636, 186059, 187493, 188938, 190394, 191861, 193339, 194828, 196328, 197839, 199361, 200895, 202440, 203997, 205566, 207146, 208738, 210342, 211958, 213586, 215227, 216880];
 
+const MEAN_ICON_URI = "data:image/svg+xml,%3Csvg width='8mm' height='8mm' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cg aria-label='x' style='stroke-width:0.272511;fill:%23fff'%3E%3Cpath d='M 7.0395058,7.5271268 H 4.4234097 V 6.960306 H 5.1428362 L 3.9110909,5.270744 2.6793457,6.960306 H 3.4096725 V 7.5271268 H 1.2622937 V 6.960306 H 2.0144213 L 3.5731785,4.8129271 1.8509153,2.4366399 H 1.1532897 V 1.8698191 H 3.6821825 V 2.4366399 H 3.0063577 l 1.1881436,1.63506 1.1881437,-1.63506 H 4.619617 V 1.8698191 h 2.18008 V 2.4366399 H 6.0475694 L 4.5324138,4.5295167 6.2982786,6.960306 h 0.7412272 z'/%3E%3C/g%3E%3Cpath style='fill:none;stroke:%23fff;stroke-width:0.503;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1' d='m 1.1597452,0.80972094 h 5.647'/%3E%3C/g%3E%3C/svg%3E"
+
 /* =========
 	OPTIONS
    ========= */
@@ -1022,6 +1018,7 @@ function loadSetting(e){
 			||e=='harem'
 			||e=='league'
 			||e=='leagueBoard'
+            ||e=='leaguePromo'
 			||e=='simFight'
 			//||e=='logSimFight'
 			||e=='teamsFilter'
@@ -1144,6 +1141,7 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" hhs="harem"><span class="slider"></span></label>' + texts[lang].optionsHarem + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="league"><span class="slider"></span></label>' + texts[lang].optionsLeague + '<br />'
                                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="leagueBoard"><span class="slider"></span></label>' + texts[lang].optionsLeagueBoard + '<br />'
+                                 + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="leaguePromo"><span class="slider"></span></label>' + texts[lang].optionsLeaguePromo + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="simFight"><span class="slider"></span></label>' + texts[lang].optionsSimFight + '<br />'
                                  + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="logSimFight"><span class="slider"></span></label>' + texts[lang].optionsLogSimFight + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="teamsFilter"><span class="slider"></span></label>' + texts[lang].optionsTeamsFilter + '<br />'
@@ -1193,9 +1191,17 @@ function options() {
         if (!$(this).is(':checked')) {
             $('[hhs=leagueBoard]').prop('checked', false);
             localStorage.setItem('HHS.leagueBoard', false)
+            $('[hhs=leaguePromo]').prop('checked', false);
+            localStorage.setItem('HHS.leaguePromo', false)
         }
     });
     $('[hhs=leagueBoard]').click(function() {
+        if ($(this).is(':checked')) {
+            $('[hhs=league]').prop('checked', true);
+            localStorage.setItem('HHS.league', true)
+        }
+    });
+    $('[hhs=leaguePromo]').click(function() {
         if ($(this).is(':checked')) {
             $('[hhs=league]').prop('checked', true);
             localStorage.setItem('HHS.league', true)
@@ -3002,633 +3008,236 @@ function moduleHarem() {
    ==================== */
 
 function moduleLeague() {
-    var playersTotal;
-    var challengesLeft;
-    var challengesPossibleMinutes;
-    var challengesPossible;
-    var challengesDone = 0;
-    var playerCurrentParse;
-    var playerCurrentPos;
-    var playerCurrentPoints;
-    var maxDemoteParse;
-    var maxDemotePoints;
-    var maxDemoteDiff;
-    var maxDemoteDisplay;
-    var textDemote;
-    var maxStagnateParse;
-    var maxStagnatePoints;
-    var maxStagnateDiff;
-    var maxStagnateDisplay;
-    var textStagnate;
-    var minTop4Parse;
-    var minTop4Points;
-    var minTop4Diff;
-    var minTop4Display;
-    var textTop4;
-    var minTop15Points;
-    var textTop15;
-    var minTop15Display;
-    var minTop30Parse;
-    var minTop30Points;
-    var minTop30Diff;
-    var minTop30Display;
-    var textTop30;
-    var avgScore;
-    var scoreExpected;
-    var playerSelectedPos;
-    var playerSelectedPoints;
-    var top4Points;
-    var top5Points;
-    var top15Points;
-    var top16Points;
-    var top30Points;
-    var top31Points;
-    var topDemotePoints;
-    var topNonDemotePoints;
+    let challengesDone = 0
+    let playerCurrentPos
+    let playerCurrentPoints
+    let textDemote
+    let textStagnate
+    const topPoints = {}
 
-    var	includeBoard = false;
+    const includeBoard = loadSetting('leagueBoard')
 
-    if (loadSetting('leagueBoard')) {
-        includeBoard = true;
-    }
+    const challengesPossibleMinutes = parseInt(Math.floor(season_end_at/60), 10)
+    const challengesPossible = (Hero.energies.challenge.amount != Hero.energies.challenge.max_amount)? Math.floor((challengesPossibleMinutes + (35 - Hero.energies.challenge.next_refresh_ts / 60))/35) + parseInt(Hero.energies.challenge.amount, 10) : Math.floor(challengesPossibleMinutes/35) + parseInt(Hero.energies.challenge.amount, 10)
 
-    challengesPossibleMinutes = parseInt(Math.floor(season_end_at/60), 10);
-    challengesPossible = (Hero.energies.challenge.amount != Hero.energies.challenge.max_amount)? Math.floor((challengesPossibleMinutes + (35 - Hero.energies.challenge.next_refresh_ts / 60))/35) + parseInt(Hero.energies.challenge.amount, 10) : Math.floor(challengesPossibleMinutes/35) + parseInt(Hero.energies.challenge.amount, 10);
+    const $tableRows = $('.leagues_table .lead_table_view tbody.leadTable tr')
+    const playersTotal = $tableRows.length;
+    const challengesTotal = 3*(playersTotal-1)
+    const demoteThreshold = playersTotal-14
+    const nonDemoteThreshold = playersTotal-15
 
-    playersTotal = $('.leagues_table .lead_table_view tbody.leadTable')[0].children.length;
+    const tops = [4, 15, 30]
+    const thresholds = [...tops, ...tops.map(top => top+1), demoteThreshold, nonDemoteThreshold]
+    const tableData = {}
 
     for(var i=0; i<playersTotal; i++) {
-        var playerData = $('.leagues_table .lead_table_view tbody.leadTable')[0].children[i];
-        var fightsDone = 0;
-        if (playerData.className.indexOf('selected-player-leagues') != -1) {
-            var fightsData = playerData.childNodes[7].childNodes[1].childNodes[3].childNodes[5].childNodes
-            for (var j=0; j<fightsData.length; j++){
-                if (fightsData[j].className != 'result')
-                    fightsDone ++;
-            }
-            playerSelectedPos = parseInt(playerLeaguesData.rank, 10);
-            playerSelectedPoints = parseInt(playerLeaguesData.points.replace(/\D/g, ''), 10);
+        const $playerData = $tableRows.eq(i)
 
-            switch (playerSelectedPos) {
-                case 4:
-                    top4Points = playerSelectedPoints;
-                    break;
-                case 5:
-                    top5Points = playerSelectedPoints;
-                    break;
-                case 15:
-                    top15Points = playerSelectedPoints;
-                    break;
-                case 16:
-                    top16Points = playerSelectedPoints;
-                    break;
-                case 30:
-                    top30Points = playerSelectedPoints;
-                    break;
-                case 31:
-                    top31Points = playerSelectedPoints;
-                    break;
-                case (playersTotal-14):
-                    topDemotePoints = playerSelectedPoints;
-                    break;
-                case (playersTotal-15):
-                    topNonDemotePoints = playerSelectedPoints;
-                    break;
+        let pos
+        let points
+        let playerChallengesDone = 0
+
+        if ($playerData.hasClass('selected-player-leagues')) {
+            // Mobile selected row has completely different layout and is missing data, thankfully the player is highlighted so we can use playerLeagesData instead.
+            playerChallengesDone = playerLeaguesData.match_history.reduce((sum, match) => match ? sum+1: sum, 0)
+            pos = parseInt(playerLeaguesData.rank, 10)
+            points = parseLocaleRoundedInt(playerLeaguesData.points)
+        } else {
+            const $columns = $playerData.find('td')
+            const fightsStr = $columns.eq(3).text()
+            pos = parseInt($columns.eq(0).text(), 10)
+            points = parseLocaleRoundedInt($columns.eq(4).text())
+
+            if ($playerData.hasClass('personal_highlight')) {
+                playerCurrentPos = pos
+                playerCurrentPoints = points
+            } else {
+                playerChallengesDone = parseInt(fightsStr.substring(0,1), 10)
             }
         }
-        else {
-            var fightsStr = playerData.children[3].innerText;
-            var pos = parseInt(playerData.children[0].innerText, 10);
-            var points = parseInt(playerData.children[4].innerText.replace(/\D/g, ''), 10);
-
-            switch (pos) {
-                case 4:
-                    top4Points = points;
-                    break;
-                case 5:
-                    top5Points = points;
-                    break;
-                case 15:
-                    top15Points = points;
-                    break;
-                case 16:
-                    top16Points = points;
-                    break;
-                case 30:
-                    top30Points = points;
-                    break;
-                case 31:
-                    top31Points = points;
-                    break;
-                case (playersTotal-14):
-                    topDemotePoints = points;
-                    break;
-                case (playersTotal-15):
-                    topNonDemotePoints = points;
-                    break;
-            }
-
-            if (fightsStr == '-') {
-                fightsDone = 0;
-                playerCurrentParse = playerData;
-            }
-            else
-                fightsDone = parseInt(fightsStr.substring(0,1), 10);
+        
+        tableData[pos] = {
+            points
         }
-        challengesDone += fightsDone;
+        
+        if (thresholds.includes(pos)) {
+            topPoints[pos] = points
+        }
+        
+        challengesDone += playerChallengesDone
+        tableData[pos].challengesDone = playerChallengesDone
     }
 
-    challengesLeft = 3*(playersTotal-1)-challengesDone;
+    thresholds.forEach(pos => topPoints[pos] = tableData[pos].points)
 
-    playerCurrentPos = parseInt(playerCurrentParse.children[0].innerText, 10);
-    playerCurrentPoints = parseInt(playerCurrentParse.children[4].innerText.replace(/\D/g, ''), 10);
+    const challengesLeft = challengesTotal-challengesDone
 
-    avgScore = (challengesDone != 0) ? playerCurrentPoints/challengesDone : 0;
-    scoreExpected = Math.floor(avgScore*3*(playersTotal-1));
+    const avgScore = (challengesDone !== 0) ? playerCurrentPoints/challengesDone : 0
+    const avgRounded = Math.round(avgScore*100)/100
+    const scoreExpected = Math.floor(avgScore*challengesTotal);
 
-    var leagueScore = {
+    const leagueScore = {
         points: playerCurrentPoints,
-        avg: Math.round(avgScore*100)/100
+        avg: avgRounded
     }
-    var oldScore = JSON.parse(localStorage.getItem('leagueScore')) || {points: 0, avg: 0};
-    var oldPoints = oldScore.points;
+    const oldScore = JSON.parse(localStorage.getItem('leagueScore')) || {points: 0, avg: 0}
+    const {points: oldPoints} = oldScore
     if (playerCurrentPoints > oldPoints) {
-        localStorage.setItem('leagueScore', JSON.stringify(leagueScore));
+        localStorage.setItem('leagueScore', JSON.stringify(leagueScore))
     }
 
-    if (playerCurrentPos > (playersTotal - 15)) {
-        maxDemotePoints = topNonDemotePoints;
-        maxDemoteDiff = maxDemotePoints - playerCurrentPoints;
-        if (playerCurrentPoints == 0 && maxDemotePoints == 0) {
-            maxDemoteDisplay = '±' + nThousand(maxDemoteDiff);
-            textDemote = texts[lang].demote_holdzero;
-        }
-        else {
-            maxDemoteDisplay = '+' + nThousand(maxDemoteDiff);
-            textDemote = texts[lang].demote_up;
-        }
-    }
-    else {
-        maxDemotePoints = topDemotePoints
-        maxDemoteDiff = maxDemotePoints - playerCurrentPoints;
-        if (playerCurrentPoints == 0 && maxDemotePoints == 0) {
-            maxDemoteDisplay = '±' + nThousand(maxDemoteDiff);
-            textDemote = texts[lang].demote_holdzero;
-        }
-        else {
-            if (maxDemoteDiff == 0) {
-                maxDemoteDisplay = '-' + nThousand(maxDemoteDiff);
-            }
-            else {
-                maxDemoteDisplay = nThousand(maxDemoteDiff);
-            }
-            textDemote = texts[lang].demote_down;
-        }
+    const canDemote = league_tag > 1
+    const canPromote = league_tag < 9
+    const showPromotionInformation = loadSetting('leaguePromo')
+    const showDemotion = canDemote && showPromotionInformation
+    const showStagnation = canPromote && showPromotionInformation
+    const playerAtZeroPoints = playerCurrentPoints === 0
+    const playerWouldDemote = canDemote && (playerAtZeroPoints || playerCurrentPos >= demoteThreshold)
+    const playerIsTop15 = playerCurrentPos <= 15
+    const playerWouldStagnate = !playerWouldDemote || !playerIsTop15
+
+    if (showDemotion) {
+        const maxDemotePoints = playerWouldDemote ? topPoints[nonDemoteThreshold] : topPoints[demoteThreshold]
+        const holdZero = playerAtZeroPoints && !maxDemotePoints
+        textDemote = holdZero ? labels.demote_holdzero : playerWouldDemote ? labels.demote_up.replace('{{points}}', maxDemotePoints) : labels.demote_down.replace('{{players}}', demoteThreshold - playerCurrentPos)
     }
 
-    if (playerCurrentPos > 15) {
-        maxStagnatePoints = top15Points;
-        maxStagnateDiff = maxStagnatePoints - playerCurrentPoints;
-        minTop15Points = maxStagnatePoints + 1;
-        if (playerCurrentPoints == 0 && maxStagnatePoints == 0) {
-            maxStagnateDisplay = '±' + nThousand(maxStagnateDiff);
-            minTop15Display = '±' + nThousand(maxStagnateDiff+1);
-            textStagnate = texts[lang].stagnate_holdzero;
-            textTop15 = texts[lang].top15_up;
-        }
-        else {
-            maxStagnateDisplay = '+' + nThousand(maxStagnateDiff);
-            minTop15Display = '+' + nThousand(maxStagnateDiff+1);
-            textStagnate = texts[lang].stagnate_up;
-            textTop15 = texts[lang].top15_up;
-        }
-    }
-    else {
-        maxStagnatePoints = top16Points;
-        maxStagnateDiff = maxStagnatePoints - playerCurrentPoints;
-        minTop15Points = top16Points;
-        if (playerCurrentPoints == 0 && maxStagnatePoints == 0) {
-            maxStagnateDisplay = '±' + nThousand(maxStagnateDiff);
-            minTop15Display = '±' + nThousand(maxStagnateDiff);
-            textStagnate = texts[lang].stagnate_holdzero;
-            textTop15 = texts[lang].top15_hold;
-        }
-        else {
-            if (maxStagnateDiff == 0) {
-                maxStagnateDisplay = '-' + nThousand(maxStagnateDiff);
-                minTop15Display = '-' + nThousand(maxStagnateDiff);
-            }
-            else {
-                maxStagnateDisplay = nThousand(maxStagnateDiff);
-                minTop15Display = nThousand(maxStagnateDiff);
-            }
-            textStagnate = texts[lang].stagnate_down;
-            textTop15 = texts[lang].top15_hold;
-        }
+    if (showStagnation) {
+        const maxStagnatePoints = playerWouldStagnate ? topPoints[15] : topPoints[16]
+        textStagnate = playerAtZeroPoints ? labels.stagnate_atzero : playerWouldStagnate ? labels.stagnate_up.replace('{{points}}', maxStagnatePoints) : labels.stagnate_down.replace('{{players}}', 16 - playerCurrentPos)
     }
 
-    if (playerCurrentPos > 30) {
-        minTop30Points = top30Points + 1;
-        minTop30Diff = minTop30Points - playerCurrentPoints;
-        if (minTop30Diff > 0) {
-            minTop30Display = '+' + (nThousand(minTop30Diff));
-            textTop30 = texts[lang].top30_up;
-        }
-        else {
-            minTop30Display = nThousand(minTop30Diff);
-            textTop30 = texts[lang].top30_hold;
-        }
-    }
-    else {
-        minTop30Points = top31Points;
-        minTop30Diff = minTop30Points - playerCurrentPoints;
-        if (minTop30Diff < 0) {
-            minTop30Display = nThousand(minTop30Diff);
-            textTop30 = texts[lang].top30_hold;
-        }
-        else {
-            minTop30Display = '+' + (nThousand(minTop30Diff));
-            textTop30 = texts[lang].top30_hold;
-        }
+    const promotionInfoTooltip = `${showStagnation ? `<p>${textStagnate}</p>` : ''}${showDemotion ? `<p>${textDemote}</p>` : ''}`
+    
+    const topDisplays = {}
+    const topTooltips = {}
+
+    if (includeBoard) {
+        tops.forEach(top => {
+            const playerIsInTop = playerCurrentPos <= top
+            const minPoints = playerIsInTop ? topPoints[top + 1] : topPoints[top] + 1
+            const diff = minPoints - playerCurrentPoints
+            const diffSymbol = playerIsInTop ? diff ? '' : '-' : '+'
+            topDisplays[top] = `${diffSymbol}${nThousand(diff)}`
+            const label = labels[`top${top}_${playerIsInTop ? 'hold' : 'up'}`]
+            topTooltips[top] = label.replace('{{points}}', nThousand(minPoints))
+        })
     }
 
-    if (playerCurrentPos > 4) {
-        minTop4Points = top4Points + 1;
-        minTop4Diff = minTop4Points - playerCurrentPoints;
-        if (minTop4Diff > 0) {
-            minTop4Display = '+' + (nThousand(minTop4Diff));
-            textTop4 = texts[lang].top4_up;
-        }
-        else {
-            minTop4Display = nThousand(minTop4Diff);
-            textTop4 = texts[lang].top4_hold;
-        }
-    }
-    else {
-        minTop4Points = top5Points;
-        minTop4Diff = minTop4Points - playerCurrentPoints;
-        if (minTop4Diff > 0) {
-            minTop4Display = '+' + (nThousand(minTop4Diff));
-            textTop4 = texts[lang].top4_hold;
-        }
-        else {
-            minTop4Display = nThousand(minTop4Diff);
-            textTop4 = texts[lang].top4_hold;
-        }
-    }
+    const possibleChallengesTooltip = `${labels.challenges_regen}<em>${challengesPossible}</em>${labels.challenges_left}<em>${challengesLeft}</em>`
 
-    if (league_tag == 9) {
-        $('div.league_end_in').append('<div class="scriptLeagueInfo">'
-                                      + '<span class="averageScore"><img src="https://www.flaticon.com/premium-icon/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 2px;">' + nThousand(Math.round(avgScore*100)/100)
-                                      + '<span class="scriptLeagueInfoTooltip averageScoreTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                      + '<span class="possibleChallenges"><img src="https://www.flaticon.com/premium-icon/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;">' + challengesPossible + '/' + challengesLeft
-                                      + '<span class="scriptLeagueInfoTooltip possibleChallengesTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                      + '<span class="minTop4"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;">' + minTop4Display
-                                      + '<span class="scriptLeagueInfoTooltip minTop4Tooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '<span class="minTop15"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/France_road_sign_B14_%2815%29.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;">' + minTop15Display
-                                      + '<span class="scriptLeagueInfoTooltip minTop15Tooltip">' + textTop15 + nThousand(minTop15Points) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '<span class="minTop30"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;">' + minTop30Display
-                                      + '<span class="scriptLeagueInfoTooltip minTop30Tooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '<span class="maxDemote"><img src="https://www.flaticon.com/premium-icon/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;">' + maxDemoteDisplay
-                                      + '<span class="scriptLeagueInfoTooltip maxDemoteTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '</div>');
+    const scriptLeagueInfo = `
+        <div class="scriptLeagueInfo">
+            <span class="averageScore" hh_title="${labels.averageScore}<em>${nThousand(avgRounded)}</em><br/>${labels.scoreExpected}<em>${nThousand(scoreExpected)}</em>"><img src="${MEAN_ICON_URI}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${nThousand(avgRounded)}</span>
+            <span class="possibleChallenges" hh_title="${possibleChallengesTooltip}"><img src="https://${cdnHost}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
+            ${includeBoard ? 
+                tops.map(top => `
+                    <span class="minTop${top}" hh_title="${topTooltips[top]}"><span class="scriptLeagueInfoIcon top${top}" />${topDisplays[top]}</span>
+                `).join('') : ''}
+            ${showPromotionInformation ? `
+                <span class="promotionInfo" hh_title="${promotionInfoTooltip}"><img src="https://${cdnHost}/leagues/ic_rankup.png" style="height: 15px; width: 12px; margin-left: 6px; margin-bottom: 0px;"></span>
+            ` : ''}
+        </div>
+    `
 
-
-
-        $('#tower_of_fame .border-gradient .lead_wrapper .leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
-                                                                                                   + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                                                                                   + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                                                                                   + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                                                                                   + '<span class="minTop4Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop4Display
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop4MobileTooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '<span class="minTop15Mobile"><img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/France_road_sign_B14_%2815%29.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop15Display
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop15MobileTooltip">' + textTop15 + nThousand(minTop15Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop30Display
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '<span class="maxDemoteMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxDemoteDisplay
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxDemoteMobileTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '</span>');
-
-        if (includeBoard == false) {
-            $('.minTop4').empty();
-            $('.minTop15').empty();
-            $('.minTop30').empty();
-            $('.minTop4Mobile').empty();
-            $('.minTop15Mobile').empty();
-            $('.minTop30Mobile').empty();
-        }
-    }
-    else if (league_tag == 1) {
-        $('div.league_end_in').append('<span class="scriptLeagueInfo">'
-                                      + '<span class="averageScore"><img src="https://www.flaticon.com/premium-icon/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 2px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                      + '<span class="scriptLeagueInfoTooltip averageScoreTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                      + '<span class="possibleChallenges"><img src="https://www.flaticon.com/premium-icon/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                      + '<span class="scriptLeagueInfoTooltip possibleChallengesTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                      + '<span class="maxStagnate"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="margin-left: 7px; margin-bottom: 2px;"> ' + maxStagnateDisplay
-                                      + '<span class="scriptLeagueInfoTooltip maxStagnateTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '<span class="minTop30"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 2px;"> ' + minTop30Display
-                                      + '<span class="scriptLeagueInfoTooltip minTop30Tooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '</span>');
-
-        $('#tower_of_fame .border-gradient .lead_wrapper .leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
-                                                                                                   + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                                                                                   + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                                                                                   + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                                                                                   + '<span class="maxStagnateMobile"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="margin-left: 7px; margin-bottom: 5px;"> ' + maxStagnateDisplay
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxStagnateMobileTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 7px; margin-bottom: 5px;"> ' + minTop30Display
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '</span>');
-
-        if (includeBoard == false) {
-            $('.minTop30').empty();
-            $('.minTop30Mobile').empty();
-        }
-    }
-    else {
-        $('div.league_end_in').append('<span class="scriptLeagueInfo">'
-                                      + '<span class="averageScore"><img src="https://www.flaticon.com/premium-icon/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 2px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                      + '<span class="scriptLeagueInfoTooltip averageScoreTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                      + '<span class="possibleChallenges"><img src="https://www.flaticon.com/premium-icon/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                      + '<span class="scriptLeagueInfoTooltip possibleChallengesTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                      + '<span class="minTop4"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;">' + minTop4Display
-                                      + '<span class="scriptLeagueInfoTooltip minTop4Tooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '<span class="maxStagnate"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxStagnateDisplay
-                                      + '<span class="scriptLeagueInfoTooltip maxStagnateTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '<span class="minTop30"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + minTop30Display
-                                      + '<span class="scriptLeagueInfoTooltip minTop30Tooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '<span class="maxDemote"><img src="https://www.flaticon.com/premium-icon/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxDemoteDisplay
-                                      + '<span class="scriptLeagueInfoTooltip maxDemoteTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                      + '</span>');
-
-        $('#tower_of_fame .border-gradient .lead_wrapper .leagues-btn-mobile-refill-multi').append('<span class="scriptMobileLeagueInfo">'
-                                                                                                   + '<span class="averageScoreMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/1753/1753830.svg" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 5px;"> ' + nThousand(Math.round(avgScore*100)/100)
-                                                                                                   + '<span class="scriptLeagueInfoTooltip averageScoreMobileTooltip">' + texts[lang].averageScore + nThousand(Math.round(avgScore*100)/100) + '<BR>' + texts[lang].scoreExpected + nThousand(scoreExpected) + '</span></span>'
-                                                                                                   + '<span class="possibleChallengesMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/551/551227.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + challengesPossible + '/' + challengesLeft
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip possibleChallengesMobileTooltip">' + texts[lang].challenges_regen + challengesPossible + texts[lang].challenges_left + challengesLeft + '</span></span>'
-                                                                                                   + '<span class="minTop4Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/3840/3840753.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop4Display
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop4MobileTooltip">' + textTop4 + nThousand(minTop4Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '<span class="maxStagnateMobile"><img src="https://i.postimg.cc/HnkyDtG3/icon-league-hold.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + maxStagnateDisplay
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxStagnateMobileTooltip">' + textStagnate + nThousand(maxStagnatePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '<span class="minTop30Mobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/2773/2773307.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 5px;"> ' + minTop30Display
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip minTop30MobileTooltip">' + textTop30 + nThousand(minTop30Points) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '<span class="maxDemoteMobile"><img src="https://www.flaticon.com/premium-icon/icons/svg/212/212020.svg" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 2px;"> ' + maxDemoteDisplay
-                                                                                                   + '<span class="scriptMobileLeagueInfoTooltip maxDemoteMobileTooltip">' + textDemote + nThousand(maxDemotePoints) + ' ' + texts[lang].points + '.</span></span>'
-                                                                                                   + '</span>');
-
-        if (includeBoard == false) {
-            $('.minTop4').empty();
-            $('.minTop4Mobile').empty();
-            $('.minTop30').empty();
-            $('.minTop30Mobile').empty();
-        }
-    }
+    $('div.league_end_in').append(scriptLeagueInfo)
 
     //CSS
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '#leagues_middle .league_end_in {'
-                     + 'line-height: 16px;}}'
-                    );
+    sheet.insertRule(`
+        #leagues_middle .league_end_in {
+            line-height: 16px;
+        }
+    `)
 
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.scriptLeagueInfo {'
-                     + 'font-size: 13px; '
-                     + 'display: block; '
-                     + 'float: right; '
-                     + 'margin-right: 3px;}}'
-                    );
+    sheet.insertRule(`
+        .scriptLeagueInfo {
+            display: block;
+            float: right;
+            margin-right: 9px;
+        }
+    `)
 
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.scriptLeagueInfo {'
-                     + 'display: none;}}'
-                    );
+    sheet.insertRule(`
+        ${mediaDesktop} {
+            .scriptLeagueInfo {
+                font-size: 13px;
+            }
+        }
+    `)
 
-    sheet.insertRule('.scriptLeagueInfoTooltip {'
-                     + 'visibility: hidden; '
-                     + 'font-size: 12px; '
-                     + 'background-color: black; '
-                     + 'color: #fff; '
-                     + 'text-align: center; '
-                     + 'padding: 3px 5px 3px 5px; '
-                     + 'border: 2px solid #905312; '
-                     + 'border-radius: 6px; '
-                     + 'background-color: rgba(32,3,7,.9); '
-                     + 'position: absolute; '
-                     + 'margin-top: 5px; '
-                     + 'z-index: 9;}'
-                    );
+    sheet.insertRule(`
+        ${mediaMobile} {
+            .scriptLeagueInfo {
+                position: absolute;
+                right: 300px;
+                top: -20px;
+                font-size: 14px;
+            }
+        }
+    `)
 
-    sheet.insertRule('.scriptLeagueInfoTooltip::after {'
-                     + 'content: " "; '
-                     + 'position: absolute; '
-                     + 'bottom: 100%; '
-                     + 'left: 50%; '
-                     + 'margin-left: -10px; '
-                     + 'border-width: 10px; '
-                     + 'border-style: solid; '
-                     + 'border-color: transparent transparent #905312 transparent;}'
-                    );
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon {
+            display: inline-block;
+            height: 16px;
+            width: 16px;
+            font-size: 10px;
+            border-radius: 5px;
+            margin-left: 6px;
+            margin-right: 2px;
+        }
+    `)
 
-    sheet.insertRule('.averageScoreTooltip {'
-                     + 'top: 22px; '
-                     + 'margin-left: -135px;}'
-                    );
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon:after {
+            display: block;
+            position: relative;
+        }
+    `)
 
-    sheet.insertRule('.averageScore:hover .averageScoreTooltip {'
-                     + 'visibility: visible;}'
-                    );
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon.top4 {
+            background: url('https://${cdnHost}/legendary.png');
+            background-size: cover;
+        }
+    `)
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon.top4:after {
+            content: '4';
+            top: 2px;
+            left: 4px;
+        }
+    `)
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon.top15 {
+            background-color: #ffb244;
+        }
+    `)
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon.top15:after {
+            content: '15';
+            top: 2px;
+            left: 3px;
+        }
+    `)
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon.top30 {
+            background-color: #23b56b;
+        }
+    `)
+    sheet.insertRule(`
+        .scriptLeagueInfoIcon.top30:after {
+            content: '30';
+            top: 2px;
+            left: 1px;
+        }
+    `)
 
-    sheet.insertRule('.possibleChallengesTooltip {'
-                     + 'top: 22px; '
-                     + 'margin-left: -110px;}'
-                    );
-
-    sheet.insertRule('.possibleChallenges:hover .possibleChallengesTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.maxStagnateTooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 22px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.maxStagnate:hover .maxStagnateTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop4Tooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 22px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop4:hover .minTop4Tooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop15Tooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 22px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop15:hover .minTop15Tooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop30Tooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 22px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop30:hover .minTop30Tooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop45Tooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 22px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop45:hover .minTop45Tooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.maxDemoteTooltip {'
-                     + 'max-width: 170px; '
-                     + 'top: 22px; '
-                     + 'margin-left: -100px;}'
-                    );
-
-    sheet.insertRule('.maxDemote:hover .maxDemoteTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.scriptMobileLeagueInfo {'
-                     + 'position : absolute; '
-                     + 'width : 400px; '
-                     + 'left : -430px; '
-                     + 'top : 25px; '
-                     + 'font-size: 14px; '
-                     + 'display: block; '
-                     + 'float: right; '
-                     + 'margin-right: 10px;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.scriptMobileLeagueInfo {'
-                     + 'display: none;}}'
-                    );
-
-    sheet.insertRule('.scriptMobileLeagueInfoTooltip {'
-                     + 'visibility: hidden; '
-                     + 'font-size: 14px; '
-                     + 'background-color: black; '
-                     + 'color: #fff; '
-                     + 'text-align: center; '
-                     + 'padding: 3px 5px 3px 5px; '
-                     + 'border: 2px solid #905312; '
-                     + 'border-radius: 6px; '
-                     + 'background-color: rgba(32,3,7,.9); '
-                     + 'position: absolute; '
-                     + 'margin-top: 5px; '
-                     + 'z-index: 9;}'
-                    );
-
-    sheet.insertRule('.scriptMobileLeagueInfoTooltip::after {'
-                     + 'content: " "; '
-                     + 'position: absolute; '
-                     + 'bottom: 100%; '
-                     + 'left: 50%; '
-                     + 'margin-left: -10px; '
-                     + 'border-width: 10px; '
-                     + 'border-style: solid; '
-                     + 'border-color: transparent transparent #905312 transparent;}'
-                    );
-
-    sheet.insertRule('.averageScoreMobileTooltip {'
-                     + 'top: 25px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.averageScoreMobile:hover .averageScoreMobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.possibleChallengesMobileTooltip {'
-                     + 'top: 25px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.possibleChallengesMobile:hover .possibleChallengesMobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.maxStagnateMobileTooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 25px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.maxStagnateMobile:hover .maxStagnateMobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop4MobileTooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 25px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop4Mobile:hover .minTop4MobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop15MobileTooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 25px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop15Mobile:hover .minTop15MobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop30MobileTooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 25px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop30Mobile:hover .minTop30MobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.minTop45MobileTooltip {'
-                     + 'max-width: 190px; '
-                     + 'top: 25px; '
-                     + 'margin-left: -115px;}'
-                    );
-
-    sheet.insertRule('.minTop45Mobile:hover .minTop45MobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
-
-    sheet.insertRule('.maxDemoteMobileTooltip {'
-                     + 'max-width: 170px; '
-                     + 'top: 25px; '
-                     + 'margin-left: -100px;}'
-                    );
-
-    sheet.insertRule('.maxDemoteMobile:hover .maxDemoteMobileTooltip {'
-                     + 'visibility: visible;}'
-                    );
+    sheet.insertRule(`
+        .hh_tooltip_new em {
+            color: white;
+        }
+    `)
 
     function removeBeatenOpponents() {
         var board = document.getElementsByClassName("leadTable")[0];
@@ -3662,10 +3271,10 @@ function moduleLeague() {
     $(".league_end_in").append('<button id="beaten_opponents" class=""><span id="hide_beaten"></span></button>');
 
     const setButtonDisplay = () => {
-        $('#hide_beaten').html(`<img alt="${texts[lang].display}" title="${texts[lang].display}" src="https://hh.hh-content.com/quest/ic_eyeopen.svg">`);
+        $('#hide_beaten').html(`<img alt="${labels.display}" title="${labels.display}" src="https://${cdnHost}/quest/ic_eyeopen.svg">`);
     }
     const setButtonHide = () => {
-        $('#hide_beaten').html(`<img alt="${texts[lang].hide}" title="${texts[lang].hide}" src="https://hh.hh-content.com/quest/ic_eyeclosed.svg">`);
+        $('#hide_beaten').html(`<img alt="${labels.hide}" title="${labels.hide}" src="https://${cdnHost}/quest/ic_eyeclosed.svg">`);
     }
 
     if (hidden == 1) {
@@ -3820,6 +3429,146 @@ function moduleLeague() {
     }
 
     displayLeaguePlayersClass();
+
+    function saveVictories() {
+        let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
+
+        let current_date_ts = Math.floor(new Date().getTime()/1000);
+        let date_end_league = leagueDateInit + Math.ceil((current_date_ts - leagueDateInit)/604800)*604800;
+
+        let time_results = localStorage.getItem('leagueTime');
+        if (time_results == null) {
+            time_results = date_end_league;
+            localStorage.setItem('leagueTime', time_results);
+            localStorage.setItem('leagueResults', null);
+        }
+        //Next Thursday after non-DST at 12:00 UTC
+        if (time_results == 1636023600) {
+            time_results = 1636027200
+            localStorage.setItem('leagueTime', time_results);
+        }
+
+        if (current_date_ts > time_results) {
+            localStorage.setItem('oldLeagueResults', localStorage.getItem('leagueResults'));
+            localStorage.setItem('oldLeagueTime', localStorage.getItem('leagueTime'));
+            localStorage.setItem('oldLeaguePlayers', localStorage.getItem('leaguePlayers'));
+            localStorage.setItem('oldLeagueScore', localStorage.getItem('leagueScore'));
+            localStorage.setItem('oldLeagueUnknown', localStorage.getItem('leagueUnknown'));
+            localStorage.removeItem('leagueResults');
+            localStorage.setItem('leagueTime', date_end_league);
+            localStorage.removeItem('leagueScore');
+            localStorage.removeItem('leagueUnknown');
+        }
+
+        let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
+        let player = `${playerLeaguesData.id_member}`
+        let spec = playerLeaguesData.class
+        let results = playerLeaguesData.match_history
+        const nb_victories = results.filter(match => match === 'won').length;
+        const nb_defeats = results.filter(match => match === 'lost').length;
+
+        data[player] = {
+            victories: nb_victories,
+            defeats: nb_defeats,
+            class: spec
+        };
+
+        localStorage.setItem('leagueResults', JSON.stringify(data));
+
+        calculateVictories();
+    }
+
+    function calculateVictories() {
+        let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
+        let players = $('#leagues_middle .leadTable tr');
+        let nb_players = players.length;
+        let nb_opponents = nb_players-1;
+        localStorage.setItem('leaguePlayers', nb_opponents);
+
+        let fightsPlayed = 0;
+        for (var i=0; i<nb_players; i++) {
+            var played = 0;
+            if (players[i].className.indexOf('lead_table_default') != -1) {
+                if ($('.lead_table_default .result').length != 0)
+                    played = parseInt($('.lead_table_default .won').length + $('.lead_table_default .lost').length, 10);
+                else
+                    played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
+            }
+            else {
+                played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
+            }
+            fightsPlayed += played;
+        }
+
+        let tot_victory = 0;
+        let tot_defeat = 0;
+        for(let key in data) {
+            tot_victory += data[key].victories;
+            tot_defeat += data[key].defeats;
+        }
+
+        let tot_notPlayed = 3*nb_opponents - fightsPlayed;
+        let nb_unknown = fightsPlayed - tot_victory - tot_defeat;
+        localStorage.setItem('leagueUnknown', nb_unknown);
+
+        const leagueStatsText = `
+            <hr/>
+            <span id="leagueStats"><u>${labels.current_league}</u>
+            <BR>${labels.victories} : ${tot_victory}/${3*nb_opponents}
+            <BR>${labels.defeats} : ${tot_defeat}/${3*nb_opponents}
+            <BR>${labels.unknown} : ${nb_unknown}/${3*nb_opponents}
+            <BR>${labels.notPlayed} : ${tot_notPlayed}/${3*nb_opponents}
+            </span>`
+
+        let old_data = JSON.parse(localStorage.getItem('oldLeagueResults')) || {};
+        let old_nb_opponents = JSON.parse(localStorage.getItem('oldLeaguePlayers')) || 0;
+        let old_nb_unknown = localStorage.getItem('oldLeagueUnknown');
+        let old_score = JSON.parse(localStorage.getItem('oldLeagueScore')) || {};
+
+        let old_tot_victory = 0;
+        let old_tot_defeat = 0;
+
+        let old_points = old_score.points || 0;
+        let old_avg = old_score.avg || 0;
+
+        for(let old_key in old_data) {
+            old_tot_victory += old_data[old_key].victories;
+            old_tot_defeat += old_data[old_key].defeats;
+        }
+
+        let old_tot_notPlayed = 3*old_nb_opponents - old_tot_victory - old_tot_defeat - old_nb_unknown;
+
+        const options = {year: 'numeric', month: 'short', day: 'numeric'};
+        let old_date_end_league = new Date(localStorage.getItem('oldLeagueTime')*1000).toLocaleDateString(undefined, options);
+
+        let oldLeagueStatsText
+        if (localStorage.getItem('oldLeagueTime') != null) {
+            oldLeagueStatsText = `
+                <hr/>
+                <span id="oldLeagueStats">
+                ${labels.league_finished}${old_date_end_league}
+                <BR>${labels.victories} : ${old_tot_victory}/${3*old_nb_opponents}
+                <BR>${labels.defeats} : ${old_tot_defeat}/${3*old_nb_opponents}
+                <BR>${labels.notPlayed} : ${old_tot_notPlayed}/${3*old_nb_opponents}
+                <BR>${labels.opponents} : ${old_nb_opponents}
+                <BR>${labels.leaguePoints} : ${nThousand(old_points)}
+                <BR>${labels.avg} : ${nThousand(old_avg)}
+                </span>`
+        }
+
+        const allLeagueStatsText = `${possibleChallengesTooltip}${leagueStatsText}${oldLeagueStatsText}`
+        $('.possibleChallenges').attr('hh_title', allLeagueStatsText)
+    }
+
+    saveVictories()
+
+    var observeCallback = function() {
+        saveVictories()
+    }
+
+    var observer = new MutationObserver(observeCallback);
+    var test = document.getElementById('leagues_right');
+    observer.observe(test, {attributes: false, childList: true, subtree: false});
 }
 
 /* ============
@@ -3902,8 +3651,6 @@ function moduleSim() {
 
         $('#leagues_right .average-lvl').append('<div class="matchRating ' + simu.scoreClass + '" hh_title="'+probabilityTooltip+'">' + simu.scoreStr + ' / ' + simu.pointsStr + '</div>');
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + ' / ' + simu.pointsStr + '</span>');
-
-        saveVictories();
     }
 
     calculatePower();
@@ -3937,159 +3684,6 @@ function moduleSim() {
     var observer = new MutationObserver(observeCallback);
     var test = document.getElementById('leagues_right');
     observer.observe(test, {attributes: false, childList: true, subtree: false});
-
-    function saveVictories() {
-        let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
-
-        let current_date_ts = Math.floor(new Date().getTime()/1000);
-        let date_end_league = leagueDateInit + Math.ceil((current_date_ts - leagueDateInit)/604800)*604800;
-
-        let time_results = localStorage.getItem('leagueTime');
-        if (time_results == null) {
-            time_results = date_end_league;
-            localStorage.setItem('leagueTime', time_results);
-            localStorage.setItem('leagueResults', null);
-        }
-        //Next Thursday after non-DST at 12:00 UTC
-        if (time_results == 1636023600) {
-            time_results = 1636027200
-            localStorage.setItem('leagueTime', time_results);
-        }
-
-        if (current_date_ts > time_results) {
-            localStorage.setItem('oldLeagueResults', localStorage.getItem('leagueResults'));
-            localStorage.setItem('oldLeagueTime', localStorage.getItem('leagueTime'));
-            localStorage.setItem('oldLeaguePlayers', localStorage.getItem('leaguePlayers'));
-            localStorage.setItem('oldLeagueScore', localStorage.getItem('leagueScore'));
-            localStorage.setItem('oldLeagueUnknown', localStorage.getItem('leagueUnknown'));
-            localStorage.removeItem('leagueResults');
-            localStorage.setItem('leagueTime', date_end_league);
-            localStorage.removeItem('leagueScore');
-            localStorage.removeItem('leagueUnknown');
-        }
-
-        let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
-        let player = $('#leagues_right .player_block .avatar_border > img').attr('onclick').slice(22,-3);
-        let spec = $('#leagues_right .player_block .icon').attr('carac').slice(5);
-        let results = $('#leagues_right .challenge .result');
-        let nb_victories = 0;
-        let nb_defeats = 0;
-
-        for(let i = 0; i < results.length; ++i) {
-            let result = results.eq(i);
-
-            if( ((result.text() == 'V') && (($('html')[0].lang === 'fr') || ($('html')[0].lang === 'it_IT'))) || (result.text() == 'W') || (result.text() == 'S') || (result.text() == '勝'))
-                ++nb_victories;
-            if( (result.text() == 'D') || (result.text() == 'L') || (result.text() == 'P') || ((result.text() == 'V') && ($('html')[0].lang === 'de_DE')) || (result.text() == '負'))
-                ++nb_defeats;
-        }
-
-        data[player] = {
-            victories: nb_victories,
-            defeats: nb_defeats,
-            class: parseInt(spec, 10),
-        };
-
-        localStorage.setItem('leagueResults', JSON.stringify(data));
-
-        calculateVictories();
-    }
-
-    function calculateVictories() {
-        let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
-        let players = $('#leagues_middle .leadTable tr');
-        let nb_players = players.length;
-        let nb_opponents = nb_players-1;
-        localStorage.setItem('leaguePlayers', nb_opponents);
-
-        let fightsPlayed = 0;
-        for (var i=0; i<nb_players; i++) {
-            var played = 0;
-            if (players[i].className.indexOf('lead_table_default') != -1) {
-                if ($('.lead_table_default .result').length != 0)
-                    played = parseInt($('.lead_table_default .won').length + $('.lead_table_default .lost').length, 10);
-                else
-                    played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
-            }
-            else {
-                played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
-            }
-            fightsPlayed += played;
-        }
-
-        let tot_victory = 0;
-        let tot_defeat = 0;
-        for(let key in data) {
-            tot_victory += data[key].victories;
-            tot_defeat += data[key].defeats;
-        }
-
-        let tot_notPlayed = 3*nb_opponents - fightsPlayed;
-        let nb_unknown = fightsPlayed - tot_victory - tot_defeat;
-        localStorage.setItem('leagueUnknown', nb_unknown);
-
-        $('span.possibleChallenges span.scriptLeagueInfoTooltip.possibleChallengesTooltip span#leagueStats').empty();
-        $('span.scriptLeagueInfoTooltip.possibleChallengesTooltip').append('<span id="leagueStats"><BR><BR><u>' + texts[lang].current_league + '</u>'
-                                                                           + '<BR>' + texts[lang].victories + ' : ' + tot_victory + '/' + 3*nb_opponents
-                                                                           + '<BR>' + texts[lang].defeats + ' : ' + tot_defeat + '/' + 3*nb_opponents
-                                                                           + '<BR>' + texts[lang].unknown + ' : ' + nb_unknown + '/' + 3*nb_opponents
-                                                                           + '<BR>' + texts[lang].notPlayed + ' : ' + tot_notPlayed + '/' + 3*nb_opponents
-                                                                           + '</span>');
-
-        $('span.possibleChallengesMobile span.scriptMobileLeagueInfoTooltip.possibleChallengesMobileTooltip span#leagueStatsMobile').empty();
-        $('span.scriptMobileLeagueInfoTooltip.possibleChallengesMobileTooltip').append('<span id="leagueStatsMobile"><BR><BR><u>' + texts[lang].current_league + '</u>'
-                                                                                       + '<BR>' + texts[lang].victories + ' : ' + tot_victory + '/' + 3*nb_opponents
-                                                                                       + '<BR>' + texts[lang].defeats + ' : ' + tot_defeat + '/' + 3*nb_opponents
-                                                                                       + '<BR>' + texts[lang].unknown + ' : ' + nb_unknown + '/' + 3*nb_opponents
-                                                                                       + '<BR>' + texts[lang].notPlayed + ' : ' + tot_notPlayed + '/' + 3*nb_opponents
-                                                                                       + '</span>');
-
-
-        let old_data = JSON.parse(localStorage.getItem('oldLeagueResults')) || {};
-        let old_nb_opponents = JSON.parse(localStorage.getItem('oldLeaguePlayers')) || 0;
-        let old_nb_unknown = localStorage.getItem('oldLeagueUnknown');
-        let old_score = JSON.parse(localStorage.getItem('oldLeagueScore')) || {};
-
-        let old_tot_victory = 0;
-        let old_tot_defeat = 0;
-
-        let old_points = old_score.points || 0;
-        let old_avg = old_score.avg || 0;
-
-        for(let old_key in old_data) {
-            old_tot_victory += old_data[old_key].victories;
-            old_tot_defeat += old_data[old_key].defeats;
-        }
-
-        let old_tot_notPlayed = 3*old_nb_opponents - old_tot_victory - old_tot_defeat - old_nb_unknown;
-
-        const options = {year: 'numeric', month: 'short', day: 'numeric'};
-        let old_date_end_league = new Date(localStorage.getItem('oldLeagueTime')*1000).toLocaleDateString(undefined, options);
-
-        if (localStorage.getItem('oldLeagueTime') != null) {
-            $('span.possibleChallenges span.scriptLeagueInfoTooltip.possibleChallengesTooltip span#oldLeagueStats').empty();
-            $('span.scriptLeagueInfoTooltip.possibleChallengesTooltip').append('<span id="oldLeagueStats"><BR>_______________________'
-                                                                               + '<BR><BR>' + texts[lang].league_finished + old_date_end_league
-                                                                               + '<BR>' + texts[lang].victories + ' : ' + old_tot_victory + '/' + 3*old_nb_opponents
-                                                                               + '<BR>' + texts[lang].defeats + ' : ' + old_tot_defeat + '/' + 3*old_nb_opponents
-                                                                               + '<BR>' + texts[lang].notPlayed + ' : ' + old_tot_notPlayed + '/' + 3*old_nb_opponents
-                                                                               + '<BR>' + texts[lang].opponents + ' : ' + old_nb_opponents
-                                                                               + '<BR>' + texts[lang].leaguePoints + ' : ' + old_points
-                                                                               + '<BR>' + texts[lang].avg + ' : ' + nThousand(old_avg)
-                                                                               + '</span>');
-
-            $('span.possibleChallengesMobile span.scriptMobileLeagueInfoTooltip.possibleChallengesMobileTooltip span#oldLeagueStatsMobile').empty();
-            $('span.scriptMobileLeagueInfoTooltip.possibleChallengesMobileTooltip').append('<span id="oldLeagueStatsMobile"><BR>_______________________'
-                                                                                           + '<BR><BR>' + texts[lang].league_finished + old_date_end_league
-                                                                                           + '<BR>' + texts[lang].victories + ' : ' + old_tot_victory + '/' + 3*old_nb_opponents
-                                                                                           + '<BR>' + texts[lang].defeats + ' : ' + old_tot_defeat + '/' + 3*old_nb_opponents
-                                                                                           + '<BR>' + texts[lang].notPlayed + ' : ' + old_tot_notPlayed + '/' + 3*old_nb_opponents
-                                                                                           + '<BR>' + texts[lang].opponents + ' : ' + old_nb_opponents
-                                                                                           + '<BR>' + texts[lang].leaguePoints + ' : ' + old_points
-                                                                                           + '<BR>' + texts[lang].avg + ' : ' + nThousand(old_avg)
-                                                                                           + '</span>');
-        }
-    }
 
     //CSS
     /*sheet.insertRule('#leagues_right .player_block .lead_player_profile .level_wrapper {'
@@ -5993,15 +5587,6 @@ function moduleLinks() {
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
                      + '#tower_of_fame .base_block.lead_wrapper > h3 {'
                      + 'top: 8px !important;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '#tower_of_fame .tabs {'
-                     + 'top: 15px !important;}}'
-                    );
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                    + '#tower_of_fame .league_end_in {'
-                    + 'margin-top: 5px;}}'
                     );
 
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
