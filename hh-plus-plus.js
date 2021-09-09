@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.3
+// @version         0.33.4
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -145,6 +145,7 @@ const texts = {
         optionsMissionsBackground: 'Change missions background',
         optionsCollectMoneyAnimation: 'Delete the collect money animation',
         optionsOldPoAWindow: 'Old PoA window',
+        optionsFasterSkip: 'Faster Skip button',
         and: 'and',
         or: 'or',
         affection: 'affection',
@@ -299,6 +300,7 @@ const texts = {
         optionsMissionsBackground: 'Change l\'arrière-plan des missions',
         optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
         optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
+        optionsFasterSkip: 'Bouton "Passer" plus rapide',
         and: 'et',
         or: 'ou',
         affection: 'affection',
@@ -453,6 +455,7 @@ const texts = {
         optionsMissionsBackground: 'Cambiar el fondo de las misiones',
         optionsCollectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
         optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
+        optionsFasterSkip: 'Botón "Omitir" más rápido',
         and: 'y',
         or: 'o',
         in: 'en',
@@ -606,6 +609,7 @@ const texts = {
         optionsMissionsBackground: 'Cambiare lo sfondo delle missioni',
         optionsCollectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
         optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
+        optionsFasterSkip: 'Pulsante "Salta" più veloce',
         and: 'e',
         or: 'o',
         in: 'in',
@@ -759,6 +763,7 @@ const texts = {
         optionsMissionsBackground: 'Missionshintergrund ändern',
         optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
         optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
+        optionsFasterSkip: 'Schneller Schaltfläche "Überspr."',
         and: 'und',
         or: 'oder',
         in: 'in',
@@ -1026,6 +1031,7 @@ function loadSetting(e){
             ||e=='missionsBackground'
             ||e=='collectMoneyAnimation'
             ||e=='oldPoAWindow'
+            ||e=='fasterSkip'
         ) return true
         return false
     }
@@ -1148,7 +1154,8 @@ function options() {
                                  //+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="pachinkoNamesMulti"><span class="slider"></span></label>' + texts[lang].optionsEpicPachinkoNames + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="missionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="collectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
-                                 + '<label class="switch"><input type="checkbox" hhs="oldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow
+                                 + '<label class="switch"><input type="checkbox" hhs="oldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="fasterSkip"><span class="slider"></span></label>' + texts[lang].optionsFasterSkip
                                  + '</div>');
 
     // Show and hide options menu
@@ -7018,3 +7025,8 @@ function moduleMissionsBackground() {
 //Old Path of attraction event window
 if (CurrentPage.indexOf('home') != -1 && $('.event-thumbnail [rel=path_event]').length > 0 && loadSetting('oldPoAWindow'))
     $('.event-thumbnail [rel=path_event]')[0].href="/path-of-attraction.html";
+
+//Faster skip button
+if(CurrentPage.includes("battle") && loadSetting('fasterSkip')) {
+    setTimeout(() => $('#new-battle-skip-btn').show(), 250);
+}
