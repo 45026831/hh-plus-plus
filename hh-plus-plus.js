@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.0
+// @version         0.33.1
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -3579,23 +3579,12 @@ function moduleLeague() {
 function moduleSim() {
     function calculatePower() {
         // INIT
-
-        let playerCrit, playerAtk, playerDef, playerEgo
-        if (heroLeaguesData.caracs) {
-            ({
-                chance: playerCrit,
-                damage: playerAtk,
-                defense: playerDef,
-                ego: playerEgo
-            } = heroLeaguesData.caracs)
-        } else {
-            ({
-                chance: playerCrit,
-                damage: playerAtk,
-                defense: playerDef,
-                totalEgo: playerEgo
-            } = heroLeaguesData)
-        }
+        const {
+            chance: playerCrit,
+            damage: playerAtk,
+            defense: playerDef,
+            totalEgo: playerEgo
+        } = heroLeaguesData
 
         const {
             chance: opponentCrit,

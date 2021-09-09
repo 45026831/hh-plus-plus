@@ -1,3 +1,4 @@
+0.33.1: League sim: Removing old heroLeaguesData stats retrieval due to bad data on mobile.
 0.33.0: Major refactor of the League info module. Adding CDN selection for in-game assets used. Starting to refactor i18n labels.
 0.32.16: Fixing bug where script can't work out duration when mythic boosters are applied
 0.32.15: Removing old sim from seasons, moving probability result to where old sim result was.
