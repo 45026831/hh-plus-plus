@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.2
+// @version         0.33.3
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -18,14 +18,14 @@
 // @author          Raphael, 1121, Sluimerstand, shal, Tom208, test_anon, 45026831(Numbers)
 // ==/UserScript==
 
-/*	===========
-	 CHANGELOG
-	=========== */
+/*  ===========
+     CHANGELOG
+    =========== */
 // The changelog can be found at https://raw.githubusercontent.com/45026831/hh-plus-plus/main/CHANGELOG
 
 
 /* =========
-	GENERAL
+    GENERAL
    ========= */
 
 // Define jQuery
@@ -112,7 +112,7 @@ const CDNs = {
 const cdnHost = CDNs[location.host] || 'hh.hh-content.com'
 
 /* ==============
-	TRANSLATIONS
+    TRANSLATIONS
    ============== */
 
 const supportedLanguages = ['en', 'fr', 'es', 'it', 'de']
@@ -246,18 +246,18 @@ const texts = {
         lost_mojo_avg: 'Lost mojo average',
         mojo_avg: 'Global mojo average',
         filter: 'Filter',
-        searched_name : 'Searched name',
+        searched_name : 'Search',
         girl_name: `${gameConfig.Girl} name`,
-        searched_class: 'Searched class',
-        searched_rarity: 'Searched rarity',
+        searched_class: 'Class',
+        searched_rarity: 'Rarity',
         team_number: 'Team number',
         all: 'All',
         team: 'Team',
         save_as: 'Save as',
         load_from: 'Load from',
         level_range: 'Level range',
-        searched_aff_category: 'Searched affection category',
-        searched_aff_lvl: 'Searched affection <BR>level',
+        searched_aff_category: 'Affection category',
+        searched_aff_lvl: 'Affection level',
         zero_star: '0 star',
         one_star: '1 star',
         two_stars: '2 stars',
@@ -270,7 +270,7 @@ const texts = {
         sort: 'Sort',
         hide: 'Hide',
         display: 'Display',
-        searched_blessed_attributes: `Searched blessed ${gameConfig.girl}s`,
+        searched_blessed_attributes: `Blessings`,
         blessed_attributes: `Blessed ${gameConfig.girl}s`,
         non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`
     },
@@ -994,42 +994,42 @@ GIRLS_EXP_LEVELS.mythic = [40, 81, 122, 163, 205, 247, 289, 332, 375, 418, 462, 
 const MEAN_ICON_URI = "data:image/svg+xml,%3Csvg width='8mm' height='8mm' viewBox='0 0 8 8' xmlns='http://www.w3.org/2000/svg' xmlns:svg='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Cg aria-label='x' style='stroke-width:0.272511;fill:%23fff'%3E%3Cpath d='M 7.0395058,7.5271268 H 4.4234097 V 6.960306 H 5.1428362 L 3.9110909,5.270744 2.6793457,6.960306 H 3.4096725 V 7.5271268 H 1.2622937 V 6.960306 H 2.0144213 L 3.5731785,4.8129271 1.8509153,2.4366399 H 1.1532897 V 1.8698191 H 3.6821825 V 2.4366399 H 3.0063577 l 1.1881436,1.63506 1.1881437,-1.63506 H 4.619617 V 1.8698191 h 2.18008 V 2.4366399 H 6.0475694 L 4.5324138,4.5295167 6.2982786,6.960306 h 0.7412272 z'/%3E%3C/g%3E%3Cpath style='fill:none;stroke:%23fff;stroke-width:0.503;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1' d='m 1.1597452,0.80972094 h 5.647'/%3E%3C/g%3E%3C/svg%3E"
 
 /* =========
-	OPTIONS
+    OPTIONS
    ========= */
 function loadSetting(e){
-	try { var temp = JSON.parse(localStorage.getItem('HHS.'+e)) } catch(err) { temp = null }
-	if (temp === null){
-		if ( false
-			// default values - only for those not using the ingame settings (an ingame saved setting overrides this)
-			// leading '//' disables a feature by default
-			||e=='refresh'
-			||e=='villain'
-			||e=='tiers'
-			||e=='xpMoney'
-			||e=='market'
-			||e=='marketFilter'
-			||e=='market_XP_Aff'
-			||e=='sortArmorItems'
-			||e=='hideSellButton'
-			||e=='harem'
-			||e=='league'
-			||e=='leagueBoard'
+    try { var temp = JSON.parse(localStorage.getItem('HHS.'+e)) } catch(err) { temp = null }
+    if (temp === null){
+        if ( false
+            // default values - only for those not using the ingame settings (an ingame saved setting overrides this)
+            // leading '//' disables a feature by default
+            ||e=='refresh'
+            ||e=='villain'
+            ||e=='tiers'
+            ||e=='xpMoney'
+            ||e=='market'
+            ||e=='marketFilter'
+            ||e=='market_XP_Aff'
+            ||e=='sortArmorItems'
+            ||e=='hideSellButton'
+            ||e=='harem'
+            ||e=='league'
+            ||e=='leagueBoard'
             ||e=='leaguePromo'
-			||e=='simFight'
-			//||e=='logSimFight'
-			||e=='teamsFilter'
-			||e=='champions'
-			||e=='links'
-			||e=='seasonStats'
-			||e=='pachinkoNames'
-			//||e=='pachinkoNamesMulti'
-			||e=='missionsBackground'
-			||e=='collectMoneyAnimation'
-			||e=='oldPoAWindow'
-		   ) return true
-		return false
-	}
-	return temp
+            ||e=='simFight'
+            //||e=='logSimFight'
+            ||e=='teamsFilter'
+            ||e=='champions'
+            ||e=='links'
+            ||e=='seasonStats'
+            ||e=='pachinkoNames'
+            //||e=='pachinkoNamesMulti'
+            ||e=='missionsBackground'
+            ||e=='collectMoneyAnimation'
+            ||e=='oldPoAWindow'
+        ) return true
+        return false
+    }
+    return temp
 }
 
 if (CurrentPage.indexOf('home') != -1) options();
@@ -1161,12 +1161,12 @@ function options() {
             x.style.display = 'none';
         }
     });
-	$('[hhs]').each(function(){
-		$(this).attr('checked', loadSetting($(this).attr('hhs')))
-	})
-	$('[hhs]').click(function() {
-		localStorage.setItem('HHS.'+$(this).attr('hhs'), $(this).prop('checked'))
-	})
+    $('[hhs]').each(function(){
+        $(this).attr('checked', loadSetting($(this).attr('hhs')))
+    })
+    $('[hhs]').click(function() {
+        localStorage.setItem('HHS.'+$(this).attr('hhs'), $(this).prop('checked'))
+    })
 
     // Dependency of villain menu options
     $('[hhs=villain]').click(function() {
@@ -1284,7 +1284,7 @@ function options() {
 }
 
 /* =====================
-	HOME SCREEN REFRESH
+    HOME SCREEN REFRESH
    ===================== */
 
 function moduleRefresh() {
@@ -1294,7 +1294,7 @@ function moduleRefresh() {
 }
 
 /* ======================
-	FIGHT A VILLAIN MENU
+    FIGHT A VILLAIN MENU
    ====================== */
 
 function moduleVillain() {
@@ -1313,7 +1313,7 @@ function moduleVillain() {
     let mythicEventTrolls = JSON.parse(localStorage.getItem('mythicEventTrolls'));
     let tierGirlsOwned = JSON.parse(localStorage.getItem('tierGirlsOwned'));
     const girlDictionary = (typeof(localStorage.HHPNMap) == "undefined") ? new Map(): new Map(JSON.parse(localStorage.HHPNMap));
-    let	includeTiers = false;
+    let includeTiers = false;
     let eventEndTime = localStorage.getItem('eventTime') || 0;
     let mythicEventEndTime = localStorage.getItem('mythicEventTime') || 0;
 
@@ -1598,7 +1598,7 @@ function moduleVillain() {
 }
 
 /* ===========
-	BETTER XP
+    BETTER XP
    =========== */
 
 function moduleXP() {
@@ -1618,7 +1618,7 @@ function moduleXP() {
 }
 
 /* ==============
-	BETTER MONEY
+    BETTER MONEY
    ============== */
 
 function moduleMoney() {
@@ -1650,7 +1650,7 @@ function moduleMoney() {
 }
 
 /* ====================
-	MARKET INFORMATION
+    MARKET INFORMATION
    ==================== */
 
 function moduleMarket() {
@@ -2030,7 +2030,7 @@ function moduleMarket() {
 }
 
 /* =========================================
-	MARKET GIRLS' FILTER (Credit: test_anon)
+    MARKET GIRLS' FILTER (Credit: test_anon)
    ========================================= */
 
 function moduleMarketFilter() {
@@ -2137,8 +2137,8 @@ function moduleMarketFilter() {
         }
 
         function createFilterBox() {
-			var totalHTML = '<div style="position:relative"><div id="arena_filter_box" class="form-wrapper" style="'
-			+ 'position: absolute; left: -215px; bottom: -150px; width: 200px; heigth: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
+            var totalHTML = '<div style="position:relative"><div id="arena_filter_box" class="form-wrapper" style="'
+            + 'position: absolute; left: -215px; bottom: -150px; width: 200px; heigth: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
             totalHTML += '<div class="form-control"><div class="input-group">'
                 + '<label class="head-group" for="sort_name">' + texts[lang].searched_name + '</label>'
                 + '<input type="text" autocomplete="off" id="sort_name" placeholder="' + texts[lang].girl_name + '" icon="search">'
@@ -2248,7 +2248,7 @@ function moduleMarketFilter() {
         }
 
         let girlsData = getGirlData();
-		createFilter( $('#girls_list'), girlsData );
+        createFilter( $('#girls_list'), girlsData );
     }
 
     addGirlFilter();
@@ -2301,7 +2301,7 @@ function moduleMarketFilter() {
 }
 
 /* =====================================
-	MARKET XP AND AFFECTION INFORMATION
+    MARKET XP AND AFFECTION INFORMATION
    ===================================== */
 
 function moduleMarket_XP_Aff() {
@@ -2477,7 +2477,7 @@ function moduleHideSellButton() {
 }
 
 /* ===================
-	HAREM INFORMATION
+    HAREM INFORMATION
    =================== */
 
 function moduleHarem() {
@@ -2607,7 +2607,7 @@ function moduleHarem() {
             RestockInfo = '> The <a href="../shop.html">Market</a> restocked since your last visit.';
         }
         else {
-            var	marketBookTxt = lsMarket.buyable.potion.Nb + ' ' + texts[lang].books + ' (' + nThousand(lsMarket.buyable.potion.Xp) + ' ' + texts[lang].Xp + ')',
+            var marketBookTxt = lsMarket.buyable.potion.Nb + ' ' + texts[lang].books + ' (' + nThousand(lsMarket.buyable.potion.Xp) + ' ' + texts[lang].Xp + ')',
                 marketGiftTxt = lsMarket.buyable.gift.Nb + ' ' + texts[lang].gifts + ' (' + nThousand(lsMarket.buyable.gift.Xp) + ' ' + texts[lang].affection + ')';
             RestockInfo = '- ' + marketBookTxt + ' = ' + nThousand(lsMarket.buyable.potion.Value) + ' <span class="imgMoney"></span>'
                 + '<br />- ' + marketGiftTxt + ' = ' + nThousand(lsMarket.buyable.gift.Value) + ' <span class="imgMoney"></span>'
@@ -3000,7 +3000,7 @@ function moduleHarem() {
 }
 
 /* ====================
-	LEAGUE INFORMATION
+    LEAGUE INFORMATION
    ==================== */
 
 function moduleLeague() {
@@ -3568,7 +3568,7 @@ function moduleLeague() {
 }
 
 /* ============
-	LEAGUE SIM
+    LEAGUE SIM
    ============ */
 
 function moduleSim() {
@@ -4008,7 +4008,7 @@ function calcLeagueProbabilities(player, opponent) {
     return ret;
 }
 /* =========================================
-	CHAMPIONS INFORMATION (Credit: Entwine)
+    CHAMPIONS INFORMATION (Credit: Entwine)
    ========================================= */
 
 function moduleChampions() {
@@ -4239,7 +4239,7 @@ function moduleLinks() {
 
     if (CurrentPage.indexOf('home') != -1) home();               // Current page: Homepage
     else if (CurrentPage.indexOf('log_in') != -1) home();        // Current page: Homepage
-    else if (CurrentPage.indexOf('pachinko') != -1) pachinko();	 // Current page: Pachinko
+    else if (CurrentPage.indexOf('pachinko') != -1) pachinko();  // Current page: Pachinko
     else if (CurrentPage.indexOf('activities') != -1){           // Current page: Activities
         if ($('.tabs .pop').length > 0)
             pop();
@@ -5651,7 +5651,7 @@ function moduleLinks() {
 
 
 /* ============
-	SEASON SIM
+    SEASON SIM
    ============ */
 
 function moduleSeasonSim() {
@@ -5740,7 +5740,7 @@ function moduleSeasonSim() {
 }
 
 /* ==============
-	SEASON STATS
+    SEASON STATS
    ============== */
 
 function moduleSeasonStats() {
@@ -5951,7 +5951,7 @@ function moduleSeasonStats() {
 }
 
 /* ==================================
-	PACHINKO NAMES (Credit : Shinya)
+    PACHINKO NAMES (Credit : Shinya)
    ================================== */
 
 function modulePachinkoNames() {
@@ -6103,7 +6103,7 @@ function modulePachinkoNames() {
 }
 
 /* ====================
-	BATTLE SIMULATION
+    BATTLE SIMULATION
    ==================== */
 
 function moduleBattleSim() {
@@ -6165,7 +6165,7 @@ function moduleBattleSim() {
 }
 
 /* ========================================
-	TEAMS FILTER (Credit : randomfapper34)
+    TEAMS FILTER (Credit : randomfapper34)
    ======================================== */
 
 function moduleTeamsFilter() {
