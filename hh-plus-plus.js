@@ -3262,7 +3262,7 @@ function moduleLeague() {
         var opponents = board.getElementsByTagName("tr");
         for (var i=0; i<opponents.length; i++) {
             try {
-                if(opponents[i].getElementsByTagName("td")[3].innerHTML === "3/3"){
+                if(leagues_list[i].nb_challenges_played === "3"){
                     opponents[i].style.display="none"
                 }
             } catch(e) {}
@@ -3276,7 +3276,7 @@ function moduleLeague() {
         var opponents = board.getElementsByTagName("tr");
         for (var i=0; i<opponents.length; i++) {
             try {
-                if(opponents[i].getElementsByTagName("td")[3].innerHTML === "3/3"){
+                if(leagues_list[i].nb_challenges_played === "3"){
                     opponents[i].style.display=""
                 }
             } catch(e) {}
