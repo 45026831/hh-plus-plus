@@ -913,7 +913,7 @@ function nThousand(x) {
     if (typeof x != 'number') {
         x = 0;
     }
-    return x.toLocaleString(locale).replace(' ', ' ');
+    return x.toLocaleString(locale).replace(' ', ' ');
 }
 
 // Numbers: rounding to K, M, G and T
@@ -1918,12 +1918,14 @@ function moduleMarket() {
         }
     }
     $('plus').on('click', function (event) {
-        var stat = 'carac' + $(this).attr('for_carac');
-        var amount = parseInt($('[rel=buy-stats-multiplier').text().replace(/[^0-9]/g, ''), 10);
-        Hero.infos[stat] += amount;
-        timer = setTimeout(function() {
-            updateStats();
-        }, 400);
+        if($(this).attr('disabled')!='disabled'){
+            var stat = 'carac' + $(this).attr('for_carac');
+            var amount = parseInt($('[rel=buy-stats-multiplier').text().replace(/[^0-9]/g, ''), 10);
+            Hero.infos[stat] += amount;
+            timer = setTimeout(function() {
+                updateStats();
+            }, 400);
+        }
     });
 
     //CSS
@@ -3058,15 +3060,15 @@ function moduleLeague() {
                 playerChallengesDone = parseInt(fightsStr.substring(0,1), 10)
             }
         }
-        
+
         tableData[pos] = {
             points
         }
-        
+
         if (thresholds.includes(pos)) {
             topPoints[pos] = points
         }
-        
+
         challengesDone += playerChallengesDone
         tableData[pos].challengesDone = playerChallengesDone
     }
@@ -3086,6 +3088,17 @@ function moduleLeague() {
     const oldScore = JSON.parse(localStorage.getItem('leagueScore')) || {points: 0, avg: 0}
     const {points: oldPoints} = oldScore
     if (playerCurrentPoints > oldPoints) {
+        const player=playerLeaguesData.id_member;
+        const points=playerCurrentPoints-oldPoints;
+
+        let pointHist=JSON.parse(localStorage.getItem('pointHistory')) || {};
+        try{
+            pointHist[player].points.push(points);
+        }catch{
+            pointHist[player]={points:[points]};
+        }
+        localStorage.setItem('pointHistory', JSON.stringify(pointHist));
+
         localStorage.setItem('leagueScore', JSON.stringify(leagueScore))
     }
 
@@ -3111,7 +3124,7 @@ function moduleLeague() {
     }
 
     const promotionInfoTooltip = `${showStagnation ? `<p>${textStagnate}</p>` : ''}${showDemotion ? `<p>${textDemote}</p>` : ''}`
-    
+
     const topDisplays = {}
     const topTooltips = {}
 
@@ -3133,7 +3146,7 @@ function moduleLeague() {
         <div class="scriptLeagueInfo">
             <span class="averageScore" hh_title="${labels.averageScore}<em>${nThousand(avgRounded)}</em><br/>${labels.scoreExpected}<em>${nThousand(scoreExpected)}</em>"><img src="${MEAN_ICON_URI}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${nThousand(avgRounded)}</span>
             <span class="possibleChallenges" hh_title="${possibleChallengesTooltip}"><img src="https://${cdnHost}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
-            ${includeBoard ? 
+            ${includeBoard ?
                 tops.map(top => `
                     <span class="minTop${top}" hh_title="${topTooltips[top]}"><span class="scriptLeagueInfoIcon top${top}" />${topDisplays[top]}</span>
                 `).join('') : ''}
@@ -3309,7 +3322,7 @@ function moduleLeague() {
         sort.addEventListener('click', function(){
             if (hidden == 1)
                 removeBeatenOpponents();
-            displayLeaguePlayersClass();
+            displayLeaguePlayersInfo();
         });
     }
 
@@ -3366,50 +3379,83 @@ function moduleLeague() {
         }
     `);
 
-    function displayLeaguePlayersClass() {
+    function displayLeaguePlayersInfo() {
         if (localStorage.getItem('newLeagueResults') == null) {
             localStorage.removeItem('leagueResults');
+            localStorage.removeItem('pointHistory');
             localStorage.setItem('newLeagueResults', 1)
         }
 
-        const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
-        const heroClass = Hero.infos.class
-        switch (heroClass) {
-        case 1:
-            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
-            break;
-        case 2:
-            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
-            break;
-        case 3:
-            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
-            break;
+        let player=playerLeaguesData.id_member;
+        let points;
+        try{
+            points=JSON.parse(localStorage.getItem('pointHistory'))[player].points;
+        }catch{
+            points=[];
+        }
+        for(let i=0;i<3;i++){
+            let result=$('.result')[i];
+            if(result.innerText!=""){
+                result.innerText=points[i] || '?';
+            }
         }
 
-        for(var i=0; i<playersTotal; i++) {
-            var playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
-            var playerId = playerData.attr('sorting_id');
-            var leaguePlayers = localStorage.getItem('leagueResults');
-            if (leaguePlayers != null) {
-                var data = JSON.parse(leaguePlayers)
-                var player = data[playerId]
-                if (player != undefined) {
-                    var playerClass = player.class;
+        const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
+        if (heroAvatar.find('.classLeague').length===0){
+            const heroClass = Hero.infos.class
+            switch (heroClass) {
+                case 1:
+                    heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
+                    break;
+                case 2:
+                    heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
+                    break;
+                case 3:
+                    heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
+                    break;
+            }
+        }
 
-                    switch (playerClass) {
-                        case 1:
-                        playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
-                        break;
+        const data = JSON.parse(localStorage.getItem('leagueResults')) || {};
+        const pointHistory = JSON.parse(localStorage.getItem('pointHistory')) || {};
+        for(let i=0; i<playersTotal; i++) {
+            let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
+            let playerId = leagues_list[i].id_player;
+            let player = data[playerId];
+            if (player&&playerData.find('.classLeague').length===0) {
+                var playerClass = player.class;
 
-                        case 2:
-                        playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
-                        break;
+                switch (playerClass) {
+                    case 1:
+                    playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
+                    break;
 
-                        case 3:
-                        playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
-                        break;
-                    }
+                    case 2:
+                    playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
+                    break;
+
+                    case 3:
+                    playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
+                    break;
                 }
+            }
+            if (playerData[0].children[3].innerText!="-"){
+                let points;
+                try{
+                    points=pointHistory[playerId].points;
+                }catch{
+                    points=[];
+                }
+                let pointsText='';
+                for (let j=0;j<3;j++){
+                    if(j<parseInt(leagues_list[i].nb_challenges_played)){
+                        pointsText+=points[j] || '?';
+                    }else{
+                        pointsText+='-';
+                    }
+                    pointsText+='/';
+                }
+                playerData[0].children[3].innerText=pointsText.slice(0,-1);
             }
         }
         sheet.insertRule('@media only screen and (min-width: 1026px) {'
@@ -3430,8 +3476,6 @@ function moduleLeague() {
                          + 'border: none !important;}}'
                         );
     }
-
-    displayLeaguePlayersClass();
 
     function saveVictories() {
         let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
@@ -3457,10 +3501,12 @@ function moduleLeague() {
             localStorage.setItem('oldLeaguePlayers', localStorage.getItem('leaguePlayers'));
             localStorage.setItem('oldLeagueScore', localStorage.getItem('leagueScore'));
             localStorage.setItem('oldLeagueUnknown', localStorage.getItem('leagueUnknown'));
+            localStorage.setItem('oldPointHistory', localStorage.getItem('pointHistory'));
             localStorage.removeItem('leagueResults');
             localStorage.setItem('leagueTime', date_end_league);
             localStorage.removeItem('leagueScore');
             localStorage.removeItem('leagueUnknown');
+            localStorage.removeItem('pointHistory');
         }
 
         let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
@@ -3490,17 +3536,7 @@ function moduleLeague() {
 
         let fightsPlayed = 0;
         for (var i=0; i<nb_players; i++) {
-            var played = 0;
-            if (players[i].className.indexOf('lead_table_default') != -1) {
-                if ($('.lead_table_default .result').length != 0)
-                    played = parseInt($('.lead_table_default .won').length + $('.lead_table_default .lost').length, 10);
-                else
-                    played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
-            }
-            else {
-                played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
-            }
-            fightsPlayed += played;
+            fightsPlayed += parseInt(leagues_list[i].nb_challenges_played);
         }
 
         let tot_victory = 0;
@@ -3563,10 +3599,12 @@ function moduleLeague() {
         $('.possibleChallenges').attr('hh_title', allLeagueStatsText)
     }
 
-    saveVictories()
+    saveVictories();
+    displayLeaguePlayersInfo();
 
     var observeCallback = function() {
-        saveVictories()
+        saveVictories();
+        displayLeaguePlayersInfo();
     }
 
     var observer = new MutationObserver(observeCallback);
