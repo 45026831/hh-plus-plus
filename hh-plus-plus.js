@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.5
+// @version         0.33.6
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -3645,27 +3645,6 @@ function moduleSim() {
             ego: opponentEgo
         } = playerLeaguesData.caracs
 
-        let player = {
-            ego: playerEgo,
-            originEgo: playerEgo,
-            atk: playerAtk,
-            def: playerDef,
-
-            text: 'Player',
-        };
-
-        let opponent = {
-            ego: opponentEgo,
-            originEgo: opponentEgo,
-            atk: opponentAtk,
-            def: opponentDef,
-
-            text: 'Opponent',
-            name: $('#leagues_right .player_block .title').text()
-        };
-
-        let simu = simuFight(player, opponent);
-
         player = {
             hp: playerEgo,
             dmg: playerAtk - opponentDef,
@@ -3683,16 +3662,16 @@ function moduleSim() {
         let expectedValue = 0;
         for (let i=25; i>=3; i--) {
             if (calc[i]) {
-                probabilityTooltip += '<tr><td>'+(100*calc[i]).toFixed(2)+'%</td><td>+'+i+'</td></tr>';
+                probabilityTooltip += '<tr><td>'+i+'</td><td>'+(100*calc[i]).toFixed(2)+'%</td></tr>';
                 expectedValue += i*calc[i];
             }
         }
-        probabilityTooltip += '</table>Expected value: +'+expectedValue.toFixed(2);
 
         $('.matchRating').remove();
 
-        $('#leagues_right .average-lvl').append('<div class="matchRating ' + simu.scoreClass + '" hh_title="'+probabilityTooltip+'">' + simu.scoreStr + ' / ' + simu.pointsStr + '</div>');
-        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + ' / ' + simu.pointsStr + '</span>');
+        const pointGrade=['#fff','#fff','#fff','#fff','#ff2f2f','#fd3c24','#fb4817','#f85303','#f55d00','#f16600','#ec6f00','#e77700','#e17f00','#db8700','#d58e00','#cd9500','#c69c00','#bea200','#b5a800','#acae00','#a3b400','#99b900','#8ebe00','#82c300','#75c800','#66cd00'];
+        $('#leagues_right .average-lvl').append('<div class="matchRating" style="color:' + pointGrade[Math.round(expectedValue)] + ';" hh_title="'+probabilityTooltip+'">E[X]: ' + expectedValue.toFixed(2) + '</div>');
+        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append('<span class="matchRating" style="color:' + pointGrade[Math.round(expectedValue)] + ';">Expected value: ' + expectedValue.toFixed(2) + '</span>');
     }
 
     calculatePower();
@@ -3740,8 +3719,8 @@ function moduleSim() {
                      + '.matchRating {'
                      + 'text-align: center; '
                      + 'text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000; '
-                     + 'line-height: 17px; '
-                     + 'font-size: 15px;}}'
+                     + 'line-height: 40px; '
+                     + 'font-size: 20px;}}'
                     );
 
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
@@ -3752,130 +3731,9 @@ function moduleSim() {
                      + 'font-size: 18px;}}'
                     );
 
-    sheet.insertRule('.plus {'
-                     + 'color: #66CD00;}'
+    sheet.insertRule('.average-lvl {'
+                     + 'text-align: center;}'
                     );
-
-    sheet.insertRule('.minus {'
-                     + 'color: #FF2F2F;}'
-                    );
-
-    sheet.insertRule('.close {'
-                     + 'color: #FFA500;}'
-                    );
-}
-
-//Battle simulation
-function simuFight(player, opponent) {
-    const logging = loadSetting("logSimFight");
-    let playerEgoCheck = 0;
-    let opponentEgoCheck = 0;
-
-    //Calculate opponent proc values, determine applicable alpha class and adjust starting ego values for proc
-    /*let opponentProcHCAddOrgasm = [
-        0,
-        Math.floor(opponent.atk * 0.25),
-        Math.floor(opponent.team[2] * 1.3 * 0.75),
-        Math.floor(opponent.team[3] * 1.3 * 0.75)
-    ];
-
-    let opponentAlphaClass = parseInt(opponent.alpha.class);
-
-    // crit.
-    if (opponentAlphaClass == HC) {
-        player.ego -= Math.floor(opponent.atk * 0.5);
-    }
-    if (opponentAlphaClass == CH) {
-        //opponent.ego += opponent.def * 2;
-
-        //CH bug
-        opponent.ego += 2 * Math.floor(opponent.atk/2);
-    }
-    if (opponentAlphaClass == KH) {
-        opponent.ego += Math.floor(opponent.ego * 0.1);
-    }*/
-
-    //crit.
-    player.ego -= Math.max(0, opponent.atk - player.def);
-
-    //Log opponent name and starting egos for sim
-    if (logging) {
-        console.log('Simulation log for: ' + opponent.name);
-        console.log('Starting Egos adjusted for the case proc scenario (0 for you and 1 for the opponent):');
-        console.log('Player Ego: ' + player.ego);
-        console.log('Opponent Ego: ' + opponent.ego);
-    }
-
-    function play_turn(cur) {
-        let o = cur === player ? opponent : player;
-
-        o.ego -= Math.max(0, cur.atk - o.def);
-        if(logging) console.log('Round ' + (turns + 1) + ': ' + cur.text + ' hit! -' + Math.max(0, (cur.atk - o.def)));
-
-        //Log results
-        if(logging) console.log('after Round ' + (turns + 1) + ': ' + o.text + ' ego: ' + o.ego);
-    }
-
-    //Simulate challenge
-    for (var turns = 0; turns < 99; turns++) {
-
-        if( player.ego <= 0) {
-            //Check if defeat stands with 1 critical hit for the player
-            opponentEgoCheck = opponent.ego;
-            opponentEgoCheck -= player.atk - opponent.def;
-
-            if (logging && opponentEgoCheck <= 0)
-                console.log('Victory! With 1 critical hit for player, Opponent ego: ' + opponentEgoCheck);
-
-            player.ego = 0;
-            break;
-        }
-        play_turn(player);
-
-        if (opponent.ego <= 0) {
-            //Check if victory stands with 2 critical hits for the opponent
-            playerEgoCheck = player.ego;
-            playerEgoCheck -= opponent.atk - player.def;
-
-            if (logging && playerEgoCheck <= 0)
-                console.log('Defeat! With 1 more critical hit for opponent, Player ego: ' + playerEgoCheck);
-
-            opponent.ego = 0;
-            break;
-        }
-
-        play_turn(opponent);
-    }
-
-    let matchRating = player.ego - opponent.ego;
-    let matchRatingStr = (matchRating >= 0 ? '+' : '') + nThousand(Math.floor(matchRating));
-    let matchRatingClass;
-    if (matchRating < 0 && opponentEgoCheck <= 0)
-        matchRatingClass = 'close';
-    else if (matchRating < 0 && opponentEgoCheck > 0)
-        matchRatingClass = 'minus';
-    else if (matchRating > 0 && playerEgoCheck <= 0)
-        matchRatingClass = 'close';
-    else if (matchRating > 0 && playerEgoCheck > 0)
-        matchRatingClass = 'plus';
-
-    let points = matchRating >= 0 ? Math.min(25, 15+player.ego/player.originEgo*10) : Math.max(3, 3+(opponent.originEgo-opponent.ego)/opponent.originEgo*10);
-    let pointsInt = Math.floor( points * 10 )/10;
-    if( Math.floor( points ) == points )
-        pointsInt -= 1/10;
-    pointsInt += 1;
-    pointsInt = Math.floor(pointsInt);
-
-    let pointsStr = '+' + pointsInt;
-
-    return {
-        score: Math.floor(matchRating),
-        scoreStr: matchRatingStr,
-        scoreClass: matchRatingClass,
-        playerEgoCheck: playerEgoCheck,
-        points: pointsInt,
-        pointsStr: pointsStr
-    };
 }
 
 // == Helper functions for probability calculations ==
