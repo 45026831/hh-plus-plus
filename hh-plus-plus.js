@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.5
+// @version         0.33.6
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -3395,13 +3395,13 @@ function moduleLeague() {
                 let heroClassIcon
                 switch (heroClass) {
                 case 1:
-                                heroClassIcon = 'hardcore'
+                    heroClassIcon = 'hardcore'
                     break;
                 case 2:
-                                heroClassIcon = 'charm'
+                    heroClassIcon = 'charm'
                     break;
                 case 3:
-                                heroClassIcon = 'knowhow'
+                    heroClassIcon = 'knowhow'
                     break;
                 }
                 heroAvatar.append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${heroClassIcon}.png">`));
@@ -3411,26 +3411,26 @@ function moduleLeague() {
             const pointHistory = JSON.parse(localStorage.getItem('pointHistory')) || {};
             for(let i=0; i<playersTotal; i++) {
                 let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
-                let playerId = leagues_list[i].id_player;
+                let playerId = playerData.attr('sorting_id');
                 let player = data[playerId];
                 if (player&&playerData.find('.classLeague').length===0) {
                     var playerClass = player.class;
                     let playerClassIcon
                     switch (playerClass) {
-                        case 1:
-                            playerClassIcon = 'hardcore'
+                    case 1:
+                        playerClassIcon = 'hardcore'
                         break;
-                        case 2:
-                            playerClassIcon = 'charm'
+                    case 2:
+                        playerClassIcon = 'charm'
                         break;
-                        case 3:
-                            playerClassIcon = 'knowhow'
+                    case 3:
+                        playerClassIcon = 'knowhow'
                         break;
                     }
 
                     playerData.find('.square-avatar-wrapper').append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${playerClassIcon}.png">`));
                 }
-                if (playerData[0].children[3].innerText!="-"){
+                if (!playerData.hasClass('personal_highlight')){
                     let points;
                     try{
                         points=pointHistory[playerId].points;
@@ -3446,7 +3446,9 @@ function moduleLeague() {
                         }
                         pointsText+='/';
                     }
-                    playerData[0].children[3].innerText=pointsText.slice(0,-1);
+                    if (!playerData.hasClass('selected-player-leagues')) {
+                        playerData[0].children[3].innerText=pointsText.slice(0,-1);
+                    }
                 }
             }
             sheet.insertRule('@media only screen and (min-width: 1026px) {'

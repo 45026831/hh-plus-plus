@@ -1,3 +1,4 @@
+0.33.6: Fixing a bug in the individual score tracking on mobile, where the selected row was not accounted for.
 0.33.5: Adding individual score tracking by zoopokemon to the leagues info module. Fixing bug in market info where clicking the disabled plus buttons would cause the tooltip to show more stats had been bought.
 0.33.4: Merging faster skip button by Ia1nn
 0.33.3: Updating some English labels. Plus, cleaning up whitespace.
