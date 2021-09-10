@@ -1088,10 +1088,8 @@ if (loadSetting('harem')) {
     }
 }
 if (loadSetting('league')) {
-    if (CurrentPage.indexOf('tower-of-fame') != -1) {
         moduleLeague();
     }
-}
 if (loadSetting('simFight')) {
     if (CurrentPage.indexOf('tower-of-fame') != -1)
         moduleSim();
@@ -1918,12 +1916,14 @@ function moduleMarket() {
         }
     }
     $('plus').on('click', function (event) {
-        var stat = 'carac' + $(this).attr('for_carac');
-        var amount = parseInt($('[rel=buy-stats-multiplier').text().replace(/[^0-9]/g, ''), 10);
-        Hero.infos[stat] += amount;
-        timer = setTimeout(function() {
-            updateStats();
-        }, 400);
+        if($(this).attr('disabled')!='disabled'){
+            var stat = 'carac' + $(this).attr('for_carac');
+            var amount = parseInt($('[rel=buy-stats-multiplier').text().replace(/[^0-9]/g, ''), 10);
+            Hero.infos[stat] += amount;
+            timer = setTimeout(function() {
+                updateStats();
+            }, 400);
+        }
     });
 
     //CSS
@@ -3011,567 +3011,617 @@ function moduleHarem() {
    ==================== */
 
 function moduleLeague() {
-    let challengesDone = 0
-    let playerCurrentPos
-    let playerCurrentPoints
-    let textDemote
-    let textStagnate
-    const topPoints = {}
+    if (CurrentPage.includes('tower-of-fame')) {
 
-    const includeBoard = loadSetting('leagueBoard')
+        let challengesDone = 0
+        let playerCurrentPos
+        let playerCurrentPoints
+        let textDemote
+        let textStagnate
+        const topPoints = {}
 
-    const challengesPossibleMinutes = parseInt(Math.floor(season_end_at/60), 10)
-    const challengesPossible = (Hero.energies.challenge.amount != Hero.energies.challenge.max_amount)? Math.floor((challengesPossibleMinutes + (35 - Hero.energies.challenge.next_refresh_ts / 60))/35) + parseInt(Hero.energies.challenge.amount, 10) : Math.floor(challengesPossibleMinutes/35) + parseInt(Hero.energies.challenge.amount, 10)
+        const includeBoard = loadSetting('leagueBoard')
 
-    const $tableRows = $('.leagues_table .lead_table_view tbody.leadTable tr')
-    const playersTotal = $tableRows.length;
-    const challengesTotal = 3*(playersTotal-1)
-    const demoteThreshold = playersTotal-14
-    const nonDemoteThreshold = playersTotal-15
+        const challengesPossibleMinutes = parseInt(Math.floor(season_end_at/60), 10)
+        const challengesPossible = (Hero.energies.challenge.amount != Hero.energies.challenge.max_amount)? Math.floor((challengesPossibleMinutes + (35 - Hero.energies.challenge.next_refresh_ts / 60))/35) + parseInt(Hero.energies.challenge.amount, 10) : Math.floor(challengesPossibleMinutes/35) + parseInt(Hero.energies.challenge.amount, 10)
 
-    const tops = [4, 15, 30]
-    const thresholds = [...tops, ...tops.map(top => top+1), demoteThreshold, nonDemoteThreshold]
-    const tableData = {}
+        const $tableRows = $('.leagues_table .lead_table_view tbody.leadTable tr')
+        const playersTotal = $tableRows.length;
+        const challengesTotal = 3*(playersTotal-1)
+        const demoteThreshold = playersTotal-14
+        const nonDemoteThreshold = playersTotal-15
 
-    for(var i=0; i<playersTotal; i++) {
-        const $playerData = $tableRows.eq(i)
+        const tops = [4, 15, 30]
+        const thresholds = [...tops, ...tops.map(top => top+1), demoteThreshold, nonDemoteThreshold]
+        const tableData = {}
 
-        let pos
-        let points
-        let playerChallengesDone = 0
+        for(var i=0; i<playersTotal; i++) {
+            const $playerData = $tableRows.eq(i)
 
-        if ($playerData.hasClass('selected-player-leagues')) {
-            // Mobile selected row has completely different layout and is missing data, thankfully the player is highlighted so we can use playerLeagesData instead.
-            playerChallengesDone = playerLeaguesData.match_history.reduce((sum, match) => match ? sum+1: sum, 0)
-            pos = parseInt(playerLeaguesData.rank, 10)
-            points = parseLocaleRoundedInt(playerLeaguesData.points)
-        } else {
-            const $columns = $playerData.find('td')
-            const fightsStr = $columns.eq(3).text()
-            pos = parseInt($columns.eq(0).text(), 10)
-            points = parseLocaleRoundedInt($columns.eq(4).text())
+            let pos
+            let points
+            let playerChallengesDone = 0
 
-            if ($playerData.hasClass('personal_highlight')) {
-                playerCurrentPos = pos
-                playerCurrentPoints = points
+            if ($playerData.hasClass('selected-player-leagues')) {
+                // Mobile selected row has completely different layout and is missing data, thankfully the player is highlighted so we can use playerLeagesData instead.
+                playerChallengesDone = playerLeaguesData.match_history.reduce((sum, match) => match ? sum+1: sum, 0)
+                pos = parseInt(playerLeaguesData.rank, 10)
+                points = parseLocaleRoundedInt(playerLeaguesData.points)
             } else {
-                playerChallengesDone = parseInt(fightsStr.substring(0,1), 10)
-            }
-        }
+                const $columns = $playerData.find('td')
+                const fightsStr = $columns.eq(3).text()
+                pos = parseInt($columns.eq(0).text(), 10)
+                points = parseLocaleRoundedInt($columns.eq(4).text())
 
-        tableData[pos] = {
-            points
-        }
-
-        if (thresholds.includes(pos)) {
-            topPoints[pos] = points
-        }
-
-        challengesDone += playerChallengesDone
-        tableData[pos].challengesDone = playerChallengesDone
-    }
-
-    thresholds.forEach(pos => topPoints[pos] = tableData[pos].points)
-
-    const challengesLeft = challengesTotal-challengesDone
-
-    const avgScore = (challengesDone !== 0) ? playerCurrentPoints/challengesDone : 0
-    const avgRounded = Math.round(avgScore*100)/100
-    const scoreExpected = Math.floor(avgScore*challengesTotal);
-
-    const leagueScore = {
-        points: playerCurrentPoints,
-        avg: avgRounded
-    }
-    const oldScore = JSON.parse(localStorage.getItem('leagueScore')) || {points: 0, avg: 0}
-    const {points: oldPoints} = oldScore
-    if (playerCurrentPoints > oldPoints) {
-        localStorage.setItem('leagueScore', JSON.stringify(leagueScore))
-    }
-
-    const canDemote = league_tag > 1
-    const canPromote = league_tag < 9
-    const showPromotionInformation = loadSetting('leaguePromo')
-    const showDemotion = canDemote && showPromotionInformation
-    const showStagnation = canPromote && showPromotionInformation
-    const playerAtZeroPoints = playerCurrentPoints === 0
-    const playerWouldDemote = canDemote && (playerAtZeroPoints || playerCurrentPos >= demoteThreshold)
-    const playerIsTop15 = playerCurrentPos <= 15
-    const playerWouldStagnate = !playerWouldDemote || !playerIsTop15
-
-    if (showDemotion) {
-        const maxDemotePoints = playerWouldDemote ? topPoints[nonDemoteThreshold] : topPoints[demoteThreshold]
-        const holdZero = playerAtZeroPoints && !maxDemotePoints
-        textDemote = holdZero ? labels.demote_holdzero : playerWouldDemote ? labels.demote_up.replace('{{points}}', maxDemotePoints) : labels.demote_down.replace('{{players}}', demoteThreshold - playerCurrentPos)
-    }
-
-    if (showStagnation) {
-        const maxStagnatePoints = playerWouldStagnate ? topPoints[15] : topPoints[16]
-        textStagnate = playerAtZeroPoints ? labels.stagnate_atzero : playerWouldStagnate ? labels.stagnate_up.replace('{{points}}', maxStagnatePoints) : labels.stagnate_down.replace('{{players}}', 16 - playerCurrentPos)
-    }
-
-    const promotionInfoTooltip = `${showStagnation ? `<p>${textStagnate}</p>` : ''}${showDemotion ? `<p>${textDemote}</p>` : ''}`
-
-    const topDisplays = {}
-    const topTooltips = {}
-
-    if (includeBoard) {
-        tops.forEach(top => {
-            const playerIsInTop = playerCurrentPos <= top
-            const minPoints = playerIsInTop ? topPoints[top + 1] : topPoints[top] + 1
-            const diff = minPoints - playerCurrentPoints
-            const diffSymbol = playerIsInTop ? diff ? '' : '-' : '+'
-            topDisplays[top] = `${diffSymbol}${nThousand(diff)}`
-            const label = labels[`top${top}_${playerIsInTop ? 'hold' : 'up'}`]
-            topTooltips[top] = label.replace('{{points}}', nThousand(minPoints))
-        })
-    }
-
-    const possibleChallengesTooltip = `${labels.challenges_regen}<em>${challengesPossible}</em>${labels.challenges_left}<em>${challengesLeft}</em>`
-
-    const scriptLeagueInfo = `
-        <div class="scriptLeagueInfo">
-            <span class="averageScore" hh_title="${labels.averageScore}<em>${nThousand(avgRounded)}</em><br/>${labels.scoreExpected}<em>${nThousand(scoreExpected)}</em>"><img src="${MEAN_ICON_URI}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${nThousand(avgRounded)}</span>
-            <span class="possibleChallenges" hh_title="${possibleChallengesTooltip}"><img src="https://${cdnHost}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
-            ${includeBoard ?
-                tops.map(top => `
-                    <span class="minTop${top}" hh_title="${topTooltips[top]}"><span class="scriptLeagueInfoIcon top${top}" />${topDisplays[top]}</span>
-                `).join('') : ''}
-            ${showPromotionInformation ? `
-                <span class="promotionInfo" hh_title="${promotionInfoTooltip}"><img src="https://${cdnHost}/leagues/ic_rankup.png" style="height: 15px; width: 12px; margin-left: 6px; margin-bottom: 0px;"></span>
-            ` : ''}
-        </div>
-    `
-
-    $('div.league_end_in').append(scriptLeagueInfo)
-
-    //CSS
-    sheet.insertRule(`
-        #leagues_middle .league_end_in {
-            line-height: 16px;
-        }
-    `)
-
-    sheet.insertRule(`
-        .scriptLeagueInfo {
-            display: block;
-            float: right;
-            margin-right: 9px;
-        }
-    `)
-
-    sheet.insertRule(`
-        ${mediaDesktop} {
-            .scriptLeagueInfo {
-                font-size: 13px;
-            }
-        }
-    `)
-
-    sheet.insertRule(`
-        ${mediaMobile} {
-            .scriptLeagueInfo {
-                position: absolute;
-                right: 300px;
-                top: -20px;
-                font-size: 14px;
-            }
-        }
-    `)
-
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon {
-            display: inline-block;
-            height: 16px;
-            width: 16px;
-            font-size: 10px;
-            border-radius: 5px;
-            margin-left: 6px;
-            margin-right: 2px;
-        }
-    `)
-
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon:after {
-            display: block;
-            position: relative;
-        }
-    `)
-
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon.top4 {
-            background: url('https://${cdnHost}/legendary.png');
-            background-size: cover;
-        }
-    `)
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon.top4:after {
-            content: '4';
-            top: 2px;
-            left: 4px;
-        }
-    `)
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon.top15 {
-            background-color: #ffb244;
-        }
-    `)
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon.top15:after {
-            content: '15';
-            top: 2px;
-            left: 3px;
-        }
-    `)
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon.top30 {
-            background-color: #23b56b;
-        }
-    `)
-    sheet.insertRule(`
-        .scriptLeagueInfoIcon.top30:after {
-            content: '30';
-            top: 2px;
-            left: 1px;
-        }
-    `)
-
-    sheet.insertRule(`
-        .hh_tooltip_new em {
-            color: white;
-        }
-    `)
-
-    function removeBeatenOpponents() {
-        var board = document.getElementsByClassName("leadTable")[0];
-        if(!board)
-            return;
-        var opponents = board.getElementsByTagName("tr");
-        for (var i=0; i<opponents.length; i++) {
-            try {
-                if(opponents[i].getElementsByTagName("td")[3].innerHTML === "3/3"){
-                    opponents[i].style.display="none"
+                if ($playerData.hasClass('personal_highlight')) {
+                    playerCurrentPos = pos
+                    playerCurrentPoints = points
+                } else {
+                    playerChallengesDone = parseInt(fightsStr.substring(0,1), 10)
                 }
-            } catch(e) {}
-        }
-    }
+            }
 
-    function displayBeatenOpponents() {
-        var board = document.getElementsByClassName("leadTable")[0];
-        if(!board)
-            return;
-        var opponents = board.getElementsByTagName("tr");
-        for (var i=0; i<opponents.length; i++) {
-            try {
-                if(opponents[i].getElementsByTagName("td")[3].innerHTML === "3/3"){
-                    opponents[i].style.display=""
+            tableData[pos] = {
+                points
+            }
+
+            if (thresholds.includes(pos)) {
+                topPoints[pos] = points
+            }
+
+            challengesDone += playerChallengesDone
+            tableData[pos].challengesDone = playerChallengesDone
+        }
+
+        thresholds.forEach(pos => topPoints[pos] = tableData[pos].points)
+
+        const challengesLeft = challengesTotal-challengesDone
+
+        const avgScore = (challengesDone !== 0) ? playerCurrentPoints/challengesDone : 0
+        const avgRounded = Math.round(avgScore*100)/100
+        const scoreExpected = Math.floor(avgScore*challengesTotal);
+
+        const leagueScore = {
+            points: playerCurrentPoints,
+            avg: avgRounded
+        }
+        const oldScore = JSON.parse(localStorage.getItem('leagueScore')) || {points: 0, avg: 0}
+        const {points: oldPoints} = oldScore
+        if (playerCurrentPoints > oldPoints) {
+            localStorage.setItem('leagueScore', JSON.stringify(leagueScore))
+        }
+
+        const canDemote = league_tag > 1
+        const canPromote = league_tag < 9
+        const showPromotionInformation = loadSetting('leaguePromo')
+        const showDemotion = canDemote && showPromotionInformation
+        const showStagnation = canPromote && showPromotionInformation
+        const playerAtZeroPoints = playerCurrentPoints === 0
+        const playerWouldDemote = canDemote && (playerAtZeroPoints || playerCurrentPos >= demoteThreshold)
+        const playerIsTop15 = playerCurrentPos <= 15
+        const playerWouldStagnate = !playerWouldDemote || !playerIsTop15
+
+        if (showDemotion) {
+            const maxDemotePoints = playerWouldDemote ? topPoints[nonDemoteThreshold] : topPoints[demoteThreshold]
+            const holdZero = playerAtZeroPoints && !maxDemotePoints
+            textDemote = holdZero ? labels.demote_holdzero : playerWouldDemote ? labels.demote_up.replace('{{points}}', maxDemotePoints) : labels.demote_down.replace('{{players}}', demoteThreshold - playerCurrentPos)
+        }
+
+        if (showStagnation) {
+            const maxStagnatePoints = playerWouldStagnate ? topPoints[15] : topPoints[16]
+            textStagnate = playerAtZeroPoints ? labels.stagnate_atzero : playerWouldStagnate ? labels.stagnate_up.replace('{{points}}', maxStagnatePoints) : labels.stagnate_down.replace('{{players}}', 16 - playerCurrentPos)
+        }
+
+        const promotionInfoTooltip = `${showStagnation ? `<p>${textStagnate}</p>` : ''}${showDemotion ? `<p>${textDemote}</p>` : ''}`
+
+        const topDisplays = {}
+        const topTooltips = {}
+
+        if (includeBoard) {
+            tops.forEach(top => {
+                const playerIsInTop = playerCurrentPos <= top
+                const minPoints = playerIsInTop ? topPoints[top + 1] : topPoints[top] + 1
+                const diff = minPoints - playerCurrentPoints
+                const diffSymbol = playerIsInTop ? diff ? '' : '-' : '+'
+                topDisplays[top] = `${diffSymbol}${nThousand(diff)}`
+                const label = labels[`top${top}_${playerIsInTop ? 'hold' : 'up'}`]
+                topTooltips[top] = label.replace('{{points}}', nThousand(minPoints))
+            })
+        }
+
+        const possibleChallengesTooltip = `${labels.challenges_regen}<em>${challengesPossible}</em>${labels.challenges_left}<em>${challengesLeft}</em>`
+
+        const scriptLeagueInfo = `
+            <div class="scriptLeagueInfo">
+                <span class="averageScore" hh_title="${labels.averageScore}<em>${nThousand(avgRounded)}</em><br/>${labels.scoreExpected}<em>${nThousand(scoreExpected)}</em>"><img src="${MEAN_ICON_URI}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${nThousand(avgRounded)}</span>
+                <span class="possibleChallenges" hh_title="${possibleChallengesTooltip}"><img src="https://${cdnHost}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
+                ${includeBoard ?
+                    tops.map(top => `
+                        <span class="minTop${top}" hh_title="${topTooltips[top]}"><span class="scriptLeagueInfoIcon top${top}" />${topDisplays[top]}</span>
+                    `).join('') : ''}
+                ${showPromotionInformation ? `
+                    <span class="promotionInfo" hh_title="${promotionInfoTooltip}"><img src="https://${cdnHost}/leagues/ic_rankup.png" style="height: 15px; width: 12px; margin-left: 6px; margin-bottom: 0px;"></span>
+                ` : ''}
+            </div>
+        `
+
+        $('div.league_end_in').append(scriptLeagueInfo)
+
+        //CSS
+        sheet.insertRule(`
+            #leagues_middle .league_end_in {
+                line-height: 16px;
+            }
+        `)
+
+        sheet.insertRule(`
+            .scriptLeagueInfo {
+                display: block;
+                float: right;
+                margin-right: 9px;
+            }
+        `)
+
+        sheet.insertRule(`
+            ${mediaDesktop} {
+                .scriptLeagueInfo {
+                    font-size: 13px;
                 }
-            } catch(e) {}
+            }
+        `)
+
+        sheet.insertRule(`
+            ${mediaMobile} {
+                .scriptLeagueInfo {
+                    position: absolute;
+                    right: 300px;
+                    top: -20px;
+                    font-size: 14px;
+                }
+            }
+        `)
+
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon {
+                display: inline-block;
+                height: 16px;
+                width: 16px;
+                font-size: 10px;
+                border-radius: 5px;
+                margin-left: 6px;
+                margin-right: 2px;
+            }
+        `)
+
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon:after {
+                display: block;
+                position: relative;
+            }
+        `)
+
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon.top4 {
+                background: url('https://${cdnHost}/legendary.png');
+                background-size: cover;
+            }
+        `)
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon.top4:after {
+                content: '4';
+                top: 2px;
+                left: 4px;
+            }
+        `)
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon.top15 {
+                background-color: #ffb244;
+            }
+        `)
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon.top15:after {
+                content: '15';
+                top: 2px;
+                left: 3px;
+            }
+        `)
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon.top30 {
+                background-color: #23b56b;
+            }
+        `)
+        sheet.insertRule(`
+            .scriptLeagueInfoIcon.top30:after {
+                content: '30';
+                top: 2px;
+                left: 1px;
+            }
+        `)
+
+        sheet.insertRule(`
+            .hh_tooltip_new em {
+                color: white;
+            }
+        `)
+
+        function removeBeatenOpponents() {
+            var board = document.getElementsByClassName("leadTable")[0];
+            if(!board)
+                return;
+            var opponents = board.getElementsByTagName("tr");
+            for (var i=0; i<opponents.length; i++) {
+                try {
+                    if(leagues_list[i].nb_challenges_played === "3"){
+                        opponents[i].style.display="none"
+                    }
+                } catch(e) {}
+            }
         }
-    }
 
-    let hidden = loadSetting('hide_beaten');
-    $(".league_end_in").append('<button id="beaten_opponents" class=""><span id="hide_beaten"></span></button>');
+        function displayBeatenOpponents() {
+            var board = document.getElementsByClassName("leadTable")[0];
+            if(!board)
+                return;
+            var opponents = board.getElementsByTagName("tr");
+            for (var i=0; i<opponents.length; i++) {
+                try {
+                    if(leagues_list[i].nb_challenges_played === "3"){
+                        opponents[i].style.display=""
+                    }
+                } catch(e) {}
+            }
+        }
 
-    const setButtonDisplay = () => {
-        $('#hide_beaten').html(`<img alt="${labels.display}" title="${labels.display}" src="https://${cdnHost}/quest/ic_eyeopen.svg">`);
-    }
-    const setButtonHide = () => {
-        $('#hide_beaten').html(`<img alt="${labels.hide}" title="${labels.hide}" src="https://${cdnHost}/quest/ic_eyeclosed.svg">`);
-    }
+        let hidden = loadSetting('hide_beaten');
+        $(".league_end_in").append('<button id="beaten_opponents" class=""><span id="hide_beaten"></span></button>');
 
-    if (hidden == 1) {
-        removeBeatenOpponents();
-        setButtonDisplay();
-    }
-    else {
-        setButtonHide();
-    }
+        const setButtonDisplay = () => {
+            $('#hide_beaten').html(`<img alt="${labels.display}" title="${labels.display}" src="https://${cdnHost}/quest/ic_eyeopen.svg">`);
+        }
+        const setButtonHide = () => {
+            $('#hide_beaten').html(`<img alt="${labels.hide}" title="${labels.hide}" src="https://${cdnHost}/quest/ic_eyeclosed.svg">`);
+        }
 
-    let button = document.querySelector('#beaten_opponents');
-    button.addEventListener('click', function(){
-        if (hidden == 0) {
+        if (hidden == 1) {
             removeBeatenOpponents();
-            hidden = 1;
-            localStorage.setItem('HHS.hide_beaten', 1);
             setButtonDisplay();
         }
         else {
-            displayBeatenOpponents();
-            hidden = 0;
-            localStorage.setItem('HHS.hide_beaten', 0);
             setButtonHide();
         }
-    });
 
-    let sort_by = document.querySelectorAll('span[sort_by]');
-    for (var sort of sort_by) {
-        sort.addEventListener('click', function(){
-            if (hidden == 1)
+        let button = document.querySelector('#beaten_opponents');
+        button.addEventListener('click', function(){
+            if (hidden == 0) {
                 removeBeatenOpponents();
-            displayLeaguePlayersClass();
-        });
-    }
-
-    sheet.insertRule(`
-        #beaten_opponents {
-            position: absolute;
-            padding-left: 5px;
-            padding-right: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-    `)
-    sheet.insertRule(`
-        ${mediaMobile} {
-            #beaten_opponents {
-                height: 32px;
-                z-index: 1;
-                right: 517px;
-            }
-        }
-    `);
-    sheet.insertRule(`
-        ${mediaDesktop} {
-            #beaten_opponents {
-                height: 28px;
-                top: -40px;
-                left: 10px;
-            }
-        }
-    `);
-    sheet.insertRule(`
-        #hide_beaten {
-            position: relative;
-        }
-    `);
-    sheet.insertRule(`
-        #hide_beaten img, #hide_beaten_mobile img {
-            width: auto;
-        }
-    `);
-    sheet.insertRule(`
-        ${mediaMobile} {
-            #hide_beaten img, #hide_beaten_mobile img {
-                height: 26px;
-            }
-        }
-    `);
-    sheet.insertRule(`
-        ${mediaDesktop} {
-            #hide_beaten img, #hide_beaten_mobile img {
-                height: 20px;
-            }
-        }
-    `);
-
-    function displayLeaguePlayersClass() {
-        if (localStorage.getItem('newLeagueResults') == null) {
-            localStorage.removeItem('leagueResults');
-            localStorage.setItem('newLeagueResults', 1)
-        }
-
-        const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
-        const heroClass = Hero.infos.class
-        switch (heroClass) {
-        case 1:
-            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
-            break;
-        case 2:
-            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
-            break;
-        case 3:
-            heroAvatar.append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
-            break;
-        }
-
-        for(var i=0; i<playersTotal; i++) {
-            var playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
-            var playerId = playerData.attr('sorting_id');
-            var leaguePlayers = localStorage.getItem('leagueResults');
-            if (leaguePlayers != null) {
-                var data = JSON.parse(leaguePlayers)
-                var player = data[playerId]
-                if (player != undefined) {
-                    var playerClass = player.class;
-
-                    switch (playerClass) {
-                        case 1:
-                        playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/hardcore.png">'));
-                        break;
-
-                        case 2:
-                        playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/charm.png">'));
-                        break;
-
-                        case 3:
-                        playerData.find('.square-avatar-wrapper').append($('<img class="classLeague" src="https://hh2.hh-content.com/caracs/knowhow.png">'));
-                        break;
-                    }
-                }
-            }
-        }
-        sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                         + '.classLeague {'
-                         + 'position: relative !important;'
-                         + 'height: 17px !important;'
-                         + 'width: 17px !important;'
-                         + 'left: 25px !important;'
-                         + 'border: none !important;}}'
-                        );
-
-        sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                         + '.classLeague {'
-                         + 'position: relative !important;'
-                         + 'height: 25px !important;'
-                         + 'width: 25px !important;'
-                         + 'left: 45px !important;'
-                         + 'border: none !important;}}'
-                        );
-    }
-
-    displayLeaguePlayersClass();
-
-    function saveVictories() {
-        let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
-
-        let current_date_ts = Math.floor(new Date().getTime()/1000);
-        let date_end_league = leagueDateInit + Math.ceil((current_date_ts - leagueDateInit)/604800)*604800;
-
-        let time_results = localStorage.getItem('leagueTime');
-        if (time_results == null) {
-            time_results = date_end_league;
-            localStorage.setItem('leagueTime', time_results);
-            localStorage.setItem('leagueResults', null);
-        }
-        //Next Thursday after non-DST at 12:00 UTC
-        if (time_results == 1636023600) {
-            time_results = 1636027200
-            localStorage.setItem('leagueTime', time_results);
-        }
-
-        if (current_date_ts > time_results) {
-            localStorage.setItem('oldLeagueResults', localStorage.getItem('leagueResults'));
-            localStorage.setItem('oldLeagueTime', localStorage.getItem('leagueTime'));
-            localStorage.setItem('oldLeaguePlayers', localStorage.getItem('leaguePlayers'));
-            localStorage.setItem('oldLeagueScore', localStorage.getItem('leagueScore'));
-            localStorage.setItem('oldLeagueUnknown', localStorage.getItem('leagueUnknown'));
-            localStorage.removeItem('leagueResults');
-            localStorage.setItem('leagueTime', date_end_league);
-            localStorage.removeItem('leagueScore');
-            localStorage.removeItem('leagueUnknown');
-        }
-
-        let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
-        let player = `${playerLeaguesData.id_member}`
-        let spec = playerLeaguesData.class
-        let results = playerLeaguesData.match_history
-        const nb_victories = results.filter(match => match === 'won').length;
-        const nb_defeats = results.filter(match => match === 'lost').length;
-
-        data[player] = {
-            victories: nb_victories,
-            defeats: nb_defeats,
-            class: spec
-        };
-
-        localStorage.setItem('leagueResults', JSON.stringify(data));
-
-        calculateVictories();
-    }
-
-    function calculateVictories() {
-        let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
-        let players = $('#leagues_middle .leadTable tr');
-        let nb_players = players.length;
-        let nb_opponents = nb_players-1;
-        localStorage.setItem('leaguePlayers', nb_opponents);
-
-        let fightsPlayed = 0;
-        for (var i=0; i<nb_players; i++) {
-            var played = 0;
-            if (players[i].className.indexOf('lead_table_default') != -1) {
-                if ($('.lead_table_default .result').length != 0)
-                    played = parseInt($('.lead_table_default .won').length + $('.lead_table_default .lost').length, 10);
-                else
-                    played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
+                hidden = 1;
+                localStorage.setItem('HHS.hide_beaten', 1);
+                setButtonDisplay();
             }
             else {
-                played = parseInt(players[i].children[3].innerText.split('/')[0], 10) || 0;
+                displayBeatenOpponents();
+                hidden = 0;
+                localStorage.setItem('HHS.hide_beaten', 0);
+                setButtonHide();
             }
-            fightsPlayed += played;
+        });
+
+        let sort_by = document.querySelectorAll('span[sort_by]');
+        for (var sort of sort_by) {
+            sort.addEventListener('click', function(){
+                if (hidden == 1)
+                    removeBeatenOpponents();
+                    displayLeaguePlayersInfo();
+            });
         }
 
-        let tot_victory = 0;
-        let tot_defeat = 0;
-        for(let key in data) {
-            tot_victory += data[key].victories;
-            tot_defeat += data[key].defeats;
+        sheet.insertRule(`
+            #beaten_opponents {
+                position: absolute;
+                padding-left: 5px;
+                padding-right: 5px;
+                background: none;
+                border: none;
+                cursor: pointer;
+            }
+        `)
+        sheet.insertRule(`
+            ${mediaMobile} {
+                #beaten_opponents {
+                    height: 32px;
+                    z-index: 1;
+                    right: 517px;
+                }
+            }
+        `);
+        sheet.insertRule(`
+            ${mediaDesktop} {
+                #beaten_opponents {
+                    height: 28px;
+                    top: -40px;
+                    left: 10px;
+                }
+            }
+        `);
+        sheet.insertRule(`
+            #hide_beaten {
+                position: relative;
+            }
+        `);
+        sheet.insertRule(`
+            #hide_beaten img, #hide_beaten_mobile img {
+                width: auto;
+            }
+        `);
+        sheet.insertRule(`
+            ${mediaMobile} {
+                #hide_beaten img, #hide_beaten_mobile img {
+                    height: 26px;
+                }
+            }
+        `);
+        sheet.insertRule(`
+            ${mediaDesktop} {
+                #hide_beaten img, #hide_beaten_mobile img {
+                    height: 20px;
+                }
+            }
+        `);
+
+        function displayLeaguePlayersInfo() {
+            if (localStorage.getItem('newLeagueResults') == null) {
+                localStorage.removeItem('leagueResults');
+                localStorage.removeItem('pointHistory');
+                localStorage.setItem('newLeagueResults', 1)
+            }
+
+            let player=playerLeaguesData.id_member;
+            let points;
+            try{
+                points=JSON.parse(localStorage.getItem('pointHistory'))[player].points;
+            }catch(e){
+                points=[];
+            }
+            for(let i=0;i<3;i++){
+                let result=$('.result')[i];
+                if(result.innerText!=""){
+                    result.innerText=points[i] || '?';
+                }
+            }
+
+            const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
+            if (heroAvatar.find('.classLeague').length===0){
+                const heroClass = Hero.infos.class
+                let heroClassIcon
+                switch (heroClass) {
+                case 1:
+                                heroClassIcon = 'hardcore'
+                    break;
+                case 2:
+                                heroClassIcon = 'charm'
+                    break;
+                case 3:
+                                heroClassIcon = 'knowhow'
+                    break;
+                }
+                heroAvatar.append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${heroClassIcon}.png">`));
+            }
+
+            const data = JSON.parse(localStorage.getItem('leagueResults')) || {};
+            const pointHistory = JSON.parse(localStorage.getItem('pointHistory')) || {};
+            for(let i=0; i<playersTotal; i++) {
+                let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
+                let playerId = leagues_list[i].id_player;
+                let player = data[playerId];
+                if (player&&playerData.find('.classLeague').length===0) {
+                    var playerClass = player.class;
+                    let playerClassIcon
+                    switch (playerClass) {
+                        case 1:
+                            playerClassIcon = 'hardcore'
+                        break;
+                        case 2:
+                            playerClassIcon = 'charm'
+                        break;
+                        case 3:
+                            playerClassIcon = 'knowhow'
+                        break;
+                    }
+
+                    playerData.find('.square-avatar-wrapper').append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${playerClassIcon}.png">`));
+                }
+                if (playerData[0].children[3].innerText!="-"){
+                    let points;
+                    try{
+                        points=pointHistory[playerId].points;
+                    }catch{
+                        points=[];
+                    }
+                    let pointsText='';
+                    for (let j=0;j<3;j++){
+                        if(j<parseInt(leagues_list[i].nb_challenges_played)){
+                            pointsText+=points[j] || '?';
+                        }else{
+                            pointsText+='-';
+                        }
+                        pointsText+='/';
+                    }
+                    playerData[0].children[3].innerText=pointsText.slice(0,-1);
+                }
+            }
+            sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                            + '.classLeague {'
+                            + 'position: relative !important;'
+                            + 'height: 17px !important;'
+                            + 'width: 17px !important;'
+                            + 'left: 25px !important;'
+                            + 'border: none !important;}}'
+                            );
+
+            sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                            + '.classLeague {'
+                            + 'position: relative !important;'
+                            + 'height: 25px !important;'
+                            + 'width: 25px !important;'
+                            + 'left: 45px !important;'
+                            + 'border: none !important;}}'
+                            );
         }
 
-        let tot_notPlayed = 3*nb_opponents - fightsPlayed;
-        let nb_unknown = fightsPlayed - tot_victory - tot_defeat;
-        localStorage.setItem('leagueUnknown', nb_unknown);
+        function saveVictories() {
+            let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
 
-        const leagueStatsText = `
-            <hr/>
-            <span id="leagueStats"><u>${labels.current_league}</u>
-            <BR>${labels.victories} : ${tot_victory}/${3*nb_opponents}
-            <BR>${labels.defeats} : ${tot_defeat}/${3*nb_opponents}
-            <BR>${labels.unknown} : ${nb_unknown}/${3*nb_opponents}
-            <BR>${labels.notPlayed} : ${tot_notPlayed}/${3*nb_opponents}
-            </span>`
+            let current_date_ts = Math.floor(new Date().getTime()/1000);
+            let date_end_league = leagueDateInit + Math.ceil((current_date_ts - leagueDateInit)/604800)*604800;
 
-        let old_data = JSON.parse(localStorage.getItem('oldLeagueResults')) || {};
-        let old_nb_opponents = JSON.parse(localStorage.getItem('oldLeaguePlayers')) || 0;
-        let old_nb_unknown = localStorage.getItem('oldLeagueUnknown');
-        let old_score = JSON.parse(localStorage.getItem('oldLeagueScore')) || {};
+            let time_results = localStorage.getItem('leagueTime');
+            if (time_results == null) {
+                time_results = date_end_league;
+                localStorage.setItem('leagueTime', time_results);
+                localStorage.setItem('leagueResults', null);
+            }
+            //Next Thursday after non-DST at 12:00 UTC
+            if (time_results == 1636023600) {
+                time_results = 1636027200
+                localStorage.setItem('leagueTime', time_results);
+            }
 
-        let old_tot_victory = 0;
-        let old_tot_defeat = 0;
+            if (current_date_ts > time_results) {
+                localStorage.setItem('oldLeagueResults', localStorage.getItem('leagueResults'));
+                localStorage.setItem('oldLeagueTime', localStorage.getItem('leagueTime'));
+                localStorage.setItem('oldLeaguePlayers', localStorage.getItem('leaguePlayers'));
+                localStorage.setItem('oldLeagueScore', localStorage.getItem('leagueScore'));
+                localStorage.setItem('oldLeagueUnknown', localStorage.getItem('leagueUnknown'));
+                localStorage.setItem('oldPointHistory', localStorage.getItem('pointHistory'));
+                localStorage.removeItem('leagueResults');
+                localStorage.setItem('leagueTime', date_end_league);
+                localStorage.removeItem('leagueScore');
+                localStorage.removeItem('leagueUnknown');
+                localStorage.removeItem('pointHistory');
+            }
 
-        let old_points = old_score.points || 0;
-        let old_avg = old_score.avg || 0;
+            let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
+            let player = `${playerLeaguesData.id_member}`
+            let spec = playerLeaguesData.class
+            let results = playerLeaguesData.match_history
+            const nb_victories = results.filter(match => match === 'won').length;
+            const nb_defeats = results.filter(match => match === 'lost').length;
 
-        for(let old_key in old_data) {
-            old_tot_victory += old_data[old_key].victories;
-            old_tot_defeat += old_data[old_key].defeats;
+            data[player] = {
+                victories: nb_victories,
+                defeats: nb_defeats,
+                class: spec
+            };
+
+            localStorage.setItem('leagueResults', JSON.stringify(data));
+
+            calculateVictories();
         }
 
-        let old_tot_notPlayed = 3*old_nb_opponents - old_tot_victory - old_tot_defeat - old_nb_unknown;
+        function calculateVictories() {
+            let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
+            let players = $('#leagues_middle .leadTable tr');
+            let nb_players = players.length;
+            let nb_opponents = nb_players-1;
+            localStorage.setItem('leaguePlayers', nb_opponents);
 
-        const options = {year: 'numeric', month: 'short', day: 'numeric'};
-        let old_date_end_league = new Date(localStorage.getItem('oldLeagueTime')*1000).toLocaleDateString(undefined, options);
+            let fightsPlayed = 0;
+            for (var i=0; i<nb_players; i++) {
+                fightsPlayed += parseInt(leagues_list[i].nb_challenges_played);
+            }
 
-        let oldLeagueStatsText
-        if (localStorage.getItem('oldLeagueTime') != null) {
-            oldLeagueStatsText = `
+            let tot_victory = 0;
+            let tot_defeat = 0;
+            for(let key in data) {
+                tot_victory += data[key].victories;
+                tot_defeat += data[key].defeats;
+            }
+
+            let tot_notPlayed = 3*nb_opponents - fightsPlayed;
+            let nb_unknown = fightsPlayed - tot_victory - tot_defeat;
+            localStorage.setItem('leagueUnknown', nb_unknown);
+
+            const leagueStatsText = `
                 <hr/>
-                <span id="oldLeagueStats">
-                ${labels.league_finished}${old_date_end_league}
-                <BR>${labels.victories} : ${old_tot_victory}/${3*old_nb_opponents}
-                <BR>${labels.defeats} : ${old_tot_defeat}/${3*old_nb_opponents}
-                <BR>${labels.notPlayed} : ${old_tot_notPlayed}/${3*old_nb_opponents}
-                <BR>${labels.opponents} : ${old_nb_opponents}
-                <BR>${labels.leaguePoints} : ${nThousand(old_points)}
-                <BR>${labels.avg} : ${nThousand(old_avg)}
+                <span id="leagueStats"><u>${labels.current_league}</u>
+                <BR>${labels.victories} : ${tot_victory}/${3*nb_opponents}
+                <BR>${labels.defeats} : ${tot_defeat}/${3*nb_opponents}
+                <BR>${labels.unknown} : ${nb_unknown}/${3*nb_opponents}
+                <BR>${labels.notPlayed} : ${tot_notPlayed}/${3*nb_opponents}
                 </span>`
+
+            let old_data = JSON.parse(localStorage.getItem('oldLeagueResults')) || {};
+            let old_nb_opponents = JSON.parse(localStorage.getItem('oldLeaguePlayers')) || 0;
+            let old_nb_unknown = localStorage.getItem('oldLeagueUnknown');
+            let old_score = JSON.parse(localStorage.getItem('oldLeagueScore')) || {};
+
+            let old_tot_victory = 0;
+            let old_tot_defeat = 0;
+
+            let old_points = old_score.points || 0;
+            let old_avg = old_score.avg || 0;
+
+            for(let old_key in old_data) {
+                old_tot_victory += old_data[old_key].victories;
+                old_tot_defeat += old_data[old_key].defeats;
+            }
+
+            let old_tot_notPlayed = 3*old_nb_opponents - old_tot_victory - old_tot_defeat - old_nb_unknown;
+
+            const options = {year: 'numeric', month: 'short', day: 'numeric'};
+            let old_date_end_league = new Date(localStorage.getItem('oldLeagueTime')*1000).toLocaleDateString(undefined, options);
+
+            let oldLeagueStatsText
+            if (localStorage.getItem('oldLeagueTime') != null) {
+                oldLeagueStatsText = `
+                    <hr/>
+                    <span id="oldLeagueStats">
+                    ${labels.league_finished}${old_date_end_league}
+                    <BR>${labels.victories} : ${old_tot_victory}/${3*old_nb_opponents}
+                    <BR>${labels.defeats} : ${old_tot_defeat}/${3*old_nb_opponents}
+                    <BR>${labels.notPlayed} : ${old_tot_notPlayed}/${3*old_nb_opponents}
+                    <BR>${labels.opponents} : ${old_nb_opponents}
+                    <BR>${labels.leaguePoints} : ${nThousand(old_points)}
+                    <BR>${labels.avg} : ${nThousand(old_avg)}
+                    </span>`
+            }
+
+            const allLeagueStatsText = `${possibleChallengesTooltip}${leagueStatsText}${oldLeagueStatsText}`
+            $('.possibleChallenges').attr('hh_title', allLeagueStatsText)
         }
 
-        const allLeagueStatsText = `${possibleChallengesTooltip}${leagueStatsText}${oldLeagueStatsText}`
-        $('.possibleChallenges').attr('hh_title', allLeagueStatsText)
+        saveVictories();
+        displayLeaguePlayersInfo();
+
+        var observeCallback = function() {
+            saveVictories();
+            displayLeaguePlayersInfo();
+        }
+
+        var observer = new MutationObserver(observeCallback);
+        var test = document.getElementById('leagues_right');
+        observer.observe(test, {attributes: false, childList: true, subtree: false});
     }
 
-    saveVictories()
+    if (CurrentPage.includes('battle') && !CurrentPage.includes('pre-battle')) {
+        $(document).ajaxComplete(function(evt, xhr, opt) {
+            const searchParams = new URLSearchParams(opt.data)
+            if(searchParams.get('action') === 'do_league_battles') {
+                const response = JSON.parse(xhr.responseText)
 
-    var observeCallback = function() {
-        saveVictories()
+                const player = searchParams.get('id_opponent')
+                const points = response.rewards.heroChangesUpdate.league_points
+
+                const pointHist = JSON.parse(localStorage.getItem('pointHistory')) || {}
+                try{
+                    pointHist[player].points.push(points)
+                } catch(e) {
+                    pointHist[player]={points:[points]}
+                }
+                localStorage.setItem('pointHistory', JSON.stringify(pointHist))
+            }
+        })
     }
-
-    var observer = new MutationObserver(observeCallback);
-    var test = document.getElementById('leagues_right');
-    observer.observe(test, {attributes: false, childList: true, subtree: false});
 }
 
 /* ============
