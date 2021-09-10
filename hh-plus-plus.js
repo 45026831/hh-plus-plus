@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.6
+// @version         0.33.5
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -3662,7 +3662,7 @@ function moduleSim() {
         let expectedValue = 0;
         for (let i=25; i>=3; i--) {
             if (calc[i]) {
-                probabilityTooltip += '<tr><td>'+i+'</td><td>'+(100*calc[i]).toFixed(2)+'%</td></tr>';
+                probabilityTooltip += `<tr><td>${i}</td><td>${(100*calc[i]).toFixed(2)}%</td></tr>`;
                 expectedValue += i*calc[i];
             }
         }
@@ -3670,8 +3670,8 @@ function moduleSim() {
         $('.matchRating').remove();
 
         const pointGrade=['#fff','#fff','#fff','#fff','#ff2f2f','#fd3c24','#fb4817','#f85303','#f55d00','#f16600','#ec6f00','#e77700','#e17f00','#db8700','#d58e00','#cd9500','#c69c00','#bea200','#b5a800','#acae00','#a3b400','#99b900','#8ebe00','#82c300','#75c800','#66cd00'];
-        $('#leagues_right .average-lvl').append('<div class="matchRating" style="color:' + pointGrade[Math.round(expectedValue)] + ';" hh_title="'+probabilityTooltip+'">E[X]: ' + expectedValue.toFixed(2) + '</div>');
-        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append('<span class="matchRating" style="color:' + pointGrade[Math.round(expectedValue)] + ';">Expected value: ' + expectedValue.toFixed(2) + '</span>');
+        $('#leagues_right .average-lvl').append(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(2)}</div>`);
+        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append(`<span class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};">E[X]: ${expectedValue.toFixed(2)}</span>`);
     }
 
     calculatePower();
