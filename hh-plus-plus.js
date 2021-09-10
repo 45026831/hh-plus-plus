@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.6
+// @version         0.33.7
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -3717,25 +3717,33 @@ function moduleSim() {
                      + 'top: 5px !important;}'
                     );*/
 
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.matchRating {'
-                     + 'text-align: center; '
-                     + 'text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000; '
-                     + 'line-height: 40px; '
-                     + 'font-size: 20px;}}'
-                    );
+    sheet.insertRule(`
+        ${mediaDesktop} {
+            .matchRating {
+                text-align: center;
+                text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+                line-height: 25px;
+                font-size: 18px;
+            }
+        }
+    `);
 
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.matchRating {'
-                     + 'margin-left: 20px; '
-                     + 'text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000; '
-                     + 'line-height: 17px; '
-                     + 'font-size: 18px;}}'
-                    );
+    sheet.insertRule(`
+        ${mediaMobile} {
+            .matchRating {
+                margin-left: 20px;
+                text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+                line-height: 5px;
+                font-size: 18px;
+            }
+        }
+    `);
 
-    sheet.insertRule('.average-lvl {'
-                     + 'text-align: center;}'
-                    );
+    sheet.insertRule(`
+        .average-lvl {
+            text-align: center;
+        }
+    `);
 }
 
 // == Helper functions for probability calculations ==
