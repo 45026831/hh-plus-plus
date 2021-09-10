@@ -913,7 +913,7 @@ function nThousand(x) {
     if (typeof x != 'number') {
         x = 0;
     }
-    return x.toLocaleString(locale).replace(' ', ' ');
+    return x.toLocaleString(locale).replace(' ', ' ');
 }
 
 // Numbers: rounding to K, M, G and T
