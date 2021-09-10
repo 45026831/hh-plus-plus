@@ -3058,15 +3058,15 @@ function moduleLeague() {
                 playerChallengesDone = parseInt(fightsStr.substring(0,1), 10)
             }
         }
-        
+
         tableData[pos] = {
             points
         }
-        
+
         if (thresholds.includes(pos)) {
             topPoints[pos] = points
         }
-        
+
         challengesDone += playerChallengesDone
         tableData[pos].challengesDone = playerChallengesDone
     }
@@ -3111,7 +3111,7 @@ function moduleLeague() {
     }
 
     const promotionInfoTooltip = `${showStagnation ? `<p>${textStagnate}</p>` : ''}${showDemotion ? `<p>${textDemote}</p>` : ''}`
-    
+
     const topDisplays = {}
     const topTooltips = {}
 
@@ -3133,7 +3133,7 @@ function moduleLeague() {
         <div class="scriptLeagueInfo">
             <span class="averageScore" hh_title="${labels.averageScore}<em>${nThousand(avgRounded)}</em><br/>${labels.scoreExpected}<em>${nThousand(scoreExpected)}</em>"><img src="${MEAN_ICON_URI}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${nThousand(avgRounded)}</span>
             <span class="possibleChallenges" hh_title="${possibleChallengesTooltip}"><img src="https://${cdnHost}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
-            ${includeBoard ? 
+            ${includeBoard ?
                 tops.map(top => `
                     <span class="minTop${top}" hh_title="${topTooltips[top]}"><span class="scriptLeagueInfoIcon top${top}" />${topDisplays[top]}</span>
                 `).join('') : ''}
