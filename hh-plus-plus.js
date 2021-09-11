@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.7
+// @version         0.33.8
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -3251,7 +3251,8 @@ function moduleLeague() {
             var opponents = board.getElementsByTagName("tr");
             for (var i=0; i<opponents.length; i++) {
                 try {
-                    if(leagues_list[i].nb_challenges_played === "3"){
+                    const playerId = $(opponents[i]).attr('sorting_id')
+                    if(leagues_list.find(({id_player}) => id_player === playerId).nb_challenges_played === "3"){
                         opponents[i].style.display="none"
                     }
                 } catch(e) {}
@@ -3265,7 +3266,8 @@ function moduleLeague() {
             var opponents = board.getElementsByTagName("tr");
             for (var i=0; i<opponents.length; i++) {
                 try {
-                    if(leagues_list[i].nb_challenges_played === "3"){
+                    const playerId = $(opponents[i]).attr('sorting_id')
+                    if(leagues_list.find(({id_player}) => id_player === playerId).nb_challenges_played === "3"){
                         opponents[i].style.display=""
                     }
                 } catch(e) {}
@@ -3439,7 +3441,7 @@ function moduleLeague() {
                     }
                     let pointsText='';
                     for (let j=0;j<3;j++){
-                        if(j<parseInt(leagues_list[i].nb_challenges_played)){
+                        if(j<parseInt(leagues_list.find(({id_player}) => id_player===playerId).nb_challenges_played)){
                             pointsText+=points[j] || '?';
                         }else{
                             pointsText+='-';
