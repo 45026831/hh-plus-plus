@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.8
+// @version         0.33.9
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -153,7 +153,7 @@ const texts = {
         haremettes: gameConfig.haremettes,
         hardcore: 'Hardcore',
         charm: 'Charm',
-        know_how: 'Know-how',
+        knowhow: 'Know-how',
         shagger: 'Shagger',
         lover: 'Lover',
         expert: 'Expert',
@@ -308,7 +308,7 @@ const texts = {
         haremettes: 'haremettes',
         hardcore: 'Hardcore',
         charm: 'Charme',
-        know_how: 'Savoir-faire',
+        knowhow: 'Savoir-faire',
         shagger: 'Niqueur',
         lover: 'Romantique',
         expert: 'Expert',
@@ -464,7 +464,7 @@ const texts = {
         haremettes: 'haremettes',
         hardcore: 'Folladas',
         charm: 'Encanto',
-        know_how: 'Saber-hacer',
+        knowhow: 'Saber-hacer',
         shagger: 'Follador',
         lover: 'Amante',
         expert: 'Experto',
@@ -618,7 +618,7 @@ const texts = {
         haremettes: 'ragazze dell\'harem',
         hardcore: 'Prono',
         charm: 'Fascino',
-        know_how: 'Competenza',
+        knowhow: 'Competenza',
         shagger: 'Scopata',
         lover: 'Amante',
         expert: 'Esperto',
@@ -772,7 +772,7 @@ const texts = {
         haremettes: 'Harem-Mädchen',
         hardcore: 'Hardcore',
         charm: 'Charme',
-        know_how: 'Wissen',
+        knowhow: 'Wissen',
         shagger: 'Stecher',
         lover: 'Liebhaber',
         expert: 'Experte',
@@ -1063,9 +1063,7 @@ if (loadSetting('market')) {
     }
 }
 if (loadSetting('marketFilter')) {
-    if (CurrentPage.indexOf('shop') != -1) {
-        moduleMarketFilter();
-    }
+    moduleMarketFilter();
 }
 if (loadSetting('market_XP_Aff')) {
     if (CurrentPage.indexOf('shop') != -1) {
@@ -2041,270 +2039,437 @@ function moduleMarket() {
    ========================================= */
 
 function moduleMarketFilter() {
+    if (CurrentPage.includes('shop')) {
+        let container = $('.g1>div');
 
-    let container = $('.g1>div');
+        let cur_id = parseInt(container.find('.number.selected').text().split('/')[0]);
+        container.find('.number').remove();
 
-    let cur_id = parseInt(container.find('.number.selected').text().split('/')[0]);
-    container.find('.number').remove();
+        let allGirls = Array.from( container.find('.girl-ico').toArray(), e => $(e) );
 
-    let allGirls = Array.from( container.find('.girl-ico').toArray(), e => $(e) );
+        let nb_girls = container.children().length;
+        let nav = $(`<span class="number selected">/</span>`);
+        container.append(nav);
 
-    let nb_girls = container.children().length;
-    let nav = $(`<span class="number selected">/</span>`);
-    container.append(nav);
+        let max_girl = $(`<span>${nb_girls}</span>`);
+        nav.append(max_girl);
 
-    let max_girl = $(`<span>${nb_girls}</span>`);
-    nav.append(max_girl);
-
-    function updateNavMax() {
-        nb_girls = container.children().length - 1;
-        max_girl.text(nb_girls);
-    }
-
-    let num_girl = $(`<span contenteditable>${cur_id}</span>`);
-    nav.prepend(num_girl);
-
-    num_girl.on('input', (ev) => {
-
-        let dst_num = parseInt(num_girl.text());
-
-        if(dst_num <= 0 || dst_num > nb_girls || ! Number.isFinite(dst_num) )
-            return;
-
-        goto_girl(dst_num, false);
-    });
-
-    function next_girl_id(id = cur_id) {
-        return ((id - 1 + 1)%nb_girls) + 1;
-    }
-    function prev_girl_id(id = cur_id) {
-        return ((id - 1 + nb_girls - 1)%nb_girls) + 1;
-    }
-
-    function girl_at(id = cur_id) {
-        return container.children().eq(id - 1);
-    }
-
-    function hideCurrentGirl() {
-        let cur_girl = girl_at();
-        cur_girl.addClass('not-selected');
-
-        girl_at(prev_girl_id()).css('left', '-145px');
-        cur_girl.css('left', '-145px');
-        girl_at(next_girl_id()).css('left', '-145px');
-    }
-
-    function goto_girl(id_girl, override_nav = true, hide_current = true) {
-        if(hide_current)
-            hideCurrentGirl();
-
-        let dst_girl = girl_at(id_girl);
-        dst_girl.removeClass('not-selected');
-
-        girl_at(prev_girl_id(id_girl)).css('left', '0px');
-        girl_at(next_girl_id(id_girl)).css('left', '290px');
-        dst_girl.css('left', '145px');
-
-        window.$girl = dst_girl;
-
-        if( override_nav )
-            num_girl.text(id_girl);
-
-        cur_id = id_girl;
-
-        update_header();
-
-        if (loadSetting('market_XP_Aff'))
-            moduleMarket_XP_Aff();
-    }
-
-    function update_header() {
-        let $girl = window.$girl;
-
-        if ($girl.attr('class').indexOf('girl') != -1) {
-            $("#girls_list>.level_target_squared>div>div").attr("chars", $girl.data("g")["level"].length);
-            $("#girls_list>.level_target_squared>div>div").text($girl.data("g")["level"]);
-            $("#girls_list>h3").text($girl.data("g")["Name"]);
-            $("#girls_list>.icon").attr("carac", $girl.data("g")["class"]);
-        }
-    }
-
-    let lnav = container.parent().find('span[nav="left"]');
-    lnav.off('click');
-    lnav.on('click', (ev) => { goto_girl( prev_girl_id() ); });
-
-    let rnav = container.parent().find('span[nav="right"]');
-    rnav.off('click');
-    rnav.on('click', (ev) => { goto_girl( next_girl_id() ); });
-
-    function addGirlFilter() {
-
-        function getGirlData() {
-            return Array.from(allGirls, girl => JSON.parse($(girl).attr("data-new-girl-tooltip") || $(girl).attr("new-girl-tooltip-data")) );
+        function updateNavMax() {
+            nb_girls = container.children().length - 1;
+            max_girl.text(nb_girls);
         }
 
-        function createFilterBox() {
-            var totalHTML = '<div style="position:relative"><div id="arena_filter_box" class="form-wrapper" style="'
-            + 'position: absolute; left: -215px; bottom: -150px; width: 200px; heigth: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
-            totalHTML += '<div class="form-control"><div class="input-group">'
-                + '<label class="head-group" for="sort_name">' + texts[lang].searched_name + '</label>'
-                + '<input type="text" autocomplete="off" id="sort_name" placeholder="' + texts[lang].girl_name + '" icon="search">'
-                + '</div></div>';
+        let num_girl = $(`<span contenteditable>${cur_id}</span>`);
+        nav.prepend(num_girl);
 
-            totalHTML += '<div class="form-control"><div class="select-group">'
-                + '<label class="head-group" for="sort_class">' + texts[lang].searched_class + '</label>'
-                + '<select name="sort_class" id="sort_class" icon="down-arrow">'
-                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="hardcore">' + texts[lang].hardcore + '</option><option value="charm">' + texts[lang].charm + '</option><option value="knowhow">' + texts[lang].know_how + '</option>'
-                + '</select></div></div>';
+        num_girl.on('input', (ev) => {
 
-            totalHTML += '<div class="form-control"><div class="select-group">'
-                + '<label class="head-group" for="sort_rarity">' + texts[lang].searched_rarity + '</label>'
-                + '<select name="sort_rarity" id="sort_rarity" icon="down-arrow">'
-                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="starting">' + texts[lang].starting + '</option><option value="common">' + texts[lang].common + '</option><option value="rare">' + texts[lang].rare + '</option><option value="epic">' + texts[lang].epic + '</option><option value="legendary">' + texts[lang].legendary + '</option><option value="mythic">' + texts[lang].mythic + '</option>'
-                + '</select></div></div>';
+            let dst_num = parseInt(num_girl.text());
 
-            totalHTML += '<div class="form-control"><div class="input-group">'
-                + '<label class="head-group" for="sort_level">' + texts[lang].level_range + '</label>'
-                + '<input type="text" autocomplete="off" id="sort_level" placeholder="1-500" icon="search">'
-                + '</div></div>';
+            if(dst_num <= 0 || dst_num > nb_girls || ! Number.isFinite(dst_num) )
+                return;
 
-            totalHTML += '<div class="form-control"><div class="select-group">'
-                + '<label class="head-group" for="sort_aff_category">' + texts[lang].searched_aff_category + '</label>'
-                + '<select name="sort_aff_category" id="sort_aff_category" icon="down-arrow">'
-                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="1">' + texts[lang].one_star + '</option><option value="3">' + texts[lang].three_stars + '</option><option value="5">' + texts[lang].five_stars + '</option><option value="6">' + texts[lang].six_stars + '</option>'
-                + '</select></div></div>';
+            goto_girl(dst_num, false);
+        });
 
-            totalHTML += '<div class="form-control"><div class="select-group">'
-                + '<label class="head-group" for="sort_aff_lvl">' + texts[lang].searched_aff_lvl + '</label>'
-                + '<select name="sort_aff_lvl" id="sort_aff_lvl" icon="down-arrow">'
-                + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="0">' + texts[lang].zero_star + '</option><option value="1">' + texts[lang].one_star + '</option><option value="2">' + texts[lang].two_stars + '</option><option value="3">' + texts[lang].three_stars + '</option><option value="4">' + texts[lang].four_stars + '</option><option value="5">' + texts[lang].five_stars + '</option><option value="6">' + texts[lang].six_stars + '</option>'
-                + '</select></div></div>';
-
-            totalHTML += '</div></div>';
-
-            return $(totalHTML);
+        function next_girl_id(id = cur_id) {
+            return ((id - 1 + 1)%nb_girls) + 1;
+        }
+        function prev_girl_id(id = cur_id) {
+            return ((id - 1 + nb_girls - 1)%nb_girls) + 1;
         }
 
-        function createFilterBtn() {
-            let btn = $('<input type="button" class="blue_button_L girl_filter" value="' + texts[lang].filter + '" />');
-            return btn;
+        function girl_at(id = cur_id) {
+            return container.children().eq(id - 1);
         }
 
-        function filterGirls(form, girlsData) {
-            let sorterClass = form.find("#sort_class").prop('selectedIndex');
-            let sorterRarity = form.find("#sort_rarity").val();
-            let sorterAffCategory = form.find("#sort_aff_category").val();
-            let sorterAffLvl = form.find("#sort_aff_lvl").val();
-            let sorterName = form.find("#sort_name").val();
-            let sorterRange = form.find("#sort_level").val().split('-');
-            let nameRegex = new RegExp(sorterName, "i");
+        function hideCurrentGirl() {
+            let cur_girl = girl_at();
+            cur_girl.addClass('not-selected');
 
-            hideCurrentGirl();
+            girl_at(prev_girl_id()).css('left', '-145px');
+            cur_girl.css('left', '-145px');
+            girl_at(next_girl_id()).css('left', '-145px');
+        }
 
-            for(let i = 0; i < girlsData.length; ++i) {
+        function goto_girl(id_girl, override_nav = true, hide_current = true) {
+            if(hide_current)
+                hideCurrentGirl();
 
-                let girl = girlsData[i];
+            let dst_girl = girl_at(id_girl);
+            dst_girl.removeClass('not-selected');
 
-                let affectionStr = girl.Graded2;
-                let affectionCategoryStr = affectionStr.split('</g>');
-                let affectionCategory = affectionCategoryStr.length-1;
-                let affectionLvlStr = affectionStr.split('<g >');
-                let affectionLvl = affectionLvlStr.length-1;
+            girl_at(prev_girl_id(id_girl)).css('left', '0px');
+            girl_at(next_girl_id(id_girl)).css('left', '290px');
+            dst_girl.css('left', '145px');
 
-                let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
-                let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
-                let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
-                let matchesAffLvl = (affectionLvl == sorterAffLvl) || (sorterAffLvl == 'all');
-                let matchesName = (girl.Name.search(nameRegex) > -1);
-                let matchesLevel =  (sorterRange[0] == '' || girl.level >= parseInt(sorterRange[0]) )
-                && (sorterRange[1] == '' || sorterRange[1] === undefined || girl.level <= parseInt(sorterRange[1]) );
-                let matches
+            window.$girl = dst_girl;
 
-                if(matchesClass && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
-                    nav.before(allGirls[i]);
-                } else {
-                    allGirls[i].detach();
-                }
+            if( override_nav )
+                num_girl.text(id_girl);
+
+            cur_id = id_girl;
+
+            update_header();
+
+            if (loadSetting('market_XP_Aff'))
+                moduleMarket_XP_Aff();
+        }
+
+        function update_header() {
+            let $girl = window.$girl;
+
+            if ($girl.attr('class').indexOf('girl') != -1) {
+                $("#girls_list>.level_target_squared>div>div").attr("chars", $girl.data("g")["level"].length);
+                $("#girls_list>.level_target_squared>div>div").text($girl.data("g")["level"]);
+                $("#girls_list>h3").text($girl.data("g")["Name"]);
+                $("#girls_list>.icon").attr("carac", $girl.data("g")["class"]);
+            }
+        }
+
+        let lnav = container.parent().find('span[nav="left"]');
+        lnav.off('click');
+        lnav.on('click', (ev) => { goto_girl( prev_girl_id() ); });
+
+        let rnav = container.parent().find('span[nav="right"]');
+        rnav.off('click');
+        rnav.on('click', (ev) => { goto_girl( next_girl_id() ); });
+
+        function addGirlFilter() {
+
+            function getGirlData() {
+                return Array.from(allGirls, girl => ({id: $(girl).attr('id_girl'), ...JSON.parse($(girl).attr("data-new-girl-tooltip") || $(girl).attr("new-girl-tooltip-data")) }));
             }
 
-            updateNavMax();
-            goto_girl(1, true, false);
+            function createFilterBox() {
+                const buildTextInput = ({id, label, placeholder}) => `
+                    <div class="form-control">
+                        <div class="input-group">
+                            <label class="head-group" for="${id}">${label}</label>
+                            <input type="text" autocomplete="off" id="${id}" placeholder="${placeholder}" icon="search">
+                        </div>
+                    </div>
+                `
+                const buildSelectInput = ({id, label, options}) => `
+                    <div class="form-control">
+                        <div class="select-group">
+                            <label class="head-group" for="${id}">${label}</label>
+                            <select name="${id}" id="${id}" icon="down-arrow">
+                                <option value="all" selected="selected">${labels.all}</option>
+                                ${options.map(({label, value}) => `<option value="${value}">${label}</option>`).join('')}
+                            </select>
+                        </div>
+                    </div>
+                `
+                
+                var totalHTML = `
+                    <div style="position:relative">
+                        <div id="arena_filter_box" class="form-wrapper" style="position: absolute; left: -215px; bottom: -150px; width: 200px; height: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">
+                            ${buildTextInput({id: 'sort_name', label: labels.searched_name, placeholder: labels.girl_name})}
+                            ${buildSelectInput({
+                                id: 'sort_class',
+                                label: labels.searched_class,
+                                options: ['hardcore', 'charm', 'knowhow'].map(option => ({label: labels[option], value: option}))
+                            })}
+                            ${buildSelectInput({
+                                id: 'sort_rarity',
+                                label: labels.searched_rarity,
+                                options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: labels[option], value: option}))
+                            })}
+                            ${buildTextInput({id: 'sort_level', label: labels.level_range, placeholder: '1-500'})}
+                            ${buildSelectInput({
+                                id: 'sort_aff_category',
+                                label: labels.searched_aff_category,
+                                options: [
+                                    {label: labels.one_star, value: 1},
+                                    {label: labels.three_stars, value: 3},
+                                    {label: labels.five_stars, value: 5},
+                                    {label: labels.six_stars, value: 6}
+                                ]
+                            })}
+                            ${buildSelectInput({
+                                id: 'sort_aff_lvl',
+                                label: labels.searched_aff_lvl,
+                                options: [
+                                    {label: labels.zero_star, value: 0},
+                                    {label: labels.one_star, value: 1},
+                                    {label: labels.two_stars, value: 2},
+                                    {label: labels.three_stars, value: 3},
+                                    {label: labels.four_stars, value: 4},
+                                    {label: labels.five_stars, value: 5},
+                                    {label: labels.six_stars, value: 6}
+                                ]
+                            })}
+                            <input type="button" class="blue_button_L" rel="select-team" value="${labels.team}" />
+                        </div>
+                    </div>`.replace(/\n/g, '').replace(/    /g, '');
+
+                return $(totalHTML);
+            }
+
+            function createTeamsBox() {
+                const bdsmTeamsJson = localStorage.getItem('bdsmTeams')
+                if (!bdsmTeamsJson) {
+                    return $('<div style="position:relative"></div>')
+                }
+                const {teamIds, teamsDict} = JSON.parse(bdsmTeamsJson)
+                return $(`
+                <div style="position:relative">
+                    <div class="team-selection" style="display: none;">
+                        <span class="close-team-selection" />
+                        <div class="teams-grid-container rarity-background">
+                            ${teamIds.map(teamId => teamsDict[teamId]).map(team => `
+                                <div class="team-slot-container ${team.iconRarity}" data-id-team="${team.teamId}" data-girl-ids='${JSON.stringify(team.girls)}'>
+                                    <img src="${team.icon}" />
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+                `.replace(/\n/g, '').replace(/    /g, ''))
+            }
+
+            function createFilterBtn() {
+                let btn = $('<input type="button" class="blue_button_L girl_filter" value="' + texts[lang].filter + '" />');
+                return btn;
+            }
+
+            function filterGirls(form, girlsData, useTeam) {
+                let sorterClass = form.find("#sort_class").prop('selectedIndex');
+                let sorterRarity = form.find("#sort_rarity").val();
+                let sorterAffCategory = form.find("#sort_aff_category").val();
+                let sorterAffLvl = form.find("#sort_aff_lvl").val();
+                let sorterName = form.find("#sort_name").val();
+                let sorterRange = form.find("#sort_level").val().split('-');
+                let nameRegex = new RegExp(sorterName, "i");
+
+                hideCurrentGirl();
+
+                for(let i = 0; i < girlsData.length; ++i) {
+
+                    let girl = girlsData[i];
+
+                    if (useTeam) {
+                        if(useTeam.includes(girl.id)) {
+                            nav.before(allGirls[i]);
+                        } else {
+                            allGirls[i].detach();
+                        }
+                    } else {
+                        let affectionStr = girl.Graded2;
+                        let affectionCategoryStr = affectionStr.split('</g>');
+                        let affectionCategory = affectionCategoryStr.length-1;
+                        let affectionLvlStr = affectionStr.split('<g >');
+                        let affectionLvl = affectionLvlStr.length-1;
+    
+                        let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
+                        let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
+                        let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
+                        let matchesAffLvl = (affectionLvl == sorterAffLvl) || (sorterAffLvl == 'all');
+                        let matchesName = (girl.Name.search(nameRegex) > -1);
+                        let matchesLevel =  (sorterRange[0] == '' || girl.level >= parseInt(sorterRange[0]) )
+                        && (sorterRange[1] == '' || sorterRange[1] === undefined || girl.level <= parseInt(sorterRange[1]) );
+    
+                        if(matchesClass && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
+                            nav.before(allGirls[i]);
+                        } else {
+                            allGirls[i].detach();
+                        }
+                    }
+
+                }
+
+                updateNavMax();
+                goto_girl(1, true, false);
+            }
+
+            function createFilter(target, girlsData) {
+                let filterBox = createFilterBox();
+                let teamsBox = createTeamsBox();
+                let btn = createFilterBtn();
+
+                target.append(btn);
+                target.append(filterBox);
+                target.append(teamsBox);
+
+                btn.on('click', function() {
+                    $('#arena_filter_box').css('display', $('#arena_filter_box').css('display')=='block'?'none':'block');
+                });
+
+                let sortGirls = () => {
+                    filterGirls(filterBox, girlsData);
+                };
+                const filterGirlsWithTeam = (team) => {
+                    filterGirls(filterBox, girlsData, team)
+                }
+
+                filterBox.find("#sort_class") .on('change', sortGirls);
+                filterBox.find("#sort_rarity").on('change', sortGirls);
+                filterBox.find("#sort_aff_category").on('change', sortGirls);
+                filterBox.find("#sort_aff_lvl").on('change', sortGirls);
+                filterBox.find("#sort_name")  .on('input' , sortGirls );
+                filterBox.find("#sort_level") .on('input' , sortGirls );
+                filterBox.find('[rel=select-team]').click(() => $('.team-selection').css('display', $('.team-selection').css('display')=='block'?'none':'block'))
+                teamsBox.find('.team-slot-container').click(function () {
+                    filterGirlsWithTeam($(this).data('girl-ids'))
+                    $('.team-selection').css('display', 'none')
+                })
+                teamsBox.find('.close-team-selection').click(() => $('.team-selection').css('display', 'none'))
+            }
+
+            let girlsData = getGirlData();
+            createFilter( $('#girls_list'), girlsData );
         }
 
-        function createFilter(target, girlsData) {
-            let filterBox = createFilterBox();
-            let btn = createFilterBtn();
+        addGirlFilter();
 
-            target.append(btn);
-            target.append(filterBox);
+        //CSS
+        sheet.insertRule(`
+            #arena_filter_box label.head-group {
+                display: block;
+                position: relative;
+                left: -5px;
+                z-index: 15;
+                margin-bottom: -8px;
+                margin-top: -3px !important;
+                padding-left: 7px;
+                font-size: 14px;
+                font-weight: 400;
+                letter-spacing: .22px;
+                text-align: left !important;
+                color: #ffb827;
+                background:transparent;
+                text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,-2px -2px 5px rgba(255,159,0,.4),2px -2px 5px rgba(255,159,0,.4),-2px 2px 5px rgba(255,159,0,.4),2px 2px 5px rgba(255,159,0,.4),0 0 10px rgba(255,159,0,.4);
+            }
+        `);
 
-            btn.on('click', function() {
-                $('#arena_filter_box').css('display', $('#arena_filter_box').css('display')=='block'?'none':'block');
-            });
+        sheet.insertRule(`
+            #shops #girls_list .g1 > div > .number {
+                left: 0 !important;
+            }
+        `);
 
-            let sortGirls = () => {
-                filterGirls(filterBox, girlsData);
-            };
+        sheet.insertRule(`
+            ${mediaMobile} {
+                input.blue_button_L.girl_filter {
+                    position: absolute;
+                    left: -2px;
+                    top: 0px;
+                }
+            }
+        `);
 
-            filterBox.find("#sort_class") .on('change', sortGirls);
-            filterBox.find("#sort_rarity").on('change', sortGirls);
-            filterBox.find("#sort_aff_category").on('change', sortGirls);
-            filterBox.find("#sort_aff_lvl").on('change', sortGirls);
-            filterBox.find("#sort_name")  .on('input' , sortGirls );
-            filterBox.find("#sort_level") .on('input' , sortGirls );
+        sheet.insertRule(`
+            ${mediaDesktop} {
+                input.blue_button_L.girl_filter {
+                    position: absolute;
+                    left: -2px;
+                    top: -30px;
+                }
+            }
+        `);
+
+        sheet.insertRule(`
+            ${mediaMobile} {
+                #arena_filter_box {
+                    bottom: 76px;
+                }
+            }
+        `);
+
+        sheet.insertRule(`
+            ${mediaDesktop} {
+                #arena_filter_box {
+                    bottom: 95px;
+                }
+            }
+        `);
+        sheet.insertRule(`
+            .team-selection {
+                position: absolute;
+                left: 0px;
+                bottom: -208px;
+                width: 400px;
+                height: fit-content;
+                border-radius: 8px 10px 10px 8px;
+                background-color: #1e261e;
+                box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
+                padding: 5px; border: 1px solid #ffa23e;
+                z-index:10;
+            }
+        `)
+        sheet.insertRule(`
+            .teams-grid-container {
+                display: grid;
+                grid-template-columns: auto auto auto auto;
+                grid-row-gap: 1rem;
+                padding: .4rem .9rem .4rem .9rem;
+                margin-right: -1rem;
+            }
+        `)
+        sheet.insertRule(`
+            .team-slot-container {
+                overflow: hidden;
+            }
+        `)
+        sheet.insertRule(`
+            .close-team-selection {
+                position: absolute;
+                display: block;
+                background: url(https://${cdnHost}/clubs/ic_xCross.png);
+                background-size: cover;
+                height: 32px;
+                width: 35px;
+                top:-16px;
+                right:-17px;
+                cursor: pointer;
+            }
+        `)
+        sheet.insertRule(`
+            [rel=select-team] {
+                width: 100%;
+                height: 36px;
+                padding-top: 5px;
+            }
+        `)
+    } else if (CurrentPage.includes('teams')) {
+        // Load teams into localstorage
+        const teamsDict = {}
+        const teamIds = []
+
+        $('.team-slot-container[data-is-empty=]').each((i, slot) => {
+            const teamId = $(slot).data('id-team')
+            const icon = $(slot).find('img').attr('src')
+
+            const classes = $(slot).attr('class').replace(/\s+/g, ' ').split(' ')
+            const iconRarity = ['mythic', 'legendary', 'epic', 'rare', 'common', 'starting'].find(rarity => classes.includes(rarity))
+
+            teamsDict[teamId] = {
+                teamId,
+                icon,
+                iconRarity
+            }
+            teamIds.push(teamId)
+        })
+
+        teamIds.forEach(teamId => {
+            const $teamGirlContainer = $(`.team-info-girls-container[data-id-team=${teamId}]`)
+            const girls = []
+            $teamGirlContainer.find('.team-member-container').each((i, girl) => {
+                girlId = $(girl).data('girl-id')
+                if (girlId) {
+                    girls.push(`${girlId}`)
+                }
+            })
+            teamsDict[teamId].girls = girls
+        })
+
+        const teams = {
+            teamsDict,
+            teamIds
         }
-
-        let girlsData = getGirlData();
-        createFilter( $('#girls_list'), girlsData );
+        localStorage.setItem('bdsmTeams', JSON.stringify(teams))
     }
-
-    addGirlFilter();
-
-    //CSS
-    sheet.insertRule('#arena_filter_box label.head-group {'
-                     + 'display: block;'
-                     + 'position: relative;'
-                     + 'left: -5px;'
-                     + 'z-index: 15;'
-                     + 'margin-bottom: -8px;'
-                     + 'margin-top: -3px !important;'
-                     + 'padding-left: 7px;'
-                     + 'font-size: 14px;'
-                     + 'font-weight: 400;'
-                     + 'letter-spacing: .22px;'
-                     + 'text-align: left !important;'
-                     + 'color: #ffb827;'
-                     + 'background:transparent;'
-                     + 'text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,-2px -2px 5px rgba(255,159,0,.4),2px -2px 5px rgba(255,159,0,.4),-2px 2px 5px rgba(255,159,0,.4),2px 2px 5px rgba(255,159,0,.4),0 0 10px rgba(255,159,0,.4);}'
-                    );
-
-    sheet.insertRule('#shops #girls_list .g1 > div > .number {'
-                     + 'left: 0 !important;}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + 'input.blue_button_L.girl_filter {'
-                     + 'position: absolute;'
-                     + 'left: -2px;'
-                     + 'top: 0px;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + 'input.blue_button_L.girl_filter {'
-                     + 'position: absolute;'
-                     + 'left: -2px;'
-                     + 'top: -30px;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '#arena_filter_box {'
-                     + 'bottom: 76px;}}'
-                    );
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '#arena_filter_box {'
-                     + 'bottom: 95px;}}'
-                    );
 }
 
 /* =====================================
@@ -2636,7 +2801,7 @@ function moduleHarem() {
 
     var StatsString = '<div class="StatsContent"><span class="Title">' + texts[lang].harem_stats + ':</span>' +
         '<span class="subTitle" style="margin-top: -10px;">' + stats.girls + ' ' + texts[lang].haremettes + ':</span>' +
-        '- ' + stats.caracs[1] + ' ' + texts[lang].hardcore + ', ' + stats.caracs[2] + ' ' + texts[lang].charm + ', ' + stats.caracs[3] + ' ' + texts[lang].know_how + '<br />- '
+        '- ' + stats.caracs[1] + ' ' + texts[lang].hardcore + ', ' + stats.caracs[2] + ' ' + texts[lang].charm + ', ' + stats.caracs[3] + ' ' + texts[lang].knowhow + '<br />- '
     + (stats.rarities.starting + stats.rarities.common) + ' ' + texts[lang].common + ', ' + stats.rarities.rare + ' ' + texts[lang].rare + ', ' + stats.rarities.epic + ' ' + texts[lang].epic + ', ' + stats.rarities.legendary + ' ' + texts[lang].legendary + ', ' + stats.rarities.mythic + ' ' + texts[lang].mythic + ' <br />- '
     + nThousand(parseInt(document.getElementsByClassName('focus_text')[0].innerHTML.replace(/\D/g, ''), 10)) + '/' + nThousand(Hero.infos.level * stats.girls) + ' ' + texts[lang].harem_level + ' (' + nThousand(Hero.infos.level * stats.girls - parseInt(document.getElementsByClassName('focus_text')[0].innerHTML.replace(/\D/g, ''), 10)) + ' ' + texts[lang].to_go + ')<br />- '
     + stats.unlockedScenes + '/' + stats.allScenes + ' ' + texts[lang].unlocked_scenes + ' (' + nThousand(stats.allScenes - stats.unlockedScenes) + ' ' + texts[lang].to_go + ')'
@@ -6107,7 +6272,6 @@ function moduleTeamsFilter() {
             $("h3.panel-title").after('<button id="arena_filter" class="blue_button_L">' + texts[lang].filter + '</button>');
             $("h3.panel-title").after(createFilterBox("default"));
             createFilterEvents();
-            displayGirlStatSum();
         }
 
         sheet.insertRule('a[rel="season"] {'
@@ -6142,27 +6306,6 @@ function moduleTeamsFilter() {
                         );
     });
 
-    function displayGirlStatSum() {
-        var observer = new MutationObserver(function(mutations) {
-            let carac1Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac1] span:nth-child(1)').text();
-            let carac1 = parseLocaleFloat(carac1Data);
-            let carac2Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac2] span:nth-child(1)').text();
-            let carac2 = parseLocaleFloat(carac2Data);
-            let carac3Data = $('.hh_tooltip_new.new_girl_tooltip .caracs span[carac=carac3] span:nth-child(1)').text();
-            let carac3 = parseLocaleFloat(carac3Data);
-            let caracSum = nThousand(carac1 + carac2 + carac3)
-            // Note: replacing any spaces with an NBSP to match HH UI
-
-            $('.hh_tooltip_new.new_girl_tooltip').append('<span id="caracSum" style="position: relative; left: 45px; top: -115px; color: #fff; font-size: 16px; font-family: Tahoma,Helvetica,Arial,sans-serif; font-weight: 700;"> Total: <BR>' + caracSum + '</span>');
-        });
-
-        observer.observe($('.page-edit-team')[0], {
-            childList: true
-            , subtree: false
-            , attributes: false
-        });
-    }
-
     function updateFilterGirlData(type) {
         arenaGirls = $('.harem-panel-girls div.harem-girl-container');
 
@@ -6181,8 +6324,6 @@ function moduleTeamsFilter() {
         $("#filter_class").on('change', filterGirls);
         $("#filter_rarity").on('change', filterGirls);
         $("#filter_name").get(0).oninput = filterGirls;
-        $("#save_teamFilter").on('click', saveTeam);
-        $("#load_team").on('click', loadTeam);
         $("#filter_blessed_attributes").on('change', filterGirls);
         $("#filter_aff_category").on('change', filterGirls);
         $("#filter_aff_lvl").on('change', filterGirls);
@@ -6234,33 +6375,6 @@ function moduleTeamsFilter() {
         $(".harem-panel-girls").css('overflow', 'hidden');
     }
 
-    function saveTeam() {
-        var selectedGirls = $('#change-team-page .change-team-panel .harem-panel-girls .selected');
-        var selectedIds = $.map(selectedGirls, function(girl, index) {
-            return $(girl).attr("id_girl");
-        });
-        var teamUsed = $("#save_team_select").get(0).selectedIndex;
-        localStorage.setItem('arenaSavedTeam' + teamUsed, JSON.stringify(selectedIds));
-    }
-
-    function loadTeam() {
-        var teamUsed = $("#load_team_select").get(0).selectedIndex;
-        var teamSaved = localStorage.getItem('arenaSavedTeam' + teamUsed);
-        if (teamSaved == null || typeof teamSaved == 'undefined') return;
-
-        var selectedIds = JSON.parse(teamSaved);
-        if (Array.isArray(selectedIds)) {
-            $.each(arenaGirls, function(index, girlElem) {
-                var girlId = $(girlElem).attr("id_girl");
-                $(girlElem).css('display', $.inArray(girlId, selectedIds) > -1 ? 'flex' : 'none');
-            });
-
-            //update scroll display
-            $("#change-team-page .change-team-panel .harem-panel-girls").css('overflow', '');
-            $("#change-team-page .change-team-panel .harem-panel-girls").css('overflow', 'hidden');
-        }
-    }
-
     function createFilterBox() {
         totalHTML = '<div id="arena_filter_box" class="form-wrapper" style="'
             + 'position: absolute; width: 275px; right: 408px; z-index: 99; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">';
@@ -6283,7 +6397,7 @@ function moduleTeamsFilter() {
         totalHTML += '<div class="form-control"><div class="select-group">'
             + '<label class="head-group" for="filter_class">' + texts[lang].searched_class + '</label>'
             + '<select name="filter_class" id="filter_class" icon="down-arrow">'
-            + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="hardcore">' + texts[lang].hardcore + '</option><option value="charm">' + texts[lang].charm + '</option><option value="knowhow">' + texts[lang].know_how + '</option>'
+            + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="hardcore">' + texts[lang].hardcore + '</option><option value="charm">' + texts[lang].charm + '</option><option value="knowhow">' + texts[lang].knowhow + '</option>'
             + '</select></div></div>';
 
         totalHTML += '<div class="form-control"><div class="select-group">'
@@ -6308,20 +6422,6 @@ function moduleTeamsFilter() {
             + '<label class="head-group" for="filter_blessed_attributes">' + texts[lang].searched_blessed_attributes + '</label>'
             + '<select name="filter_blessed_attributes" id="filter_blessed_attributes" icon="down-arrow">'
             + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="blessed_attributes">' + texts[lang].blessed_attributes + '</option><option value="non_blessed_attributes">' + texts[lang].non_blessed_attributes + '</option>'
-            + '</select></div></div>';
-
-        totalHTML += '<div class="form-control"><button id="save_teamFilter" class="blue_button_L" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].save_as + '</button>'
-            + '<div class="select-group" style="display: inline-block; float: right; width: 45%;">'
-            + '<label class="head-group" for="save_team_select">' + texts[lang].team_number + '</label>'
-            + '<select name="save_team_select" id="save_team_select" icon="down-arrow">'
-            + '<option value="1" selected="selected">' + texts[lang].team + ' 1</option><option value="2">' + texts[lang].team + ' 2</option><option value="3">' + texts[lang].team + ' 3</option>'
-            + '</select></div></div>';
-
-        totalHTML += '<div class="form-control"><button id="load_team" class="blue_button_L" style="margin-top: 10px; padding: 5px 20px; width: 51%;">' + texts[lang].load_from + '</button>'
-            + '<div class="select-group" style="display: inline-block; float: right; width: 45%;">'
-            + '<label class="head-group" for="load_team_select">' + texts[lang].team_number + '</label>'
-            + '<select name="load_team_select" id="load_team_select" icon="down-arrow">'
-            + '<option value="1" selected="selected">' + texts[lang].team + ' 1</option><option value="2">' + texts[lang].team + ' 2</option><option value="3">' + texts[lang].team + ' 3</option>'
             + '</select></div></div>';
 
         totalHTML += '</div>';
