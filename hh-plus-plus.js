@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.33.9
+// @version         0.33.10
 // @match           https://www.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://eroges.hentaiheroes.com/*
@@ -174,6 +174,7 @@ const texts = {
         gifts: 'gifts',
         currently_buyable: 'Currently buyable stock',
         visit_the: 'Visit the <a href="../shop.html">Market</a> first.',
+        visit_teams: 'Visit <a href="../teams.html">Teams</a> first.',
         not_compatible: 'Your webbrowser is not compatible.',
         or_level: 'or level',
         restock: 'Restock',
@@ -328,7 +329,8 @@ const texts = {
         books: 'livres',
         gifts: 'cadeaux',
         currently_buyable: 'Stock disponible au marché',
-        visit_the: 'Visite le <a href="../shop.html">marché</a> first.',
+        visit_the: 'Visiter d\'abord le <a href="../shop.html">marché</a>.',
+        visit_teams: 'Visiter d\'abord <a href="../teams.html">l\'équipe</a>.',
         not_compatible: 'Votre navigateur n\'est pas compatible.',
         or_level: 'ou niveau',
         restock: 'Restock',
@@ -485,6 +487,7 @@ const texts = {
         gifts: 'regalos',
         currently_buyable: 'Stocks Comprables Actualmente',
         visit_the: 'Visita el <a href="../shop.html">Mercado</a> primero.',
+        visit_teams: 'Visita el <a href="../teams.html">Equipos</a> primero.',
         not_compatible: 'Tu navegador no es compatible.',
         or_level: 'o nivel',
         restock: 'Restock',
@@ -639,6 +642,7 @@ const texts = {
         gifts: 'regali',
         currently_buyable: 'Attualmente acquistabili',
         visit_the: 'Visita il <a href="../shop.html">negozio</a> prima.',
+        visit_teams: 'Visita le <a href="../teams.html">Squadre</a> prima.',
         not_compatible: 'Il tuo browser non è compatibile.',
         or_level: 'o livello',
         restock: 'Rifornimento',
@@ -793,6 +797,7 @@ const texts = {
         gifts: 'Geschenke',
         currently_buyable: 'Aktuelle Marktangebote',
         visit_the: 'Besuche zuerst den <a href="../shop.html">Marktplatz</a>.',
+        visit_teams: 'Besuche zuerst die <a href="../teams.html">Teams</a>.',
         not_compatible: 'Dein Browser ist nicht kompatibel.',
         or_level: 'oder Level',
         restock: 'neue Angebote',
@@ -2210,7 +2215,13 @@ function moduleMarketFilter() {
             function createTeamsBox() {
                 const bdsmTeamsJson = localStorage.getItem('bdsmTeams')
                 if (!bdsmTeamsJson) {
-                    return $('<div style="position:relative"></div>')
+                    return $(`
+                    <div style="position:relative">
+                        <div class="team-selection" style="display: none;">
+                            <span class="close-team-selection" />
+                            ${labels.visit_teams}
+                        </div>
+                    </div>`.replace(/\n/g, '').replace(/    /g, ''))
                 }
                 const {teamIds, teamsDict} = JSON.parse(bdsmTeamsJson)
                 return $(`

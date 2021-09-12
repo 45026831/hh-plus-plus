@@ -1,3 +1,4 @@
+0.33.10: Adding signposting to teams filter in market if the user hasn't been to the teams page.
 0.33.9: Adding filtering by saved teams to the market filter. Removing redundant team saving and loading, and redundant stat sum from teams filter.
 0.33.8: Fixing bug (#23) where reordering the league table would cause the league info module to misbehave.
 0.33.7: Final step of phasing out old sim from leagues (thanks to zoopokemon for finishing this chore)
