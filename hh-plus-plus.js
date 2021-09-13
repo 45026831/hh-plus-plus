@@ -274,7 +274,10 @@ const texts = {
         display: 'Display',
         searched_blessed_attributes: `Blessings`,
         blessed_attributes: `Blessed ${gameConfig.girl}s`,
-        non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`
+        non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`,
+        total_rewards: 'Total Saved Rewards ',
+        contests: 'Contests',
+        contests_warning: 'Contests expire after 21 days!'
     },
     fr: {
         optionsRefresh: 'Rafraîchir page d\'accueil',
@@ -937,13 +940,13 @@ function nRounding(num, digits, updown) {
         }
     }
     if (updown == 1) {
-        return (Math.ceil(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
+        return +(Math.ceil(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
     }
     else if (updown == 0) {
-        return (Math.round(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
+        return +(Math.round(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
     }
     else if (updown == -1) {
-        return (Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
+        return +(Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
     }
 }
 
@@ -2166,7 +2169,7 @@ function moduleMarketFilter() {
                         </div>
                     </div>
                 `
-                
+
                 var totalHTML = `
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="position: absolute; left: -215px; bottom: -150px; width: 200px; height: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">
@@ -2272,7 +2275,7 @@ function moduleMarketFilter() {
                         let affectionCategory = affectionCategoryStr.length-1;
                         let affectionLvlStr = affectionStr.split('<g >');
                         let affectionLvl = affectionLvlStr.length-1;
-    
+
                         let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
                         let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
                         let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
@@ -2280,7 +2283,7 @@ function moduleMarketFilter() {
                         let matchesName = (girl.Name.search(nameRegex) > -1);
                         let matchesLevel =  (sorterRange[0] == '' || girl.level >= parseInt(sorterRange[0]) )
                         && (sorterRange[1] == '' || sorterRange[1] === undefined || girl.level <= parseInt(sorterRange[1]) );
-    
+
                         if(matchesClass && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
                             nav.before(allGirls[i]);
                         } else {
@@ -6917,6 +6920,51 @@ if (window.location.href.includes('activities.html?tab=pop&index')) {
                     );
 }
 
+if (window.location.href.includes('activities.html')) {
+    let contestPanel=$(".over_bunny.over_panel")[0];
+    const savedPanel=contestPanel.innerHTML;
+
+    function displayRewardSums(){
+        const contests=$(".contest:not(.is_legendary) .contest_header.ended .personal_rewards .reward_wrap .slot");
+        let rewardList={};
+        for(let i=0;i<contests.length;i++) {
+            try{
+                rewardList[contests[i].className].amount+=parseLocaleRoundedInt(contests[i].innerText);
+            }catch(e){
+                rewardList[contests[i].className]={div:contests[i].cloneNode(true),amount:parseLocaleRoundedInt(contests[i].innerText)};
+            }
+        }
+
+        contestPanel.innerHTML=savedPanel;
+        contestPanel.innerHTML+=`<h3>${texts[lang].total_rewards}(${$(".contest:not(.is_legendary) .contest_header.ended").length} ${texts[lang].contests}):</h3>`;
+        for (const reward in rewardList) {
+            let rewardDiv=rewardList[reward].div;
+            rewardDiv.innerHTML=`<p>${nRounding(rewardList[reward].amount,1,-1)}</p>`;
+            rewardDiv.className+=" reward_sum";
+            contestPanel.append(rewardList[reward].div);
+        }
+        contestPanel.innerHTML+=`<br><br>${texts[lang].contests_warning}!`;
+    }
+
+    displayRewardSums();
+
+    const observer = new MutationObserver(function(mutations) {
+        for(const mutation of mutations) {
+            if (mutation.type === 'childList') {
+                displayRewardSums();
+            }
+        }
+    });
+
+    observer.observe($('.left_part .scroll_area')[0],{attributes: false, childList: true, subtree: false});
+
+    sheet.insertRule(`
+            .reward_sum {
+                margin-left: 5px;
+                border: 2px solid #fff;
+            }
+        `)
+}
 
 //CSS
 if ($('#BoosterTimer').length == 1) {
