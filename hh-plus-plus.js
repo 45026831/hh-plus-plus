@@ -146,6 +146,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Delete the collect money animation',
         optionsOldPoAWindow: 'Old PoA window',
         optionsFasterSkip: 'Faster Skip button',
+        optionsContestSummary: 'Saved Contests rewards summary',
         and: 'and',
         or: 'or',
         affection: 'affection',
@@ -275,8 +276,7 @@ const texts = {
         searched_blessed_attributes: `Blessings`,
         blessed_attributes: `Blessed ${gameConfig.girl}s`,
         non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`,
-        total_rewards: 'Total Saved Rewards ',
-        contests: 'Contests',
+        total_rewards: 'Total Saved Rewards ({{contests}} Contests):',
         contests_warning: 'Contests expire after 21 days!'
     },
     fr: {
@@ -294,7 +294,7 @@ const texts = {
         optionsLeagueBoard: 'Montrer les tops ligue',
         optionsLeaguePromo: 'Montrer les informations sur la promotion',
         optionsSimFight: 'Simu ligue / saison / combats de troll',
-        optionsLogSimFight : 'Journalisation détaillée dans la console du navigateur',
+        optionsLogSimFight : 'Détails dans la console du navigateur',
         optionsTeamsFilter: 'Filtre d\'équipes',
         optionsChampions: 'Infos champions',
         optionsLinks: 'Raccourcis/Timers',
@@ -305,6 +305,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
         optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
         optionsFasterSkip: 'Bouton "Passer" plus rapide',
+        optionsContestSummary: 'Récap\' des récompenses des Compètes enregistrées',
         and: 'et',
         or: 'ou',
         affection: 'affection',
@@ -433,7 +434,9 @@ const texts = {
         display: 'Afficher',
         searched_blessed_attributes: 'Filles bénies recherchées',
         blessed_attributes: 'Filles bénies',
-        non_blessed_attributes: 'Filles non bénies'
+        non_blessed_attributes: 'Filles non bénies',
+        total_rewards: 'Total des récompenses enregistrées ({{contests}} Compètes) :',
+        contests_warning: 'Les Compètes expirent après 21 jours !'
     },
     es: {
         optionsRefresh: 'Actualizacion Menu principal',
@@ -461,6 +464,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
         optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
         optionsFasterSkip: 'Botón "Omitir" más rápido',
+        optionsContestSummary: 'Resumen de recompensas guardadas de las competiciones',
         and: 'y',
         or: 'o',
         in: 'en',
@@ -588,7 +592,9 @@ const texts = {
         display: 'Mostrar',
         searched_blessed_attributes: 'Buscar chicas bendecidas',
         blessed_attributes: 'Benditas chicas',
-        non_blessed_attributes: 'Chicas no bendecidas'
+        non_blessed_attributes: 'Chicas no bendecidas',
+        total_rewards: 'Recompensas totales guardadas ({{contests}} Competiciones):',
+        contests_warning: '¡Los Competiciones caducan después de 21 días!'
     },
     it: {
         optionsRefresh: 'Refresh pagina Home',
@@ -616,6 +622,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
         optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
         optionsFasterSkip: 'Pulsante "Salta" più veloce',
+        optionsContestSummary: 'Riepilogo dei premi salvati dei contest',
         and: 'e',
         or: 'o',
         in: 'in',
@@ -743,7 +750,9 @@ const texts = {
         display: 'Visualizza',
         searched_blessed_attributes: 'Ricerca ragazze benedette',
         blessed_attributes: 'Ragazze benedette',
-        non_blessed_attributes: 'Ragazze non benedette'
+        non_blessed_attributes: 'Ragazze non benedette',
+        total_rewards: 'Ricompense totali salvate ({{contests}} contest):',
+        contests_warning: 'I contest scadono dopo 21 giorni!'
     },
     de: {
         optionsRefresh: 'Homepage aktualisieren',
@@ -771,6 +780,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
         optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
         optionsFasterSkip: 'Schneller Schaltfläche "Überspr."',
+        optionsContestSummary: 'Zusammenfassung der gespeicherten Wettbewerbsprämien',
         and: 'und',
         or: 'oder',
         in: 'in',
@@ -898,11 +908,14 @@ const texts = {
         display: 'Anzeigen',
         searched_blessed_attributes: 'Segnungen',
         blessed_attributes: 'gesegnet',
-        non_blessed_attributes: 'nicht gesegnet'
+        non_blessed_attributes: 'nicht gesegnet',
+        total_rewards: 'Gesamtzahl der gespeicherten Belohnungen ({{contests}} Wettbewerbe):',
+        contests_warning: 'Wettbewerbe verfallen nach 21 Tagen!'
     }
 };
 
 const labels = texts[lang]
+const label = (key) => (labels && labels[key]) || texts.en[key]
 
 var tierGirlsID;
 
@@ -1040,6 +1053,7 @@ function loadSetting(e){
             ||e=='collectMoneyAnimation'
             ||e=='oldPoAWindow'
             ||e=='fasterSkip'
+            ||e=='contestRewards'
         ) return true
         return false
     }
@@ -1129,6 +1143,9 @@ if (loadSetting('missionsBackground')) {
 if (loadSetting('collectMoneyAnimation')) {
     moduleCollectMoneyAnimation();
 }
+if (loadSetting('contestRewards')) {
+    moduleContestRewards()
+}
 
 function options() {
 
@@ -1159,7 +1176,8 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" hhs="missionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="collectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="oldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow + '<br />'
-                                 + '<label class="switch"><input type="checkbox" hhs="fasterSkip"><span class="slider"></span></label>' + texts[lang].optionsFasterSkip
+                                 + '<label class="switch"><input type="checkbox" hhs="fasterSkip"><span class="slider"></span></label>' + texts[lang].optionsFasterSkip + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="contestRewards"><span class="slider"></span></label>' + label('optionsContestSummary')
                                  + '</div>');
 
     // Show and hide options menu
@@ -6920,50 +6938,52 @@ if (window.location.href.includes('activities.html?tab=pop&index')) {
                     );
 }
 
-if (window.location.href.includes('activities.html')) {
-    let contestPanel=$(".over_bunny.over_panel")[0];
-    const savedPanel=contestPanel.innerHTML;
+function moduleContestRewards() {
+    if (CurrentPage.includes('activities')) {
+        let contestPanel=$(".over_bunny.over_panel")[0];
+        const savedPanel=contestPanel.innerHTML;
 
-    function displayRewardSums(){
-        const contests=$(".contest:not(.is_legendary) .contest_header.ended .personal_rewards .reward_wrap .slot");
-        let rewardList={};
-        for(let i=0;i<contests.length;i++) {
-            try{
-                rewardList[contests[i].className].amount+=parseLocaleRoundedInt(contests[i].innerText);
-            }catch(e){
-                rewardList[contests[i].className]={div:contests[i].cloneNode(true),amount:parseLocaleRoundedInt(contests[i].innerText)};
+        function displayRewardSums(){
+            const contests=$(".contest:not(.is_legendary) .contest_header.ended .personal_rewards .reward_wrap .slot");
+            let rewardList={};
+            for(let i=0;i<contests.length;i++) {
+                try{
+                    rewardList[contests[i].className].amount+=parseLocaleRoundedInt(contests[i].innerText);
+                }catch(e){
+                    rewardList[contests[i].className]={div:contests[i].cloneNode(true),amount:parseLocaleRoundedInt(contests[i].innerText)};
+                }
             }
+
+            contestPanel.innerHTML=savedPanel;
+            contestPanel.innerHTML+=`<h3>${label('total_rewards').replace('{{contests}}', $(".contest:not(.is_legendary) .contest_header.ended").length)}</h3>`;
+            for (const reward in rewardList) {
+                let rewardDiv=rewardList[reward].div;
+                rewardDiv.innerHTML=`<p>${nRounding(rewardList[reward].amount,1,-1)}</p>`;
+                rewardDiv.className+=" reward_sum";
+                contestPanel.append(rewardList[reward].div);
+            }
+            contestPanel.innerHTML+=`<br><br>${label('contests_warning')}`;
         }
 
-        contestPanel.innerHTML=savedPanel;
-        contestPanel.innerHTML+=`<h3>${texts[lang].total_rewards}(${$(".contest:not(.is_legendary) .contest_header.ended").length} ${texts[lang].contests}):</h3>`;
-        for (const reward in rewardList) {
-            let rewardDiv=rewardList[reward].div;
-            rewardDiv.innerHTML=`<p>${nRounding(rewardList[reward].amount,1,-1)}</p>`;
-            rewardDiv.className+=" reward_sum";
-            contestPanel.append(rewardList[reward].div);
-        }
-        contestPanel.innerHTML+=`<br><br>${texts[lang].contests_warning}!`;
+        displayRewardSums();
+
+        const observer = new MutationObserver(function(mutations) {
+            for(const mutation of mutations) {
+                if (mutation.type === 'childList') {
+                    displayRewardSums();
+                }
+            }
+        });
+
+        observer.observe($('.left_part .scroll_area')[0],{attributes: false, childList: true, subtree: false});
+
+        sheet.insertRule(`
+                .reward_sum {
+                    margin-right: 5px;
+                    border: 2px solid #fff;
+                }
+            `)
     }
-
-    displayRewardSums();
-
-    const observer = new MutationObserver(function(mutations) {
-        for(const mutation of mutations) {
-            if (mutation.type === 'childList') {
-                displayRewardSums();
-            }
-        }
-    });
-
-    observer.observe($('.left_part .scroll_area')[0],{attributes: false, childList: true, subtree: false});
-
-    sheet.insertRule(`
-            .reward_sum {
-                margin-left: 5px;
-                border: 2px solid #fff;
-            }
-        `)
 }
 
 //CSS
