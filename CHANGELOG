@@ -1,3 +1,4 @@
+0.35.0: Adding feature to show endstate of battle after hitting the skip button by Ia1nn
 0.34.0: Adding saved contest rewards summary by zoopokemon
 0.33.11: Fixing bug (#18) where market stats werent tracking the final bought stats before maxing.
 0.33.10: Adding signposting to teams filter in market if the user hasn't been to the teams page.

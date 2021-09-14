@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.34.0
+// @version         0.35.0
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -143,6 +143,7 @@ const texts = {
         optionsOldPoAWindow: 'Old PoA window',
         optionsFasterSkip: 'Faster Skip button',
         optionsContestSummary: 'Saved Contests rewards summary',
+        optionsBattleEndstate: 'Show endstate when skipping battle',
         and: 'and',
         or: 'or',
         affection: 'affection',
@@ -302,6 +303,7 @@ const texts = {
         optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
         optionsFasterSkip: 'Bouton "Passer" plus rapide',
         optionsContestSummary: 'Récap\' des récompenses des Compètes enregistrées',
+        optionsBattleEndstate: 'Montrer l\'état final après passer la bataille',
         and: 'et',
         or: 'ou',
         affection: 'affection',
@@ -461,6 +463,7 @@ const texts = {
         optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
         optionsFasterSkip: 'Botón "Omitir" más rápido',
         optionsContestSummary: 'Resumen de recompensas guardadas de las competiciones',
+        optionsBattleEndstate: 'Muestra el estado final después de omitir la batalla',
         and: 'y',
         or: 'o',
         in: 'en',
@@ -619,6 +622,7 @@ const texts = {
         optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
         optionsFasterSkip: 'Pulsante "Salta" più veloce',
         optionsContestSummary: 'Riepilogo dei premi salvati dei contest',
+        optionsBattleEndstate: 'Mostra lo stato finale quando salti la battaglia',
         and: 'e',
         or: 'o',
         in: 'in',
@@ -777,6 +781,7 @@ const texts = {
         optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
         optionsFasterSkip: 'Schneller Schaltfläche "Überspr."',
         optionsContestSummary: 'Zusammenfassung der gespeicherten Wettbewerbsprämien',
+        optionsBattleEndstate: 'Endzustand beim Überspringen des Kampfes anzeigen',
         and: 'und',
         or: 'oder',
         in: 'in',
@@ -1050,6 +1055,7 @@ function loadSetting(e){
             ||e=='oldPoAWindow'
             ||e=='fasterSkip'
             ||e=='contestRewards'
+            ||e=='battleEndstate'
         ) return true
         return false
     }
@@ -1142,6 +1148,9 @@ if (loadSetting('collectMoneyAnimation')) {
 if (loadSetting('contestRewards')) {
     moduleContestRewards()
 }
+if (loadSetting('battleEndstate')) {
+    moduleBattleEndstate()
+}
 
 function options() {
 
@@ -1173,7 +1182,8 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" hhs="collectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="oldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="fasterSkip"><span class="slider"></span></label>' + texts[lang].optionsFasterSkip + '<br />'
-                                 + '<label class="switch"><input type="checkbox" hhs="contestRewards"><span class="slider"></span></label>' + label('optionsContestSummary')
+                                 + '<label class="switch"><input type="checkbox" hhs="contestRewards"><span class="slider"></span></label>' + label('optionsContestSummary') + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="battleEndstate"><span class="slider"></span></label>' + label('optionsBattleEndstate')
                                  + '</div>');
 
     // Show and hide options menu
@@ -7124,4 +7134,134 @@ if (CurrentPage.indexOf('home') != -1 && $('.event-thumbnail [rel=path_event]').
 //Faster skip button
 if(CurrentPage.includes("battle") && loadSetting('fasterSkip')) {
     setTimeout(() => $('#new-battle-skip-btn').show(), 250);
+}
+
+function moduleBattleEndstate() {
+    if(CurrentPage.includes("battle")) {
+        $(document).ajaxComplete(function(evt, xhr, opt) {
+            if(~opt.data.search(/action=do_(league|season|troll)_battles/i)) {
+                if(!xhr.responseText.length)
+                    return;
+                const respBattleData = JSON.parse(xhr.responseText);
+                if(!respBattleData || !respBattleData.success)
+                    return;
+
+                //We already spent some combativity, let's show this to the player:
+                if(CurrentPage.includes("troll-battle") && ~location.search.search(/number_of_battles=\d+/i)) {
+                    const nBattlesCount = parseInt(location.search.match(/number_of_battles=(\d+)/i)[1], 10);
+                    if($.isNumeric(nBattlesCount))
+                        Hero.update("energy_fight", -1 * nBattlesCount, true);
+                }
+
+                const arrRounds = respBattleData.rounds;
+
+                const nPlayerInitialEgo = $('.new-battle-player .new-battle-hero-ego-value').data("initialEgo");
+                const nOpponentInitialEgo = $('.new-battle-opponent .new-battle-hero-ego-value').data("initialEgo");
+                let nPlayerFinalEgo = 0;
+                let nOpponentFinalEgo = 0;
+
+                const nRoundsLen = arrRounds.length;
+                if(nRoundsLen >= 2) {
+                    var arrLastRounds = [arrRounds[nRoundsLen - 2], arrRounds[nRoundsLen - 1]];
+                    if(!arrLastRounds[1].opponent_hit) {
+                        nPlayerFinalEgo = arrLastRounds[0].opponent_hit.defender.remaining_ego;
+                        nOpponentFinalEgo = arrLastRounds[1].hero_hit.defender.remaining_ego;
+                    }
+                    else if(!arrLastRounds[1].hero_hit) {
+                        nPlayerFinalEgo = arrLastRounds[1].opponent_hit.defender.remaining_ego;
+                        nOpponentFinalEgo = arrLastRounds[0].hero_hit.defender.remaining_ego;
+                    }
+                    else {
+                        nPlayerFinalEgo = arrRounds[nRoundsLen - 1].opponent_hit.defender.remaining_ego;
+                        nOpponentFinalEgo = arrRounds[nRoundsLen - 1].hero_hit.defender.remaining_ego;
+                    }
+                }
+                else {
+                    if(nRoundsLen == 1) {
+                        if(!arrRounds[0].opponent_hit) {
+                            nPlayerFinalEgo = nPlayerInitialEgo;
+                            nOpponentFinalEgo = arrRounds[0].hero_hit.defender.remaining_ego;
+                        }
+                        else if(!arrRounds[0].hero_hit) {
+                            nPlayerFinalEgo = arrRounds[0].opponent_hit.defender.remaining_ego;
+                            nOpponentFinalEgo = nOpponentInitialEgo;
+                        }
+                        else {
+                            nPlayerFinalEgo = arrRounds[0].opponent_hit.defender.remaining_ego;
+                            nOpponentFinalEgo = arrRounds[0].hero_hit.defender.remaining_ego;
+                        }
+                    }
+                    else {
+                        throw new Error("incorrect amount of rounds");
+                    }
+                }
+
+                $('#new-battle-skip-btn').on("click", function() {
+                    const $playerBar = $('.new-battle-player .new-battle-hero-ego-initial-bar');
+                    const $playerDamageBar = $('.new-battle-player .new-battle-hero-ego-damage-bar');
+                    const $opponentBar = $('.new-battle-opponent .new-battle-hero-ego-initial-bar');
+                    const $opponentDamageBar = $('.new-battle-opponent .new-battle-hero-ego-damage-bar');
+
+                    const $playerEgo = $('.new-battle-player .new-battle-hero-ego-value');
+                    const $opponentEgo = $('.new-battle-opponent .new-battle-hero-ego-value');
+                    const $playerDamageDone = $('.new-battle-opponent .new-battle-hero-damage-taken-text');
+                    const $opponentDamageDone = $('.new-battle-player .new-battle-hero-damage-taken-text');
+                    const $criticalDamageIndicator = $('.new-battle-hero-container .new-battle-hero-critical-text');
+
+                    $playerDamageDone.css("opacity", "0");
+                    $opponentDamageDone.css("opacity", "0");
+                    $criticalDamageIndicator.css("opacity", "0");
+
+                    const strPlayerCurEgo = $playerEgo.text().split(GT.ego)[1].replace(/[, ]/g, "");
+                    let nPlayerCurEgo = nPlayerInitialEgo;
+                    if($.isNumeric(strPlayerCurEgo))
+                        nPlayerCurEgo = parseInt(strPlayerCurEgo);
+                    const strOpponentCurEgo = $opponentEgo.text().split(GT.ego)[1].replace(/[, ]/g, "");
+                    let nOpponentCurEgo = nOpponentInitialEgo;
+                    if($.isNumeric(strOpponentCurEgo))
+                        nOpponentCurEgo = parseInt(strOpponentCurEgo);
+
+                    const nPlayerCompleteAtk = nOpponentCurEgo - nOpponentFinalEgo;
+                    const nOpponentCompleteAtk = nPlayerCurEgo - nPlayerFinalEgo;
+                    $playerDamageDone.text(nPlayerCompleteAtk.toString());
+                    $opponentDamageDone.text(nOpponentCompleteAtk.toString());
+
+                    const fPlayerEgoBarWidth = nPlayerFinalEgo <= 0 ? 0 : nPlayerFinalEgo / nPlayerInitialEgo * 100.0;
+                    const fOpponentEgoBarWidth = nOpponentFinalEgo <= 0 ? 0 : nOpponentFinalEgo / nOpponentInitialEgo * 100.0;
+
+                    const arrPlayerAnimationSequence = [
+                        { e: $playerBar, p: { width: fPlayerEgoBarWidth.toFixed(2) + "%" }, o: { duration: 200 } },
+                        { e: $playerDamageBar, p: { width: fPlayerEgoBarWidth.toFixed(2) + "%" }, o: { duration: 200 } },
+                        { e: $playerDamageDone, p: { opacity: [0, 1], translateY: -20, translateZ: 0 }, o: {
+                            duration: 300,
+                            sequenceQueue: false,
+                            complete: function(elm) {
+                                    $playerEgo.text(GT.ego + " " + nPlayerFinalEgo.toString());
+                                    $(elm).velocity({ translateY: 0 }, 0)
+                                }
+                            }
+                        }
+                    ];
+                    const arrOpponentAnimationSequence = [
+                        { e: $opponentBar, p: { width: fOpponentEgoBarWidth.toFixed(2) + "%" }, o: { duration: 200 } },
+                        { e: $opponentDamageBar, p: { width: fOpponentEgoBarWidth.toFixed(2) + "%" }, o: { duration: 200 } },
+                        { e: $opponentDamageDone, p: { opacity: [0, 1], translateY: -20, translateZ: 0 }, o: {
+                            duration: 300,
+                            sequenceQueue: false,
+                            complete: function(elm) {
+                                    $opponentEgo.text(GT.ego + " " + nOpponentFinalEgo.toString());
+                                    $(elm).velocity({ translateY: 0 }, 0)
+                                }
+                            }
+                        }
+                    ];
+
+                    $('.velocity-animating').velocity("stop", true);
+                    newBattles.setRounds([]);
+                    $.Velocity.RunSequence(arrPlayerAnimationSequence);
+                    $.Velocity.RunSequence(arrOpponentAnimationSequence);
+                });
+            }
+        });
+    }
 }
