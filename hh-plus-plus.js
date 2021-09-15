@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.0
+// @version         0.35.1
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -141,9 +141,8 @@ const texts = {
         optionsMissionsBackground: 'Change missions background',
         optionsCollectMoneyAnimation: 'Delete the collect money animation',
         optionsOldPoAWindow: 'Old PoA window',
-        optionsFasterSkip: 'Faster Skip button',
         optionsContestSummary: 'Saved Contests rewards summary',
-        optionsBattleEndstate: 'Show endstate when skipping battle',
+        optionsBattleEndstate: 'Show final values when skipping battle',
         and: 'and',
         or: 'or',
         affection: 'affection',
@@ -301,9 +300,8 @@ const texts = {
         optionsMissionsBackground: 'Change l\'arrière-plan des missions',
         optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
         optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
-        optionsFasterSkip: 'Bouton "Passer" plus rapide',
         optionsContestSummary: 'Récap\' des récompenses des Compètes enregistrées',
-        optionsBattleEndstate: 'Montrer l\'état final après passer la bataille',
+        optionsBattleEndstate: 'Afficher les valeurs finales quand tu passes le combat',
         and: 'et',
         or: 'ou',
         affection: 'affection',
@@ -461,9 +459,8 @@ const texts = {
         optionsMissionsBackground: 'Cambiar el fondo de las misiones',
         optionsCollectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
         optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
-        optionsFasterSkip: 'Botón "Omitir" más rápido',
         optionsContestSummary: 'Resumen de recompensas guardadas de las competiciones',
-        optionsBattleEndstate: 'Muestra el estado final después de omitir la batalla',
+        optionsBattleEndstate: 'Muestra los valores finales después de omitir la batalla.',
         and: 'y',
         or: 'o',
         in: 'en',
@@ -620,9 +617,8 @@ const texts = {
         optionsMissionsBackground: 'Cambiare lo sfondo delle missioni',
         optionsCollectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
         optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
-        optionsFasterSkip: 'Pulsante "Salta" più veloce',
         optionsContestSummary: 'Riepilogo dei premi salvati dei contest',
-        optionsBattleEndstate: 'Mostra lo stato finale quando salti la battaglia',
+        optionsBattleEndstate: 'Mostra i valori finali dopo aver saltato la battaglia.',
         and: 'e',
         or: 'o',
         in: 'in',
@@ -779,9 +775,8 @@ const texts = {
         optionsMissionsBackground: 'Missionshintergrund ändern',
         optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
         optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
-        optionsFasterSkip: 'Schneller Schaltfläche "Überspr."',
         optionsContestSummary: 'Zusammenfassung der gespeicherten Wettbewerbsprämien',
-        optionsBattleEndstate: 'Endzustand beim Überspringen des Kampfes anzeigen',
+        optionsBattleEndstate: 'Endgültige Werte beim Überspringen des Kampfes anzeigen',
         and: 'und',
         or: 'oder',
         in: 'in',
@@ -1053,7 +1048,6 @@ function loadSetting(e){
             ||e=='missionsBackground'
             ||e=='collectMoneyAnimation'
             ||e=='oldPoAWindow'
-            ||e=='fasterSkip'
             ||e=='contestRewards'
             ||e=='battleEndstate'
         ) return true
@@ -1181,7 +1175,6 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" hhs="missionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="collectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="oldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow + '<br />'
-                                 + '<label class="switch"><input type="checkbox" hhs="fasterSkip"><span class="slider"></span></label>' + texts[lang].optionsFasterSkip + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="contestRewards"><span class="slider"></span></label>' + label('optionsContestSummary') + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="battleEndstate"><span class="slider"></span></label>' + label('optionsBattleEndstate')
                                  + '</div>');
@@ -7131,11 +7124,7 @@ function moduleMissionsBackground() {
 if (CurrentPage.indexOf('home') != -1 && $('.event-thumbnail [rel=path_event]').length > 0 && loadSetting('oldPoAWindow'))
     $('.event-thumbnail [rel=path_event]')[0].href="/path-of-attraction.html";
 
-//Faster skip button
-if(CurrentPage.includes("battle") && loadSetting('fasterSkip')) {
-    setTimeout(() => $('#new-battle-skip-btn').show(), 250);
-}
-
+// Show final values when skipping battle
 function moduleBattleEndstate() {
     if(CurrentPage.includes("battle")) {
         $(document).ajaxComplete(function(evt, xhr, opt) {
@@ -7261,6 +7250,7 @@ function moduleBattleEndstate() {
                     $.Velocity.RunSequence(arrPlayerAnimationSequence);
                     $.Velocity.RunSequence(arrOpponentAnimationSequence);
                 });
+                $('#new-battle-skip-btn').show()
             }
         });
     }
