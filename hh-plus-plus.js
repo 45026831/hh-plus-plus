@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.2
+// @version         0.35.3
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -232,6 +232,7 @@ const texts = {
         notPlayed: 'Not played',
         leaguePoints: 'Points',
         avg: 'Average',
+        levelRange: 'Level range',
         league_ending: 'League ending on ',
         league_finished: 'League finished on ',
         current_league: 'Current league',
@@ -391,6 +392,7 @@ const texts = {
         notPlayed: 'Non joués',
         leaguePoints: 'Points',
         avg: 'Moyenne',
+        levelRange: 'Étendue de niveau',
         league_ending: 'Ligue terminant le ',
         league_finished: 'Ligue terminée le ',
         current_league: 'Ligue actuelle',
@@ -549,6 +551,7 @@ const texts = {
         notPlayed: 'No jugado',
         leaguePoints: 'Puntos',
         avg: 'Media',
+        levelRange: 'Rango de nivel',
         league_ending: 'Liga termina el ',
         league_finished: 'Liga terminó el ',
         current_league: 'Liga actual',
@@ -707,6 +710,7 @@ const texts = {
         notPlayed: 'Non giocato',
         leaguePoints: 'Punti',
         avg: 'Media',
+        levelRange: 'Gamma di livelli',
         league_ending: 'Fine della lega il ',
         league_finished: 'Lega finita il ',
         current_league: 'Lega attuale',
@@ -865,8 +869,9 @@ const texts = {
         notPlayed: 'Nicht gespielt',
         leaguePoints: 'Punkte',
         avg: 'Mittelwert',
+        levelRange: 'Level-Spannweite',
         league_ending: 'Liga Ende ',
-        league_finished: 'Liga endete am',
+        league_finished: 'Liga endete am ',
         current_league: 'Aktuelle Liga',
         averageScore: 'Durchschnitt pro Kampf: ',
         scoreExpected: 'Erwartetes Ergebnis: ',
@@ -3215,6 +3220,7 @@ function moduleLeague() {
         let textDemote
         let textStagnate
         const topPoints = {}
+        const levels = []
 
         const includeBoard = loadSetting('leagueBoard')
 
@@ -3243,11 +3249,13 @@ function moduleLeague() {
                 playerChallengesDone = playerLeaguesData.match_history.reduce((sum, match) => match ? sum+1: sum, 0)
                 pos = parseInt(playerLeaguesData.rank, 10)
                 points = parseLocaleRoundedInt(playerLeaguesData.points)
+                levels.push(parseInt(playerLeaguesData.level, 10))
             } else {
                 const $columns = $playerData.find('td')
                 const fightsStr = $columns.eq(3).text()
                 pos = parseInt($columns.eq(0).text(), 10)
                 points = parseLocaleRoundedInt($columns.eq(4).text())
+                levels.push(parseInt($columns.eq(2).text(), 10))
 
                 if ($playerData.hasClass('personal_highlight')) {
                     playerCurrentPos = pos
@@ -3741,13 +3749,24 @@ function moduleLeague() {
             let nb_unknown = fightsPlayed - tot_victory - tot_defeat;
             localStorage.setItem('leagueUnknown', nb_unknown);
 
+            const maxLevel = Math.max(...levels)
+            const minLevel = Math.min(...levels)
+            levels.sort((a,b) => a-b)
+            const midpoint = Math.floor(levels.length / 2);
+            const medianLevel = levels.length % 2 ? levels[midpoint] : (levels[midpoint - 1] + levels[midpoint]) / 2.0
+
             const leagueStatsText = `
                 <hr/>
                 <span id="leagueStats"><u>${labels.current_league}</u>
-                <BR>${labels.victories} : ${tot_victory}/${3*nb_opponents}
-                <BR>${labels.defeats} : ${tot_defeat}/${3*nb_opponents}
-                <BR>${labels.unknown} : ${nb_unknown}/${3*nb_opponents}
-                <BR>${labels.notPlayed} : ${tot_notPlayed}/${3*nb_opponents}
+                <table>
+                    <tbody>
+                        <tr><td>${labels.victories} :</td><td><em>${tot_victory}</em>/<em>${3*nb_opponents}</em></td></tr>
+                        <tr><td>${labels.defeats} :</td><td><em>${tot_defeat}</em>/<em>${3*nb_opponents}</em></td></tr>
+                        <tr><td>${labels.unknown} :</td><td><em>${nb_unknown}</em>/<em>${3*nb_opponents}</em></td></tr>
+                        <tr><td>${labels.notPlayed} :</td><td><em>${tot_notPlayed}</em>/<em>${3*nb_opponents}</em></td></tr>
+                        <tr><td>${label('levelRange')} :</td><td><em>${minLevel}</em>…<em>${medianLevel}</em>…<em>${maxLevel}</em></td></tr>
+                    </tbody>
+                </table>
                 </span>`
 
             let old_data = JSON.parse(localStorage.getItem('oldLeagueResults')) || {};
@@ -3776,13 +3795,17 @@ function moduleLeague() {
                 oldLeagueStatsText = `
                     <hr/>
                     <span id="oldLeagueStats">
-                    ${labels.league_finished}${old_date_end_league}
-                    <BR>${labels.victories} : ${old_tot_victory}/${3*old_nb_opponents}
-                    <BR>${labels.defeats} : ${old_tot_defeat}/${3*old_nb_opponents}
-                    <BR>${labels.notPlayed} : ${old_tot_notPlayed}/${3*old_nb_opponents}
-                    <BR>${labels.opponents} : ${old_nb_opponents}
-                    <BR>${labels.leaguePoints} : ${nThousand(old_points)}
-                    <BR>${labels.avg} : ${nThousand(old_avg)}
+                        ${labels.league_finished}<em>${old_date_end_league}</em>
+                        <table>
+                            <tbody>
+                                <tr><td>${labels.victories} :</td><td><em>${old_tot_victory}</em>/<em>${3*old_nb_opponents}</em></td></tr>
+                                <tr><td>${labels.defeats} :</td><td><em>${old_tot_defeat}</em>/<em>${3*old_nb_opponents}</em></td></tr>
+                                <tr><td>${labels.notPlayed} :</td><td><em>${old_tot_notPlayed}</em>/<em>${3*old_nb_opponents}</em></td></tr>
+                                <tr><td>${labels.opponents} :</td><td><em>${old_nb_opponents}</em></td></tr>
+                                <tr><td>${labels.leaguePoints} :</td><td><em>${nThousand(old_points)}</em></td></tr>
+                                <tr><td>${labels.avg} :</td><td><em>${nThousand(old_avg)}</em></td></tr>
+                            </tbody>
+                        </table>
                     </span>`
             }
 
@@ -3801,6 +3824,26 @@ function moduleLeague() {
         var observer = new MutationObserver(observeCallback);
         var test = document.getElementById('leagues_right');
         observer.observe(test, {attributes: false, childList: true, subtree: false});
+
+        sheet.insertRule(`
+            #leagueStats table,
+            #oldLeagueStats table {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        `)
+        sheet.insertRule(`
+            #leagueStats table tr td:first-child,
+            #oldLeagueStats table tr td:first-child {
+                text-align: right;
+            }
+        `)
+        sheet.insertRule(`
+            #leagueStats table tr td:last-child,
+            #oldLeagueStats table tr td:last-child {
+                text-align: left;
+            }
+        `)
     }
 
     if (CurrentPage.includes('battle') && !CurrentPage.includes('pre-battle')) {
