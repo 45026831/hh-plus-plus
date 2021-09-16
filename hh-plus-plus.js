@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.4
+// @version         0.35.5
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3644,16 +3644,20 @@ function moduleLeague() {
                         points=[];
                     }
                     let pointsText='';
-                    for (let j=0;j<3;j++){
-                        if(j<parseInt(leagues_list.find(({id_player}) => id_player===playerId).nb_challenges_played)){
-                            pointsText+=points[j] || '?';
-                        }else{
-                            pointsText+='-';
-                        }
-                        pointsText+='/';
+                    const showIndividualPoints = localStorage.getItem('leagueTableShowIndividual') === "1"
+                    const leaguesListPlayer = leagues_list.find(({id_player}) => id_player===playerId)
+                    if (showIndividualPoints) {
+                        pointsText = [0,1,2].map(j => {
+                            if(j<parseInt(leaguesListPlayer.nb_challenges_played)){
+                                return points[j] || '?';
+                            }
+                            return '-';
+                        }).join('/')
+                    } else {
+                        pointsText = `${leaguesListPlayer.nb_challenges_played}/3`
                     }
                     if (!playerData.hasClass('selected-player-leagues')) {
-                        playerData[0].children[3].innerText=pointsText.slice(0,-1);
+                        playerData[0].children[3].innerText=pointsText
                     }
                 }
             }
@@ -3821,6 +3825,29 @@ function moduleLeague() {
             displayLeaguePlayersInfo();
         }
 
+        const leagueTableShowIndividualCurrent = localStorage.getItem('leagueTableShowIndividual')
+        const individualDisplaySwitchOptions = [
+            {label: '22/21/-', value: "1"},
+            {label: '2/3', value: "0"}
+        ].map(option => $(`
+            <label>
+                <input type="radio" name="leagueTableShowIndividual" value="${option.value}" ${option.value === leagueTableShowIndividualCurrent ? 'checked' : ''} />
+                <span>${option.label}</span>
+            </label>
+        `.replace(/(\n|    )/g, '')).change((e) => {
+            localStorage.setItem('leagueTableShowIndividual', e.target.value)
+            displayLeaguePlayersInfo()
+        }))
+        const individualDisplaySwitch = $('<div class="individualDisplaySwitch"></div>')
+        individualDisplaySwitchOptions.forEach((option, i) => {
+            if (i > 0) {
+                individualDisplaySwitch.append('&middot;')
+            }
+            individualDisplaySwitch.append(option)
+        })
+
+        $('.league_end_in').append(individualDisplaySwitch)
+
         var observer = new MutationObserver(observeCallback);
         var test = document.getElementById('leagues_right');
         observer.observe(test, {attributes: false, childList: true, subtree: false});
@@ -3842,6 +3869,46 @@ function moduleLeague() {
             #leagueStats table tr td:last-child,
             #oldLeagueStats table tr td:last-child {
                 text-align: left;
+            }
+        `)
+        sheet.insertRule(`
+            .individualDisplaySwitch {
+                position: absolute;
+            }
+        `)
+        sheet.insertRule(`
+            .individualDisplaySwitch input {
+                display: none;
+            }
+        `)
+        sheet.insertRule(`
+            .individualDisplaySwitch input+span {
+                color: #d08467;
+                padding: 5px;
+                cursor: pointer;
+            }
+        `)
+        sheet.insertRule(`
+            .individualDisplaySwitch input:checked+span,
+            .individualDisplaySwitch input:hover+span {
+                color: #fff;
+            }
+        `)
+        sheet.insertRule(`
+            ${mediaDesktop} {
+                .individualDisplaySwitch {
+                    top: -33px;
+                    left: 90px;
+                }
+            }
+        `)
+        sheet.insertRule(`
+            ${mediaMobile} {
+                .individualDisplaySwitch {
+                    top: 10px;
+                    left: 335px;
+                    font-size: 16px;
+                }
             }
         `)
     }
