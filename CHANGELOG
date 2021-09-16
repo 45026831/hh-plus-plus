@@ -1,3 +1,4 @@
+0.35.6: Fixing a bug where the harem info module would attempt to run on the profile harem showcase page
 0.35.5: Adding a switch to league table to toggle individual scores display
 0.35.4: Updating German translation for level range
 0.35.3: Updating the league summary and history tooltip with highlighting and a level range

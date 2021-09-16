@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.5
+// @version         0.35.6
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -1104,7 +1104,7 @@ if (loadSetting('hideSellButton')) {
     }
 }
 if (loadSetting('harem')) {
-    if (CurrentPage.indexOf('harem') != -1) {
+    if (CurrentPage.includes('harem') && !CurrentPage.includes('hero')) {
         moduleHarem();
     }
 }
