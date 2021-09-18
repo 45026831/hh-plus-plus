@@ -1,0 +1,26 @@
+{
+  "name": "hh-plus-plus",
+  "version": "0.35.6",
+  "description": "Hentai Heroes++ BDSM version",
+  "private": "true",
+  "scripts": {
+    "build": "webpack && node ./build/prepend-meta.js",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/45026831/hh-plus-plus.git"
+  },
+  "author": "45026831 (Numbers)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/45026831/hh-plus-plus/issues"
+  },
+  "homepage": "https://github.com/45026831/hh-plus-plus#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "webpack": "^5.53.0",
+    "webpack-cli": "^4.8.0"
+  }
+}

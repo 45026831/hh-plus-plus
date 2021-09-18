@@ -1,0 +1,25 @@
+env:
+  browser: true
+  es2020: true
+  greasemonkey: true
+  jquery: true
+parserOptions:
+  sourceType: module
+
+extends: eslint:recommended
+rules:
+  # Override default settings
+  eqeqeq: warn
+  strict:
+    - error
+    - never
+  quotes:
+    - error
+    - single
+  semi:
+    - error
+    - never
+  no-var: error
+  indent:
+    - warn
+    - 4
