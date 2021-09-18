@@ -1,10 +1,7 @@
-const supportedLanguages = ['en', 'fr', 'es', 'it', 'de']
 let sheet
 let isHH
 let isGH
 let isCxH
-let lang
-let locale
 
 class Helpers {
     static getHost() {
@@ -49,21 +46,6 @@ class Helpers {
             ].includes(Helpers.getHost())
         }
         return isCxH
-    }
-
-    static getLang() {
-        if (!lang) {
-            const htmlLang = document.documentElement.lang.substring(0,2)
-            lang = supportedLanguages.includes(htmlLang) ? htmlLang : supportedLanguages[0]
-        }
-        return lang
-    }
-
-    static getLocale() {
-        if (!locale) {
-            locale = Helpers.getLang() === 'en' ? 'en' : 'fr'
-        }
-        return locale
     }
 }
 

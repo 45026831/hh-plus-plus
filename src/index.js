@@ -1,4 +1,3 @@
-import '../hh-plus-plus.meta'
-import Helpers from './common/Helpers'
+import I18n from './i18n'
 
-console.log('hello', Helpers.getLang())
+console.log('hello', I18n.getModuleLabel('config', 'tiers'))

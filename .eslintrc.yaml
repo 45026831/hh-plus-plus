@@ -23,3 +23,5 @@ rules:
   indent:
     - warn
     - 4
+  eol-last: warn
+  no-trailing-spaces: warn

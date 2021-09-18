@@ -1,7 +1,7 @@
 {
   "name": "hh-plus-plus",
   "version": "0.35.6",
-  "description": "Hentai Heroes++ BDSM version",
+  "description": "Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.",
   "private": "true",
   "scripts": {
     "build": "webpack && node ./build/prepend-meta.js",
