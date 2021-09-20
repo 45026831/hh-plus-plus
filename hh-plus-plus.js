@@ -7053,22 +7053,36 @@ function moduleContestRewards() {
         const savedPanel=contestPanel.innerHTML;
 
         function displayRewardSums(){
-            const contests=$(".contest:not(.is_legendary) .contest_header.ended .personal_rewards .reward_wrap .slot");
+            const contests=$(".contest_header.ended .slot, .contest_header.ended .shards_girl_ico");
             let rewardList={};
+            function getAmount(contest){
+                try{
+                    return parseLocaleRoundedInt(contest.getElementsByTagName("p")[0].innerText);
+                }catch(e){
+                    return 1;
+                }
+            }
             for(let i=0;i<contests.length;i++) {
                 try{
-                    rewardList[contests[i].className].amount+=parseLocaleRoundedInt(contests[i].innerText);
+                    rewardList[contests[i].className].amount+=getAmount(contests[i]);
                 }catch(e){
-                    rewardList[contests[i].className]={div:contests[i].cloneNode(true),amount:parseLocaleRoundedInt(contests[i].innerText)};
+                    rewardList[contests[i].className]={
+                        div: contests[i].cloneNode(true),
+                        amount: getAmount(contests[i])
+                    };
                 }
             }
 
             contestPanel.innerHTML=savedPanel;
-            contestPanel.innerHTML+=`<h3>${label('total_rewards').replace('{{contests}}', $(".contest:not(.is_legendary) .contest_header.ended").length)}</h3>`;
+            contestPanel.innerHTML+=`<h3>${label('total_rewards').replace('{{contests}}', $(".contest .contest_header.ended").length)}</h3>`;
             for (const reward in rewardList) {
                 let rewardDiv=rewardList[reward].div;
-                rewardDiv.innerHTML=`<p>${nRounding(rewardList[reward].amount,1,-1)}</p>`;
+                try{rewardDiv.getElementsByTagName("p")[0].remove()}catch(e){}
+                rewardDiv.innerHTML+=`<p>${(rewardDiv.className.indexOf("slot")==-1)?'X':''}${nRounding(rewardList[reward].amount,1,-1)}</p>`;
                 rewardDiv.className+=" reward_sum";
+                if(rewardDiv.className.indexOf("slot")==-1){
+                    rewardDiv.children[1].setAttribute("shards",`${nRounding(rewardList[reward].amount,1,-1)}`);
+                }
                 contestPanel.append(rewardList[reward].div);
             }
             contestPanel.innerHTML+=`<br><br>${label('contests_warning')}`;
@@ -7087,9 +7101,95 @@ function moduleContestRewards() {
         observer.observe($('.left_part .scroll_area')[0],{attributes: false, childList: true, subtree: false});
 
         sheet.insertRule(`
-                .reward_sum {
+                .slot.reward_sum {
                     margin-right: 5px;
                     border: 2px solid #fff;
+                }
+            `)
+
+        sheet.insertRule(`
+                .slot.reward_sum img {
+                    display: inline;
+                    width: 60%;
+                    height: 60%!important;
+                    margin: 0px!important;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum {
+                    position: relative;
+                    float: none;
+                    width: 40px;
+                    height: 40px;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum img {
+                    width: 100%;
+                    height: 100%!important;
+                    margin: 0px!important;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum .shards {
+                    display: -webkit-box;
+                    display: -moz-box;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                    -webkit-flex-direction: row;
+                    -moz-flex-direction: row;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -webkit-flex-wrap: wrap;
+                    -moz-flex-wrap: wrap;
+                    -ms-flex-wrap: wrap;
+                    flex-wrap: wrap;
+                    -webkit-justify-content: unset;
+                    -moz-justify-content: unset;
+                    -ms-justify-content: unset;
+                    justify-content: unset;
+                    -ms-flex-pack: unset;
+                    -webkit-align-content: unset;
+                    -moz-align-content: unset;
+                    -ms-align-content: unset;
+                    align-content: unset;
+                    -webkit-align-items: center;
+                    -moz-align-items: center;
+                    -ms-align-items: center;
+                    align-items: center;
+                    -webkit-align-self: unset;
+                    -moz-align-self: unset;
+                    -ms-align-self: unset;
+                    align-self: unset;
+                    width: 100%;
+                    height: 20px;
+                    margin: -36px 0 0;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum span.shard {
+                    top: 45px;
+                    left: 5px;
+                    width: 20px;
+                    height: 20px;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum p {
+                    position: absolute;
+                    padding-left: 20px;
+                    color: #80058b;
+                    text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff;
+                    top: -18px;
+                    font-size: 8px;
+                    line-height: 2;
+                    margin: 40px 0 0 -4px;
                 }
             `)
     }
