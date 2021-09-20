@@ -10,6 +10,9 @@ class Helpers {
     static getPathname() {
         return window.location.pathname
     }
+    static isCurrentPage(matcher) {
+        return Helpers.getPathname().includes(matcher)
+    }
 
     static getSheet() {
         if (!sheet) {
@@ -46,6 +49,10 @@ class Helpers {
             ].includes(Helpers.getHost())
         }
         return isCxH
+    }
+
+    static $ (formattedHtml) {
+        return window.$(formattedHtml.replace(/\n/g, '').replace(/ {4}/g, ''))
     }
 }
 

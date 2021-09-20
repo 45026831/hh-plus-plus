@@ -1,3 +1,15 @@
-import I18n from './i18n'
+import Config from './config'
+import {BattleEndstateModule} from './modules'
 
-console.log('hello', I18n.getModuleLabel('config', 'tiers'))
+const config = new Config()
+
+// base modules
+
+// configurable modules
+const battleEndstate = new BattleEndstateModule()
+config.registerModule(battleEndstate)
+
+
+config.loadConfig()
+
+config.runModules()
