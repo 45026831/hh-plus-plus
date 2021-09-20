@@ -7053,22 +7053,22 @@ function moduleContestRewards() {
         const savedPanel=contestPanel.innerHTML;
 
         function displayRewardSums(){
-            const contests=$(".contest_header.ended .slot, .contest_header.ended .shards_girl_ico");
+            const rewards=$(".contest_header.ended .slot, .contest_header.ended .shards_girl_ico");
             let rewardList={};
-            function getAmount(contest){
+            function getAmount(reward){
                 try{
-                    return parseLocaleRoundedInt(contest.getElementsByTagName("p")[0].innerText);
+                    return parseLocaleRoundedInt(reward.getElementsByTagName("p")[0].innerText);
                 }catch(e){
                     return 1;
                 }
             }
-            for(let i=0;i<contests.length;i++) {
+            for(let i=0;i<rewards.length;i++) {
                 try{
-                    rewardList[contests[i].className].amount+=getAmount(contests[i]);
+                    rewardList[rewards[i].className].amount+=getAmount(rewards[i]);
                 }catch(e){
-                    rewardList[contests[i].className]={
-                        div: contests[i].cloneNode(true),
-                        amount: getAmount(contests[i])
+                    rewardList[rewards[i].className]={
+                        div: rewards[i].cloneNode(true),
+                        amount: getAmount(rewards[i])
                     };
                 }
             }
@@ -7078,9 +7078,9 @@ function moduleContestRewards() {
             for (const reward in rewardList) {
                 let rewardDiv=rewardList[reward].div;
                 try{rewardDiv.getElementsByTagName("p")[0].remove()}catch(e){}
-                rewardDiv.innerHTML+=`<p>${(rewardDiv.className.indexOf("slot")==-1)?'X':''}${nRounding(rewardList[reward].amount,1,-1)}</p>`;
+                rewardDiv.innerHTML+=`<p>${(!rewardDiv.className.includes("slot"))?'X':''}${nRounding(rewardList[reward].amount,1,-1)}</p>`;
                 rewardDiv.className+=" reward_sum";
-                if(rewardDiv.className.indexOf("slot")==-1){
+                if(!rewardDiv.className.includes("slot")){
                     rewardDiv.children[1].setAttribute("shards",`${nRounding(rewardList[reward].amount,1,-1)}`);
                 }
                 contestPanel.append(rewardList[reward].div);
