@@ -7064,9 +7064,9 @@ function moduleContestRewards() {
             }
             for(let i=0;i<rewards.length;i++) {
                 try{
-                    rewardList[rewards[i].className].amount+=getAmount(rewards[i]);
+                    rewardList[rewards[i].className+rewards[i].children[0].className].amount+=getAmount(rewards[i]);
                 }catch(e){
-                    rewardList[rewards[i].className]={
+                    rewardList[rewards[i].className+rewards[i].children[0].className]={
                         div: rewards[i].cloneNode(true),
                         amount: getAmount(rewards[i])
                     };
