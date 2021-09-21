@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.8
+// @version         0.35.9
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -1485,13 +1485,15 @@ function moduleVillain() {
             trollName = trolls[i];
             if (includeTiers) {
                 trollNameTiers = ' ';
-                if (!(tierGirlsOwned[i][0] && tierGirlsOwned[i][1] && tierGirlsOwned[i][2])) {
+
+                // assume all but the last 2 are on Tier 1
+                if (tierGirlsOwned[i].filter((_, i, a) => i < a.length - 2).some(owned => !owned)) {
                     trollNameTiers = trollNameTiers + '&#185;';
                 }
-                if (!(tierGirlsOwned[i][3])) {
+                if (!(tierGirlsOwned[i][tierGirlsOwned[i].length - 2])) {
                     trollNameTiers = trollNameTiers + '&#178;';
                 }
-                if (!(tierGirlsOwned[i][4])) {
+                if (!(tierGirlsOwned[i][tierGirlsOwned[i].length - 1])) {
                     trollNameTiers = trollNameTiers + '&#179;';
                 }
             }
