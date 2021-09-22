@@ -1487,7 +1487,7 @@ function moduleVillain() {
                 trollNameTiers = ' ';
 
                 // assume all but the last 2 are on Tier 1
-                if (tierGirlsOwned[i].filter((_, i, a) => i < a.length - 2).some(owned => !owned)) {
+                if (tierGirlsOwned[i].slice(0, tierGirlsOwned[i].length - 3).some(owned => !owned)) {
                     trollNameTiers = trollNameTiers + '&#185;';
                 }
                 if (!(tierGirlsOwned[i][tierGirlsOwned[i].length - 2])) {
