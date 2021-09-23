@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.6
+// @version         0.35.11
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -979,7 +979,7 @@ if (isHH) {
         ['24316446', '219651566', '501847856', '383709663', '90685795'],
         ['225365882', '478693885', '231765083', '155415482', '769649470'],
         ['86962133', '243793871', '284483399', 0, 0],
-        ['612527302', '167231135', '560979916', 0, 0]
+        ['612527302', '167231135', '560979916', '784911160', '549524850', '184523411', 0, 0]
     ];
 }
 else if (isGH) {
@@ -1404,7 +1404,7 @@ function moduleVillain() {
             tierGirlsOwned = [[], [], [], [], [], [], [], [], [], [], [], [], [], []];
 
             for (var tIdx = 0; tIdx < tierGirlsID.length; tIdx++) {
-                for (var gIdx = 0; gIdx < 5; gIdx++) {
+                for (var gIdx = 0; gIdx < tierGirlsID[tIdx].length; gIdx++) {
                     var idGirl = tierGirlsID[tIdx][gIdx];
                     if (idGirl == "0") {
                         tierGirlsOwned[tIdx][gIdx] = true;
@@ -1485,13 +1485,15 @@ function moduleVillain() {
             trollName = trolls[i];
             if (includeTiers) {
                 trollNameTiers = ' ';
-                if (!(tierGirlsOwned[i][0] && tierGirlsOwned[i][1] && tierGirlsOwned[i][2])) {
+
+                // assume all but the last 2 are on Tier 1
+                if (tierGirlsOwned[i].slice(0, tierGirlsOwned[i].length - 2).some(owned => !owned)) {
                     trollNameTiers = trollNameTiers + '&#185;';
                 }
-                if (!(tierGirlsOwned[i][3])) {
+                if (!(tierGirlsOwned[i][tierGirlsOwned[i].length - 2])) {
                     trollNameTiers = trollNameTiers + '&#178;';
                 }
-                if (!(tierGirlsOwned[i][4])) {
+                if (!(tierGirlsOwned[i][tierGirlsOwned[i].length - 1])) {
                     trollNameTiers = trollNameTiers + '&#179;';
                 }
             }
@@ -3979,7 +3981,7 @@ function moduleSim() {
 
         $('.matchRating').remove();
 
-        const pointGrade=['#fff','#fff','#fff','#fff','#ff2f2f','#fd3c24','#fb4817','#f85303','#f55d00','#f16600','#ec6f00','#e77700','#e17f00','#db8700','#d58e00','#cd9500','#c69c00','#bea200','#b5a800','#acae00','#a3b400','#99b900','#8ebe00','#82c300','#75c800','#66cd00'];
+        const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
         $('#leagues_right .average-lvl').append(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(2)}</div>`);
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append(`<span class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};">E[X]: ${expectedValue.toFixed(2)}</span>`);
     }
@@ -7053,22 +7055,36 @@ function moduleContestRewards() {
         const savedPanel=contestPanel.innerHTML;
 
         function displayRewardSums(){
-            const contests=$(".contest:not(.is_legendary) .contest_header.ended .personal_rewards .reward_wrap .slot");
+            const rewards=$(".contest_header.ended .slot, .contest_header.ended .shards_girl_ico");
             let rewardList={};
-            for(let i=0;i<contests.length;i++) {
+            function getAmount(reward){
                 try{
-                    rewardList[contests[i].className].amount+=parseLocaleRoundedInt(contests[i].innerText);
+                    return parseLocaleRoundedInt(reward.getElementsByTagName("p")[0].innerText);
                 }catch(e){
-                    rewardList[contests[i].className]={div:contests[i].cloneNode(true),amount:parseLocaleRoundedInt(contests[i].innerText)};
+                    return 1;
+                }
+            }
+            for(let i=0;i<rewards.length;i++) {
+                try{
+                    rewardList[rewards[i].className+rewards[i].children[0].className].amount+=getAmount(rewards[i]);
+                }catch(e){
+                    rewardList[rewards[i].className+rewards[i].children[0].className]={
+                        div: rewards[i].cloneNode(true),
+                        amount: getAmount(rewards[i])
+                    };
                 }
             }
 
             contestPanel.innerHTML=savedPanel;
-            contestPanel.innerHTML+=`<h3>${label('total_rewards').replace('{{contests}}', $(".contest:not(.is_legendary) .contest_header.ended").length)}</h3>`;
+            contestPanel.innerHTML+=`<h3>${label('total_rewards').replace('{{contests}}', $(".contest .contest_header.ended").length)}</h3>`;
             for (const reward in rewardList) {
                 let rewardDiv=rewardList[reward].div;
-                rewardDiv.innerHTML=`<p>${nRounding(rewardList[reward].amount,1,-1)}</p>`;
+                try{rewardDiv.getElementsByTagName("p")[0].remove()}catch(e){}
+                rewardDiv.innerHTML+=`<p>${(!rewardDiv.className.includes("slot"))?'X':''}${nRounding(rewardList[reward].amount,1,-1)}</p>`;
                 rewardDiv.className+=" reward_sum";
+                if(!rewardDiv.className.includes("slot")){
+                    rewardDiv.children[1].setAttribute("shards",`${nRounding(rewardList[reward].amount,1,-1)}`);
+                }
                 contestPanel.append(rewardList[reward].div);
             }
             contestPanel.innerHTML+=`<br><br>${label('contests_warning')}`;
@@ -7087,9 +7103,96 @@ function moduleContestRewards() {
         observer.observe($('.left_part .scroll_area')[0],{attributes: false, childList: true, subtree: false});
 
         sheet.insertRule(`
-                .reward_sum {
+                .slot.reward_sum {
                     margin-right: 5px;
                     border: 2px solid #fff;
+                }
+            `)
+
+        sheet.insertRule(`
+                .slot.reward_sum img {
+                    display: inline;
+                    width: 60%;
+                    height: 60%!important;
+                    margin: 0px!important;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum {
+                    position: relative;
+                    float: none;
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 5px;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum img {
+                    width: 100%;
+                    height: 100%!important;
+                    margin: 0px!important;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum .shards {
+                    display: -webkit-box;
+                    display: -moz-box;
+                    display: -ms-flexbox;
+                    display: -webkit-flex;
+                    display: flex;
+                    -webkit-flex-direction: row;
+                    -moz-flex-direction: row;
+                    -ms-flex-direction: row;
+                    flex-direction: row;
+                    -webkit-flex-wrap: wrap;
+                    -moz-flex-wrap: wrap;
+                    -ms-flex-wrap: wrap;
+                    flex-wrap: wrap;
+                    -webkit-justify-content: unset;
+                    -moz-justify-content: unset;
+                    -ms-justify-content: unset;
+                    justify-content: unset;
+                    -ms-flex-pack: unset;
+                    -webkit-align-content: unset;
+                    -moz-align-content: unset;
+                    -ms-align-content: unset;
+                    align-content: unset;
+                    -webkit-align-items: center;
+                    -moz-align-items: center;
+                    -ms-align-items: center;
+                    align-items: center;
+                    -webkit-align-self: unset;
+                    -moz-align-self: unset;
+                    -ms-align-self: unset;
+                    align-self: unset;
+                    width: 100%;
+                    height: 20px;
+                    margin: -36px 0 0;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum span.shard {
+                    top: 45px;
+                    left: 5px;
+                    width: 20px;
+                    height: 20px;
+                }
+            `)
+
+        sheet.insertRule(`
+                .shards_girl_ico.reward_sum p {
+                    position: absolute;
+                    padding-left: 20px;
+                    color: #80058b;
+                    text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff;
+                    top: -18px;
+                    font-size: 8px;
+                    line-height: 2;
+                    margin: 40px 0 0 -4px;
                 }
             `)
     }

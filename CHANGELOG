@@ -1,3 +1,8 @@
+0.35.11: Fixing the league point colour spectrum to include 3 point scores (#28) (courtesy of zoopokemon)
+0.35.10: Adding the 3 new girls on Sake Tier 1
+0.35.9: Preparing fight-a-villain for more than 3 girls on tier 1 (e.g. Sake)
+0.35.8: Fixing missing margin on shards slot for contest summary
+0.35.7: Adding LC rewards to contest summary (courtesy of zoopokemon)
 0.35.6: Fixing a bug where the harem info module would attempt to run on the profile harem showcase page
 0.35.5: Adding a switch to league table to toggle individual scores display
 0.35.4: Updating German translation for level range
