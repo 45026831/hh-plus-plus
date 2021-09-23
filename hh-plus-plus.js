@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.9
+// @version         0.35.10
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -979,7 +979,7 @@ if (isHH) {
         ['24316446', '219651566', '501847856', '383709663', '90685795'],
         ['225365882', '478693885', '231765083', '155415482', '769649470'],
         ['86962133', '243793871', '284483399', 0, 0],
-        ['612527302', '167231135', '560979916', 0, 0]
+        ['612527302', '167231135', '560979916', '784911160', '549524850', '184523411', 0, 0]
     ];
 }
 else if (isGH) {
@@ -1404,7 +1404,7 @@ function moduleVillain() {
             tierGirlsOwned = [[], [], [], [], [], [], [], [], [], [], [], [], [], []];
 
             for (var tIdx = 0; tIdx < tierGirlsID.length; tIdx++) {
-                for (var gIdx = 0; gIdx < 5; gIdx++) {
+                for (var gIdx = 0; gIdx < tierGirlsID[tIdx].length; gIdx++) {
                     var idGirl = tierGirlsID[tIdx][gIdx];
                     if (idGirl == "0") {
                         tierGirlsOwned[tIdx][gIdx] = true;
@@ -1487,7 +1487,7 @@ function moduleVillain() {
                 trollNameTiers = ' ';
 
                 // assume all but the last 2 are on Tier 1
-                if (tierGirlsOwned[i].slice(0, tierGirlsOwned[i].length - 3).some(owned => !owned)) {
+                if (tierGirlsOwned[i].slice(0, tierGirlsOwned[i].length - 2).some(owned => !owned)) {
                     trollNameTiers = trollNameTiers + '&#185;';
                 }
                 if (!(tierGirlsOwned[i][tierGirlsOwned[i].length - 2])) {
