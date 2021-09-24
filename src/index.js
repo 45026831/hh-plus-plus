@@ -1,5 +1,5 @@
 import Config from './config'
-import {BattleEndstateModule} from './modules'
+import {BattleEndstateModule, MissionsBackgroundStyleTweak} from './modules'
 
 const config = new Config()
 
@@ -9,6 +9,8 @@ const config = new Config()
 const battleEndstate = new BattleEndstateModule()
 config.registerModule(battleEndstate)
 
+const missionsBackground = new MissionsBackgroundStyleTweak()
+config.registerModule(missionsBackground)
 
 config.loadConfig()
 

@@ -1,14 +1,14 @@
 /* global Hero, GT, newBattles */
 import Helpers from '../common/Helpers'
-import Module from './Module'
+import HHModule from './HHModule'
 
-class BattleEndstateModule extends Module {
+class BattleEndstateModule extends HHModule {
     constructor () {
         const configSchema = {
             baseKey: 'battleEndstate',
             default: true
         }
-        super('battleEndstate', configSchema)
+        super({name: 'battleEndstate', configSchema})
     }
 
     shouldRun () {
