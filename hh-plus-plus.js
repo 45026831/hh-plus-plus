@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.11
+// @version         0.35.12
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -140,7 +140,6 @@ const texts = {
         //optionsEpicPachinkoNames: 'Show names in Epic Pachinko',
         optionsMissionsBackground: 'Change missions background',
         optionsCollectMoneyAnimation: 'Delete the collect money animation',
-        optionsOldPoAWindow: 'Old PoA window',
         optionsContestSummary: 'Saved Contests rewards summary',
         optionsBattleEndstate: 'Show final values when skipping battle',
         and: 'and',
@@ -300,7 +299,6 @@ const texts = {
         //optionsEpicPachinkoNames: 'Montrer noms au PE',
         optionsMissionsBackground: 'Change l\'arrière-plan des missions',
         optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
-        optionsOldPoAWindow: 'Ancienne fenêtre du chemin d\'affection',
         optionsContestSummary: 'Récap\' des récompenses des Compètes enregistrées',
         optionsBattleEndstate: 'Afficher le détail quand tu passe le combat',
         and: 'et',
@@ -460,7 +458,6 @@ const texts = {
         //optionsEpicPachinkoNames: 'Mostrar nombres en Epic Pachinko',
         optionsMissionsBackground: 'Cambiar el fondo de las misiones',
         optionsCollectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
-        optionsOldPoAWindow: 'Antigua ventana Camino de atracción',
         optionsContestSummary: 'Resumen de recompensas guardadas de las competiciones',
         optionsBattleEndstate: 'Muestra los valores finales después de omitir la batalla.',
         and: 'y',
@@ -619,7 +616,6 @@ const texts = {
         //optionsEpicPachinkoNames: 'Mostra i nomi nel Pachinko Epico',
         optionsMissionsBackground: 'Cambiare lo sfondo delle missioni',
         optionsCollectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
-        optionsOldPoAWindow: 'Vecchia finestra Sentiero dell\'Attrazione',
         optionsContestSummary: 'Riepilogo dei premi salvati dei contest',
         optionsBattleEndstate: 'Mostra i valori finali dopo aver saltato la battaglia.',
         and: 'e',
@@ -778,7 +774,6 @@ const texts = {
         //optionsEpicPachinkoNames: 'Namen in Episch Pachinko anzeigen',
         optionsMissionsBackground: 'Missionshintergrund ändern',
         optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
-        optionsOldPoAWindow: 'Altes Fenster Pfad der Anziehung',
         optionsContestSummary: 'Zusammenfassung der gespeicherten Wettbewerbsprämien',
         optionsBattleEndstate: 'Endgültige Werte beim Überspringen des Kampfes anzeigen',
         and: 'und',
@@ -1052,7 +1047,6 @@ function loadSetting(e){
             //||e=='pachinkoNamesMulti'
             ||e=='missionsBackground'
             ||e=='collectMoneyAnimation'
-            ||e=='oldPoAWindow'
             ||e=='contestRewards'
             ||e=='battleEndstate'
         ) return true
@@ -1179,7 +1173,6 @@ function options() {
                                  //+ '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch"><input type="checkbox" hhs="pachinkoNamesMulti"><span class="slider"></span></label>' + texts[lang].optionsEpicPachinkoNames + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="missionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="collectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
-                                 + '<label class="switch"><input type="checkbox" hhs="oldPoAWindow"><span class="slider"></span></label>' + texts[lang].optionsOldPoAWindow + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="contestRewards"><span class="slider"></span></label>' + label('optionsContestSummary') + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="battleEndstate"><span class="slider"></span></label>' + label('optionsBattleEndstate')
                                  + '</div>');
@@ -7332,10 +7325,6 @@ function moduleMissionsBackground() {
                      + 'background: #6ebeff40;}'
                     );
 }
-
-//Old Path of attraction event window
-if (CurrentPage.indexOf('home') != -1 && $('.event-thumbnail [rel=path_event]').length > 0 && loadSetting('oldPoAWindow'))
-    $('.event-thumbnail [rel=path_event]')[0].href="/path-of-attraction.html";
 
 // Show final values when skipping battle
 function moduleBattleEndstate() {
