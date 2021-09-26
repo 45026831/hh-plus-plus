@@ -1,8 +1,8 @@
 /* eslint-env node */
 const path = require('path')
-const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
+    mode: 'production',
     entry: './src/index.js',
     output: {
         filename: 'hh-plus-plus.user.js',
@@ -12,15 +12,5 @@ module.exports = {
         rules: [
         ]
     },
-    optimization: {
-        minimizer: [
-            new TerserPlugin({
-                terserOptions: {
-                    sourceMap: {
-                        url: 'inline'
-                    }
-                }
-            })
-        ]
-    }
+    // devtool: 'inline-cheap-source-map'
 }

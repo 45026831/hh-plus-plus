@@ -1,13 +1,19 @@
 import Helpers from '../common/Helpers'
 import STModule from './STModule'
+import I18n from '../i18n'
 
 class MissionsBackgroundStyleTweak extends STModule {
     constructor() {
         const configSchema = {
             baseKey: 'missionsBackground',
-            default: true
+            default: true,
+            label: I18n.getModuleLabel('stConfig', 'missionsBackground')
         }
-        super({name: 'missionsBackground', configSchema})
+        super({
+            group: 'st',
+            name: 'missionsBackground',
+            configSchema
+        })
     }
 
     shouldRun () {

@@ -1,17 +1,42 @@
 import Config from './config'
-import {BattleEndstateModule, MissionsBackgroundStyleTweak} from './modules'
+import {BattleEndstateModule, FightAVillainModule, MissionsBackgroundStyleTweak} from './modules'
 
-const config = new Config()
+const runScript = () => {
+    const config = new Config()
 
-// base modules
+    // base modules
 
-// configurable modules
-const battleEndstate = new BattleEndstateModule()
-config.registerModule(battleEndstate)
+    // configurable modules
 
-const missionsBackground = new MissionsBackgroundStyleTweak()
-config.registerModule(missionsBackground)
+    // core
+    config.registerGroup({
+        key: 'core',
+        name: 'HH++ Core'
+    })
+    const fightAVillainModule = new FightAVillainModule()
+    const battleEndstate = new BattleEndstateModule()
+    config.registerModule(fightAVillainModule)
+    config.registerModule(battleEndstate)
 
-config.loadConfig()
+    // style tweaks
+    config.registerGroup({
+        key: 'st',
+        name: 'Style Tweaks',
+        iconEl: '<div></div>'
+    })
+    const missionsBackground = new MissionsBackgroundStyleTweak()
+    config.registerModule(missionsBackground)
 
-config.runModules()
+    config.loadConfig()
+
+    config.runModules()
+
+    // expose config for other scripts to register their own modules
+    // window.hhPlusPlusConfig = config
+}
+
+if (!$) {
+    console.log('HH++ WARNING: No jQuery found. Probably an error page. Ending the script here')
+} else {
+    runScript()
+}

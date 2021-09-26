@@ -1,14 +1,20 @@
 /* global Hero, GT, newBattles */
 import Helpers from '../common/Helpers'
 import HHModule from './HHModule'
+import I18n from '../i18n'
 
 class BattleEndstateModule extends HHModule {
     constructor () {
         const configSchema = {
             baseKey: 'battleEndstate',
+            label: I18n.getModuleLabel('config', 'battleEndstate'),
             default: true
         }
-        super({name: 'battleEndstate', configSchema})
+        super({
+            group: 'core',
+            name: 'battleEndstate',
+            configSchema
+        })
     }
 
     shouldRun () {

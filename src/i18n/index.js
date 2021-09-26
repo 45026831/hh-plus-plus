@@ -1,6 +1,7 @@
 import * as en from './labels/En'
+import * as de from './labels/De'
 
-const labels = {en}
+const labels = {en, de}
 const supportedLanguages = Object.keys(labels)
 const defaultLanguage = supportedLanguages[0]
 // const supportedLanguages = ['en', 'fr', 'es', 'it', 'de']
