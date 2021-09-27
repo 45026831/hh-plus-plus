@@ -64,6 +64,17 @@ class Helpers {
         }
         return isCxH
     }
+    static getGameKey () {
+        if (Helpers.isHH()) {
+            return 'HH'
+        }
+        if (Helpers.isGH()) {
+            return 'GH'
+        }
+        if (Helpers.isCxH()) {
+            return 'CxH'
+        }
+    }
 
     static $ (formattedHtml) {
         return window.$(formattedHtml.replace(/\n/g, '').replace(/ {4}/g, ''))

@@ -1,3 +1,4 @@
+import Helpers from './common/Helpers'
 import Config from './config'
 import {BattleEndstateModule, FightAVillainModule, MissionsBackgroundStyleTweak} from './modules'
 
@@ -11,7 +12,7 @@ const runScript = () => {
     // core
     config.registerGroup({
         key: 'core',
-        name: 'HH++ Core'
+        name: `${Helpers.getGameKey()}++ Core`
     })
     const fightAVillainModule = new FightAVillainModule()
     const battleEndstate = new BattleEndstateModule()

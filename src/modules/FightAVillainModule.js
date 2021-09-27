@@ -34,7 +34,7 @@ class FightAVillainModule extends HHModule {
         }
         this.injectCSS()
 
-        const villainsSet = Helpers.isGH() ? VILLAINS.GH : Helpers.isCxH() ? VILLAINS.CxH : VILLAINS.HH
+        const villainsSet = VILLAINS[Helpers.getGameKey()]
 
         if (localStorage.getItem('eventTrolls') === null) {
             localStorage.setItem('eventTrolls', '[]')

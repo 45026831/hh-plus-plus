@@ -1,4 +1,5 @@
 import Helpers from '../common/Helpers'
+import { colors } from '../common/Constants'
 const {$} = Helpers
 
 const LS_CONFIG_KEY = 'HHPlusPlusConfig'
@@ -12,6 +13,7 @@ class Config {
         this.$configButton = null
         this.$configPane = null
         this.configPaneOpen = false
+        this.colors = colors[Helpers.getGameKey()]
 
         if (Helpers.isCurrentPage('home')) {
             this.init()
@@ -212,12 +214,13 @@ class Config {
                 position: absolute;
                 top: 70px;
                 right: 63px;
-                background-color: rgba(32,3,7,.9);
+                background: ${this.colors.panelBackground};
                 z-index: 100;
                 border-style: solid;
                 border-image-slice: 1;
                 border-width: 4px;
-                border-image-source: linear-gradient(180deg, #ffa23e, #c41b53);
+                border-image-source: ${this.colors.panelBorderGradient};
+                box-shadow: ${this.colors.panelInset};
             }
         `)
 
@@ -264,7 +267,8 @@ class Config {
             .hh-plus-plus-config-panel .config-setting {
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
                 border-radius: 6px;
-                border: 1px solid #ffb827;
+                border: 1px solid ${this.colors.homeBorder};
+                background: ${this.colors.homeDark};
                 max-height: 72px;
                 padding: 7px;
                 font-size: 12px;
