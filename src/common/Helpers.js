@@ -4,8 +4,10 @@ let isGH
 let isCxH
 let cdnHost
 let girlDictionary
+let teamsDictionary
 
 const LS_GIRLDICTIONARY_KEY = 'HHPlusPlusGirlDictionary'
+const LS_TEAMSDICTIONARY_KEY = 'HHPlusPlusTeamsDictionary'
 
 class Helpers {
     static getHost() {
@@ -106,6 +108,17 @@ class Helpers {
     static setGirlDictionary (updated) {
         girlDictionary = updated
         localStorage.setItem(LS_GIRLDICTIONARY_KEY, JSON.stringify(Array.from(girlDictionary)))
+    }
+
+    static getTeamsDictionary() {
+        if (!teamsDictionary) {
+            teamsDictionary = JSON.parse(localStorage.getItem(LS_TEAMSDICTIONARY_KEY))
+        }
+        return teamsDictionary
+    }
+    static setTeamsDictionary(updated) {
+        teamsDictionary = updated
+        localStorage.setItem(LS_TEAMSDICTIONARY_KEY, JSON.stringify(teamsDictionary))
     }
 
     static onAjaxResponse (pattern, callback) {

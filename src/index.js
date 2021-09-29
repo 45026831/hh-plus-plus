@@ -1,4 +1,5 @@
 import GirlDictionaryCollector from './collectors/GirlDictionaryCollector'
+import TeamsCollector from './collectors/TeamsCollector'
 import Helpers from './common/Helpers'
 import Config from './config'
 import {BattleEndstateModule, FightAVillainModule, MissionsBackgroundStyleTweak} from './modules'
@@ -8,6 +9,8 @@ const runScript = () => {
 
     // base modules
     GirlDictionaryCollector.collect()
+    TeamsCollector.collect()
+    // TODO LeaguePointsCollector
 
     // configurable modules
 
