@@ -77,7 +77,10 @@ class Helpers {
     }
 
     static $ (formattedHtml) {
-        return window.$(formattedHtml.replace(/\n/g, '').replace(/ {4}/g, ''))
+        if (typeof formattedHtml === 'string') {
+            return window.$(formattedHtml.replace(/\n/g, '').replace(/ {4}/g, ''))
+        }
+        return window.$(formattedHtml)
     }
 
     static mediaMobile (rule) {

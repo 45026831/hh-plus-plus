@@ -3,6 +3,7 @@ import { colors } from '../common/Constants'
 const {$} = Helpers
 
 const LS_CONFIG_KEY = 'HHPlusPlusConfig'
+const CONFIG_SEP = '_'
 
 class Config {
     constructor() {
@@ -37,6 +38,34 @@ class Config {
         localStorage.setItem(LS_CONFIG_KEY, JSON.stringify(this.config))
     }
 
+    updateConfig (key, value) {
+        this.config[key] = value
+        this.saveConfig()
+
+        const {module, subKey} = this.getModuleForKey(key)
+        if (module) {
+            if (subKey) {
+                if (typeof module.updateSubSetting === 'function') {
+                    module.updateSubSetting(subKey, value)
+                }
+            } else {
+                const $setting = this.$configPane.find(`.config-setting[rel=${key}]`)
+                const $subSettings = $setting.find('.sub-settings input')
+                if (value) {
+                    this.runModule(module)
+                    $setting.addClass('enabled')
+                    $subSettings.prop('disabled', false)
+                } else {
+                    if (typeof module.tearDown === 'function') {
+                        module.tearDown()
+                    }
+                    $setting.removeClass('enabled')
+                    $subSettings.prop('disabled', true)
+                }
+            }
+        }
+    }
+
     registerGroup(group) {
         const {name, key} = group
         if (!name || !key) {
@@ -67,17 +96,31 @@ class Config {
         this.modules.forEach(module => {
             const moduleEnabled = this.config[this.getConfigKey(module.group, module.configSchema.baseKey)]
             if (moduleEnabled) {
-                const subSettings = Object.keys(this.config)
-                    .filter(key => key.startsWith(`${this.getConfigKey(module.group, module.configSchema.baseKey)}_`))
-                    .map(key => ({[key.replace(`${this.getConfigKey(module.group, module.configSchema.baseKey)}_`, '')]: this.config[key]}))
-                    .reduce((a, b) => Object.assign(a, b), {})
-                module.run(subSettings)
+                this.runModule(module)
             }
         })
     }
 
+    runModule(module) {
+        const subSettings = Object.keys(this.config)
+            .filter(key => key.startsWith(`${this.getConfigKey(module.group, module.configSchema.baseKey)}${CONFIG_SEP}`))
+            .map(key => ({ [key.replace(`${this.getConfigKey(module.group, module.configSchema.baseKey)}${CONFIG_SEP}`, '')]: this.config[key] }))
+            .reduce((a, b) => Object.assign(a, b), {})
+        module.run(subSettings)
+    }
+
     getConfigKey (group, baseKey, subKey) {
-        return `${group}_${baseKey}${subKey ? `_${subKey}`: ''}`
+        return [group, baseKey, subKey].filter(k=>k).join(CONFIG_SEP)
+    }
+
+    getModuleForKey (key) {
+        const [kGroup, baseKey, subKey] = key.split(CONFIG_SEP)
+        const module = this.modules.find(({group, configSchema}) => configSchema.baseKey === baseKey && group === kGroup)
+
+        return {
+            module,
+            subKey
+        }
     }
 
     renderInteractables () {
@@ -101,41 +144,48 @@ class Config {
         $('#contains_all').append(this.$configButton)
     }
 
+    buildConfigPaneContent () {
+        return $(`
+            <div class="tabs">
+                ${this.groups.map(({key, name}) => `<h4 class="${key}" rel="${key}">${name}</h4>`).join('')}
+            </div>
+            ${this.groups.map(({key: groupKey}) => `
+            <div class="group-panel" rel="${groupKey}">
+                    ${this.modules.filter(({group}) => group === groupKey).map(({configSchema}) => {
+        const baseKey = this.getConfigKey(groupKey, configSchema.baseKey)
+        const baseVal = this.config[baseKey]
+        return `
+                <div class="config-setting ${baseVal ? 'enabled' : ''}" rel="${baseKey}">
+                    <label class="base-setting">
+                        <span>${configSchema.label}</span>
+                        <input type="checkbox" name="${baseKey}" ${baseVal ? 'checked="checked"' : ''} />
+                    </label>
+                    ${configSchema.subSettings ? `
+                    <div class="sub-settings">
+                        ${configSchema.subSettings.map(subSetting => {
+        const subKey = this.getConfigKey(groupKey, configSchema.baseKey, subSetting.key)
+        const subVal = this.config[subKey]
+        return `
+                        <label>
+                            <input type="checkbox" name="${subKey}" ${subVal ? 'checked="checked"' : ''} ${baseVal ? '' : 'disabled="disabled"'} />
+                            <span>${subSetting.label}</span>
+                        </label>`
+    }).join('')}
+                    </div>` : ''}
+                </div>`
+    }).join('')}
+            </div>`
+    ).join('')}`
+        )
+    }
+
     renderConfigPane () {
         const $closePaneButton = $('<span class="close-config-panel" />')
         $closePaneButton.click(this.closeConfigPane.bind(this))
 
-        this.$configPane = $(`
-            <div class="hh-plus-plus-config-panel">
-                <div class="tabs">
-                    ${this.groups.map(({key, name}) => `<h4 class="${key}" rel="${key}">${name}</h4>`).join('')}
-                </div>
-                ${this.groups.map(({key: groupKey}) => `
-                    <div class="group-panel" rel="${groupKey}">
-                        ${this.modules.filter(({group}) => group === groupKey).map(({configSchema}) => `
-                            <div class="config-setting">
-                                <label class="base-setting">
-                                    <span>${configSchema.label}</span>
-                                    <input type="checkbox" name="${this.getConfigKey(groupKey, configSchema.baseKey)}" ${this.config[this.getConfigKey(groupKey, configSchema.baseKey)] ? 'checked="checked"' : ''} />
-                                </label>
-                                ${configSchema.subSettings ? `
-                                <div class="sub-settings">
-                                    ${configSchema.subSettings.map(subSetting => `
-                                        <label>
-                                            <input type="checkbox" name="${this.getConfigKey(groupKey, configSchema.baseKey, subSetting.key)}" ${this.config[this.getConfigKey(groupKey, configSchema.baseKey, subSetting.key)] ? 'checked="checked"' : ''} />
-                                            <span>${subSetting.label}</span>
-                                        </label>
-                                    `).join('')}
-                                </div>
-                                ` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                `).join('')}
-            </div>
-        `)
-
-        this.$configPane.prepend($closePaneButton)
+        this.$configPane = $('<div class="hh-plus-plus-config-panel"></div>')
+            .append(this.buildConfigPaneContent())
+            .prepend($closePaneButton)
         $('#contains_all').append(this.$configPane)
         this.setupEvents()
         this.selectConfigTab(this.groups[0].key)
@@ -166,13 +216,16 @@ class Config {
         $(`.hh-plus-plus-config-panel .tabs h4[rel=${key}]`).addClass('selected')
         $('.hh-plus-plus-config-panel .group-panel').removeClass('shown')
         $(`.hh-plus-plus-config-panel .group-panel[rel=${key}]`).addClass('shown')
-
-        // TODO switch panels
     }
 
     setupEvents () {
         this.groups.forEach(({key}) => {
             $(`.hh-plus-plus-config-panel .tabs h4[rel=${key}]`).click(this.selectConfigTab.bind(this, key))
+        })
+        Object.keys(this.config).forEach(key => {
+            $(`.hh-plus-plus-config-panel input[name=${key}]`).change((e) => {
+                this.updateConfig(key, $(e.target).prop('checked'))
+            })
         })
     }
 
@@ -267,11 +320,16 @@ class Config {
             .hh-plus-plus-config-panel .config-setting {
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
                 border-radius: 6px;
-                border: 1px solid ${this.colors.homeBorder};
+                border: 1px solid #aaa;
                 background: ${this.colors.homeDark};
                 max-height: 72px;
                 padding: 7px;
                 font-size: 12px;
+            }
+        `)
+        sheet.insertRule(`
+            .hh-plus-plus-config-panel .config-setting.enabled {
+                border: 1px solid ${this.colors.homeBorder};
             }
         `)
 
@@ -305,6 +363,13 @@ class Config {
         sheet.insertRule(`
             .hh-plus-plus-config-panel .sub-settings label input {
                 margin-left: 0;
+            }
+        `)
+        sheet.insertRule(`
+            .hh-plus-plus-config-panel .sub-settings label input[disabled] {
+                background-color: initial;
+                box-shadow: unset;
+                -webkit-box-shadow: unset;
             }
         `)
     }
