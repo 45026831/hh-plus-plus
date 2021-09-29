@@ -1,3 +1,4 @@
+import GirlDictionaryCollector from './collectors/GirlDictionaryCollector'
 import Helpers from './common/Helpers'
 import Config from './config'
 import {BattleEndstateModule, FightAVillainModule, MissionsBackgroundStyleTweak} from './modules'
@@ -6,6 +7,7 @@ const runScript = () => {
     const config = new Config()
 
     // base modules
+    GirlDictionaryCollector.collect()
 
     // configurable modules
 

@@ -45,7 +45,7 @@ class FightAVillainModule extends HHModule {
 
         let eventTrolls = JSON.parse(localStorage.getItem('eventTrolls'))
         let mythicEventTrolls = JSON.parse(localStorage.getItem('mythicEventTrolls'))
-        const girlDictionary = (typeof(localStorage.HHPNMap) === 'undefined') ? new Map(): new Map(JSON.parse(localStorage.HHPNMap))
+        const girlDictionary = Helpers.getGirlDictionary()
 
         let eventEndTime = localStorage.getItem('eventTime') || 0
         let mythicEventEndTime = localStorage.getItem('mythicEventTime') || 0
@@ -106,9 +106,10 @@ class FightAVillainModule extends HHModule {
                 ${villainsSet.filter(villain => villain.world <= currentWorld).map(({key, girls, world}) => {
         let tiersSuffix = ''
         if (tiers) {
-            const tier1 = girls[1].some(idGirl => !(girlDictionary.get(idGirl) && girlDictionary.get(idGirl).shards)) ? '&#185;' : ''
-            const tier2 = girls[2].some(idGirl => !(girlDictionary.get(idGirl) && girlDictionary.get(idGirl).shards)) ? '&#178;' : ''
-            const tier3 = girls[3].some(idGirl => !(girlDictionary.get(idGirl) && girlDictionary.get(idGirl).shards)) ? '&#179;' : ''
+            const haveGirl = idGirl => (girlDictionary.get(idGirl) && girlDictionary.get(idGirl).shards === 100)
+            const tier1 = girls[1].some(idGirl => !haveGirl(idGirl)) ? '&#185;' : ''
+            const tier2 = girls[2].some(idGirl => !haveGirl(idGirl)) ? '&#178;' : ''
+            const tier3 = girls[3].some(idGirl => !haveGirl(idGirl)) ? '&#179;' : ''
             tiersSuffix = ` ${tier1}${tier2}${tier3}`
         }
         const label = `${key ? this.label(key) : this.label('fallback', {world})}${tiersSuffix}`

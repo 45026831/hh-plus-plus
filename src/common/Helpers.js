@@ -3,6 +3,10 @@ let isHH
 let isGH
 let isCxH
 let cdnHost
+let girlDictionary
+
+const LS_GIRLDICTIONARY_KEY = 'HHPlusPlusGirlDictionary'
+
 class Helpers {
     static getHost() {
         return window.location.host
@@ -88,6 +92,35 @@ class Helpers {
     }
     static mediaDesktop (rule) {
         return `@media only screen and (min-width: 1026px) {${rule}}`
+    }
+
+    static getGirlDictionary() {
+        if (!girlDictionary) {
+            const girlDictJson = localStorage.getItem(LS_GIRLDICTIONARY_KEY)
+            girlDictionary = girlDictJson ? new Map(JSON.parse(girlDictJson)) : new Map()
+        }
+
+        return girlDictionary
+    }
+
+    static setGirlDictionary (updated) {
+        girlDictionary = updated
+        localStorage.setItem(LS_GIRLDICTIONARY_KEY, JSON.stringify(Array.from(girlDictionary)))
+    }
+
+    static onAjaxResponse (pattern, callback) {
+        $(document).ajaxComplete((evt, xhr, opt) => {
+            if(~opt.data.search(pattern)) {
+                if(!xhr.responseText.length) {
+                    return
+                }
+                const responseData = JSON.parse(xhr.responseText)
+                if(!responseData || !responseData.success) {
+                    return
+                }
+                return callback(responseData, opt, xhr, evt)
+            }
+        })
     }
 }
 
