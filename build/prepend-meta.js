@@ -10,7 +10,7 @@ const meta = metaTemplate.toString()
 const dist = fs.readFileSync(path.resolve(__dirname, '../dist/hh-plus-plus.user.js'))
 const isDST = moment().tz('Europe/Paris').zoneAbbr() === 'CEST'
 const outputFull = `${meta}
-const isDST = ${isDST}
+const isDST = ${isDST};
 ${dist}
 `
 

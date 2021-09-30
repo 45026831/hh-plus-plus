@@ -4,6 +4,20 @@ import Helpers from '../common/Helpers'
 let girlDictionary
 let updated
 
+const collectFromAjaxResponse = (response) => {
+    const {rewards} = response
+    if (rewards && rewards.data && rewards.data.shards) {
+        girlDictionary = Helpers.getGirlDictionary()
+        rewards.data.shards.forEach(({id_girl, value}) => {
+            const girlId = `${id_girl}`
+            const girl = girlDictionary.get(girlId) || {}
+            girl.shards = Math.min(value, 100)
+            girlDictionary.set(girlId, girl)
+        })
+        Helpers.setGirlDictionary(girlDictionary)
+    }
+}
+
 class GirlDictionaryCollector {
     static collect () {
         updated = false
@@ -13,6 +27,15 @@ class GirlDictionaryCollector {
         }
         if (Helpers.isCurrentPage('battle')) {
             GirlDictionaryCollector.collectFromBattleResult()
+        }
+        if (Helpers.isCurrentPage('pachinko')) {
+            GirlDictionaryCollector.collectFromPachinkoRewards()
+        }
+        if (Helpers.isCurrentPage('activities')) {
+            GirlDictionaryCollector.collectFromContestRewards()
+        }
+        if (Helpers.isCurrentPage('champion')) {
+            GirlDictionaryCollector.collectFromChampions()
         }
         if (updated) {
             Helpers.setGirlDictionary(girlDictionary)
@@ -26,7 +49,7 @@ class GirlDictionaryCollector {
             const girl_class = parseInt(girl['class'], 10)
             const girlData = {
                 name,
-                shards: shards,
+                shards,
                 class: girl_class
             }
             if (name) {
@@ -41,17 +64,22 @@ class GirlDictionaryCollector {
     }
 
     static collectFromBattleResult () {
-        Helpers.onAjaxResponse(/action=do_(league|season|troll)_battles/i, (battleResponse) => {
-            const {rewards} = battleResponse
-            if (rewards && rewards.data && rewards.data.shards) {
-                girlDictionary = Helpers.getGirlDictionary()
-                rewards.data.shards.forEach(({id_girl, value}) => {
-                    const girlId = `${id_girl}`
-                    const girl = girlDictionary.get(girlId) || {}
-                    girl.shards = Math.min(value, 100)
-                    girlDictionary.set(girlId, girl)
-                })
-                Helpers.setGirlDictionary(girlDictionary)
+        Helpers.onAjaxResponse(/action=do_(league|season|troll)_battles/i, collectFromAjaxResponse)
+    }
+
+    static collectFromPachinkoRewards () {
+        Helpers.onAjaxResponse(/action=play/i, collectFromAjaxResponse)
+    }
+
+    static collectFromContestRewards () {
+        Helpers.onAjaxResponse(/action=give_reward/i, collectFromAjaxResponse)
+    }
+
+    static collectFromChampions () {
+        Helpers.onAjaxResponse(/class=TeamBattle/i, (response) => {
+            const {end} = response
+            if (end) {
+                collectFromAjaxResponse(end)
             }
         })
     }
