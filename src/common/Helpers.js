@@ -1,3 +1,5 @@
+import { lsKeys } from './Constants'
+
 let sheet
 let isHH
 let isGH
@@ -5,9 +7,6 @@ let isCxH
 let cdnHost
 let girlDictionary
 let teamsDictionary
-
-const LS_GIRLDICTIONARY_KEY = 'HHPlusPlusGirlDictionary'
-const LS_TEAMSDICTIONARY_KEY = 'HHPlusPlusTeamsDictionary'
 
 class Helpers {
     static getHost() {
@@ -32,6 +31,9 @@ class Helpers {
     }
     static isCurrentPage(matcher) {
         return Helpers.getPathname().includes(matcher)
+    }
+    static hasSearch(matcher) {
+        return window.location.search.includes(matcher)
     }
 
     static getSheet() {
@@ -98,8 +100,8 @@ class Helpers {
 
     static getGirlDictionary() {
         if (!girlDictionary) {
-            const girlDictJson = localStorage.getItem(LS_GIRLDICTIONARY_KEY)
-            girlDictionary = girlDictJson ? new Map(JSON.parse(girlDictJson)) : new Map()
+            const girlDictArray = Helpers.lsGet(lsKeys.GIRL_DICTIONARY)
+            girlDictionary = girlDictArray ? new Map(girlDictArray) : new Map()
         }
 
         return girlDictionary
@@ -107,18 +109,18 @@ class Helpers {
 
     static setGirlDictionary (updated) {
         girlDictionary = updated
-        localStorage.setItem(LS_GIRLDICTIONARY_KEY, JSON.stringify(Array.from(girlDictionary)))
+        Helpers.lsSet(lsKeys.GIRL_DICTIONARY, Array.from(girlDictionary))
     }
 
     static getTeamsDictionary() {
         if (!teamsDictionary) {
-            teamsDictionary = JSON.parse(localStorage.getItem(LS_TEAMSDICTIONARY_KEY))
+            teamsDictionary = Helpers.lsGet(lsKeys.TEAMS_DICTIONARY)
         }
         return teamsDictionary
     }
     static setTeamsDictionary(updated) {
         teamsDictionary = updated
-        localStorage.setItem(LS_TEAMSDICTIONARY_KEY, JSON.stringify(teamsDictionary))
+        Helpers.lsSet(lsKeys.TEAMS_DICTIONARY, teamsDictionary)
     }
 
     static onAjaxResponse (pattern, callback) {
@@ -134,6 +136,22 @@ class Helpers {
                 return callback(responseData, opt, xhr, evt)
             }
         })
+    }
+
+    static lsGetRaw(key) {
+        return localStorage.getItem(key)
+    }
+    static lsGet(key) {
+        return JSON.parse(Helpers.lsGetRaw(key))
+    }
+    static lsSetRaw(key, value) {
+        return localStorage.setItem(key, value)
+    }
+    static lsSet(key, value) {
+        return Helpers.lsSetRaw(key, JSON.stringify(value))
+    }
+    static lsRm(key) {
+        return localStorage.removeItem(key)
     }
 }
 

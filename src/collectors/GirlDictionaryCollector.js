@@ -1,11 +1,10 @@
-/* global girlsDataList */
+/* global girlsDataList, eventGirls */
 import Helpers from '../common/Helpers'
 
 let girlDictionary
 let updated
 
-const collectFromAjaxResponse = (response) => {
-    const {rewards} = response
+const collectFromRewards = (rewards) => {
     if (rewards && rewards.data && rewards.data.shards) {
         girlDictionary = Helpers.getGirlDictionary()
         rewards.data.shards.forEach(({id_girl, value}) => {
@@ -17,6 +16,16 @@ const collectFromAjaxResponse = (response) => {
         Helpers.setGirlDictionary(girlDictionary)
     }
 }
+const collectFromAjaxResponseSingular = (response) => {
+    const {rewards} = response
+    collectFromRewards(rewards)
+}
+const collectFromAjaxResponsePlural = (response) => {
+    const {rewards: rewardsSets} = response
+    if (rewardsSets) {
+        rewardsSets.forEach(rewards => collectFromRewards(rewards))
+    }
+}
 
 class GirlDictionaryCollector {
     static collect () {
@@ -24,6 +33,9 @@ class GirlDictionaryCollector {
         girlDictionary = Helpers.getGirlDictionary()
         if (Helpers.isCurrentPage('harem')) {
             GirlDictionaryCollector.collectFromHarem()
+        }
+        if (Helpers.isCurrentPage('event')) {
+            GirlDictionaryCollector.collectFromEventWidget()
         }
         if (Helpers.isCurrentPage('battle')) {
             GirlDictionaryCollector.collectFromBattleResult()
@@ -37,6 +49,9 @@ class GirlDictionaryCollector {
         if (Helpers.isCurrentPage('champion')) {
             GirlDictionaryCollector.collectFromChampions()
         }
+        if (Helpers.isCurrentPage('home')) {
+            GirlDictionaryCollector.collectFromRewardsQueue()
+        }
         if (updated) {
             Helpers.setGirlDictionary(girlDictionary)
         }
@@ -45,12 +60,12 @@ class GirlDictionaryCollector {
     static collectFromHarem () {
         Object.entries(girlsDataList).forEach(([girlId, girl]) => {
             const name = girl['Name']
-            const shards = (girl['shards'] !== undefined) ? parseInt(girl['shards']) : 100
-            const girl_class = parseInt(girl['class'], 10)
+            const shards = (girl['shards'] !== undefined) ? girl['shards'] : 100
+            const girlClass = parseInt(girl['class'], 10)
             const girlData = {
                 name,
                 shards,
-                class: girl_class
+                class: girlClass
             }
             if (name) {
                 girlDictionary.set(girlId, girlData)
@@ -60,28 +75,40 @@ class GirlDictionaryCollector {
     }
 
     static collectFromEventWidget () {
-        // TODO
+        eventGirls.forEach(({id_girl: id, name, shards, class: girlClass}) => {
+            if (shards === undefined) {
+                shards = 100
+            }
+            if (name) {
+                girlDictionary.set(id, {name, shards, class: parseInt(girlClass, 10)})
+                updated = true
+            }
+        })
     }
 
     static collectFromBattleResult () {
-        Helpers.onAjaxResponse(/action=do_(league|season|troll)_battles/i, collectFromAjaxResponse)
+        Helpers.onAjaxResponse(/action=do_(league|season|troll)_battles/i, collectFromAjaxResponseSingular)
     }
 
     static collectFromPachinkoRewards () {
-        Helpers.onAjaxResponse(/action=play/i, collectFromAjaxResponse)
+        Helpers.onAjaxResponse(/action=play/i, collectFromAjaxResponseSingular)
     }
 
     static collectFromContestRewards () {
-        Helpers.onAjaxResponse(/action=give_reward/i, collectFromAjaxResponse)
+        Helpers.onAjaxResponse(/action=give_reward/i, collectFromAjaxResponseSingular)
     }
 
     static collectFromChampions () {
         Helpers.onAjaxResponse(/class=TeamBattle/i, (response) => {
             const {end} = response
             if (end) {
-                collectFromAjaxResponse(end)
+                collectFromAjaxResponseSingular(end)
             }
         })
+    }
+
+    static collectFromRewardsQueue () {
+        Helpers.onAjaxResponse(/action=process_rewards_queue/i, collectFromAjaxResponsePlural)
     }
 }
 

@@ -3,6 +3,7 @@ import Helpers from '../common/Helpers'
 import HHModule from './HHModule'
 import I18n from '../i18n'
 import VILLAINS from '../data/Villains'
+import { lsKeys } from '../common/Constants'
 
 class FightAVillainModule extends HHModule {
     constructor () {
@@ -36,69 +37,11 @@ class FightAVillainModule extends HHModule {
 
         const villainsSet = VILLAINS[Helpers.getGameKey()]
 
-        if (localStorage.getItem('eventTrolls') === null) {
-            localStorage.setItem('eventTrolls', '[]')
-        }
-        if (localStorage.getItem('mythicEventTrolls') === null) {
-            localStorage.setItem('mythicEventTrolls', '[]')
-        }
-
-        let eventTrolls = JSON.parse(localStorage.getItem('eventTrolls'))
-        let mythicEventTrolls = JSON.parse(localStorage.getItem('mythicEventTrolls'))
+        const eventTrolls = Helpers.lsGet(lsKeys.EVENT_VILLAINS) || []
+        const mythicEventTrolls = Helpers.lsGet(lsKeys.MYTHIC_EVENT_VILLAINS) || []
         const girlDictionary = Helpers.getGirlDictionary()
 
-        let eventEndTime = localStorage.getItem('eventTime') || 0
-        let mythicEventEndTime = localStorage.getItem('mythicEventTime') || 0
-
-
-        if (Math.floor(new Date().getTime()/1000) > eventEndTime)
-            localStorage.removeItem('eventTrolls')
-
-        if (Math.floor(new Date().getTime()/1000) > mythicEventEndTime)
-            localStorage.removeItem('mythicEventTrolls')
-
-        if (window.location.search.includes('tab=event')) {
-            let eventRemainingTime = parseInt($('#contains_all #events .nc-panel-header .nc-pull-right #timer').attr('data-seconds-until-event-end'), 10)
-            eventEndTime = Math.floor(new Date().getTime()/1000) + eventRemainingTime
-            localStorage.setItem('eventTime', eventEndTime)
-
-            eventTrolls = []
-
-            let totalGirls = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container').length
-            for (let i=0; i<totalGirls; i++) {
-                let girlId = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ')').attr('data-reward-girl-id')
-                let girlLocation = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-events-prize-locations-buttons-container .nc-events-prize-locations-buttons-container a').attr('href')
-                let index = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').indexOf('-text')
-                let girlRarity = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').substring(0, index)
-                if (girlLocation.includes('troll-pre-battle')) {
-                    eventTrolls.push({id: girlId, troll: girlLocation.substring(35), rarity: girlRarity})
-                }
-            }
-            localStorage.setItem('eventTrolls', JSON.stringify(eventTrolls))
-        }
-
-        if (window.location.search.includes('tab=mythic_event')) {
-            let eventRemainingTime = parseInt($('#contains_all #events .nc-panel-header .nc-pull-right #timer').attr('data-seconds-until-event-end'), 10)
-            mythicEventEndTime = Math.floor(new Date().getTime()/1000) + eventRemainingTime
-            localStorage.setItem('mythicEventTime', mythicEventEndTime)
-
-            mythicEventTrolls = []
-
-            let totalGirls = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container').length
-            for (let i=0; i<totalGirls; i++) {
-                let girlId = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ')').attr('data-reward-girl-id')
-                let girlLocation = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-events-prize-locations-buttons-container .nc-events-prize-locations-buttons-container a').attr('href')
-                let index = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').indexOf('-text')
-                let girlRarity = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').substring(0, index)
-                if (girlLocation.includes('troll-pre-battle'))
-                    mythicEventTrolls.push({id: girlId, troll: girlLocation.substring(35), rarity: girlRarity})
-            }
-            localStorage.setItem('mythicEventTrolls', JSON.stringify(mythicEventTrolls))
-        }
-
         //Add the actual menu
-
-
         const currentWorld = Hero.infos.questing.id_world
 
         const menuHtml = `
@@ -114,19 +57,25 @@ class FightAVillainModule extends HHModule {
         }
         const label = `${key ? this.label(key) : this.label('fallback', {world})}${tiersSuffix}`
         let type = 'regular'
-        for (let j = 0, len = eventTrolls.length; j < len; j++) {
-            let shards = girlDictionary.get(eventTrolls[j].id) ? girlDictionary.get(eventTrolls[j].id).shards : 0
-            if (eventTrolls[j].troll === (world - 1) && shards !== 100) {
-                type = `eventTroll ${eventTrolls[j].rarity}`
+        const villainId = `${world - 1}`
+        const eventTrollGirl = eventTrolls.find(({troll}) => troll === villainId)
+        if (eventTrollGirl) {
+            const {id, rarity} = eventTrollGirl
+            const dictGirl = girlDictionary.get(id)
+            const owned = dictGirl ? dictGirl.shards === 100 : false
+            if (!owned) {
+                type = `eventTroll ${rarity}`
             }
         }
-        for (let k = 0, l = mythicEventTrolls.length; k < l; k++) {
-            let shards = girlDictionary.get(mythicEventTrolls[k].id) ? girlDictionary.get(mythicEventTrolls[k].id).shards : 0
-            if (mythicEventTrolls[k].troll === (world - 1) && shards !== 100) {
+        const mythicTrollGirl = mythicEventTrolls.find(({troll}) => troll === villainId)
+        if (mythicTrollGirl) {
+            const dictGirl = girlDictionary.get(mythicTrollGirl.id)
+            const owned = dictGirl ? dictGirl.shards === 100 : false
+            if (!owned) {
                 type = 'mythicEventTroll'
             }
         }
-        return `<a class="${type}" href="/troll-pre-battle.html?id_opponent=${world-1}">${label}</a>`
+        return `<a class="${type}" href="/troll-pre-battle.html?id_opponent=${villainId}">${label}</a>`
     }).join('')}
             </div>
         `

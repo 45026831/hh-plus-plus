@@ -1,8 +1,7 @@
 import Helpers from '../common/Helpers'
-import { colors } from '../common/Constants'
+import { colors, lsKeys } from '../common/Constants'
 const {$} = Helpers
 
-const LS_CONFIG_KEY = 'HHPlusPlusConfig'
 const CONFIG_SEP = '_'
 
 class Config {
@@ -28,14 +27,14 @@ class Config {
     }
 
     loadConfig () {
-        const configJson = localStorage.getItem(LS_CONFIG_KEY)
-        if (configJson) {
-            Object.assign(this.config, JSON.parse(configJson))
+        const config = Helpers.lsGet(lsKeys.CONFIG)
+        if (config) {
+            Object.assign(this.config, (config))
         }
     }
 
     saveConfig () {
-        localStorage.setItem(LS_CONFIG_KEY, JSON.stringify(this.config))
+        Helpers.lsSet(lsKeys.CONFIG, this.config)
     }
 
     updateConfig (key, value) {

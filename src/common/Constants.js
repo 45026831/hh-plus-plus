@@ -21,3 +21,15 @@ export const colors = {
         panelInset: 'inset 0 0 40px 15px none'
     }
 }
+
+const lsBaseKey = 'HHPlusPlus'
+const lsKey = (key) => `${lsBaseKey}${key}`
+export const lsKeys = {
+    CONFIG:                 lsKey('Config'),
+    GIRL_DICTIONARY:        lsKey('GirlDictionary'),
+    TEAMS_DICTIONARY:       lsKey('TeamsDictionary'),
+    EVENT_VILLAINS:         lsKey('EventVillains'),
+    EVENT_TIME:             lsKey('EventTime'),
+    MYTHIC_EVENT_VILLAINS:  lsKey('MythicEventVillains'),
+    MYTHIC_EVENT_TIME:      lsKey('MythicEventTime')
+}

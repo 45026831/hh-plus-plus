@@ -1,3 +1,4 @@
+import EventVillainsCollector from './collectors/EventVillainsCollector'
 import GirlDictionaryCollector from './collectors/GirlDictionaryCollector'
 import TeamsCollector from './collectors/TeamsCollector'
 import Helpers from './common/Helpers'
@@ -10,6 +11,7 @@ const runScript = () => {
     // base modules
     GirlDictionaryCollector.collect()
     TeamsCollector.collect()
+    EventVillainsCollector.collect()
     // TODO LeaguePointsCollector
 
     // configurable modules
