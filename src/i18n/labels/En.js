@@ -43,43 +43,12 @@ export const config = {
     links: 'Shortcuts/Timers',
     seasonStats: 'Season stats',
     pachinkoNames: 'Show names in Pachinko',
-    collectMoneyAnimation: 'Delete the collect money animation',
     contestSummary: 'Saved Contests rewards summary',
     battleEndstate: 'Show final values when skipping battle',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
-    blessingsButtonAlign:'Align blessings button',
-    bonusFlowersOverflow:`Prevent bonus ${gameConfig.flower}s dropping off-screen`,
-    champGirlPower:`Fix Champion ${gameConfig.girl} power overflow`,
-    champGirlOverlap:`Fix Champion ${gameConfig.girl} overlapping ${gameConfig.girl} selection`,
-    clubTableShadow:'Remove club table shadow',
-    compactNav:'Use compact main menu',
-    eventGirlBorders:`Green borders on obtained event ${gameConfig.girl}s`,
-    eventGirlTicks:`Improved event ${gameConfig.girl} ticks`,
-    hideGameLinks:'Hide game links',
-    leagueTableCompressed:'Compact league table',
-    leagueTableRowStripes:'Striped league table rows',
-    leagueTableShadow:'Remove league table shadow',
-    moveSkipButton:'Move the battle skip button down',
-    newButtons:'Replace remaining old-style buttons',
-    poaThousands:'Add thousands seperators for PoA tasks',
-    poaTicks:'Fix tick positions on PoA screen',
-    poaBorders:'Green borders on obtained PoA rewards',
-    poaGirlFade:`Fix ${gameConfig.girl} pose fade on PoA`,
-    popButtons:'Hide Auto-assign and Auto-claim PoP buttons',
-    poseAspectRatio:`Fix ${gameConfig.girl} pose aspect ratio in battle`,
-    removeParticleEffects:'Remove home screen particle effects',
-    scriptSocials:'Adjust position of socials to not overlap with HH++ bars',
-    scriptTimerBars:'Script timer bars',
-    seasonsButton:'Fix border on Seasons button',
-    shrinkBundles:'Shrink bundles',
-    sidequestCompletionMarkers:'Sidequest completion markers',
-    contestNotifs:'Move contest notifications',
-    contentPointsWidth:'Prevent contest table points overflow',
-    leagueChangeTeamButton:'Fix positioning of left block buttons in league',
-    compactPops:'Compact PoPs',
-    monthlyCardText:'Fix monthly card text',
+    collectMoneyAnimation: 'Delete the collect money animation',
 }
 
 export const villain = {
@@ -104,4 +73,9 @@ export const villain = {
     greygolem: 'Grey Golem',
     nymph: 'The Nymph',
     fallback: 'World {{world}} villain'
+}
+
+export const contestSummary = {
+    totalRewards: 'Total Saved Rewards ({{contests}} Contests):',
+    contestsWarning: 'Contests expire after 21 days!'
 }

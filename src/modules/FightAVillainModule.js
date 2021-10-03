@@ -103,6 +103,9 @@ class FightAVillainModule extends HHModule {
                 opacity: 0;
                 visibility: hidden;
                 transition: opacity 400ms, visibility 400ms;
+                grid-gap: 7px;
+                padding-top: 5px;
+                padding-bottom: 5px;
             }
         `)
 
@@ -111,7 +114,7 @@ class FightAVillainModule extends HHModule {
                 width: 88%;
                 margin: 34px 0 0 34px;
                 font-size: 14px;
-                line-height: 22px;
+                line-height: 18px;
             }
         `))
 
@@ -120,9 +123,16 @@ class FightAVillainModule extends HHModule {
                 width: 200%;
                 margin: 64px 0 0 -79px;
                 font-size: 16px;
-                line-height: 45px;
+                line-height: 22px;
                 grid-template-columns: 1fr 1fr;
                 grid-auto-flow: row;
+            }
+        `))
+
+        this.insertRule(Helpers.mediaMobile(`
+            .TrollsMenu > a {
+                padding-top: 10px;
+                padding-bottom: 10px;
             }
         `))
 

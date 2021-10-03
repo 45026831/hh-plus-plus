@@ -3,7 +3,7 @@ import HHModule from './HHModule'
 
 class STModule extends HHModule {
     constructor (props) {
-        super(props)
+        super({group: 'st', ...props})
 
         this.insertedRuleIndexes = []
         this.sheet = Helpers.getSheet()

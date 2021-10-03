@@ -1,10 +1,12 @@
 import * as en from './labels/En'
+import * as fr from './labels/Fr'
+import * as es from './labels/Es'
+import * as it from './labels/It'
 import * as de from './labels/De'
 
-const labels = {en, de}
+const labels = {en, fr, es, it, de}
 const supportedLanguages = Object.keys(labels)
 const defaultLanguage = supportedLanguages[0]
-// const supportedLanguages = ['en', 'fr', 'es', 'it', 'de']
 let lang
 let locale
 let localeDecimalSep
@@ -20,7 +22,7 @@ class I18n {
 
     static getLocale() {
         if (!locale) {
-            locale = I18n.getLang() === 'en' ? 'en' : 'fr'
+            locale = ['en', 'ja'].includes(I18n.getLang()) ? 'en' : 'fr'
         }
         return locale
     }
@@ -30,7 +32,7 @@ class I18n {
         let workingLabel = labels[lang][module][key] || labels[defaultLanguage][module][key]
 
         Object.entries(data).forEach(([template, value])=> {
-            workingLabel.replace(`{{${template}}}`, value)
+            workingLabel = workingLabel.replace(`{{${template}}}`, value)
         })
 
         return workingLabel
@@ -67,6 +69,31 @@ class I18n {
             x = 0
         }
         return x.toLocaleString(I18n.getLocale()).replace(' ', ' ')
+    }
+
+    static nRounding(num, digits, updown) {
+        let power = [
+            { value: 1, symbol: '' },
+            { value: 1E3, symbol: 'K' },
+            { value: 1E6, symbol: 'M' },
+            { value: 1E9, symbol: 'B' },
+            { value: 1E12, symbol: 'T' },
+        ]
+        let i
+        for (i = power.length - 1; i > 0; i--) {
+            if (num >= power[i].value) {
+                break
+            }
+        }
+        if (updown === 1) {
+            return +(Math.ceil(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol
+        }
+        else if (updown === 0) {
+            return +(Math.round(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol
+        }
+        else if (updown === -1) {
+            return +(Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol
+        }
     }
 }
 

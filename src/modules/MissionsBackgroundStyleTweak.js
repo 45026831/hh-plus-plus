@@ -10,7 +10,6 @@ class MissionsBackgroundStyleTweak extends STModule {
             label: I18n.getModuleLabel('stConfig', 'missionsBackground')
         }
         super({
-            group: 'st',
             name: 'missionsBackground',
             configSchema
         })

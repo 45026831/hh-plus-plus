@@ -52,6 +52,9 @@ class GirlDictionaryCollector {
         if (Helpers.isCurrentPage('home')) {
             GirlDictionaryCollector.collectFromRewardsQueue()
         }
+        if (Helpers.isCurrentPage('season')) {
+            GirlDictionaryCollector.collectFromSeasons()
+        }
         if (updated) {
             Helpers.setGirlDictionary(girlDictionary)
         }
@@ -109,6 +112,10 @@ class GirlDictionaryCollector {
 
     static collectFromRewardsQueue () {
         Helpers.onAjaxResponse(/action=process_rewards_queue/i, collectFromAjaxResponsePlural)
+    }
+
+    static collectFromSeasons () {
+        Helpers.onAjaxResponse(/action=claim/i, collectFromAjaxResponseSingular)
     }
 }
 

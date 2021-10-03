@@ -19,12 +19,12 @@ export const config = {
     links: 'Abkürzungen/Zeitgeber',
     seasonStats: 'Season stats',
     pachinkoNames: 'Namen in Pachinko anzeigen',
-    collectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
     contestSummary: 'Zusammenfassung der gespeicherten Wettbewerbsprämien',
     battleEndstate: 'Endgültige Werte beim Überspringen des Kampfes anzeigen',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
+    collectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
 }
 
 export const villain = {
@@ -32,4 +32,9 @@ export const villain = {
     ninjaspy: 'Ninja Spion',
     jacksoncrew: 'Jacksons Crew',
     pandorawitch: 'Pandora Hexe',
+}
+
+export const contestSummary = {
+    totalRewards: 'Gesamtzahl der gespeicherten Belohnungen ({{contests}} Wettbewerbe):',
+    contestsWarning: 'Wettbewerbe verfallen nach 21 Tagen!'
 }

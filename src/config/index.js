@@ -285,7 +285,7 @@ class Config {
             .close-config-panel {
                 position: absolute;
                 display: block;
-                background: url(https://${Helpers.getCDNHost()}/clubs/ic_xCross.png);
+                background: url(${Helpers.getCDNHost()}/clubs/ic_xCross.png);
                 background-size: cover;
                 height: 37px;
                 width: 41px;

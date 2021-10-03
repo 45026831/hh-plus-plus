@@ -1,3 +1,4 @@
+/* global IMAGES_URL */
 import { lsKeys } from './Constants'
 
 let sheet
@@ -14,15 +15,7 @@ class Helpers {
     }
     static getCDNHost () {
         if (!cdnHost) {
-            const CDNs = {
-                'nutaku.haremheroes.com': 'hh.hh-content.com',
-                'www.hentaiheroes.com': 'hh2.hh-content.com',
-                'www.comixharem.com': 'ch.hh-content.com',
-                'nutaku.comixharem.com': 'ch.hh-content.com',
-                'www.gayharem.com': 'gh1.hh-content.com',
-                'nutaku.gayharem.com': 'gh.hh-content.com'
-            }
-            cdnHost = CDNs[Helpers.getHost()] || 'hh.hh-content.com'
+            cdnHost = IMAGES_URL
         }
         return cdnHost
     }
@@ -152,6 +145,27 @@ class Helpers {
     }
     static lsRm(key) {
         return localStorage.removeItem(key)
+    }
+
+    static getWikiLink (name, lang) {
+        name = name.replaceAll('/', '-')
+
+        if (lang === 'fr') {
+            //for Wiki FR
+            name = name.replaceAll('’', '-')
+        } else {
+            name = name.replaceAll('’', '')
+        }
+        let wikiLink
+
+        if (Helpers.isGH()) {
+            wikiLink = `https://harem-battle.club/wiki/Gay-Harem/GH:${name}`
+        } else if (lang === 'fr') {
+            wikiLink = `http://hentaiheroes.wikidot.com/${name}`
+        } else {
+            wikiLink = `https://harem-battle.club/wiki/Harem-Heroes/HH:${name}`
+        }
+        return wikiLink
     }
 }
 

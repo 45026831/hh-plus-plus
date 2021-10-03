@@ -1,4 +1,4 @@
-class Module {
+class HHModule {
     constructor ({group, name, configSchema}) {
         this.group = group
         this.name = name
@@ -7,4 +7,4 @@ class Module {
     }
 }
 
-export default Module
+export default HHModule
