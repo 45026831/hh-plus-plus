@@ -3,7 +3,7 @@ import GirlDictionaryCollector from './collectors/GirlDictionaryCollector'
 import TeamsCollector from './collectors/TeamsCollector'
 import Helpers from './common/Helpers'
 import Config from './config'
-import {BattleEndstateModule, ContestRewardsModule, FightAVillainModule, MissionsBackgroundStyleTweak, MoneyAnimationStyleTweak} from './modules'
+import {BattleEndstateModule, ContestRewardsModule, FightAVillainModule, MissionsBackgroundStyleTweak, MoneyAnimationStyleTweak, PachinkoNamesModule} from './modules'
 
 const runScript = () => {
     const config = new Config()
@@ -21,12 +21,10 @@ const runScript = () => {
         key: 'core',
         name: `${Helpers.getGameKey()}++ Core`
     })
-    const fightAVillain = new FightAVillainModule()
-    const contestRewards = new ContestRewardsModule()
-    const battleEndstate = new BattleEndstateModule()
-    config.registerModule(fightAVillain)
-    config.registerModule(contestRewards)
-    config.registerModule(battleEndstate)
+    config.registerModule(new FightAVillainModule())
+    config.registerModule(new PachinkoNamesModule())
+    config.registerModule(new ContestRewardsModule())
+    config.registerModule(new BattleEndstateModule())
 
     // style tweaks
     config.registerGroup({
@@ -34,10 +32,8 @@ const runScript = () => {
         name: 'Style Tweaks',
         iconEl: '<div></div>'
     })
-    const missionsBackground = new MissionsBackgroundStyleTweak()
-    const moneyAnimation = new MoneyAnimationStyleTweak()
-    config.registerModule(missionsBackground)
-    config.registerModule(moneyAnimation)
+    config.registerModule(new MissionsBackgroundStyleTweak())
+    config.registerModule(new MoneyAnimationStyleTweak())
 
     config.loadConfig()
 

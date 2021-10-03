@@ -35,6 +35,10 @@ export const villain = {
     fallback: 'Mundo {{world}} villano'
 }
 
+export const pachinkoNames = {
+    availableGirls: 'Ragazze disponibili: '
+}
+
 export const contestSummary = {
     totalRewards: 'Recompensas totales guardadas ({{contests}} Competiciones):',
     contestsWarning: '¡Los Competiciones caducan después de 21 días!'

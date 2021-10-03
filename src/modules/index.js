@@ -1,4 +1,5 @@
 export {default as FightAVillainModule} from './FightAVillainModule'
+export {default as PachinkoNamesModule} from './PachinkoNamesModule'
 export {default as ContestRewardsModule} from './ContestRewardsModule'
 export {default as BattleEndstateModule} from './BattleEndstateModule'
 

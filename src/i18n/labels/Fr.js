@@ -34,6 +34,10 @@ export const villain = {
     fallback: 'Monde {{world}} troll'
 }
 
+export const pachinkoNames = {
+    availableGirls: 'Filles disponibles: '
+}
+
 export const contestSummary = {
     totalRewards: 'Total des récompenses enregistrées ({{contests}} Compètes) :',
     contestsWarning: 'Les Compètes expirent après 21 jours !'

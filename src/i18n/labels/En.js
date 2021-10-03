@@ -75,6 +75,10 @@ export const villain = {
     fallback: 'World {{world}} villain'
 }
 
+export const pachinkoNames = {
+    availableGirls: `Available ${gameConfig.girl}s: `
+}
+
 export const contestSummary = {
     totalRewards: 'Total Saved Rewards ({{contests}} Contests):',
     contestsWarning: 'Contests expire after 21 days!'

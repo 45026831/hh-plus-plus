@@ -34,6 +34,10 @@ export const villain = {
     pandorawitch: 'Pandora Hexe',
 }
 
+export const pachinkoNames = {
+    availableGirls: 'Freie Mädchen: '
+}
+
 export const contestSummary = {
     totalRewards: 'Gesamtzahl der gespeicherten Belohnungen ({{contests}} Wettbewerbe):',
     contestsWarning: 'Wettbewerbe verfallen nach 21 Tagen!'
