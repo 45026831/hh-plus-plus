@@ -35,6 +35,17 @@ export const villain = {
     fallback: 'Mondo {{world}} nemico'
 }
 
+export const seasonStats = {
+    fights: 'Peleas',
+    victories: 'Victorias',
+    defeats: 'Derrota',
+    mojoWon: 'Mojo ganado',
+    mojoLost: 'Mojo perdido',
+    mojoWonAvg: 'Mojo ganado promedio',
+    mojoLostAvg: 'Mojo perdido promedio',
+    mojoAvg: 'Promedio total de mojo',
+}
+
 export const pachinkoNames = {
     availableGirls: 'Chicas disponibles: '
 }

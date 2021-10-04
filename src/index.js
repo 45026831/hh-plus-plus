@@ -1,9 +1,20 @@
-import EventVillainsCollector from './collectors/EventVillainsCollector'
-import GirlDictionaryCollector from './collectors/GirlDictionaryCollector'
-import TeamsCollector from './collectors/TeamsCollector'
+import {
+    EventVillainsCollector,
+    GirlDictionaryCollector,
+    SeasonStatsCollector,
+    TeamsCollector
+} from './collectors'
 import Helpers from './common/Helpers'
 import Config from './config'
-import {BattleEndstateModule, ContestRewardsModule, FightAVillainModule, MissionsBackgroundStyleTweak, MoneyAnimationStyleTweak, PachinkoNamesModule} from './modules'
+import {
+    BattleEndstateModule,
+    ContestRewardsModule,
+    FightAVillainModule,
+    MissionsBackgroundStyleTweak,
+    MoneyAnimationStyleTweak,
+    PachinkoNamesModule,
+    SeasonStatsModule
+} from './modules'
 
 const runScript = () => {
     const config = new Config()
@@ -12,6 +23,7 @@ const runScript = () => {
     GirlDictionaryCollector.collect()
     TeamsCollector.collect()
     EventVillainsCollector.collect()
+    SeasonStatsCollector.collect()
     // TODO LeaguePointsCollector
 
     // configurable modules
@@ -22,6 +34,7 @@ const runScript = () => {
         name: `${Helpers.getGameKey()}++ Core`
     })
     config.registerModule(new FightAVillainModule())
+    config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())
     config.registerModule(new BattleEndstateModule())

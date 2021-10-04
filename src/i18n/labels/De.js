@@ -34,6 +34,17 @@ export const villain = {
     pandorawitch: 'Pandora Hexe',
 }
 
+export const seasonStats = {
+    fights: 'Kämpfe',
+    victories: 'Siege',
+    defeats: 'Niederlagen',
+    mojoWon: 'Gewonnenes Mojo',
+    mojoLost: 'Verlorenes Mojo',
+    mojoWonAvg: 'Im Mittel gewonnenes Mojo',
+    mojoLostAvg: 'Im Mittel verlorenes Mojo',
+    mojoAvg: 'Globales mittleres Mojo',
+}
+
 export const pachinkoNames = {
     availableGirls: 'Freie Mädchen: '
 }

@@ -75,6 +75,17 @@ export const villain = {
     fallback: 'World {{world}} villain'
 }
 
+export const seasonStats = {
+    fights: 'Fights',
+    victories: 'Victories',
+    defeats: 'Defeats',
+    mojoWon: 'Won mojo',
+    mojoLost: 'Lost mojo',
+    mojoWonAvg: 'Won mojo average',
+    mojoLostAvg: 'Lost mojo average',
+    mojoAvg: 'Total mojo average',
+}
+
 export const pachinkoNames = {
     availableGirls: `Available ${gameConfig.girl}s: `
 }
