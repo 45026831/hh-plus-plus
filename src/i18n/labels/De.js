@@ -40,9 +40,9 @@ export const seasonStats = {
     defeats: 'Niederlagen',
     mojoWon: 'Gewonnenes Mojo',
     mojoLost: 'Verlorenes Mojo',
-    mojoWonAvg: 'Im Mittel gewonnenes Mojo',
-    mojoLostAvg: 'Im Mittel verlorenes Mojo',
-    mojoAvg: 'Globales mittleres Mojo',
+    mojoWonAvg: 'Durchschnittlich gewonnenes Mojo',
+    mojoLostAvg: 'Durchschnittlich verlorenes Mojo',
+    mojoAvg: 'Insgesamt durchschnittliches Mojo',
 }
 
 export const pachinkoNames = {
