@@ -50,11 +50,12 @@ class PachinkoNamesModule extends HHModule {
         const type = $('.playing-zone').attr('type-panel')
         const girlList = this.girlLists[type]
 
+        const isCxH = Helpers.isCxH()
         const $panelHtml = Helpers.$(`
-            <div class="availableGirls">
+            <div class="availableGirls ${isCxH ? 'rarity-styling' : ''}">
                 <div class="scrollArea">
                     ${girlList.length ? this.label('availableGirls') : ''}
-                    ${girlList.map(girl => girl ? `<a class="availableGirl" href="${Helpers.getWikiLink(girl.name)}" >${girl.name.replace(' ', ' ')}</a>` : '<span class="unknownGirl">Unknown</a>').join(', ')}
+                    ${girlList.map(girl => girl ? !isCxH  ? `<a class="availableGirl" href="${Helpers.getWikiLink(girl.name)}" >${girl.name.replace(' ', ' ')}</a>` : `<span class="${girl.rarity}-text">${girl.name.replace(' ', ' ')}</span>` : '<span class="unknownGirl">Unknown</a>').join(', ')}
                 </div>
             </div>
         `)

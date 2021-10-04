@@ -65,10 +65,12 @@ class GirlDictionaryCollector {
             const name = girl['Name']
             const shards = (girl['shards'] !== undefined) ? girl['shards'] : 100
             const girlClass = parseInt(girl['class'], 10)
+            const rarity = girl.rarity
             const girlData = {
                 name,
                 shards,
-                class: girlClass
+                class: girlClass,
+                rarity
             }
             if (name) {
                 girlDictionary.set(girlId, girlData)
@@ -78,12 +80,12 @@ class GirlDictionaryCollector {
     }
 
     static collectFromEventWidget () {
-        eventGirls.forEach(({id_girl: id, name, shards, class: girlClass}) => {
+        eventGirls.forEach(({id_girl: id, name, shards, class: girlClass, rarity}) => {
             if (shards === undefined) {
                 shards = 100
             }
             if (name) {
-                girlDictionary.set(id, {name, shards, class: parseInt(girlClass, 10)})
+                girlDictionary.set(id, {name, shards, class: parseInt(girlClass, 10), rarity})
                 updated = true
             }
         })
