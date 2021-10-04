@@ -1,5 +1,4 @@
 import Helpers from '../../common/Helpers'
-const{isGH, isCxH} = Helpers
 const gameConfigs = {
     HH: {
         girl: 'girl',
@@ -20,7 +19,7 @@ const gameConfigs = {
         flower: 'jewel'
     }
 }
-const gameConfig = isGH() ? gameConfigs.GH : isCxH() ? gameConfigs.CxH : gameConfigs.HH
+const gameConfig = gameConfigs[Helpers.getGameKey()]
 
 export const config = {
     refresh: 'Home screen refresh',
