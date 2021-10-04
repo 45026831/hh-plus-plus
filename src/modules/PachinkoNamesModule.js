@@ -52,10 +52,10 @@ class PachinkoNamesModule extends HHModule {
 
         const isCxH = Helpers.isCxH()
         const $panelHtml = Helpers.$(`
-            <div class="availableGirls ${isCxH ? 'rarity-styling' : ''}">
+            <div class="availableGirls rarity-styling">
                 <div class="scrollArea">
                     ${girlList.length ? this.label('availableGirls') : ''}
-                    ${girlList.map(girl => girl ? !isCxH  ? `<a class="availableGirl" href="${Helpers.getWikiLink(girl.name)}" >${girl.name.replace(' ', ' ')}</a>` : `<span class="${girl.rarity}-text">${girl.name.replace(' ', ' ')}</span>` : '<span class="unknownGirl">Unknown</a>').join(', ')}
+                    ${girlList.map(girl => girl ? `<${isCxH ? 'span' : `a href="${Helpers.getWikiLink(girl.name)}"`} class="availableGirl ${girl.rarity}-text">${girl.name.replace(' ', ' ')}</${isCxH ? 'span': 'a'}>` : '<span class="unknownGirl">Unknown</a>').join(', ')}
                 </div>
             </div>
         `)
@@ -68,19 +68,19 @@ class PachinkoNamesModule extends HHModule {
 
     injectCSS () {
         this.insertRule(`
-            .availableGirl {
-                color: rgb(208, 132, 103);
+            a.availableGirl {
                 text-decoration: none;
             }
         `)
         this.insertRule(`
-            .availableGirl:hover {
+            a.availableGirl:hover {
                 color: #fff;
             }
         `)
         this.insertRule(`
             .availableGirls {
                 font-size: 12px;
+                line-height: 16px;
                 text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
                 overflow: hidden;
                 height: 82px;
