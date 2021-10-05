@@ -150,11 +150,12 @@ class Config {
             </div>
             ${this.groups.map(({key: groupKey}) => `
             <div class="group-panel" rel="${groupKey}">
+                <div class="panel-contents">
                     ${this.modules.filter(({group}) => group === groupKey).map(({configSchema}) => {
         const baseKey = this.getConfigKey(groupKey, configSchema.baseKey)
         const baseVal = this.config[baseKey]
         return `
-                <div class="config-setting ${baseVal ? 'enabled' : ''}" rel="${baseKey}">
+                <div class="config-setting ${baseVal ? 'enabled' : ''} ${configSchema.subSettings ? 'has-subsettings' : ''}" rel="${baseKey}">
                     <label class="base-setting">
                         <span>${configSchema.label}</span>
                         <input type="checkbox" name="${baseKey}" ${baseVal ? 'checked="checked"' : ''} />
@@ -173,6 +174,7 @@ class Config {
                     </div>` : ''}
                 </div>`
     }).join('')}
+                </div>
             </div>`
     ).join('')}`
         )
@@ -299,19 +301,25 @@ class Config {
             .hh-plus-plus-config-panel .group-panel {
                 display: none;
                 position: absolute;
-                top: 44px;
-                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+                top: 54px;
                 width: 889px;
-                height: 415px;
-                overflow-y: auto;
+                height: 405px;
+            }
+        `)
+        sheet.insertRule(`
+            .hh-plus-plus-config-panel .group-panel .panel-contents {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+                width: 100%;
+                height: auto;
                 padding-left: 10px;
                 padding-right: 10px;
-                gap: 5px;
+                gap: 10px;
             }
         `)
         sheet.insertRule(`
             .hh-plus-plus-config-panel .group-panel.shown {
-                display: grid;
+                display: block;
             }
         `)
 
@@ -321,9 +329,13 @@ class Config {
                 border-radius: 6px;
                 border: 1px solid #aaa;
                 background: ${this.colors.homeDark};
-                max-height: 72px;
                 padding: 7px;
-                font-size: 12px;
+                font-size: 14px;
+            }
+        `)
+        sheet.insertRule(`
+            .hh-plus-plus-config-panel .config-setting.has-subsettings {
+                grid-row-end: span 2;
             }
         `)
         sheet.insertRule(`
@@ -344,8 +356,8 @@ class Config {
         `)
         sheet.insertRule(`
             .hh-plus-plus-config-panel .sub-settings {
-                font-size: 11px;
-                margin-top: 5px;
+                font-size: 12px;
+                margin-top: 8px;
             }
         `)
         sheet.insertRule(`

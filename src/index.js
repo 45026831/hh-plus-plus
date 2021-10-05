@@ -8,6 +8,7 @@ import Helpers from './common/Helpers'
 import Config from './config'
 import {
     BattleEndstateModule,
+    BetterXPAndMoneyModule,
     ContestRewardsModule,
     FightAVillainModule,
     MissionsBackgroundStyleTweak,
@@ -34,6 +35,7 @@ const runScript = () => {
         name: `${Helpers.getGameKey()}++ Core`
     })
     config.registerModule(new FightAVillainModule())
+    config.registerModule(new BetterXPAndMoneyModule())
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())

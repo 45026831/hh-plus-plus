@@ -74,6 +74,10 @@ export const villain = {
     fallback: 'World {{world}} villain'
 }
 
+export const xpMoney = {
+    xp: 'Next: {{xp}} XP'
+}
+
 export const seasonStats = {
     fights: 'Fights',
     victories: 'Victories',
