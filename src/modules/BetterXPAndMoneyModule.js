@@ -78,6 +78,16 @@ class BetterXPAndMoneyModule extends HHModule {
                 margin-left: -1px;
             }
         `)
+        this.insertRule(
+            Helpers.mediaMobile(`
+                .scriptMoneyContainer {
+                    position: absolute;
+                    top: 2px;
+                    left: 40px;
+                    font-size: 16px;
+                }
+            `)
+        )
     }
 
     insertRule (rule) {
