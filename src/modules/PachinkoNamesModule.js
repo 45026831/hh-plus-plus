@@ -55,7 +55,7 @@ class PachinkoNamesModule extends HHModule {
             <div class="availableGirls rarity-styling">
                 <div class="scrollArea">
                     ${girlList.length ? this.label('availableGirls') : ''}
-                    ${girlList.map(girl => girl ? `<${isCxH ? 'span' : `a href="${Helpers.getWikiLink(girl.name)}"`} class="availableGirl ${girl.rarity}-text">${girl.name.replace(' ', ' ')}</${isCxH ? 'span': 'a'}>` : '<span class="unknownGirl">Unknown</a>').join(', ')}
+                    ${girlList.map(girl => girl ? `<${isCxH ? 'span' : `a href="${Helpers.getWikiLink(girl.name)}" target="_blank"`} class="availableGirl ${girl.rarity}-text">${girl.name.replace(' ', ' ')}</${isCxH ? 'span': 'a'}>` : '<span class="unknownGirl">Unknown</a>').join(', ')}
                 </div>
             </div>
         `)
