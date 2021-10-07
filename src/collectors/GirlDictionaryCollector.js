@@ -1,4 +1,4 @@
-/* global girlsDataList, eventGirls */
+/* global girlsDataList, eventGirls, clubChampionsData */
 import Helpers from '../common/Helpers'
 
 let girlDictionary
@@ -36,6 +36,9 @@ class GirlDictionaryCollector {
         }
         if (Helpers.isCurrentPage('event')) {
             GirlDictionaryCollector.collectFromEventWidget()
+        }
+        if (Helpers.isCurrentPage('clubs')) {
+            GirlDictionaryCollector.collectFromClubChamp()
         }
         if (Helpers.isCurrentPage('battle')) {
             GirlDictionaryCollector.collectFromBattleResult()
@@ -89,6 +92,23 @@ class GirlDictionaryCollector {
                 updated = true
             }
         })
+    }
+
+    static collectFromClubChamp () {
+        if (!window.clubChampionsData) {
+            return
+        }
+
+        const {shards: rewardShards} = clubChampionsData.reward
+
+        if (!rewardShards || !rewardShards.length) {
+            return
+        }
+
+        const {id_girl, name, previous_value: shards, girl_class, rarity} = rewardShards[0]
+
+        girlDictionary.set(id_girl, {name, shards, class: parseInt(girl_class, 10), rarity})
+        updated = true
     }
 
     static collectFromBattleResult () {
