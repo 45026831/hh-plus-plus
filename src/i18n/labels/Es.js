@@ -35,6 +35,26 @@ export const villain = {
     fallback: 'Mondo {{world}} nemico'
 }
 
+export const market = {
+    pointsUnbought: 'Puntos de estatus necesarios para maximo',
+    moneyUnspent: 'Dinero necesario para maximo',
+    moneySpent: 'Dinero usado en el mercado',
+    pointsLevel: 'Puntos de estatus de nivel',
+    pointsBought: 'Puntos comprados del mercado',
+    pointsEquip: 'Puntos de estatus de equipamiento',
+    pointsBooster: 'Puntos de estatus de los potenciadores',
+    pointsClub: 'Puntos de estatus del club',
+    boosterItem: 'potenciadores',
+    xpItem: 'libros',
+    xpCurrency: 'XP',
+    affItem: 'regalos',
+    affCurrency: 'afecto',
+    equips: 'equipamiento',
+    youOwn: 'Tienes <b>{{count}}</b> {{type}}.',
+    youCanSell: 'Puedes vender todo por <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
+    youCanGive: 'Puedes dar un total de <b>{{value}}</b> {{currency}}.'
+}
+
 export const seasonStats = {
     fights: 'Peleas',
     victories: 'Victorias',

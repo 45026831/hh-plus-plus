@@ -60,11 +60,11 @@ class BetterXPAndMoneyModule extends HHModule {
 
         if (money >= 1e6) {
             displayAmount = I18n.nRounding(money, 3, 0)
+            this.$moneyContainer.text(displayAmount).attr('hh_title', thousandSeparatedMoney)
         } else {
-            displayAmount = thousandSeparatedMoney
+            this.$moneyContainer.text($('[hero=soft_currency]').text()).attr('hh_title', thousandSeparatedMoney)
         }
 
-        this.$moneyContainer.text(displayAmount).attr('hh_title', thousandSeparatedMoney)
     }
 
     injectCSS () {

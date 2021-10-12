@@ -1,6 +1,7 @@
 import {
     EventVillainsCollector,
     GirlDictionaryCollector,
+    MarketInfoCollector,
     SeasonStatsCollector,
     TeamsCollector
 } from './collectors'
@@ -11,6 +12,7 @@ import {
     BetterXPAndMoneyModule,
     ContestRewardsModule,
     FightAVillainModule,
+    MarketInfoModule,
     MissionsBackgroundStyleTweak,
     MoneyAnimationStyleTweak,
     PachinkoNamesModule,
@@ -25,7 +27,7 @@ const runScript = () => {
     TeamsCollector.collect()
     EventVillainsCollector.collect()
     SeasonStatsCollector.collect()
-    // TODO LeaguePointsCollector
+    MarketInfoCollector.collect()
 
     // configurable modules
 
@@ -36,6 +38,7 @@ const runScript = () => {
     })
     config.registerModule(new FightAVillainModule())
     config.registerModule(new BetterXPAndMoneyModule())
+    config.registerModule(new MarketInfoModule())
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())

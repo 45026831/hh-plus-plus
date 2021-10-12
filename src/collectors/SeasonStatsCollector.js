@@ -9,7 +9,7 @@ const DEFAULT_STATS = {
     lost_mojo: 0,
 }
 
-/* global season_sec_untill_event_end */
+/* global season_sec_untill_event_end, server_now_ts */
 class SeasonStatsCollector {
     static collect () {
         SeasonStatsCollector.migrate()
@@ -60,7 +60,7 @@ class SeasonStatsCollector {
     }
 
     static rollOverStats () {
-        const now = Math.floor(new Date().getTime() / 1000)
+        const now = server_now_ts
         let seasonEndTime = parseInt(Helpers.lsGetRaw(lsKeys.SEASON_END_TIME) || '0', 10)
 
         if (now > seasonEndTime) {

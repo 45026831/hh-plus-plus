@@ -34,6 +34,26 @@ export const villain = {
     fallback: 'Monde {{world}} troll'
 }
 
+export const market = {
+    pointsUnbought: 'Nombre de points requis pour max',
+    moneyUnspent: 'Argent demandé pour max',
+    moneySpent: 'Argent dépensé dans le marché',
+    pointsLevel: 'Points donnés par ton niveau',
+    pointsBought: 'Points achetés au marché',
+    pointsEquip: 'Points donnés par ton équipement',
+    pointsBooster: 'Points donnés par tes boosters',
+    pointsClub: 'Points donnés par ton club',
+    boosterItem: 'boosters',
+    xpItem: 'livres',
+    xpCurrency: 'XP',
+    affItem: 'cadeaux',
+    affCurrency: 'affection',
+    equips: 'équipements',
+    youOwn: 'Tu possèdes <b>{{count}}</b> {{type}}.',
+    youCanSell: 'Tu peux tout vendre pour <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
+    youCanGive: 'Tu peux donner un total de <b>{{value}}</b> {{currency}}.'
+}
+
 export const seasonStats = {
     fights: 'Combats',
     victories: 'Victoires',

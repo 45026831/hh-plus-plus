@@ -34,6 +34,26 @@ export const villain = {
     pandorawitch: 'Pandora Hexe',
 }
 
+export const market = {
+    pointsUnbought: 'benötigte Statuspunkte bis Maximum',
+    moneyUnspent: 'nötiges Geld bis Maximum',
+    moneySpent: 'bisher ausgegeben',
+    pointsLevel: 'Statuspunkte durch Heldenlevel',
+    pointsBought: 'gekaufte Statuspunkte',
+    pointsEquip: 'Statuspunkte durch Ausrüstung',
+    pointsBooster: 'Statuspunkte durch Booster',
+    pointsClub: 'Statuspunkte durch Club-Boni',
+    boosterItem: 'Booster',
+    xpItem: 'Bücher',
+    xpCurrency: 'XP',
+    affItem: 'Geschenke',
+    affCurrency: 'Zuneigung',
+    equips: 'Ausrüstungen',
+    youOwn: 'Du besitzt <b>{{count}}</b> {{type}}.',
+    youCanSell: 'Du kannst alles verkaufen für <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
+    youCanGive: 'Du kannst ingesamt <b>{{value}}</b> {{currency}} vergeben.'
+}
+
 export const seasonStats = {
     fights: 'Kämpfe',
     victories: 'Siege',

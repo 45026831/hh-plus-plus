@@ -78,6 +78,26 @@ export const xpMoney = {
     xp: 'Next: {{xp}} XP'
 }
 
+export const market = {
+    pointsUnbought: 'Stat points buyable to max',
+    moneyUnspent: 'Money required to max',
+    moneySpent: 'Money spent in market',
+    pointsLevel: 'Level-based stat points',
+    pointsBought: 'Market-bought stat points',
+    pointsEquip: 'Equipments stat points',
+    pointsBooster: 'Boosters stat points',
+    pointsClub: 'Club bonus stat points',
+    boosterItem: 'boosters',
+    xpItem: 'books',
+    xpCurrency: 'XP',
+    affItem: 'gifts',
+    affCurrency: 'affection',
+    equips: 'equips',
+    youOwn: 'You own <b>{{count}}</b> {{type}}.',
+    youCanSell: 'You can sell everything for <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
+    youCanGive: 'You can give a total of <b>{{value}}</b> {{currency}}.'
+}
+
 export const seasonStats = {
     fights: 'Fights',
     victories: 'Victories',

@@ -235,29 +235,51 @@ class Config {
 
         sheet.insertRule(`
             .hh-plus-plus-config-button {
-                height: 35px;
-                width: 35px;
                 position: absolute;
-                top: 165px;
                 right: 15px;
                 cursor: pointer;
                 background: url(${this.gameIcon});
                 background-size: contain;
             }
         `)
+        sheet.insertRule(Helpers.mediaDesktop(`
+            .hh-plus-plus-config-button {
+                height: 35px;
+                width: 35px;
+                top: 46px;
+            }
+            `))
+        sheet.insertRule(Helpers.mediaMobile(`
+            .hh-plus-plus-config-button {
+                height: 64px;
+                width: 64px;
+                top: 85px;
+            }
+        `))
         sheet.insertRule(`
             .hh-plus-plus-config-button:after {
                 content: "++";
                 position: absolute;
-                font-size: 26px;
-                height: 20px;
-                line-height: 20px;
                 width: auto;
                 bottom: -3px;
                 right: -5px;
                 text-shadow: rgb(0 0 0) 1px 1px 0px, rgb(0 0 0) -1px 1px 0px, rgb(0 0 0) -1px -1px 0px, rgb(0 0 0) 1px -1px 0px;
             }
         `)
+        sheet.insertRule(Helpers.mediaDesktop(`
+            .hh-plus-plus-config-button:after {
+                font-size: 26px;
+                height: 20px;
+                line-height: 20px;
+            }
+        `))
+        sheet.insertRule(Helpers.mediaMobile(`
+            .hh-plus-plus-config-button:after {
+                font-size: 46px;
+                height: 40px;
+                line-height: 46px;
+            }
+        `))
 
         // (1026 - 900) / 2 = 63
         sheet.insertRule(`
