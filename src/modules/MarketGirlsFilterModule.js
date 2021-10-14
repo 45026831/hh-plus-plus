@@ -221,7 +221,7 @@ class MarketGirlsFilterModule extends HHModule {
                     } else {
                         const $grade = $(girl.Graded2)
                         const affectionCategory = `${$grade.length}`
-                        const affectionLvl = `${$grade.filter('g:not(.grey)').length}`
+                        const affectionLvl = `${$grade.filter('g:not(.grey):not(.green)').length}`
 
                         const matchesClass = (girl.class === sorterClass) || (sorterClass === 'all')
                         const matchesRarity = (girl.rarity === sorterRarity) || (sorterRarity === 'all')
