@@ -27,7 +27,8 @@ export const config = {
     villain_tiers: `Show tiers with ${gameConfig.girl}s`,
     xpMoney : 'Better XP / Money',
     market: 'Market information',
-    marketFilter: `${gameConfig.Girl}s filter at the market`,
+    marketGirlsFilter: `${gameConfig.Girl}s filter at the market`,
+    marketEquipsFilter: 'Equips filter at the market',
     marketXPAff: 'XP and affection at the market',
     sortArmorItems: 'Button to sort armor items by rarity',
     hideSellButton: 'Button to hide "Sell" button',
@@ -96,6 +97,26 @@ export const market = {
     youOwn: 'You own <b>{{count}}</b> {{type}}.',
     youCanSell: 'You can sell everything for <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'You can give a total of <b>{{value}}</b> {{currency}}.'
+}
+
+export const marketGirlsFilter = {
+    all: 'All',
+    searchedName: 'Search',
+    girlName: 'Girl name',
+    searchedClass: 'Class',
+    searchedRarity: 'Rarity',
+    levelRange: 'Level range',
+    searchedAffCategory: 'Affection category',
+    searchedAffLevel: 'Affection level',
+    grade0: '0 stars',
+    grade1: '1 star',
+    grade2: '2 stars',
+    grade3: '3 stars',
+    grade4: '4 stars',
+    grade5: '5 stars',
+    grade6: '6 stars',
+    team: 'Team',
+    visitTeams: 'Visit <a href="../teams.html">Teams</a> first.'
 }
 
 export const seasonStats = {

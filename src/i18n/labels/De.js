@@ -35,11 +35,11 @@ export const villain = {
 }
 
 export const market = {
-    pointsUnbought: 'benötigte Statuspunkte bis Maximum',
-    moneyUnspent: 'nötiges Geld bis Maximum',
-    moneySpent: 'bisher ausgegeben',
+    pointsUnbought: 'Benötigte Statuspunkte bis Maximum',
+    moneyUnspent: 'Nötiges Geld bis Maximum',
+    moneySpent: 'Bisher ausgegeben',
     pointsLevel: 'Statuspunkte durch Heldenlevel',
-    pointsBought: 'gekaufte Statuspunkte',
+    pointsBought: 'Gekaufte Statuspunkte',
     pointsEquip: 'Statuspunkte durch Ausrüstung',
     pointsBooster: 'Statuspunkte durch Booster',
     pointsClub: 'Statuspunkte durch Club-Boni',
@@ -52,6 +52,26 @@ export const market = {
     youOwn: 'Du besitzt <b>{{count}}</b> {{type}}.',
     youCanSell: 'Du kannst alles verkaufen für <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'Du kannst ingesamt <b>{{value}}</b> {{currency}} vergeben.'
+}
+
+export const marketGirlsFilter = {
+    all: 'Alle',
+    searchedName: 'Name',
+    girlName: 'Name',
+    searchedClass: 'Klasse',
+    searchedRarity: 'Seltenheit',
+    levelRange: 'Level',
+    searchedAffCategory: 'Maximale Zuneigung',
+    searchedAffLevel: 'Aktuelle Zuneigung',
+    grade0: '0 Sterne',
+    grade1: '1 Stern',
+    grade2: '2 Sterne',
+    grade3: '3 Sterne',
+    grade4: '4 Sterne',
+    grade5: '5 Sterne',
+    grade6: '6 Sterne',
+    team: 'Team',
+    visitTeams: 'Besuche zuerst die <a href="../teams.html">Teams</a>.'
 }
 
 export const seasonStats = {

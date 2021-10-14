@@ -54,6 +54,26 @@ export const market = {
     youCanGive: 'Tu peux donner un total de <b>{{value}}</b> {{currency}}.'
 }
 
+export const marketGirlsFilter = {
+    all: 'Toutes',
+    searchedName: 'Nom recherché',
+    girlName: 'Nom de la fille',
+    searchedClass: 'Classe recherchée',
+    searchedRarity: 'Rareté recherchée',
+    levelRange: 'Intervalle de niveaux',
+    searchedAffCategory: 'Catégorie d\'affection recherchée',
+    searchedAffLevel: 'Niveau d\'affection recherché',
+    grade0: '0 étoile',
+    grade1: '1 étoile',
+    grade2: '2 étoiles',
+    grade3: '3 étoiles',
+    grade4: '4 étoiles',
+    grade5: '5 étoiles',
+    grade6: '6 étoiles',
+    team: 'Équipe',
+    visitTeams: 'Visiter d\'abord <a href="../teams.html">l\'équipe</a>.'
+}
+
 export const seasonStats = {
     fights: 'Combats',
     victories: 'Victoires',

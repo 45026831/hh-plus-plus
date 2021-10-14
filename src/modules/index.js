@@ -1,6 +1,7 @@
 export {default as FightAVillainModule} from './FightAVillainModule'
 export {default as BetterXPAndMoneyModule} from './BetterXPAndMoneyModule'
 export {default as MarketInfoModule} from './MarketInfoModule'
+export {default as MarketGirlsFilterModule} from './MarketGirlsFilterModule'
 export {default as SeasonStatsModule} from './SeasonStatsModule'
 export {default as PachinkoNamesModule} from './PachinkoNamesModule'
 export {default as ContestRewardsModule} from './ContestRewardsModule'
