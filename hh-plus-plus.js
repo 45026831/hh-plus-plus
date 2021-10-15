@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.35.12
+// @version         0.36.0
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -248,6 +248,7 @@ const texts = {
         searched_name : 'Search',
         girl_name: `${gameConfig.Girl} name`,
         searched_class: 'Class',
+        searched_element: 'Element',
         searched_rarity: 'Rarity',
         team_number: 'Team number',
         all: 'All',
@@ -2065,6 +2066,8 @@ function moduleMarket() {
 
 function moduleMarketFilter() {
     if (CurrentPage.includes('shop')) {
+        const ELEMENTS_ENABLED = !!$girl.data('g').elementData
+
         let container = $('.g1>div');
 
         let cur_id = parseInt(container.find('.number.selected').text().split('/')[0]);
@@ -2145,10 +2148,16 @@ function moduleMarketFilter() {
             let $girl = window.$girl;
 
             if ($girl.attr('class').indexOf('girl') != -1) {
-                $("#girls_list>.level_target_squared>div>div").attr("chars", $girl.data("g")["level"].length);
-                $("#girls_list>.level_target_squared>div>div").text($girl.data("g")["level"]);
-                $("#girls_list>h3").text($girl.data("g")["Name"]);
-                $("#girls_list>.icon").attr("carac", $girl.data("g")["class"]);
+                const girlData = $girl.data('g')
+                const { level, Name, elementData, class: girlClass } = girlData
+                $("#girls_list>.level_target_squared>div>div").attr("chars", level.length);
+                $("#girls_list>.level_target_squared>div>div").text(level);
+                $("#girls_list>h3").text(Name);
+                if (elementData) {
+                    $("#girls_list>.icon").attr("src", `${IMAGES_URL}/pictures/girls_elements/${GT.design[`${elementData.type}_flavor_element`]}.png`);
+                } else {
+                    $("#girls_list>.icon").attr("carac", girlClass);
+                }
             }
         }
 
@@ -2189,13 +2198,20 @@ function moduleMarketFilter() {
 
                 var totalHTML = `
                     <div style="position:relative">
-                        <div id="arena_filter_box" class="form-wrapper" style="position: absolute; left: -215px; bottom: -150px; width: 200px; height: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">
+                        <div id="arena_filter_box" class="form-wrapper" style="position: absolute; left: -215px; top: -224px; width: 200px; height: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">
                             ${buildTextInput({id: 'sort_name', label: labels.searched_name, placeholder: labels.girl_name})}
                             ${buildSelectInput({
                                 id: 'sort_class',
                                 label: labels.searched_class,
                                 options: ['hardcore', 'charm', 'knowhow'].map(option => ({label: labels[option], value: option}))
                             })}
+                            ${ELEMENTS_ENABLED ?
+                                buildSelectInput({
+                                    id: 'sort_element',
+                                    label: label('searched_element'),
+                                    options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))
+                                })
+                                : ''}
                             ${buildSelectInput({
                                 id: 'sort_rarity',
                                 label: labels.searched_rarity,
@@ -2268,6 +2284,7 @@ function moduleMarketFilter() {
             function filterGirls(form, girlsData, useTeam) {
                 let sorterClass = form.find("#sort_class").prop('selectedIndex');
                 let sorterRarity = form.find("#sort_rarity").val();
+                let sorterElement = form.find("#sort_element").val();
                 let sorterAffCategory = form.find("#sort_aff_category").val();
                 let sorterAffLvl = form.find("#sort_aff_lvl").val();
                 let sorterName = form.find("#sort_name").val();
@@ -2294,6 +2311,10 @@ function moduleMarketFilter() {
                         let affectionLvl = affectionLvlStr.length-1;
 
                         let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
+                        let matchesElement = true
+                        if(ELEMENTS_ENABLED) {
+                            matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
+                        }
                         let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
                         let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
                         let matchesAffLvl = (affectionLvl == sorterAffLvl) || (sorterAffLvl == 'all');
@@ -2301,7 +2322,7 @@ function moduleMarketFilter() {
                         let matchesLevel =  (sorterRange[0] == '' || girl.level >= parseInt(sorterRange[0]) )
                         && (sorterRange[1] == '' || sorterRange[1] === undefined || girl.level <= parseInt(sorterRange[1]) );
 
-                        if(matchesClass && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
+                        if(matchesClass && matchesElement && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
                             nav.before(allGirls[i]);
                         } else {
                             allGirls[i].detach();
@@ -2335,6 +2356,9 @@ function moduleMarketFilter() {
                 }
 
                 filterBox.find("#sort_class") .on('change', sortGirls);
+                if(ELEMENTS_ENABLED) {
+                    filterBox.find("#sort_element").on('change', sortGirls);
+                }
                 filterBox.find("#sort_rarity").on('change', sortGirls);
                 filterBox.find("#sort_aff_category").on('change', sortGirls);
                 filterBox.find("#sort_aff_lvl").on('change', sortGirls);
@@ -6401,6 +6425,7 @@ function moduleTeamsFilter() {
     var arenaGirls = undefined;
     var girlsData = undefined;
     var totalTooltips = 80;
+    const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
 
     $(document).ready(function() {
         if (CurrentPage.indexOf('edit-team') != -1) {
@@ -6458,6 +6483,9 @@ function moduleTeamsFilter() {
             $("#arena_filter_box").css('display', currentBoxDisplay == "none" ? 'block' : 'none');
         });
         $("#filter_class").on('change', filterGirls);
+        if (ELEMENTS_ENABLED) {
+            $("#filter_element").on('change', filterGirls)
+        }
         $("#filter_rarity").on('change', filterGirls);
         $("#filter_name").get(0).oninput = filterGirls;
         $("#filter_blessed_attributes").on('change', filterGirls);
@@ -6467,6 +6495,7 @@ function moduleTeamsFilter() {
 
     function filterGirls() {
         var filterClass = $("#filter_class").get(0).selectedIndex;
+        var filterElement = $("#filter_element").get(0).value;
         var filterRarity = $("#filter_rarity").get(0).value;
         var filterName = $("#filter_name").get(0).value;
         var nameRegex = new RegExp(filterName, "i");
@@ -6476,6 +6505,11 @@ function moduleTeamsFilter() {
 
         var girlsFiltered = $.map(girlsData, function(girl, index) {
             var matchesClass = (girl.class == filterClass) || (filterClass == 0);
+            var matchesElement = true
+            if (ELEMENTS_ENABLED) {
+                console.log('elements', girl.elementData.type, filterElement)
+                matchesElement = (girl.elementData.type === filterElement) || filterElement === 'all'
+            }
             var matchesRarity = (girl.rarity == filterRarity) || (filterRarity == 'all');
             var matchesName = (girl.Name.search(nameRegex) > -1);
             var matchesBlessedAttributes;
@@ -6499,7 +6533,7 @@ function moduleTeamsFilter() {
             let matchesAffCategory = (affectionCategory == filterAffCategory) || (filterAffCategory == 'all');
             let matchesAffLvl = (affectionLvl == filterAffLvl) || (filterAffLvl == 'all');
 
-            return (matchesClass && matchesRarity && matchesName && matchesBlessedAttributes && matchesAffCategory && matchesAffLvl) ? index : null;
+            return (matchesClass && matchesElement && matchesRarity && matchesName && matchesBlessedAttributes && matchesAffCategory && matchesAffLvl) ? index : null;
         });
 
         $.each(arenaGirls, function(index, girlElem) {
@@ -6535,6 +6569,15 @@ function moduleTeamsFilter() {
             + '<select name="filter_class" id="filter_class" icon="down-arrow">'
             + '<option value="all" selected="selected">' + texts[lang].all + '</option><option value="hardcore">' + texts[lang].hardcore + '</option><option value="charm">' + texts[lang].charm + '</option><option value="knowhow">' + texts[lang].knowhow + '</option>'
             + '</select></div></div>';
+
+        if (ELEMENTS_ENABLED) {
+            totalHTML += '<div class="form-control"><div class="select-group">'
+                + '<label class="head-group" for="filter_element">' + label('searched_element') + '</label>'
+                + '<select name="filter_element" id="filter_element" icon="down-arrow">'
+                + '<option value="all" selected="selected">' + texts[lang].all + '</option>'
+                + ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => `<option value="${option}">${GT.design[`${option}_flavor_element`]}</option>`).join('')
+                + '</select></div></div>';
+        }
 
         totalHTML += '<div class="form-control"><div class="select-group">'
             + '<label class="head-group" for="filter_rarity">' + texts[lang].searched_rarity + '</label>'
@@ -7330,7 +7373,7 @@ function moduleMissionsBackground() {
 function moduleBattleEndstate() {
     if(CurrentPage.includes("battle")) {
         $(document).ajaxComplete(function(evt, xhr, opt) {
-            if(~opt.data.search(/action=do_(league|season|troll)_battles/i)) {
+            if(~opt.data.search(/action=do_(league|season|troll|pantheon)_battles/i)) {
                 if(!xhr.responseText.length)
                     return;
                 const respBattleData = JSON.parse(xhr.responseText);
