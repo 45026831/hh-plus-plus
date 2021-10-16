@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.36.0
+// @version         0.36.1
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -6495,7 +6495,10 @@ function moduleTeamsFilter() {
 
     function filterGirls() {
         var filterClass = $("#filter_class").get(0).selectedIndex;
-        var filterElement = $("#filter_element").get(0).value;
+        var filterElement = 'all'
+        if (ELEMENTS_ENABLED) {
+            filterElement = $("#filter_element").get(0).value;
+        }
         var filterRarity = $("#filter_rarity").get(0).value;
         var filterName = $("#filter_name").get(0).value;
         var nameRegex = new RegExp(filterName, "i");
@@ -6507,7 +6510,6 @@ function moduleTeamsFilter() {
             var matchesClass = (girl.class == filterClass) || (filterClass == 0);
             var matchesElement = true
             if (ELEMENTS_ENABLED) {
-                console.log('elements', girl.elementData.type, filterElement)
                 matchesElement = (girl.elementData.type === filterElement) || filterElement === 'all'
             }
             var matchesRarity = (girl.rarity == filterRarity) || (filterRarity == 'all');
@@ -6822,7 +6824,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
         })
 
         if (CurrentPage.indexOf('troll-pre-battle') != -1) {
-            observer.observe($('.page-pre_battle')[0], {
+            observer.observe($('.page-pre_battle, .page-troll-pre-battle')[0], {
                 childList: true
                 , subtree: true
                 , attributes: false
