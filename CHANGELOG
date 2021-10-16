@@ -1,3 +1,4 @@
+0.36.2: Merging PoP nav button positions from Tom208's version of the script.
 0.36.1: Fixing missing shards on troll pre-battle. Fixing bug that broke teams filter when elements not present.
 0.36.0: Adding elements support for market and teams filters, adding pantheon support for battle endstate.
 0.35.12: Removing now-defunct Old PoA view option as the page has been removed from the game.

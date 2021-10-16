@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.36.1
+// @version         0.36.2
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -7036,15 +7036,15 @@ if (window.location.href.includes('activities.html?tab=pop&index')) {
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
                      + '#previous_pop {'
                      + 'position: absolute;'
-                     + 'top: 63px;'
-                     + 'left: 500px;}}'
+                     + 'bottom: 11px;'
+                     + 'right: 273px;}}'
                     );
 
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
                      + '#previous_pop {'
                      + 'position: absolute;'
-                     + 'top: 80px;'
-                     + 'left: 620px;}}'
+                     + 'bottom: 21px;'
+                     + 'right: 280px;}}'
                     );
 
     sheet.insertRule('#previous_pop_img {'
@@ -7063,15 +7063,15 @@ if (window.location.href.includes('activities.html?tab=pop&index')) {
     sheet.insertRule('@media only screen and (min-width: 1026px) {'
                      + '#next_pop {'
                      + 'position: absolute;'
-                     + 'top: 63px;'
-                     + 'left: 580px;}}'
+                     + 'bottom: 11px;'
+                     + 'right: 15px;}}'
                     );
 
     sheet.insertRule('@media only screen and (max-width: 1025px) {'
                      + '#next_pop {'
                      + 'position: absolute;'
-                     + 'top: 80px;'
-                     + 'left: 700px;}}'
+                     + 'bottom: 21px;'
+                     + 'right: 8px;}}'
                     );
 
     sheet.insertRule('#next_pop_img {'
