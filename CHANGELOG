@@ -1,3 +1,4 @@
+0.36.4: Fixing bug where league sim result was covering element icons, so tooltips couldn't receive hover events.
 0.36.3: Adding battle sim to pantheon. Restyling sim result on battle and league.
 0.36.2: Merging PoP nav button positions from Tom208's version of the script.
 0.36.1: Fixing missing shards on troll pre-battle. Fixing bug that broke teams filter when elements not present.
