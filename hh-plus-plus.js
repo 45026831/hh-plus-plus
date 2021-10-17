@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.36.2
+// @version         0.36.3
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -93,6 +93,7 @@ const classRelationships = {
 };
 
 const DST = true;
+const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
 
 const mediaMobile = '@media only screen and (max-width: 1025px)';
 const mediaDesktop = '@media only screen and (min-width: 1026px)';
@@ -1111,7 +1112,7 @@ if (loadSetting('simFight')) {
         moduleSim();
     if (CurrentPage.indexOf('season-arena') != -1)
         moduleSeasonSim();
-    if (window.location.href.indexOf('/troll-pre-battle') != -1)
+    if (window.location.href.includes('/troll-pre-battle') || window.location.href.includes('/pantheon-pre-battle'))
         moduleBattleSim();
 }
 if (loadSetting('teamsFilter')) {
@@ -3999,8 +4000,9 @@ function moduleSim() {
         $('.matchRating').remove();
 
         const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
-        $('#leagues_right .average-lvl').append(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(2)}</div>`);
-        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append(`<span class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};">E[X]: ${expectedValue.toFixed(2)}</span>`);
+        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(2)}</div>`)
+        $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating);
+        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating);
     }
 
     calculatePower();
@@ -4058,9 +4060,9 @@ function moduleSim() {
     sheet.insertRule(`
         ${mediaMobile} {
             .matchRating {
-                margin-left: 20px;
+                margin-left: 75px;
                 text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
-                line-height: 5px;
+                line-height: 0px;
                 font-size: 18px;
             }
         }
@@ -4071,6 +4073,16 @@ function moduleSim() {
             text-align: center;
         }
     `);
+    if (ELEMENTS_ENABLED) {
+        sheet.insertRule(`
+            .gridWrapper {
+                margin-top: -42px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 24px;
+            }
+        `)
+    }
 }
 
 // == Helper functions for probability calculations ==
@@ -6397,7 +6409,9 @@ function moduleBattleSim() {
 
         const simu = calcWinProbability(player, opponent);
 
-        $('#opponent-panel .average-lvl').append('<div style="text-align : center; font-size : 16px" class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</div>');
+        $('#opponent-panel .average-lvl')
+            .wrap('<div class="gridWrapper"></div>')
+            .after('<div class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</div>');
     }
 
     calculatePower();
@@ -6414,6 +6428,27 @@ function moduleBattleSim() {
     sheet.insertRule('.close {'
                      + 'color: #FFA500;}'
                     );
+
+    sheet.insertRule(`
+        .gridWrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+        }
+    `)
+    sheet.insertRule(`
+        .matchRating {
+            text-align: center;
+            font-size: 16px;
+        }
+    `)
+    sheet.insertRule(`
+        #pre-battle .fighter-team .team-hexagon-container .average-lvl {
+            text-align: center;
+            margin-top: 0px;
+            line-height: 26px;
+        }
+    `)
 }
 
 /* ========================================
@@ -6425,7 +6460,6 @@ function moduleTeamsFilter() {
     var arenaGirls = undefined;
     var girlsData = undefined;
     var totalTooltips = 80;
-    const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
 
     $(document).ready(function() {
         if (CurrentPage.indexOf('edit-team') != -1) {
