@@ -1,10 +1,11 @@
 {
   "name": "hh-plus-plus",
-  "version": "0.35.6",
+  "version": "1.0.0",
   "description": "Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.",
   "private": "true",
   "scripts": {
     "build": "webpack && node ./build/prepend-meta.js",
+    "build-dev": "webpack --config webpack.dev.config.js && node ./build/prepend-meta.js",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

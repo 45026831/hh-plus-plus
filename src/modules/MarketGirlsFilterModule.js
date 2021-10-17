@@ -3,6 +3,7 @@ import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
 import filterIcon from '../assets/filter.svg'
+import Snippets from '../common/Snippets'
 const {$} = Helpers
 const MODULE_KEY = 'marketGirlsFilter'
 
@@ -110,11 +111,15 @@ class MarketGirlsFilterModule extends HHModule {
             const {$girl} = window
 
             if ($girl.attr('class').includes('girl')) {
-                const {level, Name, class: carac} = $girl.data('g')
+                const { level, Name, elementData, class: carac } = $girl.data('g')
                 $('#girls_list>.level_target_squared>div>div').attr('chars', level.length)
                 $('#girls_list>.level_target_squared>div>div').text(level)
                 $('#girls_list>h3').text(Name)
-                $('#girls_list>.icon').attr('carac', carac)
+                if (elementData) {
+                    $('#girls_list>.icon').attr('src', `${Helpers.getCDNHost()}/pictures/girls_elements/${GT.design[`${elementData.type}_flavor_element`]}.png`)
+                } else {
+                    $('#girls_list>.icon').attr('carac', carac)
+                }
             }
         }
 
@@ -133,36 +138,17 @@ class MarketGirlsFilterModule extends HHModule {
             }
 
             const createFilterBox = () => {
-                const buildTextInput = ({id, label, placeholder}) => `
-                    <div class="form-control">
-                        <div class="input-group">
-                            <label class="head-group" for="${id}">${label}</label>
-                            <input type="text" autocomplete="off" id="${id}" placeholder="${placeholder}" icon="search">
-                        </div>
-                    </div>
-                `
-                const buildSelectInput = ({id, label, options}) => `
-                    <div class="form-control">
-                        <div class="select-group">
-                            <label class="head-group" for="${id}">${label}</label>
-                            <select name="${id}" id="${id}" icon="down-arrow">
-                                <option value="all" selected="selected">${this.label('all')}</option>
-                                ${options.map(({label, value}) => `<option value="${value}">${label}</option>`).join('')}
-                            </select>
-                        </div>
-                    </div>
-                `
-
                 const affectionGradeOption = grade => ({ label: this.label(`grade${grade}`), value: grade })
                 return $(`
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
-                            ${buildTextInput({id: 'sort_name', label: this.label('searchedName'), placeholder: this.label('girlName')})}
-                            ${buildSelectInput({id: 'sort_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option}))})}
-                            ${buildSelectInput({id: 'sort_rarity', label: this.label('searchedRarity'), options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: GT.design[`girls_rarity_${option}`], value: option}))})}
-                            ${buildTextInput({id: 'sort_level', label: this.label('levelRange'), placeholder: `1-${HH_MAX_LEVEL}`})}
-                            ${buildSelectInput({id: 'sort_aff_category', label: this.label('searchedAffCategory'), options: [1,3,5,6].map(affectionGradeOption)})}
-                            ${buildSelectInput({id: 'sort_aff_lvl', label: this.label('searchedAffLevel'), options: [0,1,2,3,4,5,6].map(affectionGradeOption)})}
+                            ${Snippets.textInput({id: 'sort_name', label: this.label('searchedName'), placeholder: this.label('girlName')})}
+                            ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option}))})}
+                            ${Helpers.isElementsEnabled() ? Snippets.selectInput({id: 'sort_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))}) : ''}
+                            ${Snippets.selectInput({id: 'sort_rarity', label: this.label('searchedRarity'), options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: GT.design[`girls_rarity_${option}`], value: option}))})}
+                            ${Snippets.textInput({id: 'sort_level', label: this.label('levelRange'), placeholder: `1-${HH_MAX_LEVEL}`})}
+                            ${Snippets.selectInput({id: 'sort_aff_category', label: this.label('searchedAffCategory'), options: [1,3,5,6].map(affectionGradeOption)})}
+                            ${Snippets.selectInput({id: 'sort_aff_lvl', label: this.label('searchedAffLevel'), options: [0,1,2,3,4,5,6].map(affectionGradeOption)})}
                             <input type="button" class="blue_button_L" rel="select-team" value="${this.label('team')}" />
                         </div>
                     </div>`)
@@ -202,6 +188,7 @@ class MarketGirlsFilterModule extends HHModule {
 
             function filterGirls(form, girlsData, useTeam) {
                 const sorterClass = form.find('#sort_class').val()
+                const sorterElement = form.find('#sort_element').val()
                 const sorterRarity = form.find('#sort_rarity').val()
                 const sorterAffCategory = form.find('#sort_aff_category').val()
                 const sorterAffLvl = form.find('#sort_aff_lvl').val()
@@ -224,6 +211,10 @@ class MarketGirlsFilterModule extends HHModule {
                         const affectionLvl = `${$grade.filter('g:not(.grey):not(.green)').length}`
 
                         const matchesClass = (girl.class === sorterClass) || (sorterClass === 'all')
+                        let matchesElement = true
+                        if(Helpers.isElementsEnabled()) {
+                            matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
+                        }
                         const matchesRarity = (girl.rarity === sorterRarity) || (sorterRarity === 'all')
                         const matchesAffCategory = (affectionCategory === sorterAffCategory) || (sorterAffCategory === 'all')
                         const matchesAffLvl = (affectionLvl === sorterAffLvl) || (sorterAffLvl === 'all')
@@ -231,7 +222,7 @@ class MarketGirlsFilterModule extends HHModule {
                         const matchesLevel =  (!sorterRange[0] || girl.level >= parseInt(sorterRange[0]) )
                         && (!sorterRange[1] || girl.level <= parseInt(sorterRange[1]) )
 
-                        if(matchesClass && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
+                        if(matchesClass && matchesElement && matchesRarity && matchesName && matchesLevel && matchesAffCategory && matchesAffLvl) {
                             nav.before(allGirls[i])
                         } else {
                             allGirls[i].detach()
@@ -264,12 +255,12 @@ class MarketGirlsFilterModule extends HHModule {
                     filterGirls(filterBox, girlsData, team)
                 }
 
-                filterBox.find('#sort_class') .on('change', sortGirls)
-                filterBox.find('#sort_rarity').on('change', sortGirls)
-                filterBox.find('#sort_aff_category').on('change', sortGirls)
-                filterBox.find('#sort_aff_lvl').on('change', sortGirls)
-                filterBox.find('#sort_name')  .on('input' , sortGirls )
-                filterBox.find('#sort_level') .on('input' , sortGirls )
+                ['sort_class', 'sort_element', 'sort_rarity', 'sort_aff_category', 'sort_aff_lvl'].forEach(id => {
+                    filterBox.find(`#${id}`).on('change', sortGirls)
+                });
+                ['sort_name', 'sort_level'].forEach(id => {
+                    filterBox.find(`#${id}`).on('input' , sortGirls)
+                })
                 filterBox.find('[rel=select-team]').click(() => $('.team-selection').css('display', $('.team-selection').css('display')==='block'?'none':'block'))
                 teamsBox.find('.team-slot-container').click(function () {
                     filterGirlsWithTeam($(this).data('girl-ids'))
@@ -314,8 +305,8 @@ class MarketGirlsFilterModule extends HHModule {
         `)
 
         this.insertRule(`
-            label.girl_filter {
-                background: none;
+            #shops label.girl_filter {
+                background: transparent;
             }
         `)
         this.insertRule(`

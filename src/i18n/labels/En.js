@@ -21,6 +21,10 @@ const gameConfigs = {
 }
 const gameConfig = gameConfigs[Helpers.getGameKey()]
 
+export const common = {
+    all: 'All',
+}
+
 export const config = {
     refresh: 'Home screen refresh',
     villain: 'Fight a villain menu',
@@ -100,7 +104,7 @@ export const market = {
 }
 
 export const marketGirlsFilter = {
-    all: 'All',
+
     searchedName: 'Search',
     girlName: 'Girl name',
     searchedClass: 'Class',

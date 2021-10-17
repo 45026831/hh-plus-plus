@@ -1,4 +1,4 @@
-/* global IMAGES_URL */
+/* global IMAGES_URL, GT */
 import { lsKeys } from './Constants'
 
 let sheet
@@ -8,6 +8,7 @@ let isCxH
 let cdnHost
 let girlDictionary
 let teamsDictionary
+let elementsEnabled
 
 class Helpers {
     static getHost() {
@@ -166,6 +167,13 @@ class Helpers {
             wikiLink = `https://harem-battle.club/wiki/Harem-Heroes/HH:${name}`
         }
         return wikiLink
+    }
+
+    static isElementsEnabled () {
+        if (typeof elementsEnabled === 'undefined') {
+            elementsEnabled = !!GT.design.fire_flavor_element
+        }
+        return elementsEnabled
     }
 }
 
