@@ -1,3 +1,4 @@
+0.36.5: Updating fix from 0.36.4 to include all element icons.
 0.36.4: Fixing bug where league sim result was covering element icons, so tooltips couldn't receive hover events.
 0.36.3: Adding battle sim to pantheon. Restyling sim result on battle and league.
 0.36.2: Merging PoP nav button positions from Tom208's version of the script.
