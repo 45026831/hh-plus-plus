@@ -4,8 +4,8 @@
   "description": "Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.",
   "private": "true",
   "scripts": {
-    "build": "webpack && node ./build/prepend-meta.js",
-    "build-dev": "webpack --config webpack.dev.config.js && node ./build/prepend-meta.js",
+    "build": "webpack",
+    "build-dev": "webpack --mode=development",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -22,6 +22,7 @@
   "devDependencies": {
     "eslint": "^7.32.0",
     "moment-timezone": "^0.5.33",
+    "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.53.0",
     "webpack-cli": "^4.8.0"

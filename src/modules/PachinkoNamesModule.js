@@ -105,8 +105,7 @@ class PachinkoNamesModule extends HHModule {
         `)
         this.insertRule(`
             #playzone-replace-info .cover .pachinko_img img {
-                position: relative;
-                left: unset;
+                left: 96px;
                 margin-left: auto;
                 margin-right: auto;
                 width: 215px;

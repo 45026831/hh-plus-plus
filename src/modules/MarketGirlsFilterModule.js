@@ -4,6 +4,7 @@ import I18n from '../i18n'
 import HHModule from './HHModule'
 import filterIcon from '../assets/filter.svg'
 import Snippets from '../common/Snippets'
+import { lsKeys } from '../common/Constants'
 const {$} = Helpers
 const MODULE_KEY = 'marketGirlsFilter'
 
@@ -155,8 +156,8 @@ class MarketGirlsFilterModule extends HHModule {
             }
 
             function createTeamsBox() {
-                const bdsmTeamsJson = localStorage.getItem('bdsmTeams')
-                if (!bdsmTeamsJson) {
+                const bdsmTeams = Helpers.lsGet(lsKeys.TEAMS_DICTIONARY)
+                if (!bdsmTeams) {
                     return $(`
                     <div style="position:relative">
                         <div class="team-selection" style="display: none;">
@@ -165,7 +166,7 @@ class MarketGirlsFilterModule extends HHModule {
                         </div>
                     </div>`)
                 }
-                const {teamIds, teamsDict} = JSON.parse(bdsmTeamsJson)
+                const {teamIds, teamsDict} = bdsmTeams
                 return $(`
                 <div style="position:relative">
                     <div class="team-selection" style="display: none;">

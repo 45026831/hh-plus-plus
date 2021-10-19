@@ -26,7 +26,7 @@ class BattleEndstateModule extends HHModule {
             return
         }
 
-        Helpers.onAjaxResponse(/action=do_(league|season|troll)_battles/i, (respBattleData) => {
+        Helpers.onAjaxResponse(/action=do_(league|season|troll|pantheon)_battles/i, (respBattleData) => {
             //We already spent some combativity, let's show this to the player:
             if(Helpers.isCurrentPage('troll-battle') && ~location.search.search(/number_of_battles=\d+/i)) {
                 const nBattlesCount = parseInt(location.search.match(/number_of_battles=(\d+)/i)[1], 10)
