@@ -1,11 +1,8 @@
 // ==UserScript==
-// @name            Hentai Heroes++ BDSM version
+// @name            Hentai Heroes++ BDSM version - element sim
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.36.5
-// @match           https://*.hentaiheroes.com/*
-// @match           https://nutaku.haremheroes.com/*
-// @match           https://*.gayharem.com/*
-// @match           https://*.comixharem.com/*
+// @version         0.37.0
+// @match           https://test.hentaiheroes.com/*
 // @run-at          document-end
 // @namespace       https://github.com/45026831/hh-plus-plus
 // @updateURL       https://raw.githubusercontent.com/45026831/hh-plus-plus/main/hh-plus-plus.js
@@ -94,6 +91,33 @@ const classRelationships = {
 
 const DST = true;
 const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
+const ELEMENTS = {
+    chance: {
+        darkness: 'light',
+        light: 'psychic',
+        psychic: 'darkness'
+    },
+    egoDamage: {
+        fire: 'nature',
+        nature: 'stone',
+        stone: 'sun',
+        sun: 'water',
+        water: 'fire'
+    }
+}
+
+/**
+ * ELEMENTS ASSUMPTIONS
+ * 
+ * 1) Girl and Harem synergy bonuses for Attack, Defense, Ego and Harmony are already included in the shown stats
+ * 2) Girl and Harem synergy bonuses for Crit damage, Defense reduction, Heal-on-hit, and Crit chance are not shown at all for opponents and must be built from team and an estimate of harem
+ * 3) Countering bonuses are not included in any shown stats
+ * 
+ * ELEMENTS FACTS
+ * 
+ * 1) Crit damage and chance bonuses are additive; Ego and damage bonuses are multiplicative
+ * 2) Opponent harem synergies are completely unavailable to the player, it has been promised that they will be available soon but not in the initial release
+ */
 
 const mediaMobile = '@media only screen and (max-width: 1025px)';
 const mediaDesktop = '@media only screen and (min-width: 1026px)';
@@ -3965,26 +3989,51 @@ function moduleSim() {
             chance: playerCrit,
             damage: playerAtk,
             defense: playerDef,
-            totalEgo: playerEgo
+            totalEgo: playerEgo,
+            team: playerTeam
         } = heroLeaguesData
-
+        const playerElements = playerTeam.themeElements.map(({type}) => type)
+        const playerSynergies = playerTeam.synergies
+        const playerBonuses = {
+            critDamage: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit damage').bonusMultiplier,
+            critChance: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit chance').bonusMultiplier,
+            defReduce: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='decrease defense of opponent').bonusMultiplier,
+            healOnHit: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='heal on hit').bonusMultiplier
+        }
+        
         const {
             chance: opponentCrit,
             damage: opponentAtk,
             defense: opponentDef,
-            ego: opponentEgo
+            ego: opponentEgo,
         } = playerLeaguesData.caracs
+        const {
+            team: opponentTeam
+        } = playerLeaguesData
+        const opponentTeamMemberElements = [];
+        [0,1,2,3,4,5,6].forEach(key => {
+            const teamMember = opponentTeam[key]
+            if (teamMember && teamMember.element) {
+                opponentTeamMemberElements
+            }
+        })
+        const opponentElements = opponentTeam.themeElements.map(({type}) => type)
+        const opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+
+        const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         player = {
-            hp: playerEgo,
-            dmg: playerAtk - opponentDef,
-            critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
+            hp: playerEgo * (1 + dominanceBonuses.player.ego),
+            dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
+            critchance: 0.3*playerCrit/(playerCrit+opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
+            bonuses: playerBonuses
         };
         opponent = {
-            hp: opponentEgo,
-            dmg: opponentAtk - playerDef,
-            critchance: 0.3-player.critchance,
-            name: $('#leagues_right .player_block .title').text()
+            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
+            dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
+            critchance: (0.3-player.critchance) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
+            name: $('#leagues_right .player_block .title').text(),
+            bonuses: opponentBonuses
         };
 
         let calc = calcLeagueProbabilities(player, opponent);
@@ -4111,6 +4160,59 @@ function calculateChance(crits, hits, critchance) {
 function calculateOverkillChance(crits, hits, critchance) {
     if (hits==0) return 0;
     return calculateChance(crits, hits-1, critchance)*critchance;
+}
+function calculateDominationBonuses(playerElements, opponentElements) {
+    const bonuses = {
+        player: {
+            ego: 0,
+            attack: 0,
+            chance: 0
+        },
+        opponent: {
+            ego: 0,
+            attack: 0,
+            chance: 0
+        }
+    };
+
+    [
+        {a: playerElements, b: opponentElements, k: 'player'},
+        {a: opponentElements, b: playerElements, k: 'opponent'}
+    ].forEach(({a,b,k})=>{
+        a.forEach(element => {
+            if (ELEMENTS.egoDamage[element] && b.includes(ELEMENTS.egoDamage[element])) {
+                bonuses[k].ego += 0.1
+                bonuses[k].attack += 0.1
+            }
+            if (ELEMENTS.chance[element] && b.includes(ELEMENTS.chance[element])) {
+                bonuses[k].chance += 0.2
+            }
+        })
+    })
+    
+    return bonuses
+}
+
+function calculateSynergiesFromTeamMemberElements(elements) {
+    const counts = elements.reduce((a,b)=>{a[b]++;return a}, {
+        fire: 0,
+        stone: 0,
+        sun: 0,
+        water: 0,
+        nature: 0,
+        darkness: 0,
+        light: 0,
+        psychic: 0
+    })
+
+    // Only care about those not included in the stats already: fire, stone, sun and water
+    // Assume max harem synergy
+    return {
+        critDamage: (0.0035 * 100) + (0.1  * counts.fire),
+        critChance: (0.0007 * 100) + (0.02 * counts.stone),
+        defReduce:  (0.0007 * 100) + (0.02 * counts.sun),
+        healOnHit:  (0.001  * 100) + (0.03 * counts.water)
+    }
 }
 
 // Calculate the chance to win the fight
