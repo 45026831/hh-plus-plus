@@ -4017,7 +4017,7 @@ function moduleSim() {
         [0,1,2,3,4,5,6].forEach(key => {
             const teamMember = opponentTeam[key]
             if (teamMember && teamMember.element) {
-                opponentTeamMemberElements
+                opponentTeamMemberElements.push(teamMember.element)
             }
         })
         const opponentElements = opponentTeam.themeElements.map(({type}) => type)
