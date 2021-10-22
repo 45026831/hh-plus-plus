@@ -94,6 +94,18 @@ const classRelationships = {
 
 const DST = true;
 const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
+/**
+ * ELEMENTS ASSUMPTIONS
+ * 
+ * 1) Girl and Harem synergy bonuses for Attack, Defense, Ego and Harmony are already included in the shown stats
+ * 2) Girl and Harem synergy bonuses for Crit damage, Defense reduction, Heal-on-hit, and Crit chance are not shown at all for opponents and must be built from team and an estimate of harem
+ * 3) Countering bonuses are not included in any shown stats
+ * 
+ * ELEMENTS FACTS
+ * 
+ * 1) Crit damage and chance bonuses are additive; Ego and damage bonuses are multiplicative
+ * 2) Opponent harem synergies are completely unavailable to the player, it has been promised that they will be available soon but not in the initial release
+ */
 const ELEMENTS = {
     chance: {
         darkness: 'light',
@@ -109,18 +121,7 @@ const ELEMENTS = {
     }
 }
 
-/**
- * ELEMENTS ASSUMPTIONS
- * 
- * 1) Girl and Harem synergy bonuses for Attack, Defense, Ego and Harmony are already included in the shown stats
- * 2) Girl and Harem synergy bonuses for Crit damage, Defense reduction, Heal-on-hit, and Crit chance are not shown at all for opponents and must be built from team and an estimate of harem
- * 3) Countering bonuses are not included in any shown stats
- * 
- * ELEMENTS FACTS
- * 
- * 1) Crit damage and chance bonuses are additive; Ego and damage bonuses are multiplicative
- * 2) Opponent harem synergies are completely unavailable to the player, it has been promised that they will be available soon but not in the initial release
- */
+const STOCHASTIC_SIM_RUNS = 10000
 
 const mediaMobile = '@media only screen and (max-width: 1025px)';
 const mediaDesktop = '@media only screen and (min-width: 1026px)';
@@ -4039,7 +4040,7 @@ function moduleSim() {
             bonuses: opponentBonuses
         };
 
-        let calc = calcLeagueProbabilities(player, opponent);
+        let calc = calculateBattleProbabilities(player, opponent).points;
         let probabilityTooltip = '<table>';
         let expectedValue = 0;
         for (let i=25; i>=3; i--) {
@@ -4402,6 +4403,98 @@ function calcLeagueProbabilities(player, opponent) {
     if(logging) console.log('Total % covered (should be 100): ' + 100*ret.reduce((a,b)=>a+b,0));
     return ret;
 }
+
+function calculateBattleProbabilities (player, opponent) {
+    const logging = loadSetting("logSimFight");
+    const ret = {
+        points: {},
+        win: 0,
+        loss: 0,
+        avgTurns: 0,
+        scoreClass: ''
+    }
+
+    const playerCritMultiplier = 2 + player.bonuses.critDamage
+    const opponentCritMultiplier = 2 + opponent.bonuses.critDamage
+
+    let runs = 0
+    let wins = 0
+    let losses = 0
+    const pointsCollector = {}
+    let totalTurns = 0
+
+    while (runs < STOCHASTIC_SIM_RUNS) {
+        const {points, turns} = simulateBattle({...player, critMultiplier: playerCritMultiplier}, {...opponent, critMultiplier: opponentCritMultiplier})
+
+        pointsCollector[points] = (pointsCollector[points] || 0) + 1
+        if (points >= 15) {
+            wins++
+        } else {
+            losses++
+        }
+
+        totalTurns += turns
+        runs++
+    }
+
+    ret.points = Object.entries(pointsCollector).map(([points, occurrences]) => ({[points]: occurrences/runs})).reduce((a,b)=>Object.assign(a,b), {})
+
+    ret.win = wins/runs
+    ret.loss = losses/runs
+    ret.avgTurns = totalTurns/runs
+    ret.scoreClass = ret.win>0.9?"plus":ret.win<0.5?"minus":"close"
+
+    if (logging) {console.log(`Ran ${runs} simulations against ${opponent.name}, won ${ret.win * 100}% of simulated fights, average turns: ${ret.avgTurns}`)}
+
+    return ret
+}
+
+function simulateBattle (player, opponent) {
+    let points
+
+    const playerStartHP = player.hp
+    const opponentStartHP = opponent.hp
+
+    let turns = 0
+
+    while (true) {
+        turns++
+        //your turn
+        let damageAmount = player.dmg
+        if (Math.random() < player.critchance) {
+            damageAmount = player.dmg * player.critMultiplier
+        }
+        let healAmount = Math.min(playerStartHP - player.hp, damageAmount * player.bonuses.healOnHit)
+        opponent.hp -= damageAmount;
+        player.hp += healAmount;
+
+        //check win
+        if(opponent.hp<=0){
+            //count score
+            points = 15+Math.ceil(player.hp/playerStartHP * 10);
+            break;
+        }
+
+        //opp's turn
+        damageAmount = opponent.dmg
+        if (Math.random() < opponent.critchance) {
+            damageAmount = opponent.dmg * opponent.critMultiplier
+        }
+        healAmount = Math.min(opponentStartHP - opponent.hp, damageAmount * opponent.bonuses.healOnHit)
+        player.hp -= damageAmount;
+        opponent.hp += healAmount;
+
+        //check loss
+        if(player.hp<=0){
+            //count score
+            points = 3+Math.ceil((opponentStartHP - opponent.hp)/opponentStartHP * 10);
+            break;
+        }
+    }
+
+    return {points, turns}
+}
+
 /* =========================================
     CHAMPIONS INFORMATION (Credit: Entwine)
    ========================================= */
@@ -6101,12 +6194,13 @@ function moduleSeasonSim() {
             hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
             dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
-            name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text()
+            name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
+            bonuses: opponentBonuses
         };
 
-        const simu = calcWinProbability(player, opponent);
+        const simu = calculateBattleProbabilities(player, opponent)
 
-        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
+        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append(`<span class="matchRating ${simu.scoreClass}">${nRounding(100*simu.win, 2, -1)}%</span>`);
     }
 
     calculateSeasonPower(1);
