@@ -4041,7 +4041,7 @@ function moduleSim() {
         };
 
         let calc = calculateBattleProbabilities(player, opponent).points;
-        let probabilityTooltip = '<table>';
+        let probabilityTooltip = `<table class='probabilityTable'>`;
         let expectedValue = 0;
         for (let i=25; i>=3; i--) {
             if (calc[i]) {
@@ -4127,18 +4127,18 @@ function moduleSim() {
         }
     `);
     sheet.insertRule(`
-        .hh_tooltip_new tr {
+        .probabilityTable tr {
             line-height: 16px;
             color: #fff;
         }
     `)
     sheet.insertRule(`
-        .hh_tooltip_new tr:nth-of-type(odd) {
+        .probabilityTable tr:nth-of-type(odd) {
             background-color: rgba(0,0,0,0.2);
         }
     `)
     sheet.insertRule(`
-        .hh_tooltip_new tr:nth-of-type(even) {
+        .probabilityTable tr:nth-of-type(even) {
             background-color: rgba(255,255,255,0.2);
         }
     `)
