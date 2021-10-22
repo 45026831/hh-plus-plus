@@ -4028,13 +4028,13 @@ function moduleSim() {
         player = {
             hp: playerEgo * (1 + dominanceBonuses.player.ego),
             dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
-            critchance: 0.3*playerCrit/(playerCrit+opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
+            critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         opponent = {
             hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
             dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
-            critchance: (0.3-player.critchance) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
+            critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name: $('#leagues_right .player_block .title').text(),
             bonuses: opponentBonuses
         };
@@ -4196,8 +4196,8 @@ function calculateDominationBonuses(playerElements, opponentElements) {
     return bonuses
 }
 
-function calculateSynergiesFromTeamMemberElements(elements) {
-    const counts = elements.reduce((a,b)=>{a[b]++;return a}, {
+function countElementsInTeam(elements) {
+    return elements.reduce((a,b)=>{a[b]++;return a}, {
         fire: 0,
         stone: 0,
         sun: 0,
@@ -4207,6 +4207,10 @@ function calculateSynergiesFromTeamMemberElements(elements) {
         light: 0,
         psychic: 0
     })
+}
+
+function calculateSynergiesFromTeamMemberElements(elements) {
+    const counts = countElementsInTeam(elements)
 
     // Only care about those not included in the stats already: fire, stone, sun and water
     // Assume max harem synergy
@@ -4216,6 +4220,22 @@ function calculateSynergiesFromTeamMemberElements(elements) {
         defReduce:  (0.0007 * 100) + (0.02 * counts.sun),
         healOnHit:  (0.001  * 100) + (0.03 * counts.water)
     }
+}
+
+function calculateThemeFromElements(elements) {
+    const counts = countElementsInTeam(elements)
+
+    const theme = []
+    Object.entries(counts).forEach(([element, count]) => {
+        if (count >= 3) {
+            theme.push(element)
+        }
+    })
+    return theme
+}
+
+function calculateCritChanceShare(ownHarmony, otherHarmony) {
+    return 0.3*ownHarmony/(ownHarmony+otherHarmony)
 }
 
 // Calculate the chance to win the fight
@@ -6042,26 +6062,45 @@ function moduleSeasonSim() {
 
     function calculateSeasonPower(idOpponent) {
         // INIT
-        playerEgo = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerAtk = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerDef = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerCrit = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        const $playerData = $('#season-arena .battle_hero')
+        playerEgo = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerAtk = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerDef = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerCrit = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        const playerSynergyDataJSON = $playerData.find('.hero_team .icon-area').attr('synergy-data')
+        const playerSynergies = JSON.parse(playerSynergyDataJSON)
+        const playerTeam = $playerData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
+        const playerTeamMemberElements = playerTeam.map(({elementData: {type: element}})=>element)
+        const playerElements = calculateThemeFromElements(playerTeamMemberElements)
+        const playerBonuses = {
+            critDamage: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit damage').bonusMultiplier,
+            critChance: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit chance').bonusMultiplier,
+            defReduce: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='decrease defense of opponent').bonusMultiplier,
+            healOnHit: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='heal on hit').bonusMultiplier
+        }
 
-        let opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
-        opponentEgo = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        opponentDef = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        opponentAtk = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        opponentCrit = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        let $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
+        opponentEgo = parseInt($opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentDef = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentAtk = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentCrit = parseInt($opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        const opponentTeam = $opponentData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
+        const opponentTeamMemberElements = opponentTeam.map(({element})=>element)
+        const opponentElements = calculateThemeFromElements(opponentTeamMemberElements)
+        const opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+
+        const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         const player = {
-            hp: playerEgo,
-            dmg: playerAtk - opponentDef,
-            critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
+            hp: playerEgo * (1 + dominanceBonuses.player.ego),
+            dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
+            critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
+            bonuses: playerBonuses
         };
         const opponent = {
-            hp: opponentEgo,
-            dmg: opponentAtk - playerDef,
-            critchance: 0.3-player.critchance,
+            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
+            dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
+            critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text()
         };
 
