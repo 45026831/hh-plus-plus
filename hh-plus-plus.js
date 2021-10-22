@@ -4126,6 +4126,22 @@ function moduleSim() {
             text-align: center;
         }
     `);
+    sheet.insertRule(`
+        .hh_tooltip_new tr {
+            line-height: 16px;
+            color: #fff;
+        }
+    `)
+    sheet.insertRule(`
+        .hh_tooltip_new tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,0.2);
+        }
+    `)
+    sheet.insertRule(`
+        .hh_tooltip_new tr:nth-of-type(even) {
+            background-color: rgba(255,255,255,0.2);
+        }
+    `)
     if (ELEMENTS_ENABLED) {
         sheet.insertRule(`
             .gridWrapper {
