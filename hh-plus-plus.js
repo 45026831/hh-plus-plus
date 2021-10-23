@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.6
+// @version         0.37.7
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -119,6 +119,16 @@ const ELEMENTS = {
         sun: 'water',
         water: 'fire'
     }
+}
+const ELEMENTS_ICON_NAMES = {
+    "fire": "Eccentric",
+    "nature": "Exhibitionist",
+    "stone": "Physical",
+    "sun": "Playful",
+    "water": "Sensual",
+    "darkness": "Dominatrix",
+    "light": "Submissive",
+    "psychic": "Voyeurs"
 }
 
 const STOCHASTIC_SIM_RUNS = 10000
@@ -2181,7 +2191,7 @@ function moduleMarketFilter() {
                 $("#girls_list>.level_target_squared>div>div").text(level);
                 $("#girls_list>h3").text(Name);
                 if (elementData) {
-                    $("#girls_list>.icon").attr("src", `${IMAGES_URL}/pictures/girls_elements/${GT.design[`${elementData.type}_flavor_element`]}.png`);
+                    $("#girls_list>.icon").attr("src", `${IMAGES_URL}/pictures/girls_elements/${ELEMENTS_ICON_NAMES[elementData.type]}.png`);
                 } else {
                     $("#girls_list>.icon").attr("carac", girlClass);
                 }
