@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.4
+// @version         0.37.5
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3653,46 +3653,23 @@ function moduleLeague() {
                 }
             }
 
-            const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
-            if (heroAvatar.find('.classLeague').length===0){
-                const heroClass = Hero.infos.class
-                let heroClassIcon
-                switch (heroClass) {
-                case 1:
-                    heroClassIcon = 'hardcore'
-                    break;
-                case 2:
-                    heroClassIcon = 'charm'
-                    break;
-                case 3:
-                    heroClassIcon = 'knowhow'
-                    break;
-                }
-                heroAvatar.append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${heroClassIcon}.png">`));
-            }
-
             const data = JSON.parse(localStorage.getItem('leagueResults')) || {};
             const pointHistory = JSON.parse(localStorage.getItem('pointHistory')) || {};
             for(let i=0; i<playersTotal; i++) {
                 let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
                 let playerId = playerData.attr('sorting_id');
                 let player = data[playerId];
-                if (player&&playerData.find('.classLeague').length===0) {
-                    var playerClass = player.class;
-                    let playerClassIcon
-                    switch (playerClass) {
-                    case 1:
-                        playerClassIcon = 'hardcore'
-                        break;
-                    case 2:
-                        playerClassIcon = 'charm'
-                        break;
-                    case 3:
-                        playerClassIcon = 'knowhow'
-                        break;
+                if (player) {
+                    if (playerData.find('.classLeague').length===0) {
+                        playerData.find('.square-avatar-wrapper').append($(`<div class="classLeague"></div>`));
                     }
-
-                    playerData.find('.square-avatar-wrapper').append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${playerClassIcon}.png">`));
+                    if (player.themeIcons) {
+                        const $classLeague = playerData.find('.classLeague')
+                        $classLeague.empty()
+                        player.themeIcons.forEach(icon => {
+                            $classLeague.append(`<img class="theme-icon" src="${icon}"/>`)
+                        })
+                    }
                 }
                 if (!playerData.hasClass('personal_highlight')){
                     let points;
@@ -3719,24 +3696,42 @@ function moduleLeague() {
                     }
                 }
             }
-            sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                            + '.classLeague {'
-                            + 'position: relative !important;'
-                            + 'height: 17px !important;'
-                            + 'width: 17px !important;'
-                            + 'left: 25px !important;'
-                            + 'border: none !important;}}'
-                            );
-
-            sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                            + '.classLeague {'
-                            + 'position: relative !important;'
-                            + 'height: 25px !important;'
-                            + 'width: 25px !important;'
-                            + 'left: 45px !important;'
-                            + 'border: none !important;}}'
-                            );
         }
+        sheet.insertRule(`
+            .square-avatar-wrapper .classLeague {
+                position: absolute;
+                display: flex;
+                left: -38px;
+                top: 6px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        `)
+        sheet.insertRule(`
+            .square-avatar-wrapper .classLeague img.theme-icon {
+                flex: 0 1 0%;
+                height: 17px;
+                width: 17px;
+                border: none;
+                position: initial;
+            }
+        `)
+        sheet.insertRule(`
+            ${mediaMobile} {
+                #leagues_middle>.leagues_table.lead_table>.lead_table_view table .square-avatar-wrapper .classLeague {
+                    left: -66px;
+                    top: 17px;
+                }
+            }
+        `)
+        sheet.insertRule(`
+            ${mediaMobile} {
+                #leagues_middle>.leagues_table.lead_table>.lead_table_view table .square-avatar-wrapper .classLeague img.theme-icon {
+                    height: 25px;
+                    width: 25px;
+                }
+            }
+        `)
 
         function saveVictories() {
             let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
@@ -3773,6 +3768,11 @@ function moduleLeague() {
             let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
             let player = `${playerLeaguesData.id_member}`
             let spec = playerLeaguesData.class
+            let $themeIcons = $('#leagues_middle .selected-player-leagues .theme-container img')
+            if (!$themeIcons.length) {
+                $themeIcons = $('#leagues_right .team-theme')
+            }
+            const themeIcons = $themeIcons.map((i,el)=>$(el).attr('src')).toArray()
             let results = playerLeaguesData.match_history
             const nb_victories = results.filter(match => match === 'won').length;
             const nb_defeats = results.filter(match => match === 'lost').length;
@@ -3780,7 +3780,8 @@ function moduleLeague() {
             data[player] = {
                 victories: nb_victories,
                 defeats: nb_defeats,
-                class: spec
+                class: spec,
+                themeIcons
             };
 
             localStorage.setItem('leagueResults', JSON.stringify(data));
