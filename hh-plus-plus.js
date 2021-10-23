@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.0
+// @version         0.37.1
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3999,10 +3999,10 @@ function moduleSim() {
         const playerElements = playerTeam.themeElements.map(({type}) => type)
         const playerSynergies = playerTeam.synergies
         const playerBonuses = {
-            critDamage: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit damage').bonusMultiplier,
-            critChance: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit chance').bonusMultiplier,
-            defReduce: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='decrease defense of opponent').bonusMultiplier,
-            healOnHit: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='heal on hit').bonusMultiplier
+            critDamage: playerSynergies.find(({element: {type}})=>type==='fire').bonusMultiplier,
+            critChance: playerSynergies.find(({element: {type}})=>type==='stone').bonusMultiplier,
+            defReduce: playerSynergies.find(({element: {type}})=>type==='sun').bonusMultiplier,
+            healOnHit: playerSynergies.find(({element: {type}})=>type==='water').bonusMultiplier
         }
         
         const {
@@ -6186,10 +6186,10 @@ function moduleSeasonSim() {
         const playerTeamMemberElements = playerTeam.map(({elementData: {type: element}})=>element)
         const playerElements = calculateThemeFromElements(playerTeamMemberElements)
         const playerBonuses = {
-            critDamage: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit damage').bonusMultiplier,
-            critChance: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='critical hit chance').bonusMultiplier,
-            defReduce: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='decrease defense of opponent').bonusMultiplier,
-            healOnHit: playerSynergies.find(({bonusIdentifier})=>bonusIdentifier==='heal on hit').bonusMultiplier
+            critDamage: playerSynergies.find(({element: {type}})=>type==='fire').bonusMultiplier,
+            critChance: playerSynergies.find(({element: {type}})=>type==='stone').bonusMultiplier,
+            defReduce: playerSynergies.find(({element: {type}})=>type==='sun').bonusMultiplier,
+            healOnHit: playerSynergies.find(({element: {type}})=>type==='water').bonusMultiplier
         }
 
         let $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
