@@ -1,3 +1,4 @@
+0.37.0: Changing league and season sims to use a stochastic simulator in order to take all element bonuses into account.
 0.36.5: Updating fix from 0.36.4 to include all element icons.
 0.36.4: Fixing bug where league sim result was covering element icons, so tooltips couldn't receive hover events.
 0.36.3: Adding battle sim to pantheon. Restyling sim result on battle and league.
