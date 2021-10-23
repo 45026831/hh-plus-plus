@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.1
+// @version         0.37.2
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -4233,7 +4233,7 @@ function calculateSynergiesFromTeamMemberElements(elements) {
     // Assume max harem synergy
     const girlDictionary = (typeof(localStorage.HHPNMap) == "undefined") ? new Map(): new Map(JSON.parse(localStorage.HHPNMap));
     const girlCount = girlDictionary.size || 800
-    const girlsPerElement = girlCount / 8
+    const girlsPerElement = Math.min(girlCount / 8, 100)
 
     return {
         critDamage: (0.0035 * girlsPerElement) + (0.1  * counts.fire),

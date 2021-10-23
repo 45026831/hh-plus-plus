@@ -1,3 +1,4 @@
+0.37.2: Re-capping synergy bonuses at 100 again.
 0.37.1: Fixing bug with getting synergy data when game not in English. For some reason KK decided to loacalise the bonus identifiers...
 0.37.0: Changing league and season sims to use a stochastic simulator in order to take all element bonuses into account.
 0.36.5: Updating fix from 0.36.4 to include all element icons.
