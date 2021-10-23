@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.5
+// @version         0.37.6
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -7013,7 +7013,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                                  + '<p id="shard_number">' + shards + '</p>'
                                                                                  + '</div>');
 
-                sheet.insertRule('.page-pre_battle #shard_number {'
+                sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                  + 'position: absolute;'
                                  + 'bottom: -0.25em;'
                                  + 'left: -5px;'
@@ -7024,7 +7024,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                  + 'font-size: 12px !important;}'
                                 );
 
-                sheet.insertRule('.page-pre_battle .shards_troll .shard_troll {'
+                sheet.insertRule('.page-troll-pre-battle .shards_troll .shard_troll {'
                                  + 'background-image: url(https://hh2.hh-content.com/shards.png);'
                                  + 'background-repeat: no-repeat;'
                                  + 'background-size: contain;'
@@ -7035,23 +7035,23 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                 );
 
                 if (girlsData.length > 1) {
-                    sheet.insertRule('.page-pre_battle #shard_number {'
+                    sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                      + 'margin-left: -1px;'
                                      + 'margin-top: -10px;}'
                                     );
 
-                    sheet.insertRule('.page-pre_battle .shards_troll .shard_troll {'
+                    sheet.insertRule('.page-troll-pre-battle .shards_troll .shard_troll {'
                                      + 'margin-left: 2px;'
                                      + 'margin-top: -11px;}'
                                     );
                 }
                 else {
-                    sheet.insertRule('.page-pre_battle #shard_number {'
+                    sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                      + 'margin-left: -1px;'
                                      + 'margin-top: -14px;}'
                                     );
 
-                    sheet.insertRule('.page-pre_battle .shards_troll .shard_troll {'
+                    sheet.insertRule('.page-troll-pre-battle .shards_troll .shard_troll {'
                                      + 'margin-left: 2px;'
                                      + 'margin-top: -15px;}'
                                     );
@@ -7069,7 +7069,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                                  + '<p id="shard_number">' + shards + '</p></div>');
 
                 //CSS
-                sheet.insertRule('.page-pre_battle #shard_number {'
+                sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                  + 'position: absolute;'
                                  + 'bottom: -0.25em;'
                                  + 'left: -5px;'
