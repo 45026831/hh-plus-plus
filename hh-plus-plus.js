@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.3
+// @version         0.37.4
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -2095,8 +2095,6 @@ function moduleMarket() {
 
 function moduleMarketFilter() {
     if (CurrentPage.includes('shop')) {
-        const ELEMENTS_ENABLED = !!$girl.data('g').elementData
-
         let container = $('.g1>div');
 
         let cur_id = parseInt(container.find('.number.selected').text().split('/')[0]);
@@ -2234,13 +2232,11 @@ function moduleMarketFilter() {
                                 label: labels.searched_class,
                                 options: ['hardcore', 'charm', 'knowhow'].map(option => ({label: labels[option], value: option}))
                             })}
-                            ${ELEMENTS_ENABLED ?
-                                buildSelectInput({
-                                    id: 'sort_element',
-                                    label: label('searched_element'),
-                                    options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))
-                                })
-                                : ''}
+                            ${buildSelectInput({
+                                id: 'sort_element',
+                                label: label('searched_element'),
+                                options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))
+                            })}
                             ${buildSelectInput({
                                 id: 'sort_rarity',
                                 label: labels.searched_rarity,
@@ -2297,6 +2293,11 @@ function moduleMarketFilter() {
                             ${teamIds.map(teamId => teamsDict[teamId]).map(team => `
                                 <div class="team-slot-container ${team.iconRarity}" data-id-team="${team.teamId}" data-girl-ids='${JSON.stringify(team.girls)}'>
                                     <img src="${team.icon}" />
+                                    ${team.themeIcons ? `
+                                        <div class="theme-icons">
+                                            ${team.themeIcons.map(icon=>`<img class="theme-icon" src="${icon}"/>`).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -2340,10 +2341,7 @@ function moduleMarketFilter() {
                         let affectionLvl = affectionLvlStr.length-1;
 
                         let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
-                        let matchesElement = true
-                        if(ELEMENTS_ENABLED) {
-                            matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
-                        }
+                        let matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
                         let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
                         let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
                         let matchesAffLvl = (affectionLvl == sorterAffLvl) || (sorterAffLvl == 'all');
@@ -2385,9 +2383,7 @@ function moduleMarketFilter() {
                 }
 
                 filterBox.find("#sort_class") .on('change', sortGirls);
-                if(ELEMENTS_ENABLED) {
-                    filterBox.find("#sort_element").on('change', sortGirls);
-                }
+                filterBox.find("#sort_element").on('change', sortGirls);
                 filterBox.find("#sort_rarity").on('change', sortGirls);
                 filterBox.find("#sort_aff_category").on('change', sortGirls);
                 filterBox.find("#sort_aff_lvl").on('change', sortGirls);
@@ -2480,6 +2476,7 @@ function moduleMarketFilter() {
                 box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
                 padding: 5px; border: 1px solid #ffa23e;
                 z-index:10;
+                padding-bottom: 16px;
             }
         `)
         sheet.insertRule(`
@@ -2492,8 +2489,8 @@ function moduleMarketFilter() {
             }
         `)
         sheet.insertRule(`
-            .team-slot-container {
-                overflow: hidden;
+            .team-slot-container>img {
+                border-radius: 0.4rem;
             }
         `)
         sheet.insertRule(`
@@ -2516,6 +2513,17 @@ function moduleMarketFilter() {
                 padding-top: 5px;
             }
         `)
+        sheet.insertRule(`
+            .theme-icons {
+                position: absolute;
+                bottom: -10px;
+            }
+        `)
+        sheet.insertRule(`
+            .theme-icon {
+                width: 26px;
+            }
+        `)
     } else if (CurrentPage.includes('teams')) {
         // Load teams into localstorage
         const teamsDict = {}
@@ -2523,7 +2531,8 @@ function moduleMarketFilter() {
 
         $('.team-slot-container[data-is-empty=]').each((i, slot) => {
             const teamId = $(slot).data('id-team')
-            const icon = $(slot).find('img').attr('src')
+            const icon = $(slot).children('img').attr('src')
+            const themeIcons = $(slot).find('.team-slot-themes-container img').map((i,el)=>$(el).attr('src')).toArray()
 
             const classes = $(slot).attr('class').replace(/\s+/g, ' ').split(' ')
             const iconRarity = ['mythic', 'legendary', 'epic', 'rare', 'common', 'starting'].find(rarity => classes.includes(rarity))
@@ -2531,7 +2540,8 @@ function moduleMarketFilter() {
             teamsDict[teamId] = {
                 teamId,
                 icon,
-                iconRarity
+                iconRarity,
+                themeIcons
             }
             teamIds.push(teamId)
         })
