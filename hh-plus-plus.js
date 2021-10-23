@@ -4053,7 +4053,7 @@ function moduleSim() {
         $('.matchRating').remove();
 
         const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
-        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(2)}</div>`)
+        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(1)}</div>`)
         $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating);
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating);
     }
@@ -4231,11 +4231,15 @@ function calculateSynergiesFromTeamMemberElements(elements) {
 
     // Only care about those not included in the stats already: fire, stone, sun and water
     // Assume max harem synergy
+    const girlDictionary = (typeof(localStorage.HHPNMap) == "undefined") ? new Map(): new Map(JSON.parse(localStorage.HHPNMap));
+    const girlCount = girlDictionary.size || 800
+    const girlsPerElement = girlCount / 8
+
     return {
-        critDamage: (0.0035 * 100) + (0.1  * counts.fire),
-        critChance: (0.0007 * 100) + (0.02 * counts.stone),
-        defReduce:  (0.0007 * 100) + (0.02 * counts.sun),
-        healOnHit:  (0.001  * 100) + (0.03 * counts.water)
+        critDamage: (0.0035 * girlsPerElement) + (0.1  * counts.fire),
+        critChance: (0.0007 * girlsPerElement) + (0.02 * counts.stone),
+        defReduce:  (0.0007 * girlsPerElement) + (0.02 * counts.sun),
+        healOnHit:  (0.001  * girlsPerElement) + (0.03 * counts.water)
     }
 }
 
@@ -4430,8 +4434,8 @@ function calculateBattleProbabilities (player, opponent) {
         scoreClass: ''
     }
 
-    const playerCritMultiplier = 2 + player.bonuses.critDamage
-    const opponentCritMultiplier = 2 + opponent.bonuses.critDamage
+    player.critMultiplier = 2 + player.bonuses.critDamage
+    opponent.critMultiplier = 2 + opponent.bonuses.critDamage
 
     let runs = 0
     let wins = 0
@@ -4440,7 +4444,7 @@ function calculateBattleProbabilities (player, opponent) {
     let totalTurns = 0
 
     while (runs < STOCHASTIC_SIM_RUNS) {
-        const {points, turns} = simulateBattle({...player, critMultiplier: playerCritMultiplier}, {...opponent, critMultiplier: opponentCritMultiplier})
+        const {points, turns} = simulateBattle({...player}, {...opponent})
 
         pointsCollector[points] = (pointsCollector[points] || 0) + 1
         if (points >= 15) {
