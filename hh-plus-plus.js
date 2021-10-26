@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.36.2
+// @version         0.37.7
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -93,6 +93,45 @@ const classRelationships = {
 };
 
 const DST = true;
+const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
+/**
+ * ELEMENTS ASSUMPTIONS
+ * 
+ * 1) Girl and Harem synergy bonuses for Attack, Defense, Ego and Harmony are already included in the shown stats
+ * 2) Girl and Harem synergy bonuses for Crit damage, Defense reduction, Heal-on-hit, and Crit chance are not shown at all for opponents and must be built from team and an estimate of harem
+ * 3) Countering bonuses are not included in any shown stats
+ * 
+ * ELEMENTS FACTS
+ * 
+ * 1) Crit damage and chance bonuses are additive; Ego and damage bonuses are multiplicative
+ * 2) Opponent harem synergies are completely unavailable to the player, it has been promised that they will be available soon but not in the initial release
+ */
+const ELEMENTS = {
+    chance: {
+        darkness: 'light',
+        light: 'psychic',
+        psychic: 'darkness'
+    },
+    egoDamage: {
+        fire: 'nature',
+        nature: 'stone',
+        stone: 'sun',
+        sun: 'water',
+        water: 'fire'
+    }
+}
+const ELEMENTS_ICON_NAMES = {
+    "fire": "Eccentric",
+    "nature": "Exhibitionist",
+    "stone": "Physical",
+    "sun": "Playful",
+    "water": "Sensual",
+    "darkness": "Dominatrix",
+    "light": "Submissive",
+    "psychic": "Voyeurs"
+}
+
+const STOCHASTIC_SIM_RUNS = 10000
 
 const mediaMobile = '@media only screen and (max-width: 1025px)';
 const mediaDesktop = '@media only screen and (min-width: 1026px)';
@@ -1111,7 +1150,7 @@ if (loadSetting('simFight')) {
         moduleSim();
     if (CurrentPage.indexOf('season-arena') != -1)
         moduleSeasonSim();
-    if (window.location.href.indexOf('/troll-pre-battle') != -1)
+    if (window.location.href.includes('/troll-pre-battle') || window.location.href.includes('/pantheon-pre-battle'))
         moduleBattleSim();
 }
 if (loadSetting('teamsFilter')) {
@@ -2066,8 +2105,6 @@ function moduleMarket() {
 
 function moduleMarketFilter() {
     if (CurrentPage.includes('shop')) {
-        const ELEMENTS_ENABLED = !!$girl.data('g').elementData
-
         let container = $('.g1>div');
 
         let cur_id = parseInt(container.find('.number.selected').text().split('/')[0]);
@@ -2154,7 +2191,7 @@ function moduleMarketFilter() {
                 $("#girls_list>.level_target_squared>div>div").text(level);
                 $("#girls_list>h3").text(Name);
                 if (elementData) {
-                    $("#girls_list>.icon").attr("src", `${IMAGES_URL}/pictures/girls_elements/${GT.design[`${elementData.type}_flavor_element`]}.png`);
+                    $("#girls_list>.icon").attr("src", `${IMAGES_URL}/pictures/girls_elements/${ELEMENTS_ICON_NAMES[elementData.type]}.png`);
                 } else {
                     $("#girls_list>.icon").attr("carac", girlClass);
                 }
@@ -2205,13 +2242,11 @@ function moduleMarketFilter() {
                                 label: labels.searched_class,
                                 options: ['hardcore', 'charm', 'knowhow'].map(option => ({label: labels[option], value: option}))
                             })}
-                            ${ELEMENTS_ENABLED ?
-                                buildSelectInput({
-                                    id: 'sort_element',
-                                    label: label('searched_element'),
-                                    options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))
-                                })
-                                : ''}
+                            ${buildSelectInput({
+                                id: 'sort_element',
+                                label: label('searched_element'),
+                                options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))
+                            })}
                             ${buildSelectInput({
                                 id: 'sort_rarity',
                                 label: labels.searched_rarity,
@@ -2268,6 +2303,11 @@ function moduleMarketFilter() {
                             ${teamIds.map(teamId => teamsDict[teamId]).map(team => `
                                 <div class="team-slot-container ${team.iconRarity}" data-id-team="${team.teamId}" data-girl-ids='${JSON.stringify(team.girls)}'>
                                     <img src="${team.icon}" />
+                                    ${team.themeIcons ? `
+                                        <div class="theme-icons">
+                                            ${team.themeIcons.map(icon=>`<img class="theme-icon" src="${icon}"/>`).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -2311,10 +2351,7 @@ function moduleMarketFilter() {
                         let affectionLvl = affectionLvlStr.length-1;
 
                         let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
-                        let matchesElement = true
-                        if(ELEMENTS_ENABLED) {
-                            matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
-                        }
+                        let matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
                         let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
                         let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
                         let matchesAffLvl = (affectionLvl == sorterAffLvl) || (sorterAffLvl == 'all');
@@ -2356,9 +2393,7 @@ function moduleMarketFilter() {
                 }
 
                 filterBox.find("#sort_class") .on('change', sortGirls);
-                if(ELEMENTS_ENABLED) {
-                    filterBox.find("#sort_element").on('change', sortGirls);
-                }
+                filterBox.find("#sort_element").on('change', sortGirls);
                 filterBox.find("#sort_rarity").on('change', sortGirls);
                 filterBox.find("#sort_aff_category").on('change', sortGirls);
                 filterBox.find("#sort_aff_lvl").on('change', sortGirls);
@@ -2451,6 +2486,7 @@ function moduleMarketFilter() {
                 box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
                 padding: 5px; border: 1px solid #ffa23e;
                 z-index:10;
+                padding-bottom: 16px;
             }
         `)
         sheet.insertRule(`
@@ -2463,8 +2499,8 @@ function moduleMarketFilter() {
             }
         `)
         sheet.insertRule(`
-            .team-slot-container {
-                overflow: hidden;
+            .team-slot-container>img {
+                border-radius: 0.4rem;
             }
         `)
         sheet.insertRule(`
@@ -2487,6 +2523,17 @@ function moduleMarketFilter() {
                 padding-top: 5px;
             }
         `)
+        sheet.insertRule(`
+            .theme-icons {
+                position: absolute;
+                bottom: -10px;
+            }
+        `)
+        sheet.insertRule(`
+            .theme-icon {
+                width: 26px;
+            }
+        `)
     } else if (CurrentPage.includes('teams')) {
         // Load teams into localstorage
         const teamsDict = {}
@@ -2494,7 +2541,8 @@ function moduleMarketFilter() {
 
         $('.team-slot-container[data-is-empty=]').each((i, slot) => {
             const teamId = $(slot).data('id-team')
-            const icon = $(slot).find('img').attr('src')
+            const icon = $(slot).children('img').attr('src')
+            const themeIcons = $(slot).find('.team-slot-themes-container img').map((i,el)=>$(el).attr('src')).toArray()
 
             const classes = $(slot).attr('class').replace(/\s+/g, ' ').split(' ')
             const iconRarity = ['mythic', 'legendary', 'epic', 'rare', 'common', 'starting'].find(rarity => classes.includes(rarity))
@@ -2502,7 +2550,8 @@ function moduleMarketFilter() {
             teamsDict[teamId] = {
                 teamId,
                 icon,
-                iconRarity
+                iconRarity,
+                themeIcons
             }
             teamIds.push(teamId)
         })
@@ -3614,46 +3663,23 @@ function moduleLeague() {
                 }
             }
 
-            const heroAvatar = $('.leagues_table .personal_highlight .square-avatar-wrapper')
-            if (heroAvatar.find('.classLeague').length===0){
-                const heroClass = Hero.infos.class
-                let heroClassIcon
-                switch (heroClass) {
-                case 1:
-                    heroClassIcon = 'hardcore'
-                    break;
-                case 2:
-                    heroClassIcon = 'charm'
-                    break;
-                case 3:
-                    heroClassIcon = 'knowhow'
-                    break;
-                }
-                heroAvatar.append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${heroClassIcon}.png">`));
-            }
-
             const data = JSON.parse(localStorage.getItem('leagueResults')) || {};
             const pointHistory = JSON.parse(localStorage.getItem('pointHistory')) || {};
             for(let i=0; i<playersTotal; i++) {
                 let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
                 let playerId = playerData.attr('sorting_id');
                 let player = data[playerId];
-                if (player&&playerData.find('.classLeague').length===0) {
-                    var playerClass = player.class;
-                    let playerClassIcon
-                    switch (playerClass) {
-                    case 1:
-                        playerClassIcon = 'hardcore'
-                        break;
-                    case 2:
-                        playerClassIcon = 'charm'
-                        break;
-                    case 3:
-                        playerClassIcon = 'knowhow'
-                        break;
+                if (player) {
+                    if (playerData.find('.classLeague').length===0) {
+                        playerData.find('.square-avatar-wrapper').append($(`<div class="classLeague"></div>`));
                     }
-
-                    playerData.find('.square-avatar-wrapper').append($(`<img class="classLeague" src="https://${cdnHost}/caracs/${playerClassIcon}.png">`));
+                    if (player.themeIcons) {
+                        const $classLeague = playerData.find('.classLeague')
+                        $classLeague.empty()
+                        player.themeIcons.forEach(icon => {
+                            $classLeague.append(`<img class="theme-icon" src="${icon}"/>`)
+                        })
+                    }
                 }
                 if (!playerData.hasClass('personal_highlight')){
                     let points;
@@ -3680,24 +3706,42 @@ function moduleLeague() {
                     }
                 }
             }
-            sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                            + '.classLeague {'
-                            + 'position: relative !important;'
-                            + 'height: 17px !important;'
-                            + 'width: 17px !important;'
-                            + 'left: 25px !important;'
-                            + 'border: none !important;}}'
-                            );
-
-            sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                            + '.classLeague {'
-                            + 'position: relative !important;'
-                            + 'height: 25px !important;'
-                            + 'width: 25px !important;'
-                            + 'left: 45px !important;'
-                            + 'border: none !important;}}'
-                            );
         }
+        sheet.insertRule(`
+            .square-avatar-wrapper .classLeague {
+                position: absolute;
+                display: flex;
+                left: -38px;
+                top: 6px;
+                width: 100%;
+                justify-content: flex-end;
+            }
+        `)
+        sheet.insertRule(`
+            .square-avatar-wrapper .classLeague img.theme-icon {
+                flex: 0 1 0%;
+                height: 17px;
+                width: 17px;
+                border: none;
+                position: initial;
+            }
+        `)
+        sheet.insertRule(`
+            ${mediaMobile} {
+                #leagues_middle>.leagues_table.lead_table>.lead_table_view table .square-avatar-wrapper .classLeague {
+                    left: -66px;
+                    top: 17px;
+                }
+            }
+        `)
+        sheet.insertRule(`
+            ${mediaMobile} {
+                #leagues_middle>.leagues_table.lead_table>.lead_table_view table .square-avatar-wrapper .classLeague img.theme-icon {
+                    height: 25px;
+                    width: 25px;
+                }
+            }
+        `)
 
         function saveVictories() {
             let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
@@ -3734,6 +3778,11 @@ function moduleLeague() {
             let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
             let player = `${playerLeaguesData.id_member}`
             let spec = playerLeaguesData.class
+            let $themeIcons = $('#leagues_middle .selected-player-leagues .theme-container img')
+            if (!$themeIcons.length) {
+                $themeIcons = $('#leagues_right .team-theme')
+            }
+            const themeIcons = $themeIcons.map((i,el)=>$(el).attr('src')).toArray()
             let results = playerLeaguesData.match_history
             const nb_victories = results.filter(match => match === 'won').length;
             const nb_defeats = results.filter(match => match === 'lost').length;
@@ -3741,7 +3790,8 @@ function moduleLeague() {
             data[player] = {
                 victories: nb_victories,
                 defeats: nb_defeats,
-                class: spec
+                class: spec,
+                themeIcons
             };
 
             localStorage.setItem('leagueResults', JSON.stringify(data));
@@ -3964,30 +4014,55 @@ function moduleSim() {
             chance: playerCrit,
             damage: playerAtk,
             defense: playerDef,
-            totalEgo: playerEgo
+            totalEgo: playerEgo,
+            team: playerTeam
         } = heroLeaguesData
-
+        const playerElements = playerTeam.themeElements.map(({type}) => type)
+        const playerSynergies = playerTeam.synergies
+        const playerBonuses = {
+            critDamage: playerSynergies.find(({element: {type}})=>type==='fire').bonusMultiplier,
+            critChance: playerSynergies.find(({element: {type}})=>type==='stone').bonusMultiplier,
+            defReduce: playerSynergies.find(({element: {type}})=>type==='sun').bonusMultiplier,
+            healOnHit: playerSynergies.find(({element: {type}})=>type==='water').bonusMultiplier
+        }
+        
         const {
             chance: opponentCrit,
             damage: opponentAtk,
             defense: opponentDef,
-            ego: opponentEgo
+            ego: opponentEgo,
         } = playerLeaguesData.caracs
+        const {
+            team: opponentTeam
+        } = playerLeaguesData
+        const opponentTeamMemberElements = [];
+        [0,1,2,3,4,5,6].forEach(key => {
+            const teamMember = opponentTeam[key]
+            if (teamMember && teamMember.element) {
+                opponentTeamMemberElements.push(teamMember.element)
+            }
+        })
+        const opponentElements = opponentTeam.themeElements.map(({type}) => type)
+        const opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+
+        const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         player = {
-            hp: playerEgo,
-            dmg: playerAtk - opponentDef,
-            critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
+            hp: playerEgo * (1 + dominanceBonuses.player.ego),
+            dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
+            critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
+            bonuses: playerBonuses
         };
         opponent = {
-            hp: opponentEgo,
-            dmg: opponentAtk - playerDef,
-            critchance: 0.3-player.critchance,
-            name: $('#leagues_right .player_block .title').text()
+            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
+            dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
+            critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
+            name: $('#leagues_right .player_block .title').text(),
+            bonuses: opponentBonuses
         };
 
-        let calc = calcLeagueProbabilities(player, opponent);
-        let probabilityTooltip = '<table>';
+        let calc = calculateBattleProbabilities(player, opponent).points;
+        let probabilityTooltip = `<table class='probabilityTable'>`;
         let expectedValue = 0;
         for (let i=25; i>=3; i--) {
             if (calc[i]) {
@@ -3999,8 +4074,9 @@ function moduleSim() {
         $('.matchRating').remove();
 
         const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
-        $('#leagues_right .average-lvl').append(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(2)}</div>`);
-        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append(`<span class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};">E[X]: ${expectedValue.toFixed(2)}</span>`);
+        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(1)}</div>`)
+        $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating);
+        $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating);
     }
 
     calculatePower();
@@ -4058,9 +4134,9 @@ function moduleSim() {
     sheet.insertRule(`
         ${mediaMobile} {
             .matchRating {
-                margin-left: 20px;
+                margin-left: 75px;
                 text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
-                line-height: 5px;
+                line-height: 0px;
                 font-size: 18px;
             }
         }
@@ -4071,6 +4147,38 @@ function moduleSim() {
             text-align: center;
         }
     `);
+    sheet.insertRule(`
+        .probabilityTable tr {
+            line-height: 16px;
+            color: #fff;
+        }
+    `)
+    sheet.insertRule(`
+        .probabilityTable tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,0.2);
+        }
+    `)
+    sheet.insertRule(`
+        .probabilityTable tr:nth-of-type(even) {
+            background-color: rgba(255,255,255,0.2);
+        }
+    `)
+    if (ELEMENTS_ENABLED) {
+        sheet.insertRule(`
+            .gridWrapper {
+                margin-top: -42px;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                grid-gap: 24px;
+                z-index: 0;
+            }
+        `)
+        sheet.insertRule(`
+            #leagues_right .player_block .team-hexagon-container .icon { 
+                z-index: 1;
+            }
+        `)
+    }
 }
 
 // == Helper functions for probability calculations ==
@@ -4093,6 +4201,83 @@ function calculateChance(crits, hits, critchance) {
 function calculateOverkillChance(crits, hits, critchance) {
     if (hits==0) return 0;
     return calculateChance(crits, hits-1, critchance)*critchance;
+}
+function calculateDominationBonuses(playerElements, opponentElements) {
+    const bonuses = {
+        player: {
+            ego: 0,
+            attack: 0,
+            chance: 0
+        },
+        opponent: {
+            ego: 0,
+            attack: 0,
+            chance: 0
+        }
+    };
+
+    [
+        {a: playerElements, b: opponentElements, k: 'player'},
+        {a: opponentElements, b: playerElements, k: 'opponent'}
+    ].forEach(({a,b,k})=>{
+        a.forEach(element => {
+            if (ELEMENTS.egoDamage[element] && b.includes(ELEMENTS.egoDamage[element])) {
+                bonuses[k].ego += 0.1
+                bonuses[k].attack += 0.1
+            }
+            if (ELEMENTS.chance[element] && b.includes(ELEMENTS.chance[element])) {
+                bonuses[k].chance += 0.2
+            }
+        })
+    })
+    
+    return bonuses
+}
+
+function countElementsInTeam(elements) {
+    return elements.reduce((a,b)=>{a[b]++;return a}, {
+        fire: 0,
+        stone: 0,
+        sun: 0,
+        water: 0,
+        nature: 0,
+        darkness: 0,
+        light: 0,
+        psychic: 0
+    })
+}
+
+function calculateSynergiesFromTeamMemberElements(elements) {
+    const counts = countElementsInTeam(elements)
+
+    // Only care about those not included in the stats already: fire, stone, sun and water
+    // Assume max harem synergy
+    const girlDictionary = (typeof(localStorage.HHPNMap) == "undefined") ? new Map(): new Map(JSON.parse(localStorage.HHPNMap));
+    const girlCount = girlDictionary.size || 800
+    const girlsPerElement = Math.min(girlCount / 8, 100)
+
+    return {
+        critDamage: (0.0035 * girlsPerElement) + (0.1  * counts.fire),
+        critChance: (0.0007 * girlsPerElement) + (0.02 * counts.stone),
+        defReduce:  (0.0007 * girlsPerElement) + (0.02 * counts.sun),
+        healOnHit:  (0.001  * girlsPerElement) + (0.03 * counts.water)
+    }
+}
+
+function calculateThemeFromElements(elements) {
+    const counts = countElementsInTeam(elements)
+
+    const theme = []
+    Object.entries(counts).forEach(([element, count]) => {
+        if (count >= 3) {
+            theme.push(element)
+        }
+    })
+    return theme
+}
+
+function calculateCritChanceShare(ownHarmony, otherHarmony) {
+    return 0.3*ownHarmony/(ownHarmony+otherHarmony)
 }
 
 // Calculate the chance to win the fight
@@ -4259,6 +4444,98 @@ function calcLeagueProbabilities(player, opponent) {
     if(logging) console.log('Total % covered (should be 100): ' + 100*ret.reduce((a,b)=>a+b,0));
     return ret;
 }
+
+function calculateBattleProbabilities (player, opponent) {
+    const logging = loadSetting("logSimFight");
+    const ret = {
+        points: {},
+        win: 0,
+        loss: 0,
+        avgTurns: 0,
+        scoreClass: ''
+    }
+
+    player.critMultiplier = 2 + player.bonuses.critDamage
+    opponent.critMultiplier = 2 + opponent.bonuses.critDamage
+
+    let runs = 0
+    let wins = 0
+    let losses = 0
+    const pointsCollector = {}
+    let totalTurns = 0
+
+    while (runs < STOCHASTIC_SIM_RUNS) {
+        const {points, turns} = simulateBattle({...player}, {...opponent})
+
+        pointsCollector[points] = (pointsCollector[points] || 0) + 1
+        if (points >= 15) {
+            wins++
+        } else {
+            losses++
+        }
+
+        totalTurns += turns
+        runs++
+    }
+
+    ret.points = Object.entries(pointsCollector).map(([points, occurrences]) => ({[points]: occurrences/runs})).reduce((a,b)=>Object.assign(a,b), {})
+
+    ret.win = wins/runs
+    ret.loss = losses/runs
+    ret.avgTurns = totalTurns/runs
+    ret.scoreClass = ret.win>0.9?"plus":ret.win<0.5?"minus":"close"
+
+    if (logging) {console.log(`Ran ${runs} simulations against ${opponent.name}, won ${ret.win * 100}% of simulated fights, average turns: ${ret.avgTurns}`)}
+
+    return ret
+}
+
+function simulateBattle (player, opponent) {
+    let points
+
+    const playerStartHP = player.hp
+    const opponentStartHP = opponent.hp
+
+    let turns = 0
+
+    while (true) {
+        turns++
+        //your turn
+        let damageAmount = player.dmg
+        if (Math.random() < player.critchance) {
+            damageAmount = player.dmg * player.critMultiplier
+        }
+        let healAmount = Math.min(playerStartHP - player.hp, damageAmount * player.bonuses.healOnHit)
+        opponent.hp -= damageAmount;
+        player.hp += healAmount;
+
+        //check win
+        if(opponent.hp<=0){
+            //count score
+            points = 15+Math.ceil(player.hp/playerStartHP * 10);
+            break;
+        }
+
+        //opp's turn
+        damageAmount = opponent.dmg
+        if (Math.random() < opponent.critchance) {
+            damageAmount = opponent.dmg * opponent.critMultiplier
+        }
+        healAmount = Math.min(opponentStartHP - opponent.hp, damageAmount * opponent.bonuses.healOnHit)
+        player.hp -= damageAmount;
+        opponent.hp += healAmount;
+
+        //check loss
+        if(player.hp<=0){
+            //count score
+            points = 3+Math.ceil((opponentStartHP - opponent.hp)/opponentStartHP * 10);
+            break;
+        }
+    }
+
+    return {points, turns}
+}
+
 /* =========================================
     CHAMPIONS INFORMATION (Credit: Entwine)
    ========================================= */
@@ -5120,7 +5397,7 @@ function moduleLinks() {
 
         var championsTime = (localStorage.getItem("championsTime") > time_now*1000) ? localStorage.getItem("championsTime") : (parseInt($('.champion-timer').attr('timer'), 10)*1000 || parseInt($('#champion-timer').attr('timer'), 10)*1000 || 0);
         if (championsTime > time_now*1000){
-            let champions = $('a[href$="champions-map.html"]>.position>span');
+            let champions = $('a[rel="sex-god-path"]>.position>span');
             $('.champion-timer').remove();
 
             //new on test server
@@ -5919,32 +6196,52 @@ function moduleSeasonSim() {
 
     function calculateSeasonPower(idOpponent) {
         // INIT
-        playerEgo = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerAtk = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerDef = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerCrit = parseInt($('#season-arena .battle_hero .hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        const $playerData = $('#season-arena .battle_hero')
+        playerEgo = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerAtk = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerDef = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        playerCrit = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        const playerSynergyDataJSON = $playerData.find('.hero_team .icon-area').attr('synergy-data')
+        const playerSynergies = JSON.parse(playerSynergyDataJSON)
+        const playerTeam = $playerData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
+        const playerTeamMemberElements = playerTeam.map(({elementData: {type: element}})=>element)
+        const playerElements = calculateThemeFromElements(playerTeamMemberElements)
+        const playerBonuses = {
+            critDamage: playerSynergies.find(({element: {type}})=>type==='fire').bonusMultiplier,
+            critChance: playerSynergies.find(({element: {type}})=>type==='stone').bonusMultiplier,
+            defReduce: playerSynergies.find(({element: {type}})=>type==='sun').bonusMultiplier,
+            healOnHit: playerSynergies.find(({element: {type}})=>type==='water').bonusMultiplier
+        }
 
-        let opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
-        opponentEgo = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        opponentDef = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        opponentAtk = parseInt(opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        opponentCrit = parseInt(opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        let $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
+        opponentEgo = parseInt($opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentDef = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentAtk = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        opponentCrit = parseInt($opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        const opponentTeam = $opponentData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
+        const opponentTeamMemberElements = opponentTeam.map(({element})=>element)
+        const opponentElements = calculateThemeFromElements(opponentTeamMemberElements)
+        const opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+
+        const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         const player = {
-            hp: playerEgo,
-            dmg: playerAtk - opponentDef,
-            critchance: 0.3*playerCrit/(playerCrit+opponentCrit)
+            hp: playerEgo * (1 + dominanceBonuses.player.ego),
+            dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
+            critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
+            bonuses: playerBonuses
         };
         const opponent = {
-            hp: opponentEgo,
-            dmg: opponentAtk - playerDef,
-            critchance: 0.3-player.critchance,
-            name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text()
+            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
+            dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
+            critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
+            name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
+            bonuses: opponentBonuses
         };
 
-        const simu = calcWinProbability(player, opponent);
+        const simu = calculateBattleProbabilities(player, opponent)
 
-        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append('<span class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</span>');
+        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append(`<span class="matchRating ${simu.scoreClass}">${nRounding(100*simu.win, 2, -1)}%</span>`);
     }
 
     calculateSeasonPower(1);
@@ -6397,7 +6694,9 @@ function moduleBattleSim() {
 
         const simu = calcWinProbability(player, opponent);
 
-        $('#opponent-panel .average-lvl').append('<div style="text-align : center; font-size : 16px" class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</div>');
+        $('#opponent-panel .average-lvl')
+            .wrap('<div class="gridWrapper"></div>')
+            .after('<div class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</div>');
     }
 
     calculatePower();
@@ -6414,6 +6713,27 @@ function moduleBattleSim() {
     sheet.insertRule('.close {'
                      + 'color: #FFA500;}'
                     );
+
+    sheet.insertRule(`
+        .gridWrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+        }
+    `)
+    sheet.insertRule(`
+        .matchRating {
+            text-align: center;
+            font-size: 16px;
+        }
+    `)
+    sheet.insertRule(`
+        #pre-battle .fighter-team .team-hexagon-container .average-lvl {
+            text-align: center;
+            margin-top: 0px;
+            line-height: 26px;
+        }
+    `)
 }
 
 /* ========================================
@@ -6425,7 +6745,6 @@ function moduleTeamsFilter() {
     var arenaGirls = undefined;
     var girlsData = undefined;
     var totalTooltips = 80;
-    const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
 
     $(document).ready(function() {
         if (CurrentPage.indexOf('edit-team') != -1) {
@@ -6704,7 +7023,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                                  + '<p id="shard_number">' + shards + '</p>'
                                                                                  + '</div>');
 
-                sheet.insertRule('.page-pre_battle #shard_number {'
+                sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                  + 'position: absolute;'
                                  + 'bottom: -0.25em;'
                                  + 'left: -5px;'
@@ -6715,7 +7034,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                  + 'font-size: 12px !important;}'
                                 );
 
-                sheet.insertRule('.page-pre_battle .shards_troll .shard_troll {'
+                sheet.insertRule('.page-troll-pre-battle .shards_troll .shard_troll {'
                                  + 'background-image: url(https://hh2.hh-content.com/shards.png);'
                                  + 'background-repeat: no-repeat;'
                                  + 'background-size: contain;'
@@ -6726,23 +7045,23 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                 );
 
                 if (girlsData.length > 1) {
-                    sheet.insertRule('.page-pre_battle #shard_number {'
+                    sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                      + 'margin-left: -1px;'
                                      + 'margin-top: -10px;}'
                                     );
 
-                    sheet.insertRule('.page-pre_battle .shards_troll .shard_troll {'
+                    sheet.insertRule('.page-troll-pre-battle .shards_troll .shard_troll {'
                                      + 'margin-left: 2px;'
                                      + 'margin-top: -11px;}'
                                     );
                 }
                 else {
-                    sheet.insertRule('.page-pre_battle #shard_number {'
+                    sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                      + 'margin-left: -1px;'
                                      + 'margin-top: -14px;}'
                                     );
 
-                    sheet.insertRule('.page-pre_battle .shards_troll .shard_troll {'
+                    sheet.insertRule('.page-troll-pre-battle .shards_troll .shard_troll {'
                                      + 'margin-left: 2px;'
                                      + 'margin-top: -15px;}'
                                     );
@@ -6760,7 +7079,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                                  + '<p id="shard_number">' + shards + '</p></div>');
 
                 //CSS
-                sheet.insertRule('.page-pre_battle #shard_number {'
+                sheet.insertRule('.page-troll-pre-battle #shard_number {'
                                  + 'position: absolute;'
                                  + 'bottom: -0.25em;'
                                  + 'left: -5px;'

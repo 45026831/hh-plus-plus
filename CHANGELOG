@@ -1,3 +1,14 @@
+0.37.7: Fixing element icons in market filter
+0.37.6: Fixing girl shards display on villains
+0.37.5: Replacing class icons in league with current team theme
+0.37.4: Adding theme icons to team selection in market girls filter
+0.37.3: Re-adding champions timer to home screen as a stop-gap measure until we have a better means of showing champs and pantheon.
+0.37.2: Re-capping synergy bonuses at 100 again.
+0.37.1: Fixing bug with getting synergy data when game not in English. For some reason KK decided to loacalise the bonus identifiers...
+0.37.0: Changing league and season sims to use a stochastic simulator in order to take all element bonuses into account.
+0.36.5: Updating fix from 0.36.4 to include all element icons.
+0.36.4: Fixing bug where league sim result was covering element icons, so tooltips couldn't receive hover events.
+0.36.3: Adding battle sim to pantheon. Restyling sim result on battle and league.
 0.36.2: Merging PoP nav button positions from Tom208's version of the script.
 0.36.1: Fixing missing shards on troll pre-battle. Fixing bug that broke teams filter when elements not present.
 0.36.0: Adding elements support for market and teams filters, adding pantheon support for battle endstate.
