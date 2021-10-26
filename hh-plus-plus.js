@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.7
+// @version         0.37.8
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3345,7 +3345,7 @@ function moduleLeague() {
             tableData[pos].challengesDone = playerChallengesDone
         }
 
-        thresholds.forEach(pos => topPoints[pos] = tableData[pos].points)
+        thresholds.forEach(pos => topPoints[pos] = (tableData[pos] && tableData[pos].points || 0))
 
         const challengesLeft = challengesTotal-challengesDone
 
