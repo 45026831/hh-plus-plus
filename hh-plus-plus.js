@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.8
+// @version         0.37.9
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -92,7 +92,6 @@ const classRelationships = {
     }
 };
 
-const DST = true;
 const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
 /**
  * ELEMENTS ASSUMPTIONS
@@ -3744,10 +3743,7 @@ function moduleLeague() {
         `)
 
         function saveVictories() {
-            let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
-
-            let current_date_ts = Math.floor(new Date().getTime()/1000);
-            let date_end_league = leagueDateInit + Math.ceil((current_date_ts - leagueDateInit)/604800)*604800;
+            let date_end_league = server_now_ts + season_end_at;
 
             let time_results = localStorage.getItem('leagueTime');
             if (time_results == null) {
@@ -3755,13 +3751,8 @@ function moduleLeague() {
                 localStorage.setItem('leagueTime', time_results);
                 localStorage.setItem('leagueResults', null);
             }
-            //Next Thursday after non-DST at 12:00 UTC
-            if (time_results == 1636023600) {
-                time_results = 1636027200
-                localStorage.setItem('leagueTime', time_results);
-            }
 
-            if (current_date_ts > time_results) {
+            if (server_now_ts > time_results) {
                 localStorage.setItem('oldLeagueResults', localStorage.getItem('leagueResults'));
                 localStorage.setItem('oldLeagueTime', localStorage.getItem('leagueTime'));
                 localStorage.setItem('oldLeaguePlayers', localStorage.getItem('leaguePlayers'));
