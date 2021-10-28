@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.9
+// @version         0.37.10
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -1034,7 +1034,8 @@ else if (isCxH) {
     tierGirlsID = [
         ['830009523', '907801218', '943323021', 0, 0],
         ['271746999', '303805209', '701946373', 0, 0],
-        ['943255266', '977228200', '743748788', 0, 0]
+        ['943255266', '977228200', '743748788', 0, 0],
+        ['514994766', '140401381', '232860230', 0, 0]
     ];
 }
 
@@ -4055,16 +4056,17 @@ function moduleSim() {
         let calc = calculateBattleProbabilities(player, opponent).points;
         let probabilityTooltip = `<table class='probabilityTable'>`;
         let expectedValue = 0;
+        const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
         for (let i=25; i>=3; i--) {
             if (calc[i]) {
-                probabilityTooltip += `<tr><td>${i}</td><td>${(100*calc[i]).toFixed(2)}%</td></tr>`;
+                const isW = i>=15
+                probabilityTooltip += `<tr style='color:${isW?pointGrade[25]:pointGrade[3]};' data-tint='${isW?'w':'l'}'><td>${i}</td><td>${(100*calc[i]).toFixed(2)}%</td></tr>`;
                 expectedValue += i*calc[i];
             }
         }
 
         $('.matchRating').remove();
 
-        const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
         const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(1)}</div>`)
         $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating);
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating);
@@ -4152,6 +4154,16 @@ function moduleSim() {
     sheet.insertRule(`
         .probabilityTable tr:nth-of-type(even) {
             background-color: rgba(255,255,255,0.2);
+        }
+    `)
+    sheet.insertRule(`
+        .probabilityTable tr:nth-of-type(even)[data-tint=w] {
+            background-color: #66cd0028;
+        }
+    `)
+    sheet.insertRule(`
+        .probabilityTable tr:nth-of-type(even)[data-tint=l] {
+            background-color: #ff2f2f28;
         }
     `)
     if (ELEMENTS_ENABLED) {

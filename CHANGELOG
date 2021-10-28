@@ -1,3 +1,4 @@
+0.37.10: Adding CxH world 5 villain girls, but no name for the villain yet. Adding coloured highlighting on the league probabilities tooltip.
 0.37.9: Changing league tracking rollover mechanism to use globals provided by the game instead of trying to rebuild the end date.
 0.37.8: Adding partial support for leagues of less than 30 participants to league info.
 0.37.7: Fixing element icons in market filter
