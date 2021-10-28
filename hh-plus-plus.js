@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.11
+// @version         0.37.12
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -4060,7 +4060,7 @@ function moduleSim() {
             bonuses: opponentBonuses
         };
 
-        let calc = calculateBattleProbabilities(player, opponent).points;
+        const {points: calc, win, scoreClass} = calculateBattleProbabilities(player, opponent)
         let probabilityTooltip = `<table class='probabilityTable'>`;
         let expectedValue = 0;
         const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
@@ -4071,6 +4071,8 @@ function moduleSim() {
                 expectedValue += i*calc[i];
             }
         }
+        probabilityTooltip += `<tr class='${scoreClass}'><td>${GT.design.leagues_won_letter}</td><td>${(100*win).toFixed(2)}%</td></tr>`
+        probabilityTooltip += '</table>'
 
         $('.matchRating').remove();
 
@@ -4159,11 +4161,6 @@ function moduleSim() {
         }
     `)
     sheet.insertRule(`
-        .probabilityTable tr:nth-of-type(even) {
-            background-color: rgba(255,255,255,0.2);
-        }
-    `)
-    sheet.insertRule(`
         .probabilityTable tr:nth-of-type(even)[data-tint=w] {
             background-color: #66cd0028;
         }
@@ -4173,22 +4170,31 @@ function moduleSim() {
             background-color: #ff2f2f28;
         }
     `)
-    if (ELEMENTS_ENABLED) {
-        sheet.insertRule(`
-            .gridWrapper {
-                margin-top: -42px;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-gap: 24px;
-                z-index: 0;
-            }
-        `)
-        sheet.insertRule(`
-            #leagues_right .player_block .team-hexagon-container .icon { 
-                z-index: 1;
-            }
-        `)
-    }
+    sheet.insertRule('.probabilityTable .plus {'
+                     + 'color: #66CD00;}'
+                    );
+
+    sheet.insertRule('.probabilityTable .minus {'
+                     + 'color: #FF2F2F;}'
+                    );
+
+    sheet.insertRule('.probabilityTable .close {'
+                     + 'color: #FFA500;}'
+                    );
+    sheet.insertRule(`
+        .gridWrapper {
+            margin-top: -42px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 24px;
+            z-index: 0;
+        }
+    `)
+    sheet.insertRule(`
+        #leagues_right .player_block .team-hexagon-container .icon { 
+            z-index: 1;
+        }
+    `)
 }
 
 // == Helper functions for probability calculations ==
