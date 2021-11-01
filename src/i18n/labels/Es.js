@@ -60,6 +60,7 @@ export const marketGirlsFilter = {
     searchedName: 'Nombre buscado',
     girlName: 'Nombre de la chica',
     searchedClass: 'Clase buscada',
+    searchedElement: 'Elemento buscado',
     searchedRarity: 'Rareza buscada',
     levelRange: 'Rango de nivel',
     searchedAffCategory: 'Categoría de afecto buscada',

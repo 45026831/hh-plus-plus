@@ -58,6 +58,9 @@ class GirlDictionaryCollector {
         if (Helpers.isCurrentPage('season')) {
             GirlDictionaryCollector.collectFromSeasons()
         }
+        if (Helpers.isCurrentPage('tower-of-fame')) {
+            GirlDictionaryCollector.collectFromLeague()
+        }
         if (updated) {
             Helpers.setGirlDictionary(girlDictionary)
         }
@@ -138,6 +141,10 @@ class GirlDictionaryCollector {
 
     static collectFromSeasons () {
         Helpers.onAjaxResponse(/action=claim/i, collectFromAjaxResponseSingular)
+    }
+
+    static collectFromLeague () {
+        Helpers.onAjaxResponse(/action=claim_rewards/i, collectFromAjaxResponseSingular)
     }
 }
 

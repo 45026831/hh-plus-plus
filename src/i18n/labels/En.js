@@ -108,6 +108,7 @@ export const marketGirlsFilter = {
     searchedName: 'Search',
     girlName: 'Girl name',
     searchedClass: 'Class',
+    searchedElement: 'Element',
     searchedRarity: 'Rarity',
     levelRange: 'Level range',
     searchedAffCategory: 'Affection category',
