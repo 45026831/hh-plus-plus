@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.14
+// @version         0.37.15
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -996,6 +996,21 @@ function nRounding(num, digits, updown) {
     else if (updown == -1) {
         return +(Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol;
     }
+}
+
+const onAjaxResponse = (pattern, callback)  => {
+    $(document).ajaxComplete((evt, xhr, opt) => {
+        if(~opt.data.search(pattern)) {
+            if(!xhr.responseText.length) {
+                return
+            }
+            const responseData = JSON.parse(xhr.responseText)
+            if(!responseData || !responseData.success) {
+                return
+            }
+            return callback(responseData, opt, xhr, evt)
+        }
+    })
 }
 
 if (isHH) {
@@ -2833,7 +2848,7 @@ function moduleHarem() {
     var mythicGirls = [];
     mythicGirls.push({affection: 4500, money: 1800000, kobans: 1800, taffection: 4500, tmoney: 1800000, tkobans: 1800});
     mythicGirls.push({affection: 11250, money: 4500000, kobans: 3000, taffection: 15750, tmoney: 6300000, tkobans: 4800});
-    mythicGirls.push({affection: 28125, money: 11300000, kobans: 5628, taffection: 43875, tmoney: 17600000, tkobans: 10428});
+    mythicGirls.push({affection: 28125, money: 11250000, kobans: 5628, taffection: 43875, tmoney: 17600000, tkobans: 10428});
     mythicGirls.push({affection: 56250 , money: 22500000, kobans: 9000, taffection: 100125, tmoney: 40100000, tkobans: 19428});
     mythicGirls.push({affection: 112500, money: 45000000, kobans: 15000, taffection: 212625, tmoney: 85100000, tkobans: 34428});
     mythicGirls.push({affection: 225000, money: 90000000, kobans: 18000, taffection: 437625, tmoney: 175100000, tkobans: 52428});
@@ -7024,6 +7039,10 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
         setTimeout(function(){updateClubChampionGirlsShards();}, 2000);
     }
     else if (CurrentPage.indexOf('tower-of-fame') != -1 || CurrentPage.indexOf('season-battle') != -1) {
+        if (CurrentPage.includes('tower-of-fame')) {
+            displayLeaguesGirlsShards()
+            updateLeagueGirlShards()
+        }
         updateTrollGirlsShards();
     }
 
@@ -7207,6 +7226,27 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                                               + '</p></div>');
         }
     }
+    
+    function displayLeaguesGirlsShards() {
+        const $leaguesGirlRewardContainer = $('.leagues_girl_reward_container')
+        if(!$leaguesGirlRewardContainer.length)
+            return;
+
+        
+            let idGirlStr = $leaguesGirlRewardContainer.find('.girl_ico img').attr('src');
+            let indexStart = idGirlStr.indexOf('girls/') + 'girls/'.length;
+            let indexEnd = idGirlStr.indexOf('/ico');
+            let girlId = idGirlStr.substring(indexStart, indexEnd);
+
+            let shards = (girlDictionary.get(girlId.toString()) != undefined) ? girlDictionary.get(girlId.toString()).shards : 0;
+            let name = (girlDictionary.get(girlId.toString()) != undefined) ? girlDictionary.get(girlId.toString()).name : '';
+            $leaguesGirlRewardContainer.find('.girl_ico').append('<div class="league_shards" shards="' + shards + '" name="' + name + '">'
+                                                                + '<p id="league_shard_number" style="position: relative; bottom: 2.3em; padding-left: 10px; color: #80058b; text-shadow: 1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;; width: 28px; text-align: right; margin-left: -11px; font-size: 12px;">'
+                                                                + '<span>' + shards + '</span>'
+                                                                + `<span class="league_shard" style="background-image: url(${IMAGES_URL}/shards.png); background-repeat: no-repeat; background-size: contain; display: block; position: relative; bottom: 1.75em; margin-left: 15px; width: 25px; height: 25px;"></span>`
+                                                                + '</p></div>');
+        
+    }
 
     function updateTrollGirlsShards() {
         var observer = new MutationObserver(function(mutations) {
@@ -7235,6 +7275,27 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
             , attributes: false
             , characterData: false
         });
+    }
+
+    function collectFromRewards (rewards) {
+        if (rewards && rewards.data && rewards.data.shards) {
+            rewards.data.shards.forEach(({id_girl, value}) => {
+                const girlId = `${id_girl}`
+                const girl = girlDictionary.get(girlId) || {}
+                girl.shards = Math.min(value, 100)
+                girlDictionary.set(girlId, girl)
+            })
+            localStorage.HHPNMap = JSON.stringify(Array.from(girlDictionary.entries()));
+        }
+    }
+
+    function collectFromAjaxResponseSingular (response) {
+        const {rewards} = response
+        collectFromRewards(rewards)
+    }
+
+    function updateLeagueGirlShards() {
+        onAjaxResponse(/action=claim_rewards/, collectFromAjaxResponseSingular)
     }
 
     function updateClubChampionGirlsShards() {
