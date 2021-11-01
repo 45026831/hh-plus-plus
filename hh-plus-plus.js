@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.7
+// @version         0.37.15
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -92,7 +92,6 @@ const classRelationships = {
     }
 };
 
-const DST = true;
 const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
 /**
  * ELEMENTS ASSUMPTIONS
@@ -999,6 +998,21 @@ function nRounding(num, digits, updown) {
     }
 }
 
+const onAjaxResponse = (pattern, callback)  => {
+    $(document).ajaxComplete((evt, xhr, opt) => {
+        if(~opt.data.search(pattern)) {
+            if(!xhr.responseText.length) {
+                return
+            }
+            const responseData = JSON.parse(xhr.responseText)
+            if(!responseData || !responseData.success) {
+                return
+            }
+            return callback(responseData, opt, xhr, evt)
+        }
+    })
+}
+
 if (isHH) {
     tierGirlsID = [
         ['8', '9', '10', '7270263', '979916751'],
@@ -1035,7 +1049,8 @@ else if (isCxH) {
     tierGirlsID = [
         ['830009523', '907801218', '943323021', 0, 0],
         ['271746999', '303805209', '701946373', 0, 0],
-        ['943255266', '977228200', '743748788', 0, 0]
+        ['943255266', '977228200', '743748788', 0, 0],
+        ['514994766', '140401381', '232860230', 0, 0]
     ];
 }
 
@@ -1487,7 +1502,7 @@ function moduleVillain() {
         }
     }
     else if (isCxH) {
-        trolls = ['BodyHack', 'Grey Golem', 'The Nymph'];
+        trolls = ['BodyHack', 'Grey Golem', 'The Nymph', 'Athicus Ho’ole'];
     }
     else if (isGH) {
         trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edward', 'Donatien', 'Silvanus', 'Bremen', 'Edernas', 'Roko Senseï', 'Maro'];
@@ -2235,7 +2250,7 @@ function moduleMarketFilter() {
 
                 var totalHTML = `
                     <div style="position:relative">
-                        <div id="arena_filter_box" class="form-wrapper" style="position: absolute; left: -215px; top: -224px; width: 200px; height: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">
+                        <div id="arena_filter_box" class="form-wrapper" style="position: absolute; left: -215px; top: -224px; width: 200px; height: -moz-fit-content; height: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">
                             ${buildTextInput({id: 'sort_name', label: labels.searched_name, placeholder: labels.girl_name})}
                             ${buildSelectInput({
                                 id: 'sort_class',
@@ -2833,7 +2848,7 @@ function moduleHarem() {
     var mythicGirls = [];
     mythicGirls.push({affection: 4500, money: 1800000, kobans: 1800, taffection: 4500, tmoney: 1800000, tkobans: 1800});
     mythicGirls.push({affection: 11250, money: 4500000, kobans: 3000, taffection: 15750, tmoney: 6300000, tkobans: 4800});
-    mythicGirls.push({affection: 28125, money: 11300000, kobans: 5628, taffection: 43875, tmoney: 17600000, tkobans: 10428});
+    mythicGirls.push({affection: 28125, money: 11250000, kobans: 5628, taffection: 43875, tmoney: 17600000, tkobans: 10428});
     mythicGirls.push({affection: 56250 , money: 22500000, kobans: 9000, taffection: 100125, tmoney: 40100000, tkobans: 19428});
     mythicGirls.push({affection: 112500, money: 45000000, kobans: 15000, taffection: 212625, tmoney: 85100000, tkobans: 34428});
     mythicGirls.push({affection: 225000, money: 90000000, kobans: 18000, taffection: 437625, tmoney: 175100000, tkobans: 52428});
@@ -3345,7 +3360,7 @@ function moduleLeague() {
             tableData[pos].challengesDone = playerChallengesDone
         }
 
-        thresholds.forEach(pos => topPoints[pos] = tableData[pos].points)
+        thresholds.forEach(pos => topPoints[pos] = (tableData[pos] && tableData[pos].points || 0))
 
         const challengesLeft = challengesTotal-challengesDone
 
@@ -3513,6 +3528,13 @@ function moduleLeague() {
         sheet.insertRule(`
             .hh_tooltip_new em {
                 color: white;
+            }
+        `)
+
+        sheet.insertRule(`
+            #leagues_middle .leagues_middle_header .leagues_girl_reward_container {
+                right: 9px;
+                top: -35px;
             }
         `)
 
@@ -3744,10 +3766,7 @@ function moduleLeague() {
         `)
 
         function saveVictories() {
-            let leagueDateInit = (DST == true) ? 11*3600 : 12*3600;
-
-            let current_date_ts = Math.floor(new Date().getTime()/1000);
-            let date_end_league = leagueDateInit + Math.ceil((current_date_ts - leagueDateInit)/604800)*604800;
+            let date_end_league = server_now_ts + season_end_at;
 
             let time_results = localStorage.getItem('leagueTime');
             if (time_results == null) {
@@ -3755,13 +3774,8 @@ function moduleLeague() {
                 localStorage.setItem('leagueTime', time_results);
                 localStorage.setItem('leagueResults', null);
             }
-            //Next Thursday after non-DST at 12:00 UTC
-            if (time_results == 1636023600) {
-                time_results = 1636027200
-                localStorage.setItem('leagueTime', time_results);
-            }
 
-            if (current_date_ts > time_results) {
+            if (server_now_ts > time_results) {
                 localStorage.setItem('oldLeagueResults', localStorage.getItem('leagueResults'));
                 localStorage.setItem('oldLeagueTime', localStorage.getItem('leagueTime'));
                 localStorage.setItem('oldLeaguePlayers', localStorage.getItem('leaguePlayers'));
@@ -4061,19 +4075,22 @@ function moduleSim() {
             bonuses: opponentBonuses
         };
 
-        let calc = calculateBattleProbabilities(player, opponent).points;
+        const {points: calc, win, scoreClass} = calculateBattleProbabilities(player, opponent)
         let probabilityTooltip = `<table class='probabilityTable'>`;
         let expectedValue = 0;
+        const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
         for (let i=25; i>=3; i--) {
             if (calc[i]) {
-                probabilityTooltip += `<tr><td>${i}</td><td>${(100*calc[i]).toFixed(2)}%</td></tr>`;
+                const isW = i>=15
+                probabilityTooltip += `<tr style='color:${isW?pointGrade[25]:pointGrade[3]};' data-tint='${isW?'w':'l'}'><td>${i}</td><td>${(100*calc[i]).toFixed(2)}%</td></tr>`;
                 expectedValue += i*calc[i];
             }
         }
+        probabilityTooltip += `<tr class='${scoreClass}'><td>${GT.design.leagues_won_letter}</td><td>${(100*win).toFixed(2)}%</td></tr>`
+        probabilityTooltip += '</table>'
 
         $('.matchRating').remove();
 
-        const pointGrade=['#fff','#fff','#fff','#ff2f2f','#fe3c25','#fb4719','#f95107','#f65b00','#f26400','#ed6c00','#e97400','#e37c00','#de8400','#d88b00','#d19100','#ca9800','#c39e00','#bba400','#b3aa00','#aab000','#a1b500','#97ba00','#8cbf00','#81c400','#74c900','#66cd00'];
         const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" hh_title="${probabilityTooltip}">E[X]: ${expectedValue.toFixed(1)}</div>`)
         $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating);
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating);
@@ -4159,26 +4176,40 @@ function moduleSim() {
         }
     `)
     sheet.insertRule(`
-        .probabilityTable tr:nth-of-type(even) {
-            background-color: rgba(255,255,255,0.2);
+        .probabilityTable tr:nth-of-type(even)[data-tint=w] {
+            background-color: #66cd0028;
         }
     `)
-    if (ELEMENTS_ENABLED) {
-        sheet.insertRule(`
-            .gridWrapper {
-                margin-top: -42px;
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                grid-gap: 24px;
-                z-index: 0;
-            }
-        `)
-        sheet.insertRule(`
-            #leagues_right .player_block .team-hexagon-container .icon { 
-                z-index: 1;
-            }
-        `)
-    }
+    sheet.insertRule(`
+        .probabilityTable tr:nth-of-type(even)[data-tint=l] {
+            background-color: #ff2f2f28;
+        }
+    `)
+    sheet.insertRule('.probabilityTable .plus {'
+                     + 'color: #66CD00;}'
+                    );
+
+    sheet.insertRule('.probabilityTable .minus {'
+                     + 'color: #FF2F2F;}'
+                    );
+
+    sheet.insertRule('.probabilityTable .close {'
+                     + 'color: #FFA500;}'
+                    );
+    sheet.insertRule(`
+        .gridWrapper {
+            margin-top: -42px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 24px;
+            z-index: 0;
+        }
+    `)
+    sheet.insertRule(`
+        #leagues_right .player_block .team-hexagon-container .icon { 
+            z-index: 1;
+        }
+    `)
 }
 
 // == Helper functions for probability calculations ==
@@ -7008,6 +7039,10 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
         setTimeout(function(){updateClubChampionGirlsShards();}, 2000);
     }
     else if (CurrentPage.indexOf('tower-of-fame') != -1 || CurrentPage.indexOf('season-battle') != -1) {
+        if (CurrentPage.includes('tower-of-fame')) {
+            displayLeaguesGirlsShards()
+            updateLeagueGirlShards()
+        }
         updateTrollGirlsShards();
     }
 
@@ -7191,6 +7226,27 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                                               + '</p></div>');
         }
     }
+    
+    function displayLeaguesGirlsShards() {
+        const $leaguesGirlRewardContainer = $('.leagues_girl_reward_container')
+        if(!$leaguesGirlRewardContainer.length)
+            return;
+
+        
+            let idGirlStr = $leaguesGirlRewardContainer.find('.girl_ico img').attr('src');
+            let indexStart = idGirlStr.indexOf('girls/') + 'girls/'.length;
+            let indexEnd = idGirlStr.indexOf('/ico');
+            let girlId = idGirlStr.substring(indexStart, indexEnd);
+
+            let shards = (girlDictionary.get(girlId.toString()) != undefined) ? girlDictionary.get(girlId.toString()).shards : 0;
+            let name = (girlDictionary.get(girlId.toString()) != undefined) ? girlDictionary.get(girlId.toString()).name : '';
+            $leaguesGirlRewardContainer.find('.girl_ico').append('<div class="league_shards" shards="' + shards + '" name="' + name + '">'
+                                                                + '<p id="league_shard_number" style="position: relative; bottom: 2.3em; padding-left: 10px; color: #80058b; text-shadow: 1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;; width: 28px; text-align: right; margin-left: -11px; font-size: 12px;">'
+                                                                + '<span>' + shards + '</span>'
+                                                                + `<span class="league_shard" style="background-image: url(${IMAGES_URL}/shards.png); background-repeat: no-repeat; background-size: contain; display: block; position: relative; bottom: 1.75em; margin-left: 15px; width: 25px; height: 25px;"></span>`
+                                                                + '</p></div>');
+        
+    }
 
     function updateTrollGirlsShards() {
         var observer = new MutationObserver(function(mutations) {
@@ -7219,6 +7275,27 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
             , attributes: false
             , characterData: false
         });
+    }
+
+    function collectFromRewards (rewards) {
+        if (rewards && rewards.data && rewards.data.shards) {
+            rewards.data.shards.forEach(({id_girl, value}) => {
+                const girlId = `${id_girl}`
+                const girl = girlDictionary.get(girlId) || {}
+                girl.shards = Math.min(value, 100)
+                girlDictionary.set(girlId, girl)
+            })
+            localStorage.HHPNMap = JSON.stringify(Array.from(girlDictionary.entries()));
+        }
+    }
+
+    function collectFromAjaxResponseSingular (response) {
+        const {rewards} = response
+        collectFromRewards(rewards)
+    }
+
+    function updateLeagueGirlShards() {
+        onAjaxResponse(/action=claim_rewards/, collectFromAjaxResponseSingular)
     }
 
     function updateClubChampionGirlsShards() {
