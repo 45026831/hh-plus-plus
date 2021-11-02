@@ -1,3 +1,4 @@
+0.37.16: Adding an elapsed time label to club champs (missing i18n: fr, it), adding a fix for a game bug related to the club champion progress bar in non-English locales.
 0.37.15: Adding girl shards display in leagues
 0.37.14: Fixing market filter styles on Firefox
 0.37.13: Adding CxH world 5 villain's name

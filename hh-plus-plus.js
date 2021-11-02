@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.15
+// @version         0.37.16
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -312,7 +312,8 @@ const texts = {
         blessed_attributes: `Blessed ${gameConfig.girl}s`,
         non_blessed_attributes: `Non-blessed ${gameConfig.girl}s`,
         total_rewards: 'Total Saved Rewards ({{contests}} Contests):',
-        contests_warning: 'Contests expire after 21 days!'
+        contests_warning: 'Contests expire after 21 days!',
+        clubChampDuration: '{{duration}} since round start'
     },
     fr: {
         optionsRefresh: 'Rafraîchir page d\'accueil',
@@ -629,7 +630,8 @@ const texts = {
         blessed_attributes: 'Benditas chicas',
         non_blessed_attributes: 'Chicas no bendecidas',
         total_rewards: 'Recompensas totales guardadas ({{contests}} Competiciones):',
-        contests_warning: '¡Los Competiciones caducan después de 21 días!'
+        contests_warning: '¡Los Competiciones caducan después de 21 días!',
+        clubChampDuration: '{{duration}} desde el comienzo de la ronda'
     },
     it: {
         optionsRefresh: 'Refresh pagina Home',
@@ -945,7 +947,8 @@ const texts = {
         blessed_attributes: 'gesegnet',
         non_blessed_attributes: 'nicht gesegnet',
         total_rewards: 'Gesamtzahl der gespeicherten Belohnungen ({{contests}} Wettbewerbe):',
-        contests_warning: 'Wettbewerbe verfallen nach 21 Tagen!'
+        contests_warning: 'Wettbewerbe verfallen nach 21 Tagen!',
+        clubChampDuration: '{{duration}} seit Rundenbeginn'
     }
 };
 
@@ -7407,6 +7410,31 @@ if (CurrentPage == "/clubs.html" && $('.club_champions_details_container').lengt
         if ($('.club_champions_timer_fight span').length)
             highlightMembersParticipation();
     });
+
+    function addTimeSinceStart () {
+        const $timerFight = $('.club_champions_timer_fight')
+        if (!$timerFight.length || !clubChampionsData.fight.active) {
+            return
+        }
+
+        const duration = calculateTime(
+            clubChampionsData.fight.start_time * 1e3,
+            server_now_ts * 1e3
+        )
+
+        const durationString = `${duration.daysLeft > 0 ? `${duration.daysLeft}${GT.time.d} ` : ''}${duration.hoursLeft > 0 ? `${duration.hoursLeft}${GT.time.h} ` : ''}${duration.minutesLeft > 0 ? `${duration.minutesLeft}${GT.time.m}` : ''}`.trim()
+
+        $timerFight.append('<br/>').append(`<span>${label('clubChampDuration').replace('{{duration}}', durationString)}</span>`)
+    }
+
+    addTimeSinceStart()
+
+    function fixTimerBar () {
+        const $clubChampionsBar = $('.club_champions_bar')
+        // Fix silly code putting a localised decimal separator as a CSS rule value
+        $clubChampionsBar.attr('style', $clubChampionsBar.attr('style').replace(',','.'))
+    }
+    fixTimerBar()
 }
 
 //Add previous/next arrows in Places of Power to navigate easily between them
