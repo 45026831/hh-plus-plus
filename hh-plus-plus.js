@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.16
+// @version         0.37.17
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -472,7 +472,8 @@ const texts = {
         blessed_attributes: 'Filles bénies',
         non_blessed_attributes: 'Filles non bénies',
         total_rewards: 'Total des récompenses enregistrées ({{contests}} Compètes) :',
-        contests_warning: 'Les Compètes expirent après 21 jours !'
+        contests_warning: 'Les Compètes expirent après 21 jours !',
+        clubChampDuration: '{{duration}} depuis le début du tour'
     },
     es: {
         optionsRefresh: 'Actualizacion Menu principal',
