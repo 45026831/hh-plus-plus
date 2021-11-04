@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.17
+// @version         0.37.18
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -7281,25 +7281,30 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
         });
     }
 
-    function collectFromRewards (rewards) {
-        if (rewards && rewards.data && rewards.data.shards) {
-            rewards.data.shards.forEach(({id_girl, value}) => {
-                const girlId = `${id_girl}`
-                const girl = girlDictionary.get(girlId) || {}
-                girl.shards = Math.min(value, 100)
-                girlDictionary.set(girlId, girl)
-            })
-            localStorage.HHPNMap = JSON.stringify(Array.from(girlDictionary.entries()));
-        }
-    }
-
-    function collectFromAjaxResponseSingular (response) {
+    function collectFromLeagueClaimAjaxResponse (response) {
         const {rewards} = response
-        collectFromRewards(rewards)
+        if (!rewards) {
+            return
+        }
+        const {list} = rewards
+        if (!list) {
+            return
+        }
+        list.forEach(({data}) => {
+            if (data && data.shards) {
+                data.shards.forEach(({id_girl, value}) => {
+                    const girlId = `${id_girl}`
+                    const girl = girlDictionary.get(girlId) || {}
+                    girl.shards = Math.min(value, 100)
+                    girlDictionary.set(girlId, girl)
+                })
+                localStorage.HHPNMap = JSON.stringify(Array.from(girlDictionary.entries()));
+            }
+        })
     }
 
     function updateLeagueGirlShards() {
-        onAjaxResponse(/action=claim_rewards/, collectFromAjaxResponseSingular)
+        onAjaxResponse(/action=claim_rewards/, collectFromLeagueClaimAjaxResponse)
     }
 
     function updateClubChampionGirlsShards() {

@@ -1,3 +1,4 @@
+0.37.18: fixing shard collection from leagues response.
 0.37.17: Adding fr label for club champ elapsed time.
 0.37.16: Adding an elapsed time label to club champs (missing i18n: fr, it), adding a fix for a game bug related to the club champion progress bar in non-English locales.
 0.37.15: Adding girl shards display in leagues
