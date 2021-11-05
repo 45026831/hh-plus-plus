@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.18
+// @version         0.37.19
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -73,6 +73,9 @@ const gameConfigs = {
     }
 }
 const gameConfig = isGH ? gameConfigs.GH : isCxH ? gameConfigs.CxH : gameConfigs.HH
+
+// Only Nutaku HH is divided by 6. CxH and GH use the same values as CxH.com and GH.com
+const IS_NUTAKU_KOBANS = HH_UNIVERSE === 'nutaku';
 
 const HC = 1;
 const CH = 2;
@@ -2852,10 +2855,10 @@ function moduleHarem() {
     var mythicGirls = [];
     mythicGirls.push({affection: 4500, money: 1800000, kobans: 1800, taffection: 4500, tmoney: 1800000, tkobans: 1800});
     mythicGirls.push({affection: 11250, money: 4500000, kobans: 3000, taffection: 15750, tmoney: 6300000, tkobans: 4800});
-    mythicGirls.push({affection: 28125, money: 11250000, kobans: 5628, taffection: 43875, tmoney: 17600000, tkobans: 10428});
-    mythicGirls.push({affection: 56250 , money: 22500000, kobans: 9000, taffection: 100125, tmoney: 40100000, tkobans: 19428});
-    mythicGirls.push({affection: 112500, money: 45000000, kobans: 15000, taffection: 212625, tmoney: 85100000, tkobans: 34428});
-    mythicGirls.push({affection: 225000, money: 90000000, kobans: 18000, taffection: 437625, tmoney: 175100000, tkobans: 52428});
+    mythicGirls.push({affection: 28125, money: 11250000, kobans: 5628, taffection: 43875, tmoney: 17550000, tkobans: 10428});
+    mythicGirls.push({affection: 56250 , money: 22500000, kobans: 9000, taffection: 100125, tmoney: 40050000, tkobans: 19428});
+    mythicGirls.push({affection: 112500, money: 45000000, kobans: 15000, taffection: 212625, tmoney: 85050000, tkobans: 34428});
+    mythicGirls.push({affection: 225000, money: 90000000, kobans: 18000, taffection: 437625, tmoney: 175050000, tkobans: 52428});
     EvoReq.mythic = mythicGirls;
 
     for (var id in girlsDataList) {
@@ -2878,7 +2881,7 @@ function moduleHarem() {
                     currentLevelKobans = EvoReq[girl.rarity][girl.graded - 1].tkobans;
                 }
                 stats.money += EvoReq[girl.rarity][nbgrades - 1].tmoney - currentLevelMoney;
-                if (hh_nutaku) {
+                if (IS_NUTAKU_KOBANS) {
                     stats.kobans += Math.ceil((EvoReq[girl.rarity][nbgrades - 1].tkobans - currentLevelKobans) / 6);
                 }
                 else {
@@ -3064,7 +3067,7 @@ function moduleHarem() {
                     }
                     else if ((girl.graded + 1) == j && girl.Affection.level == j) {
                         money = EvoReq[girl.rarity][j - 1].tmoney - currentLevelMoney;
-                        if (hh_nutaku) {
+                        if (IS_NUTAKU_KOBANS) {
                             kobans = Math.ceil((EvoReq[girl.rarity][j - 1].tkobans - currentLevelKobans) / 6);
                         }
                         else {
@@ -3074,7 +3077,7 @@ function moduleHarem() {
                     else {
                         aff = EvoReq[girl.rarity][j - 1].taffection - girl.Affection.cur;
                         money = EvoReq[girl.rarity][j - 1].tmoney - currentLevelMoney;
-                        if (hh_nutaku) {
+                        if (IS_NUTAKU_KOBANS) {
                             kobans = Math.ceil((EvoReq[girl.rarity][j - 1].tkobans - currentLevelKobans) / 6);
                         }
                         else {
