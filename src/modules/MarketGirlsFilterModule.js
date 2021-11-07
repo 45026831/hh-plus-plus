@@ -353,6 +353,7 @@ class MarketGirlsFilterModule extends HHModule {
                 position: absolute;
                 left: -215px;
                 width: 200px;
+                height: -moz-fit-content;
                 height: fit-content;
                 z-index: 3;
                 border-radius: 8px 10px 10px 8px;

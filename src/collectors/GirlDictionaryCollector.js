@@ -23,7 +23,15 @@ const collectFromAjaxResponseSingular = (response) => {
 const collectFromAjaxResponsePlural = (response) => {
     const {rewards: rewardsSets} = response
     if (rewardsSets) {
-        rewardsSets.forEach(rewards => collectFromRewards(rewards))
+        rewardsSets.forEach(collectFromRewards)
+    }
+}
+const collectFromAjaxResponseLeagues = (response) => {
+    const {rewards} = response
+    if (!rewards) {return}
+    const {list} = rewards
+    if (list) {
+        list.forEach(collectFromRewards)
     }
 }
 
@@ -144,7 +152,7 @@ class GirlDictionaryCollector {
     }
 
     static collectFromLeague () {
-        Helpers.onAjaxResponse(/action=claim_rewards/i, collectFromAjaxResponseSingular)
+        Helpers.onAjaxResponse(/action=claim_rewards/i, collectFromAjaxResponseLeagues)
     }
 }
 

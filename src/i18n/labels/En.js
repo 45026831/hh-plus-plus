@@ -104,7 +104,6 @@ export const market = {
 }
 
 export const marketGirlsFilter = {
-
     searchedName: 'Search',
     girlName: 'Girl name',
     searchedClass: 'Class',
@@ -122,6 +121,11 @@ export const marketGirlsFilter = {
     grade6: '6 stars',
     team: 'Team',
     visitTeams: 'Visit <a href="../teams.html">Teams</a> first.'
+}
+
+export const marketXPAff = {
+    xp: '->{{remainNext}}; Max: {{remainMax}}',
+    aff: 'Next: {{remainNext}}'
 }
 
 export const seasonStats = {
