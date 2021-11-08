@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.19
+// @version         0.37.20
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3671,6 +3671,18 @@ function moduleLeague() {
             }
         `);
 
+        function resolveScoreConflicts(scores) {
+            console.log('resolving scores', scores)
+            const resolutionIndices = {
+                4: [0,1,3],
+                5: [0,3,4],
+                6: [3,4,5]
+            }
+            const resolved = scores.filter((_,i) => resolutionIndices[scores.length].includes(i))
+            console.log('resolved to:', resolved)
+            return resolved
+        }
+
         function displayLeaguePlayersInfo() {
             if (localStorage.getItem('newLeagueResults') == null) {
                 localStorage.removeItem('leagueResults');
@@ -3694,6 +3706,7 @@ function moduleLeague() {
 
             const data = JSON.parse(localStorage.getItem('leagueResults')) || {};
             const pointHistory = JSON.parse(localStorage.getItem('pointHistory')) || {};
+            let pointHistoryChanged = false
             for(let i=0; i<playersTotal; i++) {
                 let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
                 let playerId = playerData.attr('sorting_id');
@@ -3712,14 +3725,19 @@ function moduleLeague() {
                 }
                 if (!playerData.hasClass('personal_highlight')){
                     let points;
+                    const leaguesListPlayer = leagues_list.find(({id_player}) => id_player===playerId)
                     try{
                         points=pointHistory[playerId].points;
+                        if (leaguesListPlayer.nb_challenges_played === '3' && points.length > 3) {
+                            points = resolveScoreConflicts(points)
+                            pointHistory[playerId].points = points
+                            pointHistoryChanged = true
+                        }
                     }catch{
                         points=[];
                     }
                     let pointsText='';
                     const showIndividualPoints = localStorage.getItem('leagueTableShowIndividual') === "1"
-                    const leaguesListPlayer = leagues_list.find(({id_player}) => id_player===playerId)
                     if (showIndividualPoints) {
                         pointsText = [0,1,2].map(j => {
                             if(j<parseInt(leaguesListPlayer.nb_challenges_played)){
@@ -3734,6 +3752,9 @@ function moduleLeague() {
                         playerData[0].children[3].innerText=pointsText
                     }
                 }
+            }
+            if (pointHistoryChanged) {
+                localStorage.setItem('pointHistory', JSON.stringify(pointHistory))
             }
         }
         sheet.insertRule(`
