@@ -1,3 +1,4 @@
+0.37.21: Various emergency fixes where required variables have been renamed from camelCase to snake_case
 0.37.20: Adding safeguard to clean up point history where stale data is present. e.g. when there's a game rollback
 0.37.19: Fixing some harem info calculations
 0.37.18: fixing shard collection from leagues response.
