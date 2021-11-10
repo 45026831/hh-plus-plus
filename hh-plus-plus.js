@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.19
+// @version         0.37.21
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -2208,12 +2208,14 @@ function moduleMarketFilter() {
 
             if ($girl.attr('class').indexOf('girl') != -1) {
                 const girlData = $girl.data('g')
-                const { level, Name, elementData, class: girlClass } = girlData
+                const { level, Name, name, elementData, element_data, class: girlClass } = girlData
                 $("#girls_list>.level_target_squared>div>div").attr("chars", level.length);
                 $("#girls_list>.level_target_squared>div>div").text(level);
-                $("#girls_list>h3").text(Name);
+                $("#girls_list>h3").text(Name || name);
                 if (elementData) {
                     $("#girls_list>.icon").attr("src", `${IMAGES_URL}/pictures/girls_elements/${ELEMENTS_ICON_NAMES[elementData.type]}.png`);
+                } else if (element_data) {
+                    $("#girls_list>.icon").attr("src", `${IMAGES_URL}/pictures/girls_elements/${ELEMENTS_ICON_NAMES[element_data.type]}.png`);
                 } else {
                     $("#girls_list>.icon").attr("carac", girlClass);
                 }
@@ -2366,18 +2368,20 @@ function moduleMarketFilter() {
                             allGirls[i].detach();
                         }
                     } else {
-                        let affectionStr = girl.Graded2;
+                        let affectionStr = girl.Graded2 || girl.graded2;
                         let affectionCategoryStr = affectionStr.split('</g>');
                         let affectionCategory = affectionCategoryStr.length-1;
                         let affectionLvlStr = affectionStr.split('<g >');
                         let affectionLvl = affectionLvlStr.length-1;
 
                         let matchesClass = (girl.class == sorterClass) || (sorterClass == 0);
-                        let matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
+                        const {elementData, element_data} = girl
+                        let matchesElement = ((elementData || element_data).type === sorterElement) || (sorterElement === 'all')
                         let matchesRarity = (girl.rarity == sorterRarity) || (sorterRarity == 'all');
                         let matchesAffCategory = (affectionCategory == sorterAffCategory) || (sorterAffCategory == 'all');
                         let matchesAffLvl = (affectionLvl == sorterAffLvl) || (sorterAffLvl == 'all');
-                        let matchesName = (girl.Name.search(nameRegex) > -1);
+                        const {Name, name} = girl
+                        let matchesName = ((Name || name).search(nameRegex) > -1);
                         let matchesLevel =  (sorterRange[0] == '' || girl.level >= parseInt(sorterRange[0]) )
                         && (sorterRange[1] == '' || sorterRange[1] === undefined || girl.level <= parseInt(sorterRange[1]) );
 
@@ -3009,7 +3013,8 @@ function moduleHarem() {
         setTimeout(function () {
             haremRight.children('[girl]').each(function() {
                 var girl = girlsDataList[$(this).attr('girl')];
-                let girlName = girl.Name.replaceAll("/", "-");
+                const {Name, name} = girl
+                let girlName = (Name || name).replaceAll("/", "-");
 
                 if (lang === 'fr') {
                     //for Wiki FR
@@ -3022,7 +3027,7 @@ function moduleHarem() {
                     let wikiLink
 
                     if (isGH) {
-                        wikiLink = `https://harem-battle.club/wiki/Gay-Harem/GH:${girl.Name}`
+                        wikiLink = `https://harem-battle.club/wiki/Gay-Harem/GH:${Name || name}`
                     } else if (lang === 'fr') {
                         wikiLink = `http://hentaiheroes.wikidot.com/${girlName}`
                     } else {
@@ -3034,7 +3039,7 @@ function moduleHarem() {
                         if ($existingLink.length) {
                             $existingLink.attr('href', wikiLink)
                         } else {
-                            $(this).find('.middle_part.missing_girl .dialog-box').append(`<div class="WikiLinkDialogbox"><a href="${wikiLink}" target="_blank">${girl.Name}${texts[lang].wiki}</a></div>`);
+                            $(this).find('.middle_part.missing_girl .dialog-box').append(`<div class="WikiLinkDialogbox"><a href="${wikiLink}" target="_blank">${Name || name}${texts[lang].wiki}</a></div>`);
                         }
                     }
                     if (girl.own) {
@@ -3671,6 +3676,18 @@ function moduleLeague() {
             }
         `);
 
+        function resolveScoreConflicts(scores) {
+            console.log('resolving scores', scores)
+            const resolutionIndices = {
+                4: [0,1,3],
+                5: [0,3,4],
+                6: [3,4,5]
+            }
+            const resolved = scores.filter((_,i) => resolutionIndices[scores.length].includes(i))
+            console.log('resolved to:', resolved)
+            return resolved
+        }
+
         function displayLeaguePlayersInfo() {
             if (localStorage.getItem('newLeagueResults') == null) {
                 localStorage.removeItem('leagueResults');
@@ -3694,6 +3711,7 @@ function moduleLeague() {
 
             const data = JSON.parse(localStorage.getItem('leagueResults')) || {};
             const pointHistory = JSON.parse(localStorage.getItem('pointHistory')) || {};
+            let pointHistoryChanged = false
             for(let i=0; i<playersTotal; i++) {
                 let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')');
                 let playerId = playerData.attr('sorting_id');
@@ -3712,14 +3730,19 @@ function moduleLeague() {
                 }
                 if (!playerData.hasClass('personal_highlight')){
                     let points;
+                    const leaguesListPlayer = leagues_list.find(({id_player}) => id_player===playerId)
                     try{
                         points=pointHistory[playerId].points;
+                        if (leaguesListPlayer.nb_challenges_played === '3' && points.length > 3) {
+                            points = resolveScoreConflicts(points)
+                            pointHistory[playerId].points = points
+                            pointHistoryChanged = true
+                        }
                     }catch{
                         points=[];
                     }
                     let pointsText='';
                     const showIndividualPoints = localStorage.getItem('leagueTableShowIndividual') === "1"
-                    const leaguesListPlayer = leagues_list.find(({id_player}) => id_player===playerId)
                     if (showIndividualPoints) {
                         pointsText = [0,1,2].map(j => {
                             if(j<parseInt(leaguesListPlayer.nb_challenges_played)){
@@ -3734,6 +3757,9 @@ function moduleLeague() {
                         playerData[0].children[3].innerText=pointsText
                     }
                 }
+            }
+            if (pointHistoryChanged) {
+                localStorage.setItem('pointHistory', JSON.stringify(pointHistory))
             }
         }
         sheet.insertRule(`
@@ -4035,16 +4061,18 @@ function moduleSim() {
             chance: playerCrit,
             damage: playerAtk,
             defense: playerDef,
-            totalEgo: playerEgo,
+            totalEgo: playerTotalEgo,
+            total_ego: player_total_ego,
             team: playerTeam
         } = heroLeaguesData
-        const playerElements = playerTeam.themeElements.map(({type}) => type)
+        const playerEgo = playerTotalEgo || player_total_ego
+        const playerElements = (playerTeam.themeElements || playerTeam.theme_elements).map(({type}) => type)
         const playerSynergies = playerTeam.synergies
         const playerBonuses = {
-            critDamage: playerSynergies.find(({element: {type}})=>type==='fire').bonusMultiplier,
-            critChance: playerSynergies.find(({element: {type}})=>type==='stone').bonusMultiplier,
-            defReduce: playerSynergies.find(({element: {type}})=>type==='sun').bonusMultiplier,
-            healOnHit: playerSynergies.find(({element: {type}})=>type==='water').bonusMultiplier
+            critDamage: findBonusFromSynergies(playerSynergies, 'fire'),
+            critChance: findBonusFromSynergies(playerSynergies, 'stone'),
+            defReduce: findBonusFromSynergies(playerSynergies, 'sun'),
+            healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
         }
         
         const {
@@ -4063,18 +4091,18 @@ function moduleSim() {
                 opponentTeamMemberElements.push(teamMember.element)
             }
         })
-        const opponentElements = opponentTeam.themeElements.map(({type}) => type)
+        const opponentElements = (opponentTeam.themeElements || opponentTeam.theme_elements).map(({type}) => type)
         const opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
 
         const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
-        player = {
+        const player = {
             hp: playerEgo * (1 + dominanceBonuses.player.ego),
             dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
             critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
-        opponent = {
+        const opponent = {
             hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
             dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
@@ -4283,6 +4311,11 @@ function countElementsInTeam(elements) {
         light: 0,
         psychic: 0
     })
+}
+
+function findBonusFromSynergies(synergies, element) {
+    const {bonusMultiplier, bonus_multiplier} = synergies.find(({element: {type}})=>type===element)
+    return (bonusMultiplier || bonus_multiplier)
 }
 
 function calculateSynergiesFromTeamMemberElements(elements) {
@@ -4535,8 +4568,9 @@ function simulateBattle (player, opponent) {
     const opponentStartHP = opponent.hp
 
     let turns = 0
+    const maxAllowedTurns = 50
 
-    while (true) {
+    while (turns < maxAllowedTurns) {
         turns++
         //your turn
         let damageAmount = player.dmg
@@ -6242,13 +6276,13 @@ function moduleSeasonSim() {
         const playerSynergyDataJSON = $playerData.find('.hero_team .icon-area').attr('synergy-data')
         const playerSynergies = JSON.parse(playerSynergyDataJSON)
         const playerTeam = $playerData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
-        const playerTeamMemberElements = playerTeam.map(({elementData: {type: element}})=>element)
+        const playerTeamMemberElements = playerTeam.map(({elementData, element_data})=>(elementData || element_data).type)
         const playerElements = calculateThemeFromElements(playerTeamMemberElements)
         const playerBonuses = {
-            critDamage: playerSynergies.find(({element: {type}})=>type==='fire').bonusMultiplier,
-            critChance: playerSynergies.find(({element: {type}})=>type==='stone').bonusMultiplier,
-            defReduce: playerSynergies.find(({element: {type}})=>type==='sun').bonusMultiplier,
-            healOnHit: playerSynergies.find(({element: {type}})=>type==='water').bonusMultiplier
+            critDamage: findBonusFromSynergies(playerSynergies, 'fire'),
+            critChance: findBonusFromSynergies(playerSynergies, 'stone'),
+            defReduce: findBonusFromSynergies(playerSynergies, 'sun'),
+            healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
         }
 
         let $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
@@ -6865,12 +6899,11 @@ function moduleTeamsFilter() {
 
         var girlsFiltered = $.map(girlsData, function(girl, index) {
             var matchesClass = (girl.class == filterClass) || (filterClass == 0);
-            var matchesElement = true
-            if (ELEMENTS_ENABLED) {
-                matchesElement = (girl.elementData.type === filterElement) || filterElement === 'all'
-            }
+            const {elementData, element_data} = girl
+            var matchesElement = ((elementData || element_data).type === filterElement) || filterElement === 'all'
             var matchesRarity = (girl.rarity == filterRarity) || (filterRarity == 'all');
-            var matchesName = (girl.Name.search(nameRegex) > -1);
+            const {Name, name} = girl
+            var matchesName = ((Name || name).search(nameRegex) > -1);
             var matchesBlessedAttributes;
             switch (filterBlessedAttributes) {
                 case 'blessed_attributes':
@@ -6884,7 +6917,7 @@ function moduleTeamsFilter() {
                     break;
             }
 
-            let affectionStr = girl.Graded2;
+            let affectionStr = girl.Graded2 || girl.graded2;
             let affectionCategoryStr = affectionStr.split('</g>');
             let affectionCategory = affectionCategoryStr.length-1;
             let affectionLvlStr = affectionStr.split('<g >');
@@ -7018,7 +7051,7 @@ if ($('#harem_whole').length){
     for (let j = 0, l = keys.length; j < l; j++){
         let key = keys[j];
         let girl = girlsDataList[key];
-        let name = girl["Name"];
+        let name = girl["Name"] || girl.name;
         let shards = (girl["shards"] != undefined) ? parseInt(girl["shards"]) : 100;
         let girl_class = parseInt(girl["class"], 10);
         let girlData = {name: name,
