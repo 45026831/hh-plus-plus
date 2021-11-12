@@ -112,12 +112,12 @@ class MarketGirlsFilterModule extends HHModule {
             const {$girl} = window
 
             if ($girl.attr('class').includes('girl')) {
-                const { level, Name, elementData, class: carac } = $girl.data('g')
+                const { level, name, element_data, class: carac } = $girl.data('g')
                 $('#girls_list>.level_target_squared>div>div').attr('chars', level.length)
                 $('#girls_list>.level_target_squared>div>div').text(level)
-                $('#girls_list>h3').text(Name)
-                if (elementData) {
-                    $('#girls_list>.icon').attr('src', `${Helpers.getCDNHost()}/pictures/girls_elements/${GT.design[`${elementData.type}_flavor_element`]}.png`)
+                $('#girls_list>h3').text(name)
+                if (element_data) {
+                    $('#girls_list>.icon').attr('src', `${Helpers.getCDNHost()}/pictures/girls_elements/${GT.design[`${element_data.type}_flavor_element`]}.png`)
                 } else {
                     $('#girls_list>.icon').attr('carac', carac)
                 }
@@ -214,12 +214,12 @@ class MarketGirlsFilterModule extends HHModule {
                         const matchesClass = (girl.class === sorterClass) || (sorterClass === 'all')
                         let matchesElement = true
                         if(Helpers.isElementsEnabled()) {
-                            matchesElement = (girl.elementData.type === sorterElement) || (sorterElement === 'all')
+                            matchesElement = (girl.element_data.type === sorterElement) || (sorterElement === 'all')
                         }
                         const matchesRarity = (girl.rarity === sorterRarity) || (sorterRarity === 'all')
                         const matchesAffCategory = (affectionCategory === sorterAffCategory) || (sorterAffCategory === 'all')
                         const matchesAffLvl = (affectionLvl === sorterAffLvl) || (sorterAffLvl === 'all')
-                        const matchesName = (girl.Name.search(nameRegex) > -1)
+                        const matchesName = (girl.name.search(nameRegex) > -1)
                         const matchesLevel =  (!sorterRange[0] || girl.level >= parseInt(sorterRange[0]) )
                         && (!sorterRange[1] || girl.level <= parseInt(sorterRange[1]) )
 
