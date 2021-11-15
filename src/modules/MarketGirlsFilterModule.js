@@ -8,6 +8,17 @@ import { lsKeys } from '../common/Constants'
 const {$} = Helpers
 const MODULE_KEY = 'marketGirlsFilter'
 
+const ELEMENTS_ICON_NAMES = {
+    'fire': 'Eccentric',
+    'nature': 'Exhibitionist',
+    'stone': 'Physical',
+    'sun': 'Playful',
+    'water': 'Sensual',
+    'darkness': 'Dominatrix',
+    'light': 'Submissive',
+    'psychic': 'Voyeurs'
+}
+
 class MarketGirlsFilterModule extends HHModule {
     constructor () {
         const configSchema = {
@@ -117,7 +128,7 @@ class MarketGirlsFilterModule extends HHModule {
                 $('#girls_list>.level_target_squared>div>div').text(level)
                 $('#girls_list>h3').text(name)
                 if (element_data) {
-                    $('#girls_list>.icon').attr('src', `${Helpers.getCDNHost()}/pictures/girls_elements/${GT.design[`${element_data.type}_flavor_element`]}.png`)
+                    $('#girls_list>.icon').attr('src', `${Helpers.getCDNHost()}/pictures/girls_elements/${ELEMENTS_ICON_NAMES[element_data.type]}.png`)
                 } else {
                     $('#girls_list>.icon').attr('carac', carac)
                 }
@@ -207,7 +218,7 @@ class MarketGirlsFilterModule extends HHModule {
                             allGirls[i].detach()
                         }
                     } else {
-                        const $grade = $(girl.Graded2)
+                        const $grade = $(girl.graded2)
                         const affectionCategory = `${$grade.length}`
                         const affectionLvl = `${$grade.filter('g:not(.grey):not(.green)').length}`
 

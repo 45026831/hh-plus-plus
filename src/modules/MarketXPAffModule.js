@@ -35,8 +35,8 @@ class MarketGirlsFilterModule extends HHModule {
             const girlTooltip = girl.data('new-girl-tooltip')
             const girlData = girl.data('g')
             const {rarity} = girlTooltip
-            const {Xp} = girlData
-            const lvl_max = Hero.infos.level
+            const {Xp, level_cap} = girlData
+            const lvl_max = level_cap || Hero.infos.level
             const xp_total = GirlXP[rarity][lvl_max-2]
 
             const {cur, max} = Xp
