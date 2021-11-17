@@ -34,6 +34,10 @@ class MarketGirlsFilterModule extends HHModule {
         const updateGirlXP = (girl) => {
             const girlTooltip = girl.data('new-girl-tooltip')
             const girlData = girl.data('g')
+            if (!girlTooltip || !girlData) {
+                // No current girl (most likely due to filter)
+                return
+            }
             const {rarity} = girlTooltip
             const {Xp, level_cap} = girlData
             const lvl_max = level_cap || Hero.infos.level
@@ -53,7 +57,12 @@ class MarketGirlsFilterModule extends HHModule {
         }
 
         const updateGirlAff = (girl) => {
-            const {Affection: {max, cur}} = girl.data('g')
+            const girlData = girl.data('g')
+            if (!girlData) {
+                // No current girl (most likely due to filter)
+                return
+            }
+            const {Affection: {max, cur}} = girlData
             let aff_remaining = max - cur
             girl.find('.bar-wrap[rel="aff"] .over span').text(this.label('aff', {remainNext: I18n.nThousand(aff_remaining)}))
         }

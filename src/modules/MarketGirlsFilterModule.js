@@ -186,6 +186,11 @@ class MarketGirlsFilterModule extends HHModule {
                             ${teamIds.map(teamId => teamsDict[teamId]).map(team => `
                                 <div class="team-slot-container ${team.iconRarity}" data-id-team="${team.teamId}" data-girl-ids='${JSON.stringify(team.girls)}'>
                                     <img src="${team.icon}" />
+                                    ${team.themeIcons ? `
+                                        <div class="theme-icons">
+                                            ${team.themeIcons.map(icon=>`<img class="theme-icon" src="${icon}"/>`).join('')}
+                                        </div>
+                                    ` : ''}
                                 </div>
                             `).join('')}
                         </div>
@@ -223,10 +228,7 @@ class MarketGirlsFilterModule extends HHModule {
                         const affectionLvl = `${$grade.filter('g:not(.grey):not(.green)').length}`
 
                         const matchesClass = (girl.class === sorterClass) || (sorterClass === 'all')
-                        let matchesElement = true
-                        if(Helpers.isElementsEnabled()) {
-                            matchesElement = (girl.element_data.type === sorterElement) || (sorterElement === 'all')
-                        }
+                        const matchesElement = (girl.element_data.type === sorterElement) || (sorterElement === 'all')
                         const matchesRarity = (girl.rarity === sorterRarity) || (sorterRarity === 'all')
                         const matchesAffCategory = (affectionCategory === sorterAffCategory) || (sorterAffCategory === 'all')
                         const matchesAffLvl = (affectionLvl === sorterAffLvl) || (sorterAffLvl === 'all')
@@ -397,6 +399,7 @@ class MarketGirlsFilterModule extends HHModule {
                 box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
                 padding: 5px; border: 1px solid #ffa23e;
                 z-index:10;
+                padding-bottom: 16px;
             }
         `)
         this.insertRule(`
@@ -409,8 +412,8 @@ class MarketGirlsFilterModule extends HHModule {
             }
         `)
         this.insertRule(`
-            .team-slot-container {
-                overflow: hidden;
+            .team-slot-container>img {
+                border-radius: 0.4rem;
             }
         `)
         this.insertRule(`
@@ -431,6 +434,17 @@ class MarketGirlsFilterModule extends HHModule {
                 width: 100%;
                 height: 36px;
                 padding-top: 5px;
+            }
+        `)
+        this.insertRule(`
+            .theme-icons {
+                position: absolute;
+                bottom: -10px;
+            }
+        `)
+        this.insertRule(`
+            .theme-icon {
+                width: 26px;
             }
         `)
     }

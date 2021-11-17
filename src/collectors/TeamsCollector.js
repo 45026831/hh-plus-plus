@@ -9,6 +9,7 @@ class TeamsCollector {
             $('.team-slot-container[data-is-empty=]').each((i, slot) => {
                 const teamId = $(slot).data('id-team')
                 const icon = $(slot).find('img').attr('src')
+                const themeIcons = $(slot).find('.team-slot-themes-container img').map((i,el)=>$(el).attr('src')).toArray()
 
                 const classes = $(slot).attr('class').replace(/\s+/g, ' ').split(' ')
                 const iconRarity = ['mythic', 'legendary', 'epic', 'rare', 'common', 'starting'].find(rarity => classes.includes(rarity))
@@ -16,7 +17,8 @@ class TeamsCollector {
                 teamsDict[teamId] = {
                     teamId,
                     icon,
-                    iconRarity
+                    iconRarity,
+                    themeIcons
                 }
                 teamIds.push(teamId)
             })

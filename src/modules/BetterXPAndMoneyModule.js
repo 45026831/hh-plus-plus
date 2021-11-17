@@ -40,12 +40,20 @@ class BetterXPAndMoneyModule extends HHModule {
     }
 
     betterXP () {
+        const $wrapper = $('[rel=xp] .bar-wrapper .over')
         if (!this.$xpContainer) {
             this.$xpContainer = $('<span class="scriptXPContainer"></span>')
-            $('[rel=xp] .bar-wrapper .over').append(this.$xpContainer)
+            $wrapper.append(this.$xpContainer)
         }
 
-        this.$xpContainer.text(this.label('xp', {xp: I18n.nThousand(Hero.infos.Xp.left)}))
+        const xpLeft = Hero.infos.Xp.left
+        if (xpLeft > 0) {
+            $wrapper.addClass('hideDefault')
+            this.$xpContainer.text(this.label('xp', {xp: I18n.nThousand(xpLeft)}))
+        } else {
+            $wrapper.removeClass('hideDefault')
+            this.$xpContainer.text('')
+        }
     }
 
     betterMoney () {
@@ -69,7 +77,7 @@ class BetterXPAndMoneyModule extends HHModule {
 
     injectCSS () {
         this.insertRule(`
-            [hero=xp], [hero=xp_sep], [hero=xp_max], [hero=soft_currency] {
+            .hideDefault [hero=xp], .hideDefault [hero=xp_sep], .hideDefault [hero=xp_max], [hero=soft_currency] {
                 display: none;
             }
         `)

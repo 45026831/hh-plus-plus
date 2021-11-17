@@ -43,8 +43,7 @@ class ContestRewardsModule extends HHModule {
     }
 
     displayRewardSums () {
-        let contestPanel=$('.over_bunny.over_panel')[0]
-        const savedPanel=contestPanel.innerHTML
+        const $contestPanel = $('.over_bunny.over_panel')
 
         const rewards=$('.contest_header.ended .slot, .contest_header.ended .shards_girl_ico')
         let rewardList={}
@@ -56,18 +55,24 @@ class ContestRewardsModule extends HHModule {
             }
         }
         for(let i=0;i<rewards.length;i++) {
+            const imgSrcAttr = rewards[i].children[0].attributes.getNamedItem('src')
+            const key = `${rewards[i].className}${rewards[i].children[0].className}${imgSrcAttr ? imgSrcAttr.value : ''}`
             try{
-                rewardList[rewards[i].className+rewards[i].children[0].className].amount+=getAmount(rewards[i])
+                rewardList[key].amount+=getAmount(rewards[i])
             }catch(e){
-                rewardList[rewards[i].className+rewards[i].children[0].className]={
+                rewardList[key]={
                     div: rewards[i].cloneNode(true),
                     amount: getAmount(rewards[i])
                 }
             }
         }
 
-        contestPanel.innerHTML=savedPanel
-        contestPanel.innerHTML+=`<h3>${this.label('totalRewards', {contests: $('.contest .contest_header.ended').length})}</h3>`
+        if (!this.$rewardsDisplay) {
+            this.$rewardsDisplay = $('<div class="scriptRewardsDisplay"></div>')
+            $contestPanel.append(this.$rewardsDisplay)
+        }
+        this.$rewardsDisplay.html('')
+        this.$rewardsDisplay.append(`<h3>${this.label('totalRewards', {contests: $('.contest .contest_header.ended').length})}</h3>`)
         for (const reward in rewardList) {
             let rewardDiv=rewardList[reward].div
             try{rewardDiv.getElementsByTagName('p')[0].remove()}catch(e){/*NOOP*/}
@@ -76,9 +81,9 @@ class ContestRewardsModule extends HHModule {
             if(!rewardDiv.className.includes('slot')){
                 rewardDiv.children[1].setAttribute('shards',`${I18n.nRounding(rewardList[reward].amount,1,-1)}`)
             }
-            contestPanel.append(rewardList[reward].div)
+            this.$rewardsDisplay.append(rewardList[reward].div)
         }
-        contestPanel.innerHTML+=`<br><br>${this.label('contestsWarning')}`
+        this.$rewardsDisplay.append(`<br><br>${this.label('contestsWarning')}`)
     }
 
     injectCSS () {
