@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.24
+// @version         0.37.25
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -345,7 +345,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
         optionsContestSummary: 'Récap\' des récompenses des Compètes enregistrées',
         optionsBattleEndstate: 'Afficher le détail quand tu passe le combat',
-        optionsGemStock: 'Quantité de gemmes dans le Marché/Harem',
+        optionsGemStock: 'Liste des gemmes dans le Marché/Harem',
         and: 'et',
         or: 'ou',
         affection: 'affection',
@@ -823,6 +823,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
         optionsContestSummary: 'Zusammenfassung der gespeicherten Wettbewerbsprämien',
         optionsBattleEndstate: 'Endgültige Werte beim Überspringen des Kampfes anzeigen',
+        optionsGemStock: 'Verfügbare Juwele im Markt/Harem',
         and: 'und',
         or: 'oder',
         in: 'in',

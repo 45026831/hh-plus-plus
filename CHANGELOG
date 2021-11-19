@@ -1,3 +1,4 @@
+0.37.25: Adding de and updating fr label for gem stock config.
 0.37.24: Reordering gems stock table to match other script-added element lists.
 0.37.23: Shrinking league girl shard display to avoid overflow. Adding gem stock display to harem and market (missing i18n: de, es, it).
 0.37.22: Updates for awakenings
