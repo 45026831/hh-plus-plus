@@ -1,3 +1,4 @@
+0.37.23: Shrinking league girl shard display to avoid overflow. Adding gem stock display to harem and market (missing i18n: de, es, it).
 0.37.22: Updates for awakenings
 0.37.21: Various emergency fixes where required variables have been renamed from camelCase to snake_case
 0.37.20: Adding safeguard to clean up point history where stale data is present. e.g. when there's a game rollback

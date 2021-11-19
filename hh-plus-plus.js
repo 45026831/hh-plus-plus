@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.22
+// @version         0.37.23
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -183,6 +183,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Delete the collect money animation',
         optionsContestSummary: 'Saved Contests rewards summary',
         optionsBattleEndstate: 'Show final values when skipping battle',
+        optionsGemStock: 'Gem stock in Market/Harem',
         and: 'and',
         or: 'or',
         affection: 'affection',
@@ -344,6 +345,7 @@ const texts = {
         optionsCollectMoneyAnimation: 'Désactive l\'animation de récolte d\'argent',
         optionsContestSummary: 'Récap\' des récompenses des Compètes enregistrées',
         optionsBattleEndstate: 'Afficher le détail quand tu passe le combat',
+        optionsGemStock: 'Quantité de gemmes dans le Marché/Harem',
         and: 'et',
         or: 'ou',
         affection: 'affection',
@@ -1117,6 +1119,7 @@ function loadSetting(e){
             ||e=='collectMoneyAnimation'
             ||e=='contestRewards'
             ||e=='battleEndstate'
+            ||e=='gemStock'
         ) return true
         return false
     }
@@ -1212,6 +1215,9 @@ if (loadSetting('contestRewards')) {
 if (loadSetting('battleEndstate')) {
     moduleBattleEndstate()
 }
+if (loadSetting('gemStock')) {
+    moduleGemStock()
+}
 
 function options() {
 
@@ -1242,7 +1248,8 @@ function options() {
                                  + '<label class="switch"><input type="checkbox" hhs="missionsBackground"><span class="slider"></span></label>' + texts[lang].optionsMissionsBackground + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="collectMoneyAnimation"><span class="slider"></span></label>' + texts[lang].optionsCollectMoneyAnimation + '<br />'
                                  + '<label class="switch"><input type="checkbox" hhs="contestRewards"><span class="slider"></span></label>' + label('optionsContestSummary') + '<br />'
-                                 + '<label class="switch"><input type="checkbox" hhs="battleEndstate"><span class="slider"></span></label>' + label('optionsBattleEndstate')
+                                 + '<label class="switch"><input type="checkbox" hhs="battleEndstate"><span class="slider"></span></label>' + label('optionsBattleEndstate') + '<br />'
+                                 + '<label class="switch"><input type="checkbox" hhs="gemStock"><span class="slider"></span></label>' + label('optionsGemStock')
                                  + '</div>');
 
     // Show and hide options menu
@@ -7268,9 +7275,9 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
             let shards = (girlDictionary.get(girlId.toString()) != undefined) ? girlDictionary.get(girlId.toString()).shards : 0;
             let name = (girlDictionary.get(girlId.toString()) != undefined) ? girlDictionary.get(girlId.toString()).name : '';
             $leaguesGirlRewardContainer.find('.girl_ico').append('<div class="league_shards" shards="' + shards + '" name="' + name + '">'
-                                                                + '<p id="league_shard_number" style="position: relative; bottom: 2.3em; padding-left: 10px; color: #80058b; text-shadow: 1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;; width: 28px; text-align: right; margin-left: -11px; font-size: 12px;">'
+                                                                + '<p id="league_shard_number" style="position: relative; bottom: 2.3em; padding-left: 10px; color: #80058b; text-shadow: 1px 1px 0 #fff,-1px 1px 0 #fff,-1px -1px 0 #fff,1px -1px 0 #fff;; width: 28px; text-align: right; margin-left: -11px; font-size: 8px;">'
                                                                 + '<span>' + shards + '</span>'
-                                                                + `<span class="league_shard" style="background-image: url(${IMAGES_URL}/shards.png); background-repeat: no-repeat; background-size: contain; display: block; position: relative; bottom: 1.75em; margin-left: 15px; width: 25px; height: 25px;"></span>`
+                                                                + `<span class="league_shard" style="background-image: url(${IMAGES_URL}/shards.png); background-repeat: no-repeat; background-size: contain; display: block; position: relative; bottom: 2em; margin-left: 15px; width: 20px; height: 20px;"></span>`
                                                                 + '</p></div>');
         
     }
@@ -7962,5 +7969,72 @@ function moduleBattleEndstate() {
                 $('#new-battle-skip-btn').show()
             }
         });
+    }
+}
+
+function moduleGemStock() {
+    const elements = Object.keys(ELEMENTS_ICON_NAMES)
+
+    const displayGemStock = () => {
+        const $gemStock = $('<div class="gemStock"></div>')
+        const stockTable = `
+            <table class="gemStockTable">
+                <tbody>
+                    ${Object.entries(player_gems_amount).map(([element, {amount}]) => `
+                        <tr>
+                            <td><img src="${IMAGES_URL}/pictures/design/gems/${element}.png"></td>
+                            <td>${nThousand(+amount)}</td>
+                        </tr>
+                    `).join('')}
+                </tody>
+            </table>
+        `.replace(/(\n| {4})/g, '')
+        $gemStock.attr('hh_title', stockTable)
+        $('#contains_all').append($gemStock)
+    }
+
+    const injectCSS = () => {
+        const randomElement = elements[Math.floor(Math.random() * elements.length)]
+        sheet.insertRule(`
+            .gemStock {
+                display: block;
+                position: absolute;
+                background-image: url(${IMAGES_URL}/pictures/design/gems/${randomElement}.png);
+                background-size: contain;
+                height: 30px;
+                width: 30px;
+                z-index: 30;
+            }
+        `)
+        
+        if (CurrentPage.includes('shop')) {
+            sheet.insertRule(`
+                .gemStock {
+                    top: 54px;
+                    right: 58px;
+                }
+            `)
+        }
+        if (CurrentPage.includes('harem')) {
+            sheet.insertRule(`
+                .gemStock {
+                    top: 72px;
+                    right: 200px;
+                }
+            `)
+        }
+        
+
+        sheet.insertRule(`
+            .gemStockTable img {
+                height: 25px;
+                width: 25px;
+            }
+        `)
+    }
+
+    if (CurrentPage.includes('shop') || CurrentPage.includes('harem')) {
+        injectCSS()
+        displayGemStock()
     }
 }
