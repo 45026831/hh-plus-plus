@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.23
+// @version         0.37.24
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -7980,10 +7980,10 @@ function moduleGemStock() {
         const stockTable = `
             <table class="gemStockTable">
                 <tbody>
-                    ${Object.entries(player_gems_amount).map(([element, {amount}]) => `
+                    ${elements.map(element => `
                         <tr>
                             <td><img src="${IMAGES_URL}/pictures/design/gems/${element}.png"></td>
-                            <td>${nThousand(+amount)}</td>
+                            <td>${nThousand(+player_gems_amount[element].amount)}</td>
                         </tr>
                     `).join('')}
                 </tody>
