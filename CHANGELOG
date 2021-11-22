@@ -1,3 +1,4 @@
+0.37.27: Fixing bugs in market filter persistence
 0.37.26: Persistent market filter + awakening girl quotas in the market
 0.37.25: Adding de and updating fr label for gem stock config.
 0.37.24: Reordering gems stock table to match other script-added element lists.
