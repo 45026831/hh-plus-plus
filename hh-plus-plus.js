@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.25
+// @version         0.37.26
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -2025,6 +2025,19 @@ function moduleMarket() {
         }, 400);
     });
 
+    const displayGirlCounts = () => {
+        const thresholds = Object.keys(girls_requirement_amount)
+
+        const currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold])
+
+        if (currentThreshold) {
+            const levelText = `${GT.design.Lvl} ${currentThreshold} : ${high_level_girl_owned[currentThreshold]} / ${girls_requirement_amount[currentThreshold]} ${GT.design.Girls}`
+            $('#girls_list .level_target').attr('hh_title', levelText)
+        }
+    }
+
+    displayGirlCounts()
+
     //CSS
     sheet.insertRule('#inventory .CustomTT {'
                      + 'float: right; '
@@ -2141,6 +2154,46 @@ function moduleMarket() {
 
 function moduleMarketFilter() {
     if (CurrentPage.includes('shop')) {
+        const FILTER_LS_KEY = 'HHSActiveMarketGirlFilter'
+        const DEFAULT_FILTER = {
+            carac: 'all',
+            rarity: 'all',
+            element: 'all',
+            affCategory: 'all',
+            affLvl: 'all',
+            name: '',
+            range: '',
+            team: null,
+        }
+        const clearFilter = () => {
+            saveFilter(DEFAULT_FILTER)
+        }
+        const saveFilter = (filter) => {
+            localStorage.setItem(FILTER_LS_KEY, JSON.stringify(filter))
+        }
+        const saveBasicFilter = (form) => {
+            const filter = {
+                carac: form.find("#sort_class").prop('selectedIndex'),
+                rarity: form.find("#sort_rarity").val(),
+                element: form.find("#sort_element").val(),
+                affCategory: form.find("#sort_aff_category").val(),
+                affLvl: form.find("#sort_aff_lvl").val(),
+                name: form.find("#sort_name").val(),
+                range: form.find("#sort_level").val(),
+            }
+            saveFilter(filter)
+        }
+        const saveTeamFilter = (team) => {
+            const filter = {
+                ...DEFAULT_FILTER,
+                team
+            }
+            saveFilter(filter)
+        }
+        const loadFilter = () => {
+            return JSON.parse(localStorage.getItem(FILTER_LS_KEY)) || DEFAULT_FILTER
+        }
+
         let container = $('.g1>div');
 
         let cur_id = parseInt(container.find('.number.selected').text().split('/')[0]);
@@ -2251,46 +2304,51 @@ function moduleMarketFilter() {
             }
 
             function createFilterBox() {
-                const buildTextInput = ({id, label, placeholder}) => `
+                const buildTextInput = ({id, label, placeholder, value}) => `
                     <div class="form-control">
                         <div class="input-group">
                             <label class="head-group" for="${id}">${label}</label>
-                            <input type="text" autocomplete="off" id="${id}" placeholder="${placeholder}" icon="search">
+                            <input type="text" autocomplete="off" id="${id}" placeholder="${placeholder}" icon="search" value="${value}">
                         </div>
                     </div>
                 `
-                const buildSelectInput = ({id, label, options}) => `
+                const buildSelectInput = ({id, label, options, value, selectedIndex}) => `
                     <div class="form-control">
                         <div class="select-group">
                             <label class="head-group" for="${id}">${label}</label>
                             <select name="${id}" id="${id}" icon="down-arrow">
-                                <option value="all" selected="selected">${labels.all}</option>
-                                ${options.map(({label, value}) => `<option value="${value}">${label}</option>`).join('')}
+                                <option value="all" ${value === 'all' || selectedIndex === 0 ? 'selected="selected"' : ''}>${labels.all}</option>
+                                ${options.map(({label, value: optValue}, i) => `<option value="${optValue}" ${value === optValue || selectedIndex === i+1 ? 'selected="selected"' : ''}>${label}</option>`).join('')}
                             </select>
                         </div>
                     </div>
                 `
 
+                const {carac, rarity, element, name, range, affCategory, affLvl} = loadFilter()
+
                 var totalHTML = `
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="position: absolute; left: -215px; top: -224px; width: 200px; height: -moz-fit-content; height: fit-content; z-index: 3; border-radius: 8px 10px 10px 8px; background-color: #1e261e; box-shadow: rgba(255, 255, 255, 0.73) 0px 0px; padding: 5px; border: 1px solid #ffa23e; display: none;">
-                            ${buildTextInput({id: 'sort_name', label: labels.searched_name, placeholder: labels.girl_name})}
+                            ${buildTextInput({id: 'sort_name', label: labels.searched_name, placeholder: labels.girl_name, value: name})}
                             ${buildSelectInput({
                                 id: 'sort_class',
                                 label: labels.searched_class,
-                                options: ['hardcore', 'charm', 'knowhow'].map(option => ({label: labels[option], value: option}))
+                                options: ['hardcore', 'charm', 'knowhow'].map(option => ({label: labels[option], value: option})),
+                                selectedIndex: carac
                             })}
                             ${buildSelectInput({
                                 id: 'sort_element',
                                 label: label('searched_element'),
-                                options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))
+                                options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option})),
+                                value: element
                             })}
                             ${buildSelectInput({
                                 id: 'sort_rarity',
                                 label: labels.searched_rarity,
-                                options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: labels[option], value: option}))
+                                options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: labels[option], value: option})),
+                                value: rarity
                             })}
-                            ${buildTextInput({id: 'sort_level', label: labels.level_range, placeholder: '1-500'})}
+                            ${buildTextInput({id: 'sort_level', label: labels.level_range, placeholder: '1-500', value: range})}
                             ${buildSelectInput({
                                 id: 'sort_aff_category',
                                 label: labels.searched_aff_category,
@@ -2299,7 +2357,8 @@ function moduleMarketFilter() {
                                     {label: labels.three_stars, value: 3},
                                     {label: labels.five_stars, value: 5},
                                     {label: labels.six_stars, value: 6}
-                                ]
+                                ],
+                                value: affCategory
                             })}
                             ${buildSelectInput({
                                 id: 'sort_aff_lvl',
@@ -2312,7 +2371,8 @@ function moduleMarketFilter() {
                                     {label: labels.four_stars, value: 4},
                                     {label: labels.five_stars, value: 5},
                                     {label: labels.six_stars, value: 6}
-                                ]
+                                ],
+                                value: affLvl
                             })}
                             <input type="button" class="blue_button_L" rel="select-team" value="${labels.team}" />
                         </div>
@@ -2359,14 +2419,15 @@ function moduleMarketFilter() {
                 return btn;
             }
 
-            function filterGirls(form, girlsData, useTeam) {
-                let sorterClass = form.find("#sort_class").prop('selectedIndex');
-                let sorterRarity = form.find("#sort_rarity").val();
-                let sorterElement = form.find("#sort_element").val();
-                let sorterAffCategory = form.find("#sort_aff_category").val();
-                let sorterAffLvl = form.find("#sort_aff_lvl").val();
-                let sorterName = form.find("#sort_name").val();
-                let sorterRange = form.find("#sort_level").val().split('-');
+            function filterGirls(girlsData) {
+                const {carac, rarity, element, affCategory, affLvl, name, range, team: useTeam} = loadFilter()
+                let sorterClass = carac;
+                let sorterRarity = rarity;
+                let sorterElement = element;
+                let sorterAffCategory = affCategory;
+                let sorterAffLvl = affLvl;
+                let sorterName = name;
+                let sorterRange = range.split('-');
                 let nameRegex = new RegExp(sorterName, "i");
 
                 hideCurrentGirl();
@@ -2426,10 +2487,12 @@ function moduleMarketFilter() {
                 });
 
                 let sortGirls = () => {
-                    filterGirls(filterBox, girlsData);
+                    saveBasicFilter(filterBox)
+                    filterGirls(girlsData);
                 };
                 const filterGirlsWithTeam = (team) => {
-                    filterGirls(filterBox, girlsData, team)
+                    saveTeamFilter(team)
+                    filterGirls(girlsData)
                 }
 
                 filterBox.find("#sort_class") .on('change', sortGirls);
@@ -2449,6 +2512,13 @@ function moduleMarketFilter() {
 
             let girlsData = getGirlData();
             createFilter( $('#girls_list'), girlsData );
+
+            const searchParams = new URL(window.location.href).searchParams
+            if (searchParams.has('girl')) {
+                clearFilter()
+            } else {
+                filterGirls(girlsData)
+            }
         }
 
         addGirlFilter();
