@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.27
+// @version         0.37.28
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -2353,10 +2353,10 @@ function moduleMarketFilter() {
                                 id: 'sort_aff_category',
                                 label: labels.searched_aff_category,
                                 options: [
-                                    {label: labels.one_star, value: 1},
-                                    {label: labels.three_stars, value: 3},
-                                    {label: labels.five_stars, value: 5},
-                                    {label: labels.six_stars, value: 6}
+                                    {label: labels.one_star, value: '1'},
+                                    {label: labels.three_stars, value: '3'},
+                                    {label: labels.five_stars, value: '5'},
+                                    {label: labels.six_stars, value: '6'}
                                 ],
                                 value: affCategory
                             })}
@@ -2364,13 +2364,13 @@ function moduleMarketFilter() {
                                 id: 'sort_aff_lvl',
                                 label: labels.searched_aff_lvl,
                                 options: [
-                                    {label: labels.zero_star, value: 0},
-                                    {label: labels.one_star, value: 1},
-                                    {label: labels.two_stars, value: 2},
-                                    {label: labels.three_stars, value: 3},
-                                    {label: labels.four_stars, value: 4},
-                                    {label: labels.five_stars, value: 5},
-                                    {label: labels.six_stars, value: 6}
+                                    {label: labels.zero_star, value: '0'},
+                                    {label: labels.one_star, value: '1'},
+                                    {label: labels.two_stars, value: '2'},
+                                    {label: labels.three_stars, value: '3'},
+                                    {label: labels.four_stars, value: '4'},
+                                    {label: labels.five_stars, value: '5'},
+                                    {label: labels.six_stars, value: '6'}
                                 ],
                                 value: affLvl
                             })}
@@ -2698,6 +2698,7 @@ function moduleMarket_XP_Aff() {
     var nbItem = 0;
 
     function updateGirlXP(girl) {
+        if (!girl.length) {return}
         const {rarity} = girl.data('new-girl-tooltip');
         const {Xp, level_cap} = girl.data('g')
         var girl_rarity = rarity;
@@ -2715,6 +2716,7 @@ function moduleMarket_XP_Aff() {
     }
 
     function updateGirlAff(girl) {
+        if (!girl.length) {return}
         var aff_remaining = girl.data("g").Affection.max - girl.data("g").Affection.cur;
         girl.find('.bar-wrap[rel="aff"] .over span').text('Next: ' + nThousand(aff_remaining));
     }
