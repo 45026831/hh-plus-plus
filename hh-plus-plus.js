@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.28
+// @version         0.37.29
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -2419,7 +2419,7 @@ function moduleMarketFilter() {
                 return btn;
             }
 
-            function filterGirls(girlsData) {
+            function filterGirls(girlsData, additionalGirlId) {
                 const {carac, rarity, element, affCategory, affLvl, name, range, team: useTeam} = loadFilter()
                 let sorterClass = carac;
                 let sorterRarity = rarity;
@@ -2436,7 +2436,9 @@ function moduleMarketFilter() {
 
                     let girl = girlsData[i];
 
-                    if (useTeam) {
+                    if (additionalGirlId && additionalGirlId === girl.id) {
+                        nav.before(allGirls[i]);
+                    } else if (useTeam) {
                         if(useTeam.includes(girl.id)) {
                             nav.before(allGirls[i]);
                         } else {
@@ -2513,14 +2515,16 @@ function moduleMarketFilter() {
             let girlsData = getGirlData();
             createFilter( $('#girls_list'), girlsData );
 
-            filterGirls(girlsData)
             const searchParams = new URL(window.location.href).searchParams
             if (searchParams.has('girl')) {
                 const girlId = searchParams.get('girl')
+                filterGirls(girlsData, girlId)
                 let index = $(`[id_girl=${girlId}]`).index()
                 if (index > 0) {
                     goto_girl(index + 1)
                 }
+            } else {
+                filterGirls(girlsData)
             }
         }
 

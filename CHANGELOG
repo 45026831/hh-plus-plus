@@ -1,3 +1,4 @@
+0.37.29: Including deeplinked girl in first filter on load
 0.37.28: Fixing another bug in filter persistence where aff level and category weren't restored onto the dropdowns. Fixing a bug in market xp/aff where an error would be thrown when no girl is present.
 0.37.27: Fixing bugs in market filter persistence
 0.37.26: Persistent market filter + awakening girl quotas in the market
