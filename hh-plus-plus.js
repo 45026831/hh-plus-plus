@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.29
+// @version         0.37.30
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -7075,31 +7075,52 @@ function moduleTeamsFilter() {
     }
 }
 
-//Display your ranking at the bottom of the screen if you are in the top 200
-if (CurrentPage == '/season.html') {
+//Display your ranking at the bottom of the screen if you are in the top 1000
+let isLeaderBoardRowCloned = false
+function cloneOwnLeaderboardRow () {
+    if (isLeaderBoardRowCloned) {return}
     let i=1;
-    while((($('div.leaderboard_row:nth-child(' + i + '').css('color') != "rgb(34, 150, 228)") && ($('div.leaderboard_row:nth-child(' + i + '').css('color') != "rgb(55, 160, 231)")) && (i < 200)){
+    while((($(`div.leaderboard_row:nth-child(${i})`).css('color') != "rgb(34, 150, 228)") && ($(`div.leaderboard_row:nth-child(${i})`).css('color') != "rgb(55, 160, 231)")) && (i < 1000)){
         i++;
     }
-    if (($('div.leaderboard_row:nth-child(' + i + '').css('color') == "rgb(34, 150, 228)") || ($('div.leaderboard_row:nth-child(' + i + '').css('color') == "rgb(55, 160, 231)")) {
+    if (($(`div.leaderboard_row:nth-child(${i})`).css('color') == "rgb(34, 150, 228)") || ($(`div.leaderboard_row:nth-child(${i})`).css('color') == "rgb(55, 160, 231)")) {
         let player_row = $('div.leaderboard_row:nth-child(' + i + '').clone();
         player_row.css('position', 'fixed');
         player_row.css('width', '904px');
+        player_row.addClass('player_row');
         $('#leaderboard_list').append(player_row);
+        isLeaderBoardRowCloned = true
     }
 
-    //CSS
-    $('#leaderboard_list')[0].children[200].style.removeProperty('bottom');
-
-    sheet.insertRule('@media only screen and (min-width: 1026px) {'
-                     + '.leaderboard_row:nth-child(201) {'
+    $('div.leaderboard_row:last-child').css('bottom', '')
+}
+if (CurrentPage == '/season.html' || CurrentPage.includes('pantheon')) {
+    if (CurrentPage === '/season.html') {
+        cloneOwnLeaderboardRow()
+        
+        sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                     + '.leaderboard_row:nth-child(1001) {'
                      + 'bottom: 20px;}}'
                     );
 
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '.leaderboard_row:nth-child(201) {'
+        sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                     + '.leaderboard_row:nth-child(1001) {'
                      + 'bottom: -5px;}}'
                     );
+    }
+    if (CurrentPage.includes('pantheon')) {
+        new MutationObserver(cloneOwnLeaderboardRow).observe($('#leaderboard_list')[0], {childList: true})
+
+        sheet.insertRule('@media only screen and (min-width: 1026px) {'
+                        + '.player_row {'
+                        + 'bottom: 10px;}}'
+                    );
+
+        sheet.insertRule('@media only screen and (max-width: 1025px) {'
+                        + '.player_row {'
+                        + 'bottom: -5px;}}'
+                    );
+    }
 }
 
 
