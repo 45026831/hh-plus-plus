@@ -46,16 +46,26 @@ class FightAVillainModule extends HHModule {
 
         const menuHtml = `
             <div class="TrollsMenu" id="TrollsID">
-                ${villainsSet.filter(villain => villain.world <= currentWorld).map(({key, girls, world}) => {
+                ${villainsSet.filter(villain => villain.world <= currentWorld).map(({key, girls, world, gems, items}) => {
         let tiersSuffix = ''
         if (tiers) {
             const haveGirl = idGirl => (girlDictionary.get(idGirl) && girlDictionary.get(idGirl).shards === 100)
             const tier1 = girls[1].some(idGirl => !haveGirl(idGirl)) ? '&#185;' : ''
             const tier2 = girls[2].some(idGirl => !haveGirl(idGirl)) ? '&#178;' : ''
             const tier3 = girls[3].some(idGirl => !haveGirl(idGirl)) ? '&#179;' : ''
-            tiersSuffix = ` ${tier1}${tier2}${tier3}`
+            const tiers = `${tier1}${tier2}${tier3}`
+            tiersSuffix = ` ${tiers}${tiers.length ? ' ' : ''}`
         }
-        const label = `${key ? this.label(key) : this.label('fallback', {world})}${tiersSuffix}`
+        let gemsSuffix = ''
+        if (gems) {
+            gemsSuffix = gems.map(element => `<img class='villain_gem' src="${Helpers.getCDNHost()}/pictures/design/gems/${element}.png" />`).join('')
+        }
+        let itemSuffix = ''
+        if (items) {
+            itemSuffix = items.map(item => `<img class='villain_item' src="${Helpers.getCDNHost()}/pictures/items/${item}.png" />`).join('')
+        }
+        const rewardsSuffix = `<div class="villain_rewards">${gemsSuffix}${itemSuffix}</div>`
+        const label = `${key ? this.label(key) : this.label('fallback', {world})}${tiersSuffix}${rewardsSuffix}`
         let type = 'regular'
         const villainId = `${world - 1}`
         const eventTrollGirl = eventTrolls.find(({troll}) => troll === villainId)
@@ -207,6 +217,29 @@ class FightAVillainModule extends HHModule {
                          + 'color: #ff003e !important;}'
         )
 
+        this.insertRule(Helpers.mediaDesktop(`
+            .TrollsMenu .villain_gem, .TrollsMenu .villain_item {
+                height: 16px;
+                width: 16px;
+            }
+        `))
+        this.insertRule(Helpers.mediaMobile(`
+            .TrollsMenu .villain_gem, .TrollsMenu .villain_item {
+                height: 18px;
+                width: 18px;
+            }
+        `))
+
+        this.insertRule(Helpers.mediaDesktop(`
+            .TrollsMenu .villain_rewards {
+                display: inline;
+            }
+        `))
+        this.insertRule(Helpers.mediaMobile(`
+            .TrollsMenu .villain_rewards {
+                display: block;
+            }
+        `))
     }
 
     insertRule (rule) {
