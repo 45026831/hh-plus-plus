@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.30
+// @version         0.37.31
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -40,6 +40,11 @@ var sheet = (function() {
 })();
 
 var location = window.location
+if (location.pathname === '/' && location.hostname.includes('www')) {
+    // iframe container, stop here
+    return
+}
+
 var CurrentPage = location.pathname;
 
 const isGH = [
@@ -98,13 +103,14 @@ const classRelationships = {
 const ELEMENTS_ENABLED = !!GT.design.fire_flavor_element
 /**
  * ELEMENTS ASSUMPTIONS
- * 
- * 1) Girl and Harem synergy bonuses for Attack, Defense, Ego and Harmony are already included in the shown stats
- * 2) Girl and Harem synergy bonuses for Crit damage, Defense reduction, Heal-on-hit, and Crit chance are not shown at all for opponents and must be built from team and an estimate of harem
+ *
+ * 1) Girl and Harem synergy bonuses for Attack, Defense, Ego and Harmony are already included in the shown stats for league and seasons
+ * 2) Girl and Harem synergy bonuses for Crit damage, Defense reduction, Heal-on-hit, and Crit chance are not shown at all for league and seasons for opponents and must be built from team and an estimate of harem
  * 3) Countering bonuses are not included in any shown stats
- * 
+ * 4) For villains and pantheon, defense reduction and countering ego + attack bonuses are included in the shown stats, the rest of 2) and 3) still apply.
+ *
  * ELEMENTS FACTS
- * 
+ *
  * 1) Crit damage and chance bonuses are additive; Ego and damage bonuses are multiplicative
  * 2) Opponent harem synergies are completely unavailable to the player, it has been promised that they will be available soon but not in the initial release
  */
@@ -4148,7 +4154,7 @@ function moduleSim() {
             defReduce: findBonusFromSynergies(playerSynergies, 'sun'),
             healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
         }
-        
+
         const {
             chance: opponentCrit,
             damage: opponentAtk,
@@ -4315,7 +4321,7 @@ function moduleSim() {
         }
     `)
     sheet.insertRule(`
-        #leagues_right .player_block .team-hexagon-container .icon { 
+        #leagues_right .player_block .team-hexagon-container .icon {
             z-index: 1;
         }
     `)
@@ -4370,7 +4376,7 @@ function calculateDominationBonuses(playerElements, opponentElements) {
             }
         })
     })
-    
+
     return bonuses
 }
 
@@ -6439,61 +6445,36 @@ function moduleSeasonSim() {
    ============== */
 
 function moduleSeasonStats() {
-    const resetUTCHour = 12;
-    var seasonDateEndData = localStorage.getItem('SeasonDateEnd') || JSON.stringify({day: 0, month: 0, year: 0, hour: 0});
-    var seasonDateEnd = JSON.parse(seasonDateEndData);
-    var currentDay = new Date().getUTCDate();
-    var currentMonth = new Date().getUTCMonth();
-    var currentYear = new Date().getUTCFullYear();
-    var currentHour = new Date().getUTCHours();
-    if (seasonDateEnd.hour == 0) {
-        seasonDateEnd.day = 1;
-        if ((currentDay == 1) && (currentHour < 12))
-            seasonDateEnd.month = currentMonth;
-        else
-            seasonDateEnd.month = (currentMonth + 1)%12;
-        seasonDateEnd.year = currentYear;
-        if (seasonDateEnd.month == 0)
-            seasonDateEnd.year += 1;
-        seasonDateEnd.hour = (seasonDateEnd.month > 2 && seasonDateEnd.month < 10) ? resetUTCHour-1 : resetUTCHour;
-        localStorage.setItem('SeasonDateEnd', JSON.stringify(seasonDateEnd));
+    const DEFAULT_STATS = {
+        fights: 0,
+        victories: 0,
+        losses: 0,
+        won_mojo: 0,
+        lost_mojo: 0,
+        won_mojo_avg: 0, lost_mojo_avg: 0, mojo_avg: 0
     }
-    if ((currentMonth == seasonDateEnd.month) && (currentDay >= seasonDateEnd.day) && (currentHour >= seasonDateEnd.hour)) {
-        localStorage.setItem('oldSeasonStats', localStorage.getItem('SeasonStats'));
-        localStorage.removeItem('SeasonStats');
-        seasonDateEnd.day = 1;
-        seasonDateEnd.month = (currentMonth + 1)%12;
-        seasonDateEnd.hour = (seasonDateEnd.month > 2 && seasonDateEnd.month < 10) ? resetUTCHour-1 : resetUTCHour;
-        localStorage.setItem('SeasonDateEnd', JSON.stringify(seasonDateEnd));
-    }
-    else if ((currentMonth == seasonDateEnd.month) && (currentDay > seasonDateEnd.day)) {
-        localStorage.setItem('oldSeasonStats', localStorage.getItem('SeasonStats'));
-        localStorage.removeItem('SeasonStats');
-        seasonDateEnd.day = 1;
-        seasonDateEnd.month = (currentMonth + 1)%12;
-        seasonDateEnd.hour = (seasonDateEnd.month > 2 && seasonDateEnd.month < 10) ? resetUTCHour-1 : resetUTCHour;
-        localStorage.setItem('SeasonDateEnd', JSON.stringify(seasonDateEnd));
-    }
-    else if ((currentMonth > seasonDateEnd.month) && (currentYear == seasonDateEnd.year)) {
-        localStorage.setItem('oldSeasonStats', localStorage.getItem('SeasonStats'));
-        localStorage.removeItem('SeasonStats');
-        seasonDateEnd.day = 1;
-        seasonDateEnd.month = (currentMonth + 1)%12;
-        seasonDateEnd.hour = (seasonDateEnd.month > 2 && seasonDateEnd.month < 10) ? resetUTCHour-1 : resetUTCHour;
-        localStorage.setItem('SeasonDateEnd', JSON.stringify(seasonDateEnd));
-    }
-    else if (currentYear > seasonDateEnd.year) {
-        localStorage.setItem('oldSeasonStats', localStorage.getItem('SeasonStats'));
-        localStorage.removeItem('SeasonStats');
-        seasonDateEnd.day = 1;
-        seasonDateEnd.month = (currentMonth + 1)%12;
-        seasonDateEnd.hour = (seasonDateEnd.month > 2 && seasonDateEnd.month < 10) ? resetUTCHour-1 : resetUTCHour;
-        localStorage.setItem('SeasonDateEnd', JSON.stringify(seasonDateEnd));
+    const lsKeys = {
+        SEASON_STATS: 'SeasonStats',
+        OLD_SEASON_STATS: 'oldSeasonStats',
+        SEASON_END_TIME: 'SeasonEndTime'
     }
 
-    var seasonStatsData = localStorage.getItem('SeasonStats') || JSON.stringify({fights: 0, victories: 0, losses: 0, won_mojo: 0, lost_mojo: 0, won_mojo_avg: 0, lost_mojo_avg: 0, mojo_avg: 0});
-    var seasonStats = JSON.parse(seasonStatsData);
-    localStorage.setItem('SeasonStats', JSON.stringify(seasonStats));
+    if (!CurrentPage.includes('season-arena')) {
+        // Rollover
+        const now = server_now_ts
+        let seasonEndTime = parseInt(localStorage.getItem(lsKeys.SEASON_END_TIME) || '0', 10)
+    
+        if (now > seasonEndTime) {
+            localStorage.setItem(lsKeys.OLD_SEASON_STATS, localStorage.getItem(lsKeys.SEASON_STATS))
+            localStorage.setItem(lsKeys.SEASON_STATS, JSON.stringify(DEFAULT_STATS))
+            seasonEndTime = now + season_sec_untill_event_end
+            localStorage.setItem(lsKeys.SEASON_END_TIME, seasonEndTime)
+        }
+    }
+
+    var seasonStatsData = localStorage.getItem(lsKeys.SEASON_STATS);
+    var seasonStats = JSON.parse(seasonStatsData) || DEFAULT_STATS;
+    localStorage.setItem(lsKeys.SEASON_STATS, JSON.stringify(seasonStats));
     var fights = seasonStats.fights;
     var victories = seasonStats.victories;
     var losses = seasonStats.losses;
@@ -6504,50 +6485,39 @@ function moduleSeasonStats() {
     var mojo_avg = seasonStats.mojo_avg;
     var i=0;
 
+    // Extract from battle
     if (CurrentPage.indexOf('season-battle') != -1) {
-        var observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (($('#hh_hentai').attr('class') || $('#hh_gay').attr('class') || $('#hh_comix').attr('class')).includes('battle')) {
-                    while (i<1) {
-                        i++;
-                        var fight_result = $('div.line.slide_left div.slot').attr('cur');
-                        var fight_mojo = $('div.line.slide_left div.slot p').text();
-                        if (fight_result == "victory_points") {
-                            if (fight_mojo.indexOf('-') == -1) {
-                                fights +=1;
-                                victories += 1;
-                                won_mojo += parseInt(fight_mojo.replace(/\D/g, ''), 10);
-                                won_mojo_avg = Math.floor(won_mojo/victories*100)/100;
-                                mojo_avg = Math.floor((won_mojo-lost_mojo)/fights*100)/100;
-                            }
-                            else {
-                                fights +=1;
-                                losses += 1;
-                                lost_mojo += parseInt(fight_mojo.replace(/\D/g, ''), 10);
-                                lost_mojo_avg = Math.floor(lost_mojo/losses*100)/100;
-                                mojo_avg = Math.floor((won_mojo-lost_mojo)/fights*100)/100;
-                            }
-                            seasonStats.fights = fights;
-                            seasonStats.victories = victories;
-                            seasonStats.won_mojo = won_mojo;
-                            seasonStats.won_mojo_avg = won_mojo_avg;
-                            seasonStats.losses = losses;
-                            seasonStats.lost_mojo = lost_mojo;
-                            seasonStats.lost_mojo_avg = lost_mojo_avg;
-                            seasonStats.mojo_avg = mojo_avg;
-                            localStorage.setItem('SeasonStats', JSON.stringify(seasonStats));
-                        }
-                    }
-                    observer.disconnect()
-                }
-            })
-        })
+        onAjaxResponse(/action=do_season_battles/i, (response) => {
+            const {rewards} = response
+            if (rewards && rewards.data && rewards.data.rewards) {
+                const mojoReward = rewards.data.rewards.find(({type}) => type === 'victory_points')
+                if (mojoReward) {
 
-        observer.observe($('#popups #rewards_popup #reward_holder')[0], {
-            childList: true
-            , subtree: true
-            , attributes: false
-            , characterData: false
+                    // <p>26</p>
+                    const mojoAmount = parseInt($(mojoReward.value).text(), 10)
+
+                    fights +=1;
+                    if (mojoAmount > 0) {
+                        victories += 1;
+                        won_mojo += mojoAmount
+                        won_mojo_avg = Math.floor(won_mojo/victories*100)/100;
+                    } else {
+                        losses += 1;
+                        lost_mojo += mojoAmount
+                        lost_mojo_avg = Math.floor(lost_mojo/losses*100)/100;
+                    }
+                    mojo_avg = Math.floor((won_mojo-lost_mojo)/fights*100)/100;
+                    seasonStats.fights = fights;
+                    seasonStats.victories = victories;
+                    seasonStats.won_mojo = won_mojo;
+                    seasonStats.won_mojo_avg = won_mojo_avg;
+                    seasonStats.losses = losses;
+                    seasonStats.lost_mojo = lost_mojo;
+                    seasonStats.lost_mojo_avg = lost_mojo_avg;
+                    seasonStats.mojo_avg = mojo_avg;
+                    localStorage.setItem(lsKeys.SEASON_STATS, JSON.stringify(seasonStats));
+                }
+            }
         })
     }
 
@@ -6900,8 +6870,6 @@ function moduleTeamsFilter() {
             createFilterEvents();
         }
 
-        sheet.insertRule('a[rel="season"] {'
-                         + 'top: 277px !important; }');
         sheet.insertRule('.personal_info.hero {'
                          + 'margin-top: 5px; }');
         sheet.insertRule('#season-arena .season_arena_block.battle_hero .hero_stats div {'
@@ -7097,7 +7065,7 @@ function cloneOwnLeaderboardRow () {
 if (CurrentPage == '/season.html' || CurrentPage.includes('pantheon')) {
     if (CurrentPage === '/season.html') {
         cloneOwnLeaderboardRow()
-        
+
         sheet.insertRule('@media only screen and (min-width: 1026px) {'
                      + '.leaderboard_row:nth-child(1001) {'
                      + 'bottom: 20px;}}'
@@ -7108,7 +7076,7 @@ if (CurrentPage == '/season.html' || CurrentPage.includes('pantheon')) {
                      + 'bottom: -5px;}}'
                     );
     }
-    if (CurrentPage.includes('pantheon')) {
+    if (CurrentPage === '/pantheon.html') {
         new MutationObserver(cloneOwnLeaderboardRow).observe($('#leaderboard_list')[0], {childList: true})
 
         sheet.insertRule('@media only screen and (min-width: 1026px) {'
@@ -7361,13 +7329,13 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                                               + '</p></div>');
         }
     }
-    
+
     function displayLeaguesGirlsShards() {
         const $leaguesGirlRewardContainer = $('.leagues_girl_reward_container')
         if(!$leaguesGirlRewardContainer.length)
             return;
 
-        
+
             let idGirlStr = $leaguesGirlRewardContainer.find('.girl_ico img').attr('src');
             let indexStart = idGirlStr.indexOf('girls/') + 'girls/'.length;
             let indexEnd = idGirlStr.indexOf('/ico');
@@ -7380,7 +7348,7 @@ if (CurrentPage.indexOf('battle') != -1 || CurrentPage.indexOf('clubs') != -1 ||
                                                                 + '<span>' + shards + '</span>'
                                                                 + `<span class="league_shard" style="background-image: url(${IMAGES_URL}/shards.png); background-repeat: no-repeat; background-size: contain; display: block; position: relative; bottom: 2em; margin-left: 15px; width: 20px; height: 20px;"></span>`
                                                                 + '</p></div>');
-        
+
     }
 
     function updateTrollGirlsShards() {
@@ -8107,7 +8075,7 @@ function moduleGemStock() {
                 z-index: 30;
             }
         `)
-        
+
         if (CurrentPage.includes('shop')) {
             sheet.insertRule(`
                 .gemStock {
@@ -8124,7 +8092,7 @@ function moduleGemStock() {
                 }
             `)
         }
-        
+
 
         sheet.insertRule(`
             .gemStockTable img {
