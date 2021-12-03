@@ -36,4 +36,5 @@ export const lsKeys = {
     SEASON_STATS:           lsKey('SeasonStats'),
     OLD_SEASON_STATS:       lsKey('OldSeasonStats'),
     MARKET_INFO:            lsKey('MarketInfo'),
+    MARKET_GIRLS_FILTER:    lsKey('ActiveMarketGirlFilter'),
 }

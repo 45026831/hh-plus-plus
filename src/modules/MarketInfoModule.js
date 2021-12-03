@@ -1,4 +1,4 @@
-/* global Hero, heroStatsPrices */
+/* global Hero, heroStatsPrices, GT, girls_requirement_amount, high_level_girl_owned */
 import { lsKeys } from '../common/Constants'
 import Helpers from '../common/Helpers'
 import {HC, CH, KH} from '../data/Classes'
@@ -46,6 +46,8 @@ class MarketInfoModule extends HHModule {
         this.updateStats()
         this.updateInventory()
         this.updateEquips()
+
+        this.attachGirlQuota()
 
         this.hasRun = true
     }
@@ -180,6 +182,17 @@ class MarketInfoModule extends HHModule {
             ${this.label('youOwn', {count: I18n.nThousand(count), type: this.label('equips')})}<br />
             ${this.label('youCanSell', {cost: I18n.nThousand(cost)})}
         `)
+    }
+
+    attachGirlQuota () {
+        const thresholds = Object.keys(girls_requirement_amount)
+
+        const currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold])
+
+        if (currentThreshold) {
+            const levelText = `${GT.design.Lvl} ${currentThreshold} : ${high_level_girl_owned[currentThreshold]} / ${girls_requirement_amount[currentThreshold]} ${GT.design.Girls}`
+            $('#girls_list .level_target').attr('hh_title', levelText)
+        }
     }
 
     setupHooks () {

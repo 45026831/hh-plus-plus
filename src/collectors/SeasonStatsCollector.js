@@ -65,7 +65,7 @@ class SeasonStatsCollector {
 
         if (now > seasonEndTime) {
             Helpers.lsSetRaw(lsKeys.OLD_SEASON_STATS, Helpers.lsGetRaw(lsKeys.SEASON_STATS))
-            Helpers.lsRm(lsKeys.SEASON_STATS)
+            Helpers.lsSet(lsKeys.SEASON_STATS, DEFAULT_STATS)
             seasonEndTime = now + season_sec_untill_event_end
             Helpers.lsSetRaw(lsKeys.SEASON_END_TIME, seasonEndTime)
         }

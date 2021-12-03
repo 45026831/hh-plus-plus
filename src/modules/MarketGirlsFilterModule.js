@@ -1,4 +1,4 @@
-/* global GT, HH_MAX_LEVEL */
+/* global GT, GIRL_MAX_LEVEL */
 import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
@@ -17,6 +17,17 @@ const ELEMENTS_ICON_NAMES = {
     'darkness': 'Dominatrix',
     'light': 'Submissive',
     'psychic': 'Voyeurs'
+}
+
+const DEFAULT_FILTER = {
+    carac: 'all',
+    rarity: 'all',
+    element: 'all',
+    affCategory: 'all',
+    affLvl: 'all',
+    name: '',
+    range: '',
+    team: null,
 }
 
 class MarketGirlsFilterModule extends HHModule {
@@ -44,6 +55,35 @@ class MarketGirlsFilterModule extends HHModule {
         if (this.hasRun || !this.shouldRun()) {return}
 
         this.injectCSS()
+
+        const clearFilter = () => {
+            saveFilter(DEFAULT_FILTER)
+        }
+        const saveFilter = (filter) => {
+            Helpers.lsSet(lsKeys.MARKET_GIRLS_FILTER, filter)
+        }
+        const saveBasicFilter = (form) => {
+            const filter = {
+                carac: form.find('#sort_class').val(),
+                rarity: form.find('#sort_rarity').val(),
+                element: form.find('#sort_element').val(),
+                affCategory: form.find('#sort_aff_category').val(),
+                affLvl: form.find('#sort_aff_lvl').val(),
+                name: form.find('#sort_name').val(),
+                range: form.find('#sort_level').val(),
+            }
+            saveFilter(filter)
+        }
+        const saveTeamFilter = (team) => {
+            const filter = {
+                ...DEFAULT_FILTER,
+                team
+            }
+            saveFilter(filter)
+        }
+        const loadFilter = () => {
+            return Helpers.lsGet(lsKeys.MARKET_GIRLS_FILTER) || DEFAULT_FILTER
+        }
 
         let container = $('.g1>div')
 
@@ -151,17 +191,21 @@ class MarketGirlsFilterModule extends HHModule {
 
             const createFilterBox = () => {
                 const affectionGradeOption = grade => ({ label: this.label(`grade${grade}`), value: grade })
+                const {carac, rarity, element, name, range, affCategory, affLvl} = loadFilter()
                 return $(`
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
-                            ${Snippets.textInput({id: 'sort_name', label: this.label('searchedName'), placeholder: this.label('girlName')})}
-                            ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option}))})}
-                            ${Helpers.isElementsEnabled() ? Snippets.selectInput({id: 'sort_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option}))}) : ''}
-                            ${Snippets.selectInput({id: 'sort_rarity', label: this.label('searchedRarity'), options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: GT.design[`girls_rarity_${option}`], value: option}))})}
-                            ${Snippets.textInput({id: 'sort_level', label: this.label('levelRange'), placeholder: `1-${HH_MAX_LEVEL}`})}
-                            ${Snippets.selectInput({id: 'sort_aff_category', label: this.label('searchedAffCategory'), options: [1,3,5,6].map(affectionGradeOption)})}
-                            ${Snippets.selectInput({id: 'sort_aff_lvl', label: this.label('searchedAffLevel'), options: [0,1,2,3,4,5,6].map(affectionGradeOption)})}
-                            <input type="button" class="blue_button_L" rel="select-team" value="${this.label('team')}" />
+                            ${Snippets.textInput({id: 'sort_name', label: this.label('searchedName'), placeholder: this.label('girlName'), value: name})}
+                            ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option})), value: carac})}
+                            ${Snippets.selectInput({id: 'sort_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option})), value: element})}
+                            ${Snippets.selectInput({id: 'sort_rarity', label: this.label('searchedRarity'), options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: GT.design[`girls_rarity_${option}`], value: option})), value: rarity})}
+                            ${Snippets.textInput({id: 'sort_level', label: this.label('levelRange'), placeholder: `1-${GIRL_MAX_LEVEL}`, value: range})}
+                            ${Snippets.selectInput({id: 'sort_aff_category', label: this.label('searchedAffCategory'), options: ['1','3','5','6'].map(affectionGradeOption), value: affCategory})}
+                            ${Snippets.selectInput({id: 'sort_aff_lvl', label: this.label('searchedAffLevel'), options: ['0','1','2','3','4','5','6'].map(affectionGradeOption), value: affLvl})}
+                            <div class="button-group">
+                                <input type="button" class="blue_button_L" rel="select-team" value="${this.label('team')}" />
+                                <label class="clear_girl_filter"><input type="button" class="red_button_L" value="" rel="clear-filter" /></label>
+                            </div>
                         </div>
                     </div>`)
             }
@@ -203,20 +247,23 @@ class MarketGirlsFilterModule extends HHModule {
                 return $('<label class="girl_filter"><input type="button" class="blue_button_L" value="" /></label>')
             }
 
-            function filterGirls(form, girlsData, useTeam) {
-                const sorterClass = form.find('#sort_class').val()
-                const sorterElement = form.find('#sort_element').val()
-                const sorterRarity = form.find('#sort_rarity').val()
-                const sorterAffCategory = form.find('#sort_aff_category').val()
-                const sorterAffLvl = form.find('#sort_aff_lvl').val()
-                const sorterName = form.find('#sort_name').val()
-                const sorterRange = form.find('#sort_level').val().split('-')
+            function filterGirls(girlsData, additionalGirlId) {
+                const {carac, rarity, element, affCategory, affLvl, name, range, team: useTeam} = loadFilter()
+                let sorterClass = carac
+                let sorterRarity = rarity
+                let sorterElement = element
+                let sorterAffCategory = affCategory
+                let sorterAffLvl = affLvl
+                let sorterName = name
+                let sorterRange = range.split('-')
                 const nameRegex = new RegExp(sorterName, 'i')
 
                 hideCurrentGirl()
 
                 girlsData.forEach((girl, i) => {
-                    if (useTeam) {
+                    if (additionalGirlId && additionalGirlId === girl.id) {
+                        nav.before(allGirls[i])
+                    } else if (useTeam) {
                         if(useTeam.includes(girl.id)) {
                             nav.before(allGirls[i])
                         } else {
@@ -263,10 +310,32 @@ class MarketGirlsFilterModule extends HHModule {
                 })
 
                 let sortGirls = () => {
-                    filterGirls(filterBox, girlsData)
+                    saveBasicFilter(filterBox)
+                    filterGirls(girlsData)
                 }
                 const filterGirlsWithTeam = (team) => {
-                    filterGirls(filterBox, girlsData, team)
+                    saveTeamFilter(team)
+                    const {carac, rarity, element, name, range, affCategory, affLvl} = loadFilter()
+                    filterBox.find('#sort_class').val(carac)
+                    filterBox.find('#sort_rarity').val(rarity)
+                    filterBox.find('#sort_element').val(element)
+                    filterBox.find('#sort_aff_category').val(affCategory)
+                    filterBox.find('#sort_aff_lvl').val(affLvl)
+                    filterBox.find('#sort_name').val(name)
+                    filterBox.find('#sort_level').val(range)
+                    filterGirls(girlsData)
+                }
+                const clearFilterAndForm = () => {
+                    clearFilter()
+                    const {carac, rarity, element, name, range, affCategory, affLvl} = loadFilter()
+                    filterBox.find('#sort_class').val(carac)
+                    filterBox.find('#sort_rarity').val(rarity)
+                    filterBox.find('#sort_element').val(element)
+                    filterBox.find('#sort_aff_category').val(affCategory)
+                    filterBox.find('#sort_aff_lvl').val(affLvl)
+                    filterBox.find('#sort_name').val(name)
+                    filterBox.find('#sort_level').val(range)
+                    filterGirls(girlsData)
                 }
 
                 ['sort_class', 'sort_element', 'sort_rarity', 'sort_aff_category', 'sort_aff_lvl'].forEach(id => {
@@ -276,6 +345,7 @@ class MarketGirlsFilterModule extends HHModule {
                     filterBox.find(`#${id}`).on('input' , sortGirls)
                 })
                 filterBox.find('[rel=select-team]').click(() => $('.team-selection').css('display', $('.team-selection').css('display')==='block'?'none':'block'))
+                filterBox.find('[rel=clear-filter]').click(clearFilterAndForm)
                 teamsBox.find('.team-slot-container').click(function () {
                     filterGirlsWithTeam($(this).data('girl-ids'))
                     $('.team-selection').css('display', 'none')
@@ -285,6 +355,18 @@ class MarketGirlsFilterModule extends HHModule {
 
             let girlsData = getGirlData()
             createFilter( $('#girls_list'), girlsData )
+
+            const searchParams = new URL(window.location.href).searchParams
+            if (searchParams.has('girl')) {
+                const girlId = searchParams.get('girl')
+                filterGirls(girlsData, girlId)
+                let index = $(`[id_girl=${girlId}]`).index()
+                if (index > 0) {
+                    goto_girl(index + 1)
+                }
+            } else {
+                filterGirls(girlsData)
+            }
         }
 
         addGirlFilter()
@@ -342,6 +424,43 @@ class MarketGirlsFilterModule extends HHModule {
                 background-position: center;
                 background-size: 24px;
                 background-repeat: no-repeat;
+                pointer-events: none;
+            }
+        `)
+        this.insertRule(`
+            #arena_filter_box .button-group {
+                display: flex;
+            }
+        `)
+        this.insertRule(`
+            #shops label.clear_girl_filter {
+                background: transparent;
+            }
+        `)
+        this.insertRule(`
+            label.clear_girl_filter input {
+                height: 36px;
+                width: 36px;
+                display: block;
+                padding: 0px;
+            }
+        `)
+        this.insertRule(`
+            label.clear_girl_filter::before {
+                content: ' ';
+                display: block;
+                position: absolute;
+                height: 36px;
+                width: 36px;
+                -webkit-mask-image: url("${Helpers.getCDNHost()}/clubs/ic_xCross.png");
+                mask-image: url("${Helpers.getCDNHost()}/clubs/ic_xCross.png");
+                background-color: #fff;
+                -webkit-mask-position: center;
+                mask-position: center;
+                -webkit-mask-size: 24px;
+                mask-size: 24px;
+                -webkit-mask-repeat: no-repeat;
+                mask-repeat: no-repeat;
                 pointer-events: none;
             }
         `)
