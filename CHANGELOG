@@ -1,3 +1,4 @@
+0.37.32: Adding workaround for sim in mobile league as Kinkoid don't seem to want to fix it
 0.37.31: Backporting season stats collection and rollover from 1.0.0 to fix infinite rollover bug. Plus a couple of minor visual fixes.
 0.37.30: Updating leaderboard fix to work with Pantheon as well
 0.37.29: Including deeplinked girl in first filter on load
