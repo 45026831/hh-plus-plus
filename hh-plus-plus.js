@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.32
+// @version         0.37.33
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -7079,7 +7079,7 @@ function cloneOwnLeaderboardRow () {
 
     $('div.leaderboard_row:last-child').css('bottom', '')
 }
-if (CurrentPage == '/season.html' || CurrentPage.includes('pantheon')) {
+if (CurrentPage == '/season.html' || CurrentPage.includes('pantheon') || CurrentPage.includes('path-of-valor')) {
     if (CurrentPage === '/season.html') {
         cloneOwnLeaderboardRow()
 
@@ -7093,7 +7093,7 @@ if (CurrentPage == '/season.html' || CurrentPage.includes('pantheon')) {
                      + 'bottom: -5px;}}'
                     );
     }
-    if (CurrentPage === '/pantheon.html') {
+    if (CurrentPage === '/pantheon.html' || CurrentPage.includes('path-of-valor')) {
         new MutationObserver(cloneOwnLeaderboardRow).observe($('#leaderboard_list')[0], {childList: true})
 
         sheet.insertRule('@media only screen and (min-width: 1026px) {'
