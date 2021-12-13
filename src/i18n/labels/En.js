@@ -34,7 +34,6 @@ export const config = {
     marketGirlsFilter: `${gameConfig.Girl}s filter at the market`,
     marketEquipsFilter: 'Equips filter at the market',
     marketXPAff: 'XP and affection at the market',
-    sortArmorItems: 'Button to sort armor items by rarity',
     hideSellButton: 'Button to hide "Sell" button',
     harem: 'Harem information',
     league: 'League information',

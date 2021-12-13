@@ -12,6 +12,7 @@ import {
     BetterXPAndMoneyModule,
     ContestRewardsModule,
     FightAVillainModule,
+    MarketEquipsFilterModule,
     MarketGirlsFilterModule,
     MarketInfoModule,
     MarketXPAffModule,
@@ -42,6 +43,7 @@ const runScript = () => {
     config.registerModule(new BetterXPAndMoneyModule())
     config.registerModule(new MarketInfoModule())
     config.registerModule(new MarketGirlsFilterModule())
+    config.registerModule(new MarketEquipsFilterModule())
     config.registerModule(new MarketXPAffModule())
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
@@ -67,6 +69,8 @@ const runScript = () => {
 
 if (!$) {
     console.log('HH++ WARNING: No jQuery found. Probably an error page. Ending the script here')
+} else if (location.pathname === '/' && location.hostname.includes('www')) {
+    // iframe container, do nothing.
 } else {
     runScript()
 }
