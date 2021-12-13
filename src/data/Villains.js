@@ -285,8 +285,7 @@ export default {
                 2: [],
                 3: []
             },
-            // gems: ['darkness', 'light']
-            gems: ['fire', 'sun']
+            gems: ['darkness', 'light']
         },
         {
             key: 'nymph',
@@ -296,8 +295,7 @@ export default {
                 2: [],
                 3: []
             },
-            // gems: ['psychic', 'water']
-            gems: ['fire', 'sun']
+            gems: ['psychic', 'water']
         },
         {
             key: 'athicus',
@@ -307,8 +305,7 @@ export default {
                 2: [],
                 3: []
             },
-            // gems: ['nature', 'stone']
-            gems: ['fire', 'sun']
+            gems: ['nature', 'stone']
         },
         {
             world: 6,
@@ -317,8 +314,7 @@ export default {
                 2: [],
                 3: []
             },
-            // gems: ['darkness']
-            gems: ['fire', 'sun']
+            gems: ['darkness']
         },
     ]
 }

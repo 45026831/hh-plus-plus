@@ -94,8 +94,10 @@ class MarketGirlsFilterModule extends HHModule {
 
             const type = $('#type_item > .selected').attr('type')
             const update = updateFuncs[type]
-            setTimeout(function(){update(girl)}, 500)
-            setTimeout(function(){update(girl)}, 3000)
+            if (update) {
+                setTimeout(function(){update(girl)}, 500)
+                setTimeout(function(){update(girl)}, 3000)
+            }
         })
 
         this.hasRun = true
