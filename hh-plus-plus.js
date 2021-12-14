@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.34
+// @version         0.37.35
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -1441,16 +1441,18 @@ function moduleVillain() {
 
         eventTrolls = [];
 
-        let totalGirls = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container').length;
-        for (var i=0; i<totalGirls; i++) {
-            let girlId = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ')').attr('data-reward-girl-id');
-            let girlLocation = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-events-prize-locations-buttons-container .nc-events-prize-locations-buttons-container a').attr('href');
-            let index = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').indexOf('-text');
-            let girlRarity = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').substring(0, index);
-            if (girlLocation.includes('troll-pre-battle')) {
-                eventTrolls.push({id: girlId, troll: girlLocation.substring(35), rarity: girlRarity});
+        eventGirls.forEach(girl => {
+            const {id_girl: id, source, rarity} = girl
+            if (source.name !== 'event_troll') {
+                return
             }
-        }
+            const sourceUrl = source.anchor_source.url
+            const matches = sourceUrl.match(/id_opponent=([0-9]+)/)
+            if (matches) {
+                const troll = matches[1]
+                eventTrolls.push({id, troll, rarity})
+            }
+        })
         localStorage.setItem('eventTrolls', JSON.stringify(eventTrolls));
     }
 
@@ -1461,15 +1463,18 @@ function moduleVillain() {
 
         mythicEventTrolls = [];
 
-        let totalGirls = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container').length;
-        for (var i=0; i<totalGirls; i++) {
-            let girlId = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ')').attr('data-reward-girl-id');
-            let girlLocation = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-events-prize-locations-buttons-container .nc-events-prize-locations-buttons-container a').attr('href');
-            let index = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').indexOf('-text');
-            let girlRarity = $('#contains_all #events .nc-panel-body .nc-event-container .nc-event-reward-container:nth-child(' + (i+1) + ') .nc-event-reward-info .new_girl_info h5').attr('class').substring(0, index);
-            if (girlLocation.includes('troll-pre-battle'))
-                mythicEventTrolls.push({id: girlId, troll: girlLocation.substring(35), rarity: girlRarity});
-        }
+        eventGirls.forEach(girl => {
+            const {id_girl: id, source, rarity} = girl
+            if (source.name !== 'event_troll') {
+                return
+            }
+            const sourceUrl = source.anchor_source.url
+            const matches = sourceUrl.match(/id_opponent=([0-9]+)/)
+            if (matches) {
+                const troll = matches[1]
+                eventTrolls.push({id, troll, rarity})
+            }
+        })
         localStorage.setItem('mythicEventTrolls', JSON.stringify(mythicEventTrolls));
     }
 

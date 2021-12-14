@@ -1,3 +1,4 @@
+0.37.35: Backporting event girl collection for fight-a-villain from 1.0.0 to deal with the change in the event UI
 0.37.34: Moving the clubs button out of the way of the seasons button to make room for the timer
 0.37.33: Updating leaderboard fix to work with Path of Valor as well
 0.37.32: Adding workaround for sim in mobile league as Kinkoid don't seem to want to fix it
