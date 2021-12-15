@@ -244,10 +244,10 @@ class MarketEquipsFilterModule extends HHModule {
             // TODO favorites
 
             if ([subtypeMatches, rarityMatches, statsMatches, favoritesMatches].every(a=>a)) {
-                $(el).show()
+                $(el).removeClass('filtered_out')
                 visibleCount++
             } else {
-                $(el).hide()
+                $(el).addClass('filtered_out')
             }
         })
 
@@ -518,6 +518,12 @@ class MarketEquipsFilterModule extends HHModule {
             #inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
                 background-image: url(${Helpers.getCDNHost()}/design/ic_star_orange.svg);
                 background-color: rgba(30, 38, 30, 0.7);
+            }
+        `)
+
+        this.insertRule(`
+            #inventory .armor .slot.filtered_out {
+                display: none;
             }
         `)
     }
