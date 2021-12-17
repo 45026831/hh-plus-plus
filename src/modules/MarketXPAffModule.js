@@ -3,9 +3,10 @@ import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
 import * as GirlXP from '../data/GirlXP'
+import styles from './MarketXPAffModule.lazy.scss'
 const MODULE_KEY = 'marketXPAff'
 
-class MarketGirlsFilterModule extends HHModule {
+class MarketXPAffModule extends HHModule {
     constructor () {
         const configSchema = {
             baseKey: MODULE_KEY,
@@ -18,8 +19,6 @@ class MarketGirlsFilterModule extends HHModule {
             configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
     }
 
     shouldRun () {
@@ -29,7 +28,7 @@ class MarketGirlsFilterModule extends HHModule {
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
 
-        this.injectCSS()
+        styles.use()
 
         const updateGirlXP = (girl) => {
             const girlTooltip = girl.data('new-girl-tooltip')
@@ -48,8 +47,7 @@ class MarketGirlsFilterModule extends HHModule {
             const xp_next_remaining = max - cur
 
             const $xpBar = girl.find('.bar-wrap[rel="xp"]')
-            $xpBar.find('#xpTool').remove()
-            $xpBar.append('<span id="xpTool" class="infoTooltip xpTooltip">XP: ' + I18n.nThousand(cur) + '</span>')
+            $xpBar.attr('hh_title', 'XP: ' + I18n.nThousand(cur))
 
             if( xp_total_remaining > 0) {
                 $xpBar.find('.over').text(this.label('xp', {remainNext: I18n.nThousand(xp_next_remaining), remainMax: I18n.nThousand(xp_total_remaining)}))
@@ -102,25 +100,6 @@ class MarketGirlsFilterModule extends HHModule {
 
         this.hasRun = true
     }
-
-    injectCSS() {
-        this.insertRule(`
-            .xpTooltip {
-                margin-top: 23px;
-                margin-left: 20px;
-            }
-        `)
-
-        this.insertRule(`
-            .bar-wrap[rel="xp"]:hover .xpTooltip {
-                visibility: visible;
-            }
-        `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
-    }
 }
 
-export default MarketGirlsFilterModule
+export default MarketXPAffModule

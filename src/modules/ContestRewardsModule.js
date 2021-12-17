@@ -1,6 +1,7 @@
 import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
+import styles from './ContestRewardsModule.lazy.scss'
 
 class ContestRewardsModule extends HHModule {
     constructor () {
@@ -15,8 +16,6 @@ class ContestRewardsModule extends HHModule {
             configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, 'contestSummary')
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
     }
 
     shouldRun() {
@@ -25,7 +24,7 @@ class ContestRewardsModule extends HHModule {
 
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
-        this.injectCSS()
+        styles.use()
 
         this.displayRewardSums()
 
@@ -84,106 +83,6 @@ class ContestRewardsModule extends HHModule {
             this.$rewardsDisplay.append(rewardList[reward].div)
         }
         this.$rewardsDisplay.append(`<br><br>${this.label('contestsWarning')}`)
-    }
-
-    injectCSS () {
-        this.insertRule(`
-            .slot.reward_sum {
-                margin-right: 5px;
-                border: 2px solid #fff;
-            }
-        `)
-
-        this.insertRule(`
-            .slot.reward_sum img {
-                display: inline;
-                width: 60%;
-                height: 60%!important;
-                margin: 0px!important;
-            }
-        `)
-
-        this.insertRule(`
-            .shards_girl_ico.reward_sum {
-                position: relative;
-                float: none;
-                width: 40px;
-                height: 40px;
-                margin-right: 5px;
-            }
-        `)
-
-        this.insertRule(`
-            .shards_girl_ico.reward_sum img {
-                width: 100%;
-                height: 100%!important;
-                margin: 0px!important;
-            }
-        `)
-
-        this.insertRule(`
-            .shards_girl_ico.reward_sum .shards {
-                display: -webkit-box;
-                display: -moz-box;
-                display: -ms-flexbox;
-                display: -webkit-flex;
-                display: flex;
-                -webkit-flex-direction: row;
-                -moz-flex-direction: row;
-                -ms-flex-direction: row;
-                flex-direction: row;
-                -webkit-flex-wrap: wrap;
-                -moz-flex-wrap: wrap;
-                -ms-flex-wrap: wrap;
-                flex-wrap: wrap;
-                -webkit-justify-content: unset;
-                -moz-justify-content: unset;
-                -ms-justify-content: unset;
-                justify-content: unset;
-                -ms-flex-pack: unset;
-                -webkit-align-content: unset;
-                -moz-align-content: unset;
-                -ms-align-content: unset;
-                align-content: unset;
-                -webkit-align-items: center;
-                -moz-align-items: center;
-                -ms-align-items: center;
-                align-items: center;
-                -webkit-align-self: unset;
-                -moz-align-self: unset;
-                -ms-align-self: unset;
-                align-self: unset;
-                width: 100%;
-                height: 20px;
-                margin: -36px 0 0;
-            }
-        `)
-
-        this.insertRule(`
-            .shards_girl_ico.reward_sum span.shard {
-                top: 45px;
-                left: 5px;
-                width: 20px;
-                height: 20px;
-            }
-        `)
-
-        this.insertRule(`
-            .shards_girl_ico.reward_sum p {
-                position: absolute;
-                padding-left: 20px;
-                color: #80058b;
-                text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff;
-                top: -18px;
-                font-size: 8px;
-                line-height: 2;
-                margin: 40px 0 0 -4px;
-            }
-        `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 

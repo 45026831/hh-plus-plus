@@ -5,6 +5,7 @@ import {HC, CH, KH} from '../data/Classes'
 import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES} from '../data/Market'
 import I18n from '../i18n'
 import HHModule from './HHModule'
+import styles from './MarketInfoModule.lazy.scss'
 
 const MODULE_KEY = 'market'
 const CLASSES = [HC, CH, KH]
@@ -40,6 +41,7 @@ class MarketInfoModule extends HHModule {
 
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
+        styles.use()
         this.injectCSS()
         this.setupHooks()
 
@@ -222,98 +224,7 @@ class MarketInfoModule extends HHModule {
     injectCSS () {
         this.insertRule(`
             .marketInfoIcon {
-                height: 18px;
-                width: 18px;
                 background: url(${Helpers.getCDNHost()}/design/ic_info.svg) center / 65% 65% no-repeat, linear-gradient(180deg,#0af 0,#068 50%,#057 51%,#0af 100%);
-                border-radius: 50%;
-                cursor: help;
-            }
-        `)
-        this.insertRule(`
-            ${CLASSES.map(carac => `[hero=carac${carac}]`).join(', ')} {
-                position: relative;
-            }
-        `)
-        this.insertRule(`
-            ${CLASSES.map(carac => `[hero=carac${carac}] .statInfo`).join(', ')} {
-                position: absolute;
-                left: -19px;
-                top: 6px;
-            }
-        `)
-        this.insertRule(`
-            ${CLASSES.map(carac => `#shops #equiped div.sub_block .hero_stats>[hero=carac${carac}] .statInfo:hover+.statToolTip`).join(', ')} {
-                display: block;
-            }
-        `)
-        this.insertRule(`
-            .inventoryInfo {
-                position: absolute;
-                top: 0px;
-                right: 0px;
-            }
-        `)
-        this.insertRule(`
-            #shops #equiped div.sub_block .hero_stats>div>.statToolTip, .inventoryToolTip {
-                display: none;
-                position: absolute;
-                z-index: 99;
-                border: 1px solid rgb(162, 195, 215);
-                border-radius: 8px;
-                box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
-                padding: 3px 7px 4px 7px;
-                background-color: #F2F2F2;
-                font-size: 11px;
-                line-height: 16px;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-                color: #057;
-                font-weight: normal;
-            }
-        `)
-        this.insertRule(`
-            .statToolTip {
-                width: 240px;
-            }
-        `)
-        this.insertRule(`
-            .statToolTip table {
-                width: 100%;
-            }
-        `)
-        this.insertRule(`
-            .statToolTip table tr td:last-child {
-                text-align: right;
-            }
-        `)
-        this.insertRule(`
-            .statToolTip table tr td:first-child {
-                font-weight: bold;
-            }
-        `)
-
-        this.insertRule(`
-            .inventoryToolTip {
-                right: 0px;
-                bottom: 220px;
-                text-align: right;
-            }
-        `)
-        this.insertRule(`
-            .inventoryInfo:hover+.inventoryToolTip {
-                display: block;
-            }
-        `)
-        this.insertRule(`
-            .inventoryToolTip b {
-                font-weight: bold;
-            }
-        `)
-        this.insertRule(`
-            .inventoryToolTip .hudSC_mix_icn {
-                display: inline-block;
-                height: 17px;
-                width: 11px;
-                background-size: 11px;
             }
         `)
     }

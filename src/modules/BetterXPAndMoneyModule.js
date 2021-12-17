@@ -1,7 +1,8 @@
 /* global Hero */
-import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
+
+import styles from './BetterXPAndMoneyModule.lazy.scss'
 
 const MODULE_KEY = 'xpMoney'
 
@@ -18,13 +19,11 @@ class BetterXPAndMoneyModule extends HHModule {
             configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
     }
 
     run () {
         if (this.hasRun) {return}
-        this.injectCSS()
+        styles.use()
 
         this.betterXP()
 
@@ -73,33 +72,6 @@ class BetterXPAndMoneyModule extends HHModule {
             this.$moneyContainer.text($('[hero=soft_currency]').text()).attr('hh_title', thousandSeparatedMoney)
         }
 
-    }
-
-    injectCSS () {
-        this.insertRule(`
-            .hideDefault [hero=xp], .hideDefault [hero=xp_sep], .hideDefault [hero=xp_max], [hero=soft_currency] {
-                display: none;
-            }
-        `)
-        this.insertRule(`
-            .scriptMoneyContainer {
-                margin-left: -1px;
-            }
-        `)
-        this.insertRule(
-            Helpers.mediaMobile(`
-                .scriptMoneyContainer {
-                    position: absolute;
-                    top: 2px;
-                    left: 40px;
-                    font-size: 16px;
-                }
-            `)
-        )
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 

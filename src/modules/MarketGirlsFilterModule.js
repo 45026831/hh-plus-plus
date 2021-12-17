@@ -5,6 +5,8 @@ import HHModule from './HHModule'
 import filterIcon from '../assets/filter.svg'
 import Snippets from '../common/Snippets'
 import { lsKeys } from '../common/Constants'
+import styles from './MarketGirlsFilterModule.lazy.scss'
+
 const {$} = Helpers
 const MODULE_KEY = 'marketGirlsFilter'
 
@@ -53,7 +55,7 @@ class MarketGirlsFilterModule extends HHModule {
 
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
-
+        styles.use()
         this.injectCSS()
 
         const clearFilter = () => {
@@ -376,194 +378,19 @@ class MarketGirlsFilterModule extends HHModule {
 
     injectCSS() {
         this.insertRule(`
-            #arena_filter_box label.head-group {
-                display: block;
-                position: relative;
-                left: -5px;
-                z-index: 15;
-                margin-bottom: -8px;
-                margin-top: -3px !important;
-                padding-left: 7px;
-                font-size: 14px;
-                font-weight: 400;
-                letter-spacing: .22px;
-                text-align: left !important;
-                color: #ffb827;
-                background:transparent;
-                text-shadow: -1px -1px 0 #000,1px -1px 0 #000,-1px 1px 0 #000,1px 1px 0 #000,-2px -2px 5px rgba(255,159,0,.4),2px -2px 5px rgba(255,159,0,.4),-2px 2px 5px rgba(255,159,0,.4),2px 2px 5px rgba(255,159,0,.4),0 0 10px rgba(255,159,0,.4);
-            }
-        `)
-
-        this.insertRule(`
-            #shops #girls_list .g1 > div > .number {
-                left: 0 !important;
-            }
-        `)
-
-        this.insertRule(`
-            #shops label.girl_filter {
-                background: transparent;
-            }
-        `)
-        this.insertRule(`
-            label.girl_filter input {
-                height: 32px;
-                width: 32px;
-                display: block;
-                padding: 0px;
-            }
-        `)
-        this.insertRule(`
             label.girl_filter::before {
-                content: ' ';
-                display: block;
-                position: absolute;
-                height: 100%;
-                width: 100%;
                 background-image: url(${filterIcon});
-                background-position: center;
-                background-size: 24px;
-                background-repeat: no-repeat;
-                pointer-events: none;
-            }
-        `)
-        this.insertRule(`
-            #arena_filter_box .button-group {
-                display: flex;
-            }
-        `)
-        this.insertRule(`
-            #shops label.clear_girl_filter {
-                background: transparent;
-            }
-        `)
-        this.insertRule(`
-            label.clear_girl_filter input {
-                height: 36px;
-                width: 36px;
-                display: block;
-                padding: 0px;
             }
         `)
         this.insertRule(`
             label.clear_girl_filter::before {
-                content: ' ';
-                display: block;
-                position: absolute;
-                height: 36px;
-                width: 36px;
                 -webkit-mask-image: url("${Helpers.getCDNHost()}/clubs/ic_xCross.png");
                 mask-image: url("${Helpers.getCDNHost()}/clubs/ic_xCross.png");
-                background-color: #fff;
-                -webkit-mask-position: center;
-                mask-position: center;
-                -webkit-mask-size: 24px;
-                mask-size: 24px;
-                -webkit-mask-repeat: no-repeat;
-                mask-repeat: no-repeat;
-                pointer-events: none;
-            }
-        `)
-        this.insertRule(Helpers.mediaMobile(`
-            label.girl_filter {
-                position: absolute;
-                left: -2px;
-                top: 0px;
-            }
-        `))
-
-        this.insertRule(Helpers.mediaDesktop(`
-            label.girl_filter {
-                position: absolute;
-                left: -2px;
-                top: -12px;
-            }
-        `))
-
-        this.insertRule(`
-            #arena_filter_box {
-                position: absolute;
-                left: -215px;
-                width: 200px;
-                height: -moz-fit-content;
-                height: fit-content;
-                z-index: 3;
-                border-radius: 8px 10px 10px 8px;
-                background-color: rgb(30, 38, 30);
-                box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
-                padding: 5px;
-                border: 1px solid rgb(255, 162, 62);
-            }
-        `)
-        this.insertRule(Helpers.mediaMobile(`
-            #arena_filter_box {
-                top: -218px;
-            }
-        `))
-        this.insertRule(Helpers.mediaDesktop(`
-            #arena_filter_box {
-                top: -230px;
-            }
-        `))
-
-        this.insertRule(`
-            .team-selection {
-                position: absolute;
-                left: 0px;
-                bottom: -208px;
-                width: 400px;
-                height: fit-content;
-                border-radius: 8px 10px 10px 8px;
-                background-color: #1e261e;
-                box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
-                padding: 5px; border: 1px solid #ffa23e;
-                z-index:10;
-                padding-bottom: 16px;
-            }
-        `)
-        this.insertRule(`
-            .teams-grid-container {
-                display: grid;
-                grid-template-columns: auto auto auto auto;
-                grid-row-gap: 1rem;
-                padding: .4rem .9rem .4rem .9rem;
-                margin-right: -1rem;
-            }
-        `)
-        this.insertRule(`
-            .team-slot-container>img {
-                border-radius: 0.4rem;
             }
         `)
         this.insertRule(`
             .close-team-selection {
-                position: absolute;
-                display: block;
                 background: url(${Helpers.getCDNHost()}/clubs/ic_xCross.png);
-                background-size: cover;
-                height: 32px;
-                width: 35px;
-                top:-16px;
-                right:-17px;
-                cursor: pointer;
-            }
-        `)
-        this.insertRule(`
-            [rel=select-team] {
-                width: 100%;
-                height: 36px;
-                padding-top: 5px;
-            }
-        `)
-        this.insertRule(`
-            .theme-icons {
-                position: absolute;
-                bottom: -10px;
-            }
-        `)
-        this.insertRule(`
-            .theme-icon {
-                width: 26px;
             }
         `)
     }

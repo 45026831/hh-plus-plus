@@ -4,6 +4,9 @@ import I18n from '../i18n'
 import HHModule from './HHModule'
 import filterIcon from '../assets/filter.svg'
 import { lsKeys } from '../common/Constants'
+
+import styles from './MarketEquipsFilterModule.lazy.scss'
+
 const {$} = Helpers
 const MODULE_KEY = 'marketEquipsFilter'
 
@@ -310,7 +313,8 @@ class MarketEquipsFilterModule extends HHModule {
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
 
-        this.injectCSS()
+        styles.use()
+        this.injectDynamicCSS()
 
         // $(document).on('market:equips-updated', () => this.index())
         // this.index()
@@ -368,162 +372,20 @@ class MarketEquipsFilterModule extends HHModule {
         this.hasRun = true
     }
 
-    injectCSS() {
-        this.insertRule(`
-            #shops label.equip_filter {
-                background: transparent;
-            }
-        `)
-        this.insertRule(`
-            #shops #inventory label.equip_filter {
-                width: 32px;
-                position: absolute;
-                top: -6px;
-            }
-        `)
-        this.insertRule(`
-            label.equip_filter input {
-                height: 32px;
-                width: 32px;
-                display: block;
-                padding: 0px;
-            }
-        `)
+    injectDynamicCSS() {
         this.insertRule(`
             label.equip_filter::before {
-                content: ' ';
-                display: block;
-                position: absolute;
-                height: 100%;
-                width: 100%;
                 background-image: url(${filterIcon});
-                background-position: center;
-                background-size: 24px;
-                background-repeat: no-repeat;
-                pointer-events: none;
-            }
-        `)
-        this.insertRule(`
-            .equip_filter_box {
-                position: absolute;
-                bottom: 0px;
-                left: -215px;
-                width: 200px;
-                height: -moz-fit-content;
-                height: fit-content;
-                z-index: 3;
-                border-radius: 8px 10px 10px 8px;
-                background-color: rgb(30, 38, 30);
-                box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
-                padding: 5px;
-                border: 1px solid rgb(255, 162, 62);
-            }
-        `)
-        this.insertRule(`
-            #shops #inventory .equip_filter_box label {
-                background: transparent;
-                width: auto;
-                margin: 0px;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector {
-                width: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-bottom: 16px;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector:last-child {
-                margin-bottom: 0px;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector input {
-                display: none;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector .selector-options {
-                width: -moz-fit-content;
-                width: fit-content;
-                display: grid;
-                grid-gap: 2px;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector .selector-options img {
-                height: 32px;
-                width: 32px;
-                margin: 2px;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector .selector-options div {
-                height: 28px;
-                width: 28px;
-                margin: 4px;
-                border-radius: 5px;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector .clear-selector {
-                width: -moz-fit-content;
-                width: fit-content;
-                margin-right: 5px;
-            }
-        `)
-        this.insertRule(`
-            .grid-selector .clear-selector img {
-                height: 36px;
-                width: 36px;
-            }
-        `)
-        this.insertRule(`
-            #shops #inventory .grid-selector input:checked+label,
-            #shops #inventory .grid-selector input:hover+label {
-                background-color: #fff8;
-            }
-        `)
-        this.insertRule(`
-            #inventory .armor .slot .favorite-toggle {
-                position: absolute;
-                display: none;
-                height: 32px;
-                width: 32px;
-                top: 0px;
-                right: 0px;
-                background-size: 22px;
-                background-repeat: no-repeat;
-                background-position: center;
-                z-index: 1;
-                border-top-right-radius: 5px;
-                border-bottom-left-radius: 5px;
-            }
-        `)
-        this.insertRule(`
-            #inventory .armor .slot:hover .favorite-toggle[data-is-favorite=false], #inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
-                display: block;
             }
         `)
         this.insertRule(`
             #inventory .armor .slot .favorite-toggle[data-is-favorite=false] {
                 background-image: url(${Helpers.getCDNHost()}/design/ic_star_white.svg);
-                opacity: 0.7;
             }
         `)
         this.insertRule(`
             #inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
                 background-image: url(${Helpers.getCDNHost()}/design/ic_star_orange.svg);
-                background-color: rgba(30, 38, 30, 0.7);
-            }
-        `)
-
-        this.insertRule(`
-            #inventory .armor .slot.filtered_out {
-                display: none;
             }
         `)
     }

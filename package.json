@@ -21,10 +21,13 @@
   "homepage": "https://github.com/45026831/hh-plus-plus#readme",
   "devDependencies": {
     "eslint": "^7.32.0",
-    "moment-timezone": "^0.5.33",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "url-loader": "^4.1.1",
     "webpack": "^5.53.0",
-    "webpack-cli": "^4.8.0"
+    "webpack-cli": "^4.8.0",
+    "css-loader": "^6.5.1",
+    "sass": "^1.45.0",
+    "sass-loader": "^12.4.0",
+    "style-loader": "^3.3.1"
   }
 }

@@ -3,6 +3,8 @@ import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
 
+import styles from './PachinkoNamesModule.lazy.scss'
+
 class PachinkoNamesModule extends HHModule {
     constructor () {
         const configSchema = {
@@ -16,8 +18,6 @@ class PachinkoNamesModule extends HHModule {
             configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, 'pachinkoNames')
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
     }
 
     shouldRun() {
@@ -26,7 +26,7 @@ class PachinkoNamesModule extends HHModule {
 
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
-        this.injectCSS()
+        styles.use()
 
         const girlDictionary = Helpers.getGirlDictionary()
 
@@ -64,67 +64,6 @@ class PachinkoNamesModule extends HHModule {
 
         $panelHtml.niceScroll('.scrollArea', {bouncescroll: false})
         $panelHtml.find('.nicescroll-rails-vr').css('right', '5px')
-    }
-
-    injectCSS () {
-        this.insertRule(`
-            a.availableGirl {
-                text-decoration: none;
-            }
-        `)
-        this.insertRule(`
-            a.availableGirl:hover {
-                color: #fff;
-            }
-        `)
-        this.insertRule(`
-            .availableGirls {
-                font-size: 12px;
-                line-height: 16px;
-                text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
-                overflow: hidden;
-                height: 82px;
-                padding-left: 20px;
-                padding-right: 20px;
-            }
-        `)
-        this.insertRule(`
-            #playzone-replace-info .cover .pachinko_img {
-                height: 153px;
-            }
-        `)
-        this.insertRule(`
-            #playzone-replace-info .cover h3.shadow-text {
-                top: 118px;
-            }
-        `)
-        this.insertRule(`
-            #playzone-replace-info .cover p {
-                position: relative;
-            }
-        `)
-        this.insertRule(`
-            #playzone-replace-info .cover .pachinko_img img {
-                left: 96px;
-                margin-left: auto;
-                margin-right: auto;
-                width: 215px;
-            }
-        `)
-        this.insertRule(`
-            #playzone-replace-info .cover {
-                height: 226px;
-            }
-        `)
-        this.insertRule(`
-            #playzone-replace-info .graduation {
-                font-size: 10px;
-            }
-        `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 

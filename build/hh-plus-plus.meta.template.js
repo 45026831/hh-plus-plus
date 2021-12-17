@@ -13,3 +13,7 @@
 // @grant           none
 // @author          Raphael, 1121, Sluimerstand, shal, Tom208, test_anon, 45026831(Numbers)
 // ==/UserScript==
+
+// The changelog can be found at https://raw.githubusercontent.com/45026831/hh-plus-plus/main/CHANGELOG
+
+// WARNING: This file has been generated, DO NOT EDIT.

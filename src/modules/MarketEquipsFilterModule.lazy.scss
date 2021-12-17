@@ -1,0 +1,132 @@
+#shops label.equip_filter {
+    background: transparent;
+}
+
+#shops #inventory label.equip_filter {
+    width: 32px;
+    position: absolute;
+    top: -6px;
+}
+
+label.equip_filter input {
+    height: 32px;
+    width: 32px;
+    display: block;
+    padding: 0px;
+}
+
+label.equip_filter::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-size: 24px;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+.equip_filter_box {
+    position: absolute;
+    bottom: 0px;
+    left: -215px;
+    width: 200px;
+    height: -moz-fit-content;
+    height: fit-content;
+    z-index: 3;
+    border-radius: 8px 10px 10px 8px;
+    background-color: rgb(30, 38, 30);
+    box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
+    padding: 5px;
+    border: 1px solid rgb(255, 162, 62);
+}
+
+#shops #inventory .equip_filter_box label {
+    background: transparent;
+    width: auto;
+    margin: 0px;
+}
+
+.grid-selector {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.grid-selector:last-child {
+    margin-bottom: 0px;
+}
+
+.grid-selector input {
+    display: none;
+}
+
+.grid-selector .selector-options {
+    width: -moz-fit-content;
+    width: fit-content;
+    display: grid;
+    grid-gap: 2px;
+}
+
+.grid-selector .selector-options img {
+    height: 32px;
+    width: 32px;
+    margin: 2px;
+}
+
+.grid-selector .selector-options div {
+    height: 28px;
+    width: 28px;
+    margin: 4px;
+    border-radius: 5px;
+}
+
+.grid-selector .clear-selector {
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-right: 5px;
+}
+
+.grid-selector .clear-selector img {
+    height: 36px;
+    width: 36px;
+}
+
+#shops #inventory .grid-selector input:checked+label,
+#shops #inventory .grid-selector input:hover+label {
+    background-color: #fff8;
+}
+
+#inventory .armor .slot .favorite-toggle {
+    position: absolute;
+    display: none;
+    height: 32px;
+    width: 32px;
+    top: 0px;
+    right: 0px;
+    background-size: 22px;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: 1;
+    border-top-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+#inventory .armor .slot:hover .favorite-toggle[data-is-favorite=false], #inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
+    display: block;
+}
+
+#inventory .armor .slot .favorite-toggle[data-is-favorite=false] {
+    opacity: 0.7;
+}
+
+#inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
+    background-color: rgba(30, 38, 30, 0.7);
+}
+
+#inventory .armor .slot.filtered_out {
+    display: none;
+}

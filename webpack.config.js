@@ -26,6 +26,14 @@ module.exports = {
                     },
                 ],
             },
+            {
+                test: /\.lazy\.scss$/i,
+                use: [
+                    { loader: 'style-loader', options: { injectType: 'lazyStyleTag' } },
+                    'css-loader',
+                    'sass-loader',
+                ],
+            },
         ]
     },
     optimization: {

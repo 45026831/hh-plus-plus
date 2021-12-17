@@ -3,6 +3,8 @@ import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
 
+import styles from './SeasonStatsModule.lazy.scss'
+
 class SeasonStatsModule extends HHModule {
     constructor () {
         const configSchema = {
@@ -26,7 +28,7 @@ class SeasonStatsModule extends HHModule {
 
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
-        this.injectCSS()
+        styles.use()
 
         const seasonStats = Helpers.lsGet(lsKeys.SEASON_STATS)
         if (!seasonStats) {
@@ -70,51 +72,6 @@ class SeasonStatsModule extends HHModule {
         }
 
         this.hasRun = true
-    }
-
-    injectCSS () {
-        this.insertRule(`
-            .scriptSeasonStatsTooltip {
-                font-size: 12px;
-                color: #fff;
-            }
-        `)
-        this.insertRule(`
-            .scriptSeasonStats {
-                color: #8ec3ff;
-                font-size: 16px;
-            }
-        `)
-        this.insertRule(`
-            #seasons_tab_title .scriptSeasonStats {
-                margin-left: 54px;
-            }
-        `)
-        this.insertRule(`
-            .hero .scriptSeasonStats {
-                margin-left: 15px;
-            }
-        `)
-        this.insertRule(`
-            .scriptSeasonStatsTooltip table {
-                margin-left: auto;
-                margin-right: auto;
-            }
-        `)
-        this.insertRule(`
-            .scriptSeasonStatsTooltip table tr td:first-child {
-                text-align: right;
-            }
-        `)
-        this.insertRule(`
-            .scriptSeasonStatsTooltip table tr td:last-child {
-                text-align: left;
-            }
-        `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 

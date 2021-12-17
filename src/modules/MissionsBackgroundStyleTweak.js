@@ -1,6 +1,7 @@
 import Helpers from '../common/Helpers'
 import STModule from './STModule'
 import I18n from '../i18n'
+import styles from './MissionsBackgroundStyleTweak.lazy.scss'
 
 class MissionsBackgroundStyleTweak extends STModule {
     constructor() {
@@ -20,29 +21,11 @@ class MissionsBackgroundStyleTweak extends STModule {
     }
 
     injectCss () {
-        this.insertRule(`
-            #missions .missions_wrap .mission_object.mission_entry.common {
-                background: #ffffff20
-            }
-        `),
+        styles.use()
+    }
 
-        this.insertRule(`
-            #missions .missions_wrap .mission_object.mission_entry.rare {
-                background: #32bc4f30;
-            }
-        `),
-
-        this.insertRule(`
-            #missions .missions_wrap .mission_object.mission_entry.epic {
-                background: #ffb24440;
-            }
-        `),
-
-        this.insertRule(`
-            #missions .missions_wrap .mission_object.mission_entry.legendary {
-                background: #6ebeff40;
-            }
-        `)
+    tearDown () {
+        styles.unUse()
     }
 }
 

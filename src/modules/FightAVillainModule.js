@@ -4,6 +4,7 @@ import HHModule from './HHModule'
 import I18n from '../i18n'
 import VILLAINS from '../data/Villains'
 import { lsKeys } from '../common/Constants'
+import styles from './FightAVillainModule.lazy.scss'
 
 class FightAVillainModule extends HHModule {
     constructor () {
@@ -33,6 +34,7 @@ class FightAVillainModule extends HHModule {
         if (this.hasRun) {
             return
         }
+        styles.use()
         this.injectCSS()
 
         const villainsSet = VILLAINS[Helpers.getGameKey()]
@@ -100,146 +102,9 @@ class FightAVillainModule extends HHModule {
     injectCSS () {
         this.insertRule(`
             .TrollsMenu {
-                position: absolute;
-                z-index: 35;
-                display: none;
-                border-radius: 0px 0px 8px 8px;
-                background-color: rgba(0,0,0,.8);
-                box-shadow: 0 0 0 1px rgba(255,255,255,0.73);
                 font-weight: ${Helpers.isCxH() ? '800' : '400'};
-                letter-spacing: .22px;
-                color: #fff;
-                text-align: center;
-                opacity: 0;
-                visibility: hidden;
-                transition: opacity 400ms, visibility 400ms;
-                grid-gap: 7px;
-                padding-top: 5px;
-                padding-bottom: 5px;
             }
         `)
-
-        this.insertRule(Helpers.mediaDesktop(`
-            .TrollsMenu {
-                width: 88%;
-                margin: 34px 0 0 34px;
-                font-size: 14px;
-                line-height: 18px;
-            }
-        `))
-
-        this.insertRule(Helpers.mediaMobile(`
-            .TrollsMenu {
-                width: 200%;
-                margin: 64px 0 0 -79px;
-                font-size: 16px;
-                line-height: 22px;
-                grid-template-columns: 1fr 1fr;
-                grid-auto-flow: row;
-            }
-        `))
-
-        this.insertRule(Helpers.mediaMobile(`
-            .TrollsMenu > a {
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
-        `))
-
-        this.insertRule(`
-            .energy_counter:hover > .TrollsMenu {
-                opacity: 1;
-                display: grid;
-                visibility: visible;
-            }
-        `)
-
-        this.insertRule('#TrollsID a {'
-                         + 'color: rgb(255, 255, 255); '
-                         + 'text-decoration: none;}'
-        )
-
-        this.insertRule('#TrollsID a:hover {'
-                         + 'color: rgb(255, 247, 204); '
-                         + 'text-decoration: underline;}'
-        )
-
-        this.insertRule('.TrollsMenu a {'
-                         + 'color: rgb(255, 255, 255); '
-                         + 'text-decoration: none;}'
-        )
-
-        this.insertRule('.eventTroll {'
-                         + 'color: #f70 !important;}'
-        )
-
-        this.insertRule('.eventTroll:hover {'
-                         + 'color: #fa0 !important;}'
-        )
-
-        this.insertRule('.eventTroll.common {'
-                         + 'color: #8d8e9f !important;}'
-        )
-
-        this.insertRule('.eventTroll.common:hover {'
-                         + 'color: #b4b5c9 !important;}'
-        )
-
-        this.insertRule('.eventTroll.rare {'
-                         + 'color: #23b56b !important;}'
-        )
-
-        this.insertRule('.eventTroll.rare:hover {'
-                         + 'color: #2bdf84 !important;}'
-        )
-
-        this.insertRule('.eventTroll.epic {'
-                         + 'color: #ffb244 !important;}'
-        )
-
-        this.insertRule('.eventTroll.epic:hover {'
-                         + 'color: #ffc97b !important;}'
-        )
-
-        this.insertRule('.eventTroll.legendary {'
-                         + 'color: #9370db !important;}'
-        )
-
-        this.insertRule('.eventTroll.legendary:hover {'
-                         + 'color: #b19cd9 !important;}'
-        )
-
-        this.insertRule('.mythicEventTroll {'
-                         + 'color: #ec0039 !important;}'
-        )
-
-        this.insertRule('.mythicEventTroll:hover {'
-                         + 'color: #ff003e !important;}'
-        )
-
-        this.insertRule(Helpers.mediaDesktop(`
-            .TrollsMenu .villain_gem, .TrollsMenu .villain_item {
-                height: 16px;
-                width: 16px;
-            }
-        `))
-        this.insertRule(Helpers.mediaMobile(`
-            .TrollsMenu .villain_gem, .TrollsMenu .villain_item {
-                height: 18px;
-                width: 18px;
-            }
-        `))
-
-        this.insertRule(Helpers.mediaDesktop(`
-            .TrollsMenu .villain_rewards {
-                display: inline;
-            }
-        `))
-        this.insertRule(Helpers.mediaMobile(`
-            .TrollsMenu .villain_rewards {
-                display: block;
-            }
-        `))
     }
 
     insertRule (rule) {

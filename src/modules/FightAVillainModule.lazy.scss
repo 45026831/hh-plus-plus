@@ -1,0 +1,129 @@
+@import "./constants.scss";
+
+.TrollsMenu {
+    position: absolute;
+    z-index: 35;
+    display: none;
+    border-radius: 0px 0px 8px 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.73);
+    letter-spacing: 0.22px;
+    color: #fff;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms, visibility 400ms;
+    grid-gap: 7px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
+    .energy_counter:hover > & {
+        opacity: 1;
+        display: grid;
+        visibility: visible;
+    }
+
+    a {
+        color: rgb(255, 255, 255);
+        text-decoration: none;
+    }
+}
+
+#TrollsID a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+
+    &:hover {
+        color: rgb(255, 247, 204);
+        text-decoration: underline;
+    }
+}
+
+.eventTroll {
+    color: #f70 !important;
+
+    &:hover {
+        color: #fa0 !important;
+    }
+
+    &.common {
+        color: #8d8e9f !important;
+        &:hover {
+            color: #b4b5c9 !important;
+        }
+    }
+
+    &.rare {
+        color: #23b56b !important;
+        &:hover {
+            color: #2bdf84 !important;
+        }
+    }
+
+    &.epic {
+        color: #ffb244 !important;
+        &:hover {
+            color: #ffc97b !important;
+        }
+    }
+
+    &.legendary {
+        color: #9370db !important;
+        &:hover {
+            color: #b19cd9 !important;
+        }
+    }
+}
+
+.mythicEventTroll {
+    color: #ec0039 !important;
+
+    &:hover {
+        color: #ff003e !important;
+    }
+}
+
+@media #{$mediaMobile} {
+    .TrollsMenu {
+        width: 200%;
+        margin: 64px 0 0 -79px;
+        font-size: 16px;
+        line-height: 22px;
+        grid-template-columns: 1fr 1fr;
+        grid-auto-flow: row;
+
+        & > a {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .villain_gem,
+        .villain_item {
+            height: 18px;
+            width: 18px;
+        }
+
+        .villain_rewards {
+            display: block;
+        }
+    }
+}
+
+@media #{$mediaDesktop} {
+    .TrollsMenu {
+        width: 88%;
+        margin: 34px 0 0 34px;
+        font-size: 14px;
+        line-height: 18px;
+
+        .villain_gem,
+        .villain_item {
+            height: 16px;
+            width: 16px;
+        }
+
+        .villain_rewards {
+            display: inline;
+        }
+    }
+}

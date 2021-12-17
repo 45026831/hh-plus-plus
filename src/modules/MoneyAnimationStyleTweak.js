@@ -1,6 +1,7 @@
 import Helpers from '../common/Helpers'
 import STModule from './STModule'
 import I18n from '../i18n'
+import styles from './MoneyAnimationStyleTweak.lazy.scss'
 
 class MoneyAnimationStyleTweak extends STModule {
     constructor() {
@@ -20,9 +21,11 @@ class MoneyAnimationStyleTweak extends STModule {
     }
 
     injectCss () {
-        this.insertRule(`.collect_img {
-            display: none !important;
-        }`)
+        styles.use()
+    }
+
+    tearDown () {
+        styles.unUse()
     }
 }
 

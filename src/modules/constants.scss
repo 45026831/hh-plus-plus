@@ -1,0 +1,6 @@
+$breakpoint: 1025px;
+
+$mediaMobile: "(max-width: #{$breakpoint})";
+$mediaDesktop: "(min-width: #{$breakpoint + 1})";
+
+$classes: ("1", "2", "3");

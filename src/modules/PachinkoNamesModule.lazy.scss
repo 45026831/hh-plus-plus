@@ -1,0 +1,46 @@
+a.availableGirl {
+    text-decoration: none;
+
+    &:hover {
+        color: #fff;
+    }
+}
+
+.availableGirls {
+    font-size: 12px;
+    line-height: 16px;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+    overflow: hidden;
+    height: 82px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#playzone-replace-info {
+    .cover {
+        height: 226px;
+
+        .pachinko_img {
+            height: 153px;
+
+            img {
+                left: 96px;
+                margin-left: auto;
+                margin-right: auto;
+                width: 215px;
+            }
+        }
+
+        h3.shadow-text {
+            top: 118px;
+        }
+
+        p {
+            position: relative;
+        }
+    }
+
+    .graduation {
+        font-size: 10px;
+    }
+}
