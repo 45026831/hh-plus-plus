@@ -252,20 +252,9 @@ class MarketEquipsFilterModule extends HHModule {
         styles.use()
         this.injectDynamicCSS()
 
-        // $(document).on('market:equips-updated', () => this.index())
-        // this.index()
-        // const attachListener = () => {
-        // $(document).one('market:equips-updated', () => {
-        //     this.applyFilter()
-        // })
         $(document).on('market:equips-updated', () => {
             this.applyFilter()
         })
-        // }
-        // $(document).on('market:equip-filter:done', () => {
-        //     setTimeout(attachListener, 10)
-        // })
-        // attachListener()
 
 
         const attachFilterBox = () => {
