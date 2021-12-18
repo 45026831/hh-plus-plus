@@ -21,28 +21,28 @@ class MarketInfoCollector {
 
         marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO) || {}
 
-        const handleBuyableItemUpdate = () => {
-            MarketInfoCollector.collectBuyableItems()
+        const handleBuyableItemUpdate = async type => {
+            MarketInfoCollector.collectBuyableItemsOfType(type)
             saveMarketInfo()
         }
-        const handleSellableItemUpdate = type => {
+        const handleSellableItemUpdate = async type => {
             MarketInfoCollector.collectSellableItemsOfType(type)
             saveMarketInfo()
             $(document).trigger('market:inventory-updated')
         }
-        const handleEquipsInventoryUpdate = () => {
+        const handleEquipsInventoryUpdate = async () => {
             MarketInfoCollector.collectEquipsList()
             saveMarketInfo()
             $(document).trigger('market:equips-updated')
         }
 
         BUYABLE.forEach(type => {
-            new MutationObserver(handleBuyableItemUpdate).observe($(`#shops_left .${TYPES[type]}`)[0], {childList: true})
+            new MutationObserver(() => handleBuyableItemUpdate(type)).observe($(`#shops_left .${TYPES[type]}`)[0], {childList: true})
         })
         SELLABLE.forEach(type => {
             new MutationObserver(() => handleSellableItemUpdate(type)).observe($(`#inventory .${TYPES[type]} .inventory_slots > div`)[0], {childList: true, subtree: true})
         })
-        new MutationObserver(handleEquipsInventoryUpdate).observe($('#inventory .armor .inventory_slots > div')[0], {childList: true, subtree: true})
+        new MutationObserver(handleEquipsInventoryUpdate).observe($('#inventory .armor .inventory_slots > div')[0], {childList: true})
 
         MarketInfoCollector.collectRefreshTime()
         MarketInfoCollector.collectBuyableItems()
@@ -61,29 +61,31 @@ class MarketInfoCollector {
             marketInfo.buyableItems = {}
         }
 
-        BUYABLE.forEach(type => {
-            const collector = {
-                sc: {
-                    count: 0,
-                    cost: 0,
-                    value: 0,
-                },
-                hc: {
-                    count: 0,
-                    cost: 0,
-                    value: 0,
-                }
-            }
-            $(`#shops_left .${TYPES[type]} .slot:not(.empty)`).each((i, slot) => {
-                const {currency, count, value, price} = $(slot).data('d')
-                const subCollector = collector[currency]
+        BUYABLE.forEach(MarketInfoCollector.collectBuyableItemsOfType)
+    }
 
-                subCollector.count += count
-                subCollector.cost += castInt(price) * count
-                subCollector.value += castInt(value) * count
-            })
-            marketInfo.buyableItems[type] = collector
+    static collectBuyableItemsOfType (type) {
+        const collector = {
+            sc: {
+                count: 0,
+                cost: 0,
+                value: 0,
+            },
+            hc: {
+                count: 0,
+                cost: 0,
+                value: 0,
+            }
+        }
+        $(`#shops_left .${TYPES[type]} .slot:not(.empty)`).each((i, slot) => {
+            const {currency, count, value, price} = $(slot).data('d')
+            const subCollector = collector[currency]
+
+            subCollector.count += count
+            subCollector.cost += castInt(price) * count
+            subCollector.value += castInt(value) * count
         })
+        marketInfo.buyableItems[type] = collector
     }
 
     static collectSellableItems () {

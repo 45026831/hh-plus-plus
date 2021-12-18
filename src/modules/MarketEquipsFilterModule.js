@@ -78,6 +78,12 @@ const FILTER_OPTIONS_GRIDS = {
         rows: '1fr'
     },
 }
+const STATS_MAP = {
+    rainbow: ['16'],
+    hc:['1', '6', '7', '8', '9'],
+    ch: ['2', '6', '10', '11', '12'],
+    kh: ['3', '7', '10', '13', '14']
+}
 
 const createGridSelectorItem = ({id, value, icon, bgColor, bgImage}) => `
     <input type="radio" name=${id} id="${id}-${value}" value="${value}"/>
@@ -135,13 +141,6 @@ class MarketEquipsFilterModule extends HHModule {
         this.sheet = Helpers.getSheet()
         this.insertedRules = []
 
-        // this.allEquipIds = []
-        // this.equipDict = {}
-        // this.equipIndex = {
-        //     subtype: [1,2,3,4,5,6].map(k=>({[k]:[]})).reduce((a,b)=>Object.assign(a,b), {}),
-        //     rarity: ['common', 'rare', 'epic', 'legendary'].map(k=>({[k]:[]})).reduce((a,b)=>Object.assign(a,b), {}),
-        //     stats: ['rainbow', 'hc', 'ch', 'kh'].map(k=>({[k]:[]})).reduce((a,b)=>Object.assign(a,b), {})
-        // }
         this.currentFilter = {
             subtype: FILTER_DEFAULT,
             rarity: FILTER_DEFAULT,
@@ -153,41 +152,6 @@ class MarketEquipsFilterModule extends HHModule {
     shouldRun () {
         return Helpers.isCurrentPage('shop')
     }
-
-    // index () {
-    //     const $visibleEquips = $('#inventory .armor .slot:not(.empty)')
-
-    //     $visibleEquips.each((i,el) => {
-    //         const {id_m_i, name_add, rarity, subtype} = $(el).data('d')
-    //         const [equipKey] = id_m_i
-    //         if (this.equipDict[equipKey]) {
-    //             return
-    //         }
-
-    //         let stats
-    //         switch(name_add) {
-    //         case '1':
-    //             stats = 'hc'
-    //             break
-    //         case '2':
-    //             stats = 'ch'
-    //             break
-    //         case '3':
-    //             stats = 'kh'
-    //             break
-    //         case '16':
-    //             stats = 'rainbow'
-    //             break
-    //         }
-    //         this.equipDict[equipKey] = el
-    //         this.allEquipIds.push(equipKey)
-    //         this.equipIndex.subtype[subtype].push(equipKey)
-    //         this.equipIndex.rarity[rarity].push(equipKey)
-    //         if (stats) {
-    //             this.equipIndex.stats[stats].push(equipKey)
-    //         }
-    //     })
-    // }
 
     applyFilter () {
         const favorites = getFavorites()
@@ -213,38 +177,10 @@ class MarketEquipsFilterModule extends HHModule {
             $favoriteToggle.click(this.favoriteToggleCallback)
             $favoriteToggle.attr('data-is-favorite', isFavorite)
 
-            const stats = []
-
-            const typeMap = [
-                {
-                    type: 'hc',
-                    ids: ['1', '6', '7', '8', '9']
-                },
-                {
-                    type: 'ch',
-                    ids: ['2', '6', '10', '11', '12']
-                },
-                {
-                    type: 'kh',
-                    ids: ['3', '7', '10', '13', '14']
-                },
-                {
-                    type: 'rainbow',
-                    ids: ['16']
-                }
-            ]
-
-            typeMap.forEach(({type, ids}) => {
-                if (ids.includes(name_add)) {
-                    stats.push(type)
-                }
-            })
-
             const subtypeMatches = this.currentFilter.subtype === FILTER_DEFAULT || this.currentFilter.subtype === subtype
             const rarityMatches = this.currentFilter.rarity === FILTER_DEFAULT || this.currentFilter.rarity === rarity
-            const statsMatches = this.currentFilter.stats === FILTER_DEFAULT || stats.includes(this.currentFilter.stats)
+            const statsMatches = this.currentFilter.stats === FILTER_DEFAULT || STATS_MAP[this.currentFilter.stats].includes(name_add)
             const favoritesMatches = this.currentFilter.favorites === FILTER_DEFAULT || JSON.parse(this.currentFilter.favorites) === isFavorite
-            // TODO favorites
 
             if ([subtypeMatches, rarityMatches, statsMatches, favoritesMatches].every(a=>a)) {
                 $(el).removeClass('filtered_out')
@@ -318,15 +254,18 @@ class MarketEquipsFilterModule extends HHModule {
 
         // $(document).on('market:equips-updated', () => this.index())
         // this.index()
-        const attachListener = () => {
-            $(document).one('market:equips-updated', () => {
-                this.applyFilter()
-            })
-        }
-        $(document).on('market:equip-filter:done', () => {
-            setTimeout(attachListener, 10)
+        // const attachListener = () => {
+        // $(document).one('market:equips-updated', () => {
+        //     this.applyFilter()
+        // })
+        $(document).on('market:equips-updated', () => {
+            this.applyFilter()
         })
-        attachListener()
+        // }
+        // $(document).on('market:equip-filter:done', () => {
+        //     setTimeout(attachListener, 10)
+        // })
+        // attachListener()
 
 
         const attachFilterBox = () => {
