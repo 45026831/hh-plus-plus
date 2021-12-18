@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const pkgJson = require('../package.json')
-// const moment = require('moment-timezone')
 
 class BannerBuilder {
     static buildMeta() {
@@ -14,13 +13,8 @@ class BannerBuilder {
 
     static buildBanner() {
         const meta = BannerBuilder.buildMeta()
-        let outputFull = meta
-        // const isDST = moment().tz('Europe/Paris').zoneAbbr() === 'CEST'
-        // outputFull = `${meta}
-        // const isDST = ${isDST};
-        // `
-
-        return outputFull
+        fs.writeFileSync(path.resolve(__dirname, '../dist/hh-plus-plus.meta.js'), meta)
+        return meta
     }
 }
 

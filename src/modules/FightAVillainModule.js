@@ -37,18 +37,20 @@ class FightAVillainModule extends HHModule {
         styles.use()
         this.injectCSS()
 
-        const villainsSet = VILLAINS[Helpers.getGameKey()]
+        Helpers.defer(() => {
 
-        const eventTrolls = Helpers.lsGet(lsKeys.EVENT_VILLAINS) || []
-        const mythicEventTrolls = Helpers.lsGet(lsKeys.MYTHIC_EVENT_VILLAINS) || []
-        const girlDictionary = Helpers.getGirlDictionary()
+            const villainsSet = VILLAINS[Helpers.getGameKey()]
 
-        //Add the actual menu
-        const currentWorld = Hero.infos.questing.id_world
+            const eventTrolls = Helpers.lsGet(lsKeys.EVENT_VILLAINS) || []
+            const mythicEventTrolls = Helpers.lsGet(lsKeys.MYTHIC_EVENT_VILLAINS) || []
+            const girlDictionary = Helpers.getGirlDictionary()
 
-        const menuHtml = `
-            <div class="TrollsMenu" id="TrollsID">
-                ${villainsSet.filter(villain => villain.world <= currentWorld).map(({key, girls, world, gems, items}) => {
+            //Add the actual menu
+            const currentWorld = Hero.infos.questing.id_world
+
+            const menuHtml = `
+                <div class="TrollsMenu" id="TrollsID">
+                    ${villainsSet.filter(villain => villain.world <= currentWorld).map(({key, girls, world, gems, items}) => {
         let tiersSuffix = ''
         if (tiers) {
             const haveGirl = idGirl => (girlDictionary.get(idGirl) && girlDictionary.get(idGirl).shards === 100)
@@ -89,12 +91,11 @@ class FightAVillainModule extends HHModule {
         }
         return `<a class="${type}" href="/troll-pre-battle.html?id_opponent=${villainId}">${label}</a>`
     }).join('')}
-            </div>
-        `
+                </div>
+            `
 
-        $('#contains_all > header').children('[type=fight]').append(menuHtml.replace(/ {4}/g, '').replace(/\n/g, ''))
-
-        //CSS
+            $('#contains_all > header').children('[type=fight]').append(menuHtml.replace(/ {4}/g, '').replace(/\n/g, ''))
+        })
 
         this.hasRun = true
     }

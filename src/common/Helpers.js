@@ -10,6 +10,8 @@ let girlDictionary
 let teamsDictionary
 let elementsEnabled
 
+const deferred = []
+
 class Helpers {
     static getHost() {
         return window.location.host
@@ -174,6 +176,24 @@ class Helpers {
             elementsEnabled = !!GT.design.fire_flavor_element
         }
         return elementsEnabled
+    }
+
+    static defer (callback) {
+        deferred.push(callback)
+    }
+
+    static runDeferred () {
+        $(document).ready(() => {
+            deferred.forEach(callback => {
+                try {
+                    callback()
+                } catch (e) {
+                    console.error('Error in deferred function', e)
+                }
+            })
+
+            deferred.splice(0, deferred.length)
+        })
     }
 }
 

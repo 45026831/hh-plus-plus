@@ -30,14 +30,15 @@ class SeasonStatsModule extends HHModule {
         if (this.hasRun || !this.shouldRun()) {return}
         styles.use()
 
-        const seasonStats = Helpers.lsGet(lsKeys.SEASON_STATS)
-        if (!seasonStats) {
-            return
-        }
+        Helpers.defer(() => {
+            const seasonStats = Helpers.lsGet(lsKeys.SEASON_STATS)
+            if (!seasonStats) {
+                return
+            }
 
-        const {fights, victories, losses, won_mojo, lost_mojo} = seasonStats
+            const {fights, victories, losses, won_mojo, lost_mojo} = seasonStats
 
-        const statsTooltip = `
+            const statsTooltip = `
             <span class="scriptSeasonStatsTooltip" style="visibility: visible;">
                 <table>
                     <tbody>
@@ -64,12 +65,14 @@ class SeasonStatsModule extends HHModule {
             </span>
         `.replace(/( {4}|\n)/g, '')
 
-        const $stats = $('<span class="scriptSeasonStats">Stats</span>').attr('hh_title', statsTooltip)
-        if (Helpers.isCurrentPage('season.html')) {
-            $('div#seasons_tab_title').append($stats)
-        } else {
-            $('.hero .hero_details .center_y').append($stats)
-        }
+            const $stats = $('<span class="scriptSeasonStats">Stats</span>').attr('hh_title', statsTooltip)
+            if (Helpers.isCurrentPage('season.html')) {
+                $('div#seasons_tab_title').append($stats)
+            } else {
+                $('.hero .hero_details .center_y').append($stats)
+            }
+
+        })
 
         this.hasRun = true
     }

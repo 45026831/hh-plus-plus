@@ -3,6 +3,7 @@ import I18n from '../i18n'
 import HHModule from './HHModule'
 
 import styles from './BetterXPAndMoneyModule.lazy.scss'
+import Helpers from '../common/Helpers'
 
 const MODULE_KEY = 'xpMoney'
 
@@ -25,15 +26,17 @@ class BetterXPAndMoneyModule extends HHModule {
         if (this.hasRun) {return}
         styles.use()
 
-        this.betterXP()
+        Helpers.defer(() => {
+            this.betterXP()
 
-        const xpObserver = new MutationObserver(this.betterXP.bind(this))
-        xpObserver.observe($('[hero=xp]')[0], {childList: true})
+            const xpObserver = new MutationObserver(this.betterXP.bind(this))
+            xpObserver.observe($('[hero=xp]')[0], {childList: true})
 
-        this.betterMoney()
+            this.betterMoney()
 
-        const moneyObserver = new MutationObserver(this.betterMoney.bind(this))
-        moneyObserver.observe($('[hero=soft_currency]')[0], {childList: true})
+            const moneyObserver = new MutationObserver(this.betterMoney.bind(this))
+            moneyObserver.observe($('[hero=soft_currency]')[0], {childList: true})
+        })
 
         this.hasRun = true
     }

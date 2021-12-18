@@ -28,20 +28,22 @@ class PachinkoNamesModule extends HHModule {
         if (this.hasRun || !this.shouldRun()) {return}
         styles.use()
 
-        const girlDictionary = Helpers.getGirlDictionary()
+        Helpers.defer(() => {
+            const girlDictionary = Helpers.getGirlDictionary()
 
-        this.girlLists = {}
+            this.girlLists = {}
 
-        pachinkoDef.forEach(({type, content}) => {
-            const rewardGirls = (content && content.rewards && content.rewards.girl_shards && content.rewards.girl_shards.plain_data) || []
-            const girlList = rewardGirls.map(({id_girl}) => girlDictionary.get(id_girl))
-            this.girlLists[type] = girlList
+            pachinkoDef.forEach(({type, content}) => {
+                const rewardGirls = (content && content.rewards && content.rewards.girl_shards && content.rewards.girl_shards.plain_data) || []
+                const girlList = rewardGirls.map(({id_girl}) => girlDictionary.get(id_girl))
+                this.girlLists[type] = girlList
+            })
+
+            const observer = new MutationObserver(this.applyPanel.bind(this))
+            observer.observe($('.playing-zone')[0], {attributes: true})
+
+            this.applyPanel()
         })
-
-        const observer = new MutationObserver(this.applyPanel.bind(this))
-        observer.observe($('.playing-zone')[0], {attributes: true})
-
-        this.applyPanel()
 
         this.hasRun = true
     }

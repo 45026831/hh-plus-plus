@@ -37,41 +37,43 @@ const collectFromAjaxResponseLeagues = (response) => {
 
 class GirlDictionaryCollector {
     static collect () {
-        updated = false
-        girlDictionary = Helpers.getGirlDictionary()
-        if (Helpers.isCurrentPage('harem')) {
-            GirlDictionaryCollector.collectFromHarem()
-        }
-        if (Helpers.isCurrentPage('event')) {
-            GirlDictionaryCollector.collectFromEventWidget()
-        }
-        if (Helpers.isCurrentPage('clubs')) {
-            GirlDictionaryCollector.collectFromClubChamp()
-        }
-        if (Helpers.isCurrentPage('battle')) {
-            GirlDictionaryCollector.collectFromBattleResult()
-        }
-        if (Helpers.isCurrentPage('pachinko')) {
-            GirlDictionaryCollector.collectFromPachinkoRewards()
-        }
-        if (Helpers.isCurrentPage('activities')) {
-            GirlDictionaryCollector.collectFromContestRewards()
-        }
-        if (Helpers.isCurrentPage('champion')) {
-            GirlDictionaryCollector.collectFromChampions()
-        }
-        if (Helpers.isCurrentPage('home')) {
-            GirlDictionaryCollector.collectFromRewardsQueue()
-        }
-        if (Helpers.isCurrentPage('season')) {
-            GirlDictionaryCollector.collectFromSeasons()
-        }
-        if (Helpers.isCurrentPage('tower-of-fame')) {
-            GirlDictionaryCollector.collectFromLeague()
-        }
-        if (updated) {
-            Helpers.setGirlDictionary(girlDictionary)
-        }
+        Helpers.defer(() => {
+            updated = false
+            girlDictionary = Helpers.getGirlDictionary()
+            if (Helpers.isCurrentPage('harem')) {
+                GirlDictionaryCollector.collectFromHarem()
+            }
+            if (Helpers.isCurrentPage('event')) {
+                GirlDictionaryCollector.collectFromEventWidget()
+            }
+            if (Helpers.isCurrentPage('clubs')) {
+                GirlDictionaryCollector.collectFromClubChamp()
+            }
+            if (Helpers.isCurrentPage('battle')) {
+                GirlDictionaryCollector.collectFromBattleResult()
+            }
+            if (Helpers.isCurrentPage('pachinko')) {
+                GirlDictionaryCollector.collectFromPachinkoRewards()
+            }
+            if (Helpers.isCurrentPage('activities')) {
+                GirlDictionaryCollector.collectFromContestRewards()
+            }
+            if (Helpers.isCurrentPage('champion')) {
+                GirlDictionaryCollector.collectFromChampions()
+            }
+            if (Helpers.isCurrentPage('home')) {
+                GirlDictionaryCollector.collectFromRewardsQueue()
+            }
+            if (Helpers.isCurrentPage('season')) {
+                GirlDictionaryCollector.collectFromSeasons()
+            }
+            if (Helpers.isCurrentPage('tower-of-fame')) {
+                GirlDictionaryCollector.collectFromLeague()
+            }
+            if (updated) {
+                Helpers.setGirlDictionary(girlDictionary)
+            }
+        })
     }
 
     static collectFromHarem () {

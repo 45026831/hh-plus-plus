@@ -12,13 +12,15 @@ const DEFAULT_STATS = {
 /* global season_sec_untill_event_end, server_now_ts */
 class SeasonStatsCollector {
     static collect () {
-        SeasonStatsCollector.migrate()
-        if (Helpers.isCurrentPage('season') && !Helpers.isCurrentPage('season-arena')) {
-            SeasonStatsCollector.rollOverStats()
-        }
-        if (Helpers.isCurrentPage('season-arena') || Helpers.isCurrentPage('battle')) {
-            SeasonStatsCollector.collectFromBattle()
-        }
+        Helpers.defer(() => {
+            SeasonStatsCollector.migrate()
+            if (Helpers.isCurrentPage('season') && !Helpers.isCurrentPage('season-arena')) {
+                SeasonStatsCollector.rollOverStats()
+            }
+            if (Helpers.isCurrentPage('season-arena') || Helpers.isCurrentPage('battle')) {
+                SeasonStatsCollector.collectFromBattle()
+            }
+        })
     }
 
     static migrate () {

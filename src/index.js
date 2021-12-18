@@ -63,6 +63,8 @@ const runScript = () => {
 
     config.runModules()
 
+    Helpers.runDeferred()
+
     // expose config for other scripts to register their own modules
     // window.hhPlusPlusConfig = config
 }

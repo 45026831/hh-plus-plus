@@ -4,13 +4,15 @@ import Helpers from '../common/Helpers'
 
 class EventVillainsCollector {
     static collect () {
-        EventVillainsCollector.clean()
-        if (Helpers.hasSearch('tab=event')) {
-            EventVillainsCollector.collectFromEvent(lsKeys.EVENT_TIME, lsKeys.EVENT_VILLAINS)
-        }
-        if (Helpers.hasSearch('tab=mythic_event')) {
-            EventVillainsCollector.collectFromEvent(lsKeys.MYTHIC_EVENT_TIME, lsKeys.MYTHIC_EVENT_VILLAINS)
-        }
+        Helpers.defer(() => {
+            EventVillainsCollector.clean()
+            if (Helpers.hasSearch('tab=event')) {
+                EventVillainsCollector.collectFromEvent(lsKeys.EVENT_TIME, lsKeys.EVENT_VILLAINS)
+            }
+            if (Helpers.hasSearch('tab=mythic_event')) {
+                EventVillainsCollector.collectFromEvent(lsKeys.MYTHIC_EVENT_TIME, lsKeys.MYTHIC_EVENT_VILLAINS)
+            }
+        })
     }
 
     static clean () {

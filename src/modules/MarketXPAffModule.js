@@ -2,7 +2,7 @@
 import Helpers from '../common/Helpers'
 import I18n from '../i18n'
 import HHModule from './HHModule'
-import * as GirlXP from '../data/GirlXP'
+import GirlXP from '../data/GirlXP'
 import styles from './MarketXPAffModule.lazy.scss'
 const MODULE_KEY = 'marketXPAff'
 
@@ -70,32 +70,35 @@ class MarketXPAffModule extends HHModule {
             updateGirlXP(girl)
             updateGirlAff(girl)
         }
-        updateBoth()
 
-        // change shop area
-        $('#type_item > [type=potion], #type_item > [type=gift]').click(updateBoth)
+        Helpers.defer(() => {
+            updateBoth()
 
-        // arrows
-        $('.g1 > [nav=left], .g1 > [nav=right]').click(updateBoth)
+            // change shop area
+            $('#type_item > [type=potion], #type_item > [type=gift]').click(updateBoth)
 
-        // events from other modules
-        $(document).on('market:selected-girl-changed', updateBoth)
+            // arrows
+            $('.g1 > [nav=left], .g1 > [nav=right]').click(updateBoth)
 
-        const updateFuncs = {
-            potion: updateGirlXP,
-            gift: updateGirlAff
-        }
+            // events from other modules
+            $(document).on('market:selected-girl-changed', updateBoth)
 
-        let button = document.querySelector('#inventory button[rel=use]')
-        button.addEventListener('click', function(){
-            const girl = $('div.girl-ico:not(.not-selected)')
-
-            const type = $('#type_item > .selected').attr('type')
-            const update = updateFuncs[type]
-            if (update) {
-                setTimeout(function(){update(girl)}, 500)
-                setTimeout(function(){update(girl)}, 3000)
+            const updateFuncs = {
+                potion: updateGirlXP,
+                gift: updateGirlAff
             }
+
+            let button = document.querySelector('#inventory button[rel=use]')
+            button.addEventListener('click', function(){
+                const girl = $('div.girl-ico:not(.not-selected)')
+
+                const type = $('#type_item > .selected').attr('type')
+                const update = updateFuncs[type]
+                if (update) {
+                    setTimeout(function(){update(girl)}, 500)
+                    setTimeout(function(){update(girl)}, 3000)
+                }
+            })
         })
 
         this.hasRun = true

@@ -26,17 +26,19 @@ class ContestRewardsModule extends HHModule {
         if (this.hasRun || !this.shouldRun()) {return}
         styles.use()
 
-        this.displayRewardSums()
+        Helpers.defer(() => {
+            this.displayRewardSums()
 
-        const observer = new MutationObserver((mutations) => {
-            for(const mutation of mutations) {
-                if (mutation.type === 'childList') {
-                    this.displayRewardSums()
+            const observer = new MutationObserver((mutations) => {
+                for(const mutation of mutations) {
+                    if (mutation.type === 'childList') {
+                        this.displayRewardSums()
+                    }
                 }
-            }
-        })
+            })
 
-        observer.observe($('.left_part .scroll_area')[0],{attributes: false, childList: true, subtree: false})
+            observer.observe($('.left_part .scroll_area')[0],{attributes: false, childList: true, subtree: false})
+        })
 
         this.hasRun = true
     }

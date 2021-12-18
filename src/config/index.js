@@ -1,5 +1,6 @@
 import Helpers from '../common/Helpers'
 import { colors, lsKeys } from '../common/Constants'
+import styles from './styles.lazy.scss'
 const {$} = Helpers
 
 const CONFIG_SEP = '_'
@@ -16,8 +17,11 @@ class Config {
         this.colors = colors[Helpers.getGameKey()]
 
         if (Helpers.isCurrentPage('home')) {
-            this.init()
-            this.renderInteractables()
+            styles.use()
+            Helpers.defer(() => {
+                this.init()
+                this.renderInteractables()
+            })
         }
     }
 
@@ -127,7 +131,7 @@ class Config {
             return
         }
 
-        this.injectCSS()
+        this.injectDynamicCSS()
 
         // $(document).ready
         this.renderConfigButton()
@@ -230,179 +234,34 @@ class Config {
         })
     }
 
-    injectCSS () {
+    injectDynamicCSS () {
         const sheet = Helpers.getSheet()
 
         sheet.insertRule(`
             .hh-plus-plus-config-button {
-                position: absolute;
-                right: 15px;
-                cursor: pointer;
-                background: url(${this.gameIcon});
-                background-size: contain;
+                background-image: url(${this.gameIcon});
             }
         `)
-        sheet.insertRule(Helpers.mediaDesktop(`
-            .hh-plus-plus-config-button {
-                height: 35px;
-                width: 35px;
-                top: 46px;
-            }
-            `))
-        sheet.insertRule(Helpers.mediaMobile(`
-            .hh-plus-plus-config-button {
-                height: 64px;
-                width: 64px;
-                top: 85px;
-            }
-        `))
-        sheet.insertRule(`
-            .hh-plus-plus-config-button:after {
-                content: "++";
-                position: absolute;
-                width: auto;
-                bottom: -3px;
-                right: -5px;
-                text-shadow: rgb(0 0 0) 1px 1px 0px, rgb(0 0 0) -1px 1px 0px, rgb(0 0 0) -1px -1px 0px, rgb(0 0 0) 1px -1px 0px;
-            }
-        `)
-        sheet.insertRule(Helpers.mediaDesktop(`
-            .hh-plus-plus-config-button:after {
-                font-size: 26px;
-                height: 20px;
-                line-height: 20px;
-            }
-        `))
-        sheet.insertRule(Helpers.mediaMobile(`
-            .hh-plus-plus-config-button:after {
-                font-size: 46px;
-                height: 40px;
-                line-height: 46px;
-            }
-        `))
-
-        // (1026 - 900) / 2 = 63
         sheet.insertRule(`
             .hh-plus-plus-config-panel {
-                display: none;
-                height: 470px;
-                width: 900px;
-                position: absolute;
-                top: 70px;
-                right: 63px;
                 background: ${this.colors.panelBackground};
-                z-index: 100;
-                border-style: solid;
-                border-image-slice: 1;
-                border-width: 4px;
                 border-image-source: ${this.colors.panelBorderGradient};
                 box-shadow: ${this.colors.panelInset};
             }
         `)
-
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel.shown {
-                display: block;
-            }
-        `)
         sheet.insertRule(`
             .close-config-panel {
-                position: absolute;
-                display: block;
-                background: url(${Helpers.getCDNHost()}/clubs/ic_xCross.png);
-                background-size: cover;
-                height: 37px;
-                width: 41px;
-                top: 6px;
-                right: 6px;
-                cursor: pointer;
+                background-image: url(${Helpers.getCDNHost()}/clubs/ic_xCross.png);
             }
         `)
-
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .group-panel {
-                display: none;
-                position: absolute;
-                top: 54px;
-                width: 889px;
-                height: 405px;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .group-panel .panel-contents {
-                display: grid;
-                grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-                width: 100%;
-                height: auto;
-                padding-left: 10px;
-                padding-right: 10px;
-                gap: 10px;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .group-panel.shown {
-                display: block;
-            }
-        `)
-
         sheet.insertRule(`
             .hh-plus-plus-config-panel .config-setting {
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-                border-radius: 6px;
-                border: 1px solid #aaa;
                 background: ${this.colors.homeDark};
-                padding: 7px;
-                font-size: 14px;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .config-setting.has-subsettings {
-                grid-row-end: span 2;
             }
         `)
         sheet.insertRule(`
             .hh-plus-plus-config-panel .config-setting.enabled {
                 border: 1px solid ${this.colors.homeBorder};
-            }
-        `)
-
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .base-setting {
-                display: flex;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .base-setting span {
-                flex: 1;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .sub-settings {
-                font-size: 12px;
-                margin-top: 8px;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .sub-settings label {
-                display: flex;
-                align-items: center;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .sub-settings label span {
-                flex: 1;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .sub-settings label input {
-                margin-left: 0;
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .sub-settings label input[disabled] {
-                background-color: initial;
-                box-shadow: unset;
-                -webkit-box-shadow: unset;
             }
         `)
     }

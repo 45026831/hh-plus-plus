@@ -42,14 +42,17 @@ class MarketInfoModule extends HHModule {
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
         styles.use()
-        this.injectCSS()
-        this.setupHooks()
 
-        this.updateStats()
-        this.updateInventory()
-        this.updateEquips()
+        Helpers.defer(() => {
+            this.injectCSS()
+            this.setupHooks()
 
-        this.attachGirlQuota()
+            this.updateStats()
+            this.updateInventory()
+            this.updateEquips()
+
+            this.attachGirlQuota()
+        })
 
         this.hasRun = true
     }

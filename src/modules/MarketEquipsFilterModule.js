@@ -30,32 +30,32 @@ const removeFromFavorites = (id) => {
 
 const FILTER_DEFAULT = 'all'
 const FILTER_DEFAULT_ICON = 'caracs/no_class.png'
-const FILTER_OPTIONS = {
-    subtype: [
+const FILTER_OPTIONS = new (class {
+    get subtype () {return  [
         {value: '1', icon: 'pictures/items/ET1.png'},
         {value: '2', icon: 'pictures/items/EH1.png'},
         {value: '3', icon: 'pictures/items/EB1.png'},
         {value: '4', icon: 'pictures/items/ES1.png'},
         {value: '5', icon: 'pictures/items/EF1.png'},
         {value: '6', icon: 'pictures/items/EA1.png'}
-    ],
-    rarity: [
+    ]}
+    get rarity () {return [
         {value: 'common', bgColor: '#8d8e9f'},
         {value: 'rare', bgColor: '#23b56b'},
         {value: 'epic', bgColor: '#ffb244'},
         {value: 'legendary', bgColor: '#9150bf', bgImage: `url(${Helpers.getCDNHost()}/legendary.png)`}
-    ],
-    stats: [
+    ]}
+    get stats () {return [
         {value: 'rainbow', icon: 'pictures/misc/items_icons/16.svg'},
         {value: 'hc', icon: 'pictures/misc/items_icons/1.png'},
         {value: 'ch', icon: 'pictures/misc/items_icons/2.png'},
         {value: 'kh', icon: 'pictures/misc/items_icons/3.png'}
-    ],
-    favorites: [
+    ]}
+    get favorites () {return [
         {value: true, icon: 'design/ic_star_orange.svg'},
         {value: false, icon: 'design/ic_star_white.svg'}
-    ]
-}
+    ]}
+})()
 const FILTER_OPTIONS_GRIDS = {
     subtype: {
         flow: 'column',
@@ -250,7 +250,6 @@ class MarketEquipsFilterModule extends HHModule {
         if (this.hasRun || !this.shouldRun()) {return}
 
         styles.use()
-        this.injectDynamicCSS()
 
         $(document).on('market:equips-updated', () => {
             this.applyFilter()
@@ -276,7 +275,6 @@ class MarketEquipsFilterModule extends HHModule {
                 })
             })
         }
-        attachFilterBox()
 
         this.$favoriteToggle = $('<div class="favorite-toggle"></div>')
         this.favoriteToggleCallback = (e) => {
@@ -292,10 +290,15 @@ class MarketEquipsFilterModule extends HHModule {
             this.applyFilter()
         }
 
-        this.applyFilter()
+        Helpers.defer(() => {
+            this.injectDynamicCSS()
 
-        const favouriteSafetyObserver = new MutationObserver(() => this.checkSelection())
-        favouriteSafetyObserver.observe($('#inventory .armor .inventory_slots > div:first-child()')[0], {subtree: true, attributes: true, attributeFilter: ['class']})
+            attachFilterBox()
+            this.applyFilter()
+
+            const favouriteSafetyObserver = new MutationObserver(() => this.checkSelection())
+            favouriteSafetyObserver.observe($('#inventory .armor .inventory_slots > div:first-child()')[0], {subtree: true, attributes: true, attributeFilter: ['class']})
+        })
 
         this.hasRun = true
     }
