@@ -6,7 +6,7 @@ export const config = {
     market: 'Infos marché',
     marketGirlsFilter: 'Filtre des filles au marché',
     marketXPAff: 'XP et affection au marché',
-    hideSellButton: 'Bouton pour masquer le bouton "Vendre"',
+    // hideSellButton: 'Bouton pour masquer le bouton "Vendre"', REPLACEME
     harem: 'Infos harem',
     league: 'Infos ligue',
     leagueBoard: 'Montrer les tops ligue',

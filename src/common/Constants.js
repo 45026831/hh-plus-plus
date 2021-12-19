@@ -38,4 +38,5 @@ export const lsKeys = {
     MARKET_INFO:            lsKey('MarketInfo'),
     MARKET_GIRLS_FILTER:    lsKey('ActiveMarketGirlFilter'),
     EQUIP_FAVORITES:        lsKey('EquipFavorites'),
+    SELL_BUTTON_HIDDEN:     lsKey('SellButtonHidden'),
 }

@@ -14,6 +14,7 @@ import {
     FightAVillainModule,
     MarketEquipsFilterModule,
     MarketGirlsFilterModule,
+    MarketHideSellButtonModule,
     MarketInfoModule,
     MarketXPAffModule,
     MissionsBackgroundStyleTweak,
@@ -45,6 +46,8 @@ const runScript = () => {
     config.registerModule(new MarketGirlsFilterModule())
     config.registerModule(new MarketEquipsFilterModule())
     config.registerModule(new MarketXPAffModule())
+    config.registerModule(new MarketHideSellButtonModule())
+
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())

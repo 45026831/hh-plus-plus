@@ -6,7 +6,7 @@ export const config = {
     market: 'Marktplatz-Informationen',
     marketGirlsFilter: 'Mädchenfilter auf dem Markt',
     marketXPAff: 'XP und Zuneigung auf dem Markt',
-    hideSellButton: 'Schaltfläche zum Ausblenden der Schaltfläche "Verkaufen"',
+    // hideSellButton: 'Schaltfläche zum Ausblenden der Schaltfläche "Verkaufen"', REPLACEME
     harem: 'Harem-Informationen',
     league: 'Liga-Informationen',
     leagueBoard: 'Die Liga-Spitzen anzeigen',

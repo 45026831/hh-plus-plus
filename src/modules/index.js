@@ -4,6 +4,8 @@ export {default as MarketInfoModule} from './MarketInfoModule'
 export {default as MarketGirlsFilterModule} from './MarketGirlsFilterModule'
 export {default as MarketEquipsFilterModule} from './MarketEquipsFilterModule'
 export {default as MarketXPAffModule} from './MarketXPAffModule'
+export {default as MarketHideSellButtonModule} from './MarketHideSellButtonModule'
+
 export {default as SeasonStatsModule} from './SeasonStatsModule'
 export {default as PachinkoNamesModule} from './PachinkoNamesModule'
 export {default as ContestRewardsModule} from './ContestRewardsModule'

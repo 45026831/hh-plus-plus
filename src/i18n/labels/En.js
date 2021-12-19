@@ -34,7 +34,7 @@ export const config = {
     marketGirlsFilter: `${gameConfig.Girl}s filter at the market`,
     marketEquipsFilter: 'Equips filter at the market',
     marketXPAff: 'XP and affection at the market',
-    hideSellButton: 'Button to hide "Sell" button',
+    marketHideSellButton: 'Toggleable "Sell" button',
     harem: 'Harem information',
     league: 'League information',
     leagueBoard: 'Show the league tops',
@@ -125,6 +125,10 @@ export const marketGirlsFilter = {
 export const marketXPAff = {
     xp: '🠕 {{remainNext}} · ⭱ {{remainMax}}',
     aff: 'Next: {{remainNext}}'
+}
+
+export const marketHideSellButton = {
+    hide: 'Hide "Sell" button'
 }
 
 export const seasonStats = {
