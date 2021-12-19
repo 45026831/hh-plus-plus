@@ -1,4 +1,4 @@
-/* global GT, GIRL_MAX_LEVEL */
+/* global GT, GIRL_MAX_LEVEL, girls_requirement_amount, high_level_girl_owned */
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
 import HHModule from '../HHModule'
@@ -57,7 +57,7 @@ class MarketGirlsFilterModule extends HHModule {
         if (this.hasRun || !this.shouldRun()) {return}
         styles.use()
 
-        Helpers.defer(() => {
+        const deferredRun = () => {
             this.injectCSS()
 
             const clearFilter = () => {
@@ -196,6 +196,9 @@ class MarketGirlsFilterModule extends HHModule {
                 const createFilterBox = () => {
                     const affectionGradeOption = grade => ({ label: this.label(`grade${grade}`), value: grade })
                     const {carac, rarity, element, name, range, affCategory, affLvl} = loadFilter()
+
+                    const thresholds = Object.keys(girls_requirement_amount)
+                    const currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold]) || GIRL_MAX_LEVEL
                     return $(`
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
@@ -203,7 +206,7 @@ class MarketGirlsFilterModule extends HHModule {
                             ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option})), value: carac})}
                             ${Snippets.selectInput({id: 'sort_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option})), value: element})}
                             ${Snippets.selectInput({id: 'sort_rarity', label: this.label('searchedRarity'), options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: GT.design[`girls_rarity_${option}`], value: option})), value: rarity})}
-                            ${Snippets.textInput({id: 'sort_level', label: this.label('levelRange'), placeholder: `1-${GIRL_MAX_LEVEL}`, value: range})}
+                            ${Snippets.textInput({id: 'sort_level', label: this.label('levelRange'), placeholder: `1-${currentThreshold}`, value: range})}
                             ${Snippets.selectInput({id: 'sort_aff_category', label: this.label('searchedAffCategory'), options: ['1','3','5','6'].map(affectionGradeOption), value: affCategory})}
                             ${Snippets.selectInput({id: 'sort_aff_lvl', label: this.label('searchedAffLevel'), options: ['0','1','2','3','4','5','6'].map(affectionGradeOption), value: affLvl})}
                             <div class="button-group">
@@ -375,6 +378,15 @@ class MarketGirlsFilterModule extends HHModule {
 
             addGirlFilter()
 
+        }
+
+        Helpers.defer(() => {
+            const marketReadyObserver = new MutationObserver(() => {
+                marketReadyObserver.disconnect()
+                deferredRun()
+            })
+
+            marketReadyObserver.observe($('.shop_count [rel="count"]')[0], {childList: true})
         })
 
         this.hasRun = true
