@@ -1,7 +1,7 @@
-import Helpers from '../common/Helpers'
-import STModule from './STModule'
-import I18n from '../i18n'
-import styles from './MissionsBackgroundStyleTweak.lazy.scss'
+import Helpers from '../../common/Helpers'
+import STModule from '../STModule'
+import I18n from '../../i18n'
+import styles from './styles.lazy.scss'
 
 class MissionsBackgroundStyleTweak extends STModule {
     constructor() {

@@ -1,9 +1,9 @@
 /* global Hero */
-import I18n from '../i18n'
-import HHModule from './HHModule'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
 
-import styles from './BetterXPAndMoneyModule.lazy.scss'
-import Helpers from '../common/Helpers'
+import styles from './styles.lazy.scss'
+import Helpers from '../../common/Helpers'
 
 const MODULE_KEY = 'xpMoney'
 

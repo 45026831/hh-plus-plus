@@ -1,11 +1,11 @@
 /* global GT, GIRL_MAX_LEVEL */
-import Helpers from '../common/Helpers'
-import I18n from '../i18n'
-import HHModule from './HHModule'
-import filterIcon from '../assets/filter.svg'
-import Snippets from '../common/Snippets'
-import { lsKeys } from '../common/Constants'
-import styles from './MarketGirlsFilterModule.lazy.scss'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
+import filterIcon from '../../assets/filter.svg'
+import Snippets from '../../common/Snippets'
+import { lsKeys } from '../../common/Constants'
+import styles from './styles.lazy.scss'
 
 const {$} = Helpers
 const MODULE_KEY = 'marketGirlsFilter'

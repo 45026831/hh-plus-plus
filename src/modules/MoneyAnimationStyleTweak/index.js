@@ -1,7 +1,7 @@
-import Helpers from '../common/Helpers'
-import STModule from './STModule'
-import I18n from '../i18n'
-import styles from './MoneyAnimationStyleTweak.lazy.scss'
+import Helpers from '../../common/Helpers'
+import STModule from '../STModule'
+import I18n from '../../i18n'
+import styles from './styles.lazy.scss'
 
 class MoneyAnimationStyleTweak extends STModule {
     constructor() {

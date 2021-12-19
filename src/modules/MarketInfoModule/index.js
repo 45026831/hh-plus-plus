@@ -1,11 +1,11 @@
 /* global Hero, heroStatsPrices, GT, girls_requirement_amount, high_level_girl_owned */
-import { lsKeys } from '../common/Constants'
-import Helpers from '../common/Helpers'
-import {HC, CH, KH} from '../data/Classes'
-import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES} from '../data/Market'
-import I18n from '../i18n'
-import HHModule from './HHModule'
-import styles from './MarketInfoModule.lazy.scss'
+import { lsKeys } from '../../common/Constants'
+import Helpers from '../../common/Helpers'
+import {HC, CH, KH} from '../../data/Classes'
+import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES} from '../../data/Market'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
+import styles from './styles.lazy.scss'
 
 const MODULE_KEY = 'market'
 const CLASSES = [HC, CH, KH]

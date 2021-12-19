@@ -1,9 +1,9 @@
 /* global Hero */
-import Helpers from '../common/Helpers'
-import I18n from '../i18n'
-import HHModule from './HHModule'
-import GirlXP from '../data/GirlXP'
-import styles from './MarketXPAffModule.lazy.scss'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
+import GirlXP from '../../data/GirlXP'
+import styles from './styles.lazy.scss'
 const MODULE_KEY = 'marketXPAff'
 
 class MarketXPAffModule extends HHModule {

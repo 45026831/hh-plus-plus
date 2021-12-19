@@ -1,9 +1,9 @@
 /* global pachinkoDef */
-import Helpers from '../common/Helpers'
-import I18n from '../i18n'
-import HHModule from './HHModule'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
 
-import styles from './PachinkoNamesModule.lazy.scss'
+import styles from './styles.lazy.scss'
 
 class PachinkoNamesModule extends HHModule {
     constructor () {

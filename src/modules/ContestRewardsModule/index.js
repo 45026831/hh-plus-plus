@@ -1,7 +1,7 @@
-import Helpers from '../common/Helpers'
-import I18n from '../i18n'
-import HHModule from './HHModule'
-import styles from './ContestRewardsModule.lazy.scss'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
+import styles from './styles.lazy.scss'
 
 class ContestRewardsModule extends HHModule {
     constructor () {

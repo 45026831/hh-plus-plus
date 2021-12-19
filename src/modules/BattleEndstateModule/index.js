@@ -1,7 +1,7 @@
 /* global Hero, GT, newBattles */
-import Helpers from '../common/Helpers'
-import HHModule from './HHModule'
-import I18n from '../i18n'
+import Helpers from '../../common/Helpers'
+import HHModule from '../HHModule'
+import I18n from '../../i18n'
 
 class BattleEndstateModule extends HHModule {
     constructor () {

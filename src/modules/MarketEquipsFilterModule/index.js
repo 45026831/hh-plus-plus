@@ -1,11 +1,11 @@
 /* global  */
-import Helpers from '../common/Helpers'
-import I18n from '../i18n'
-import HHModule from './HHModule'
-import filterIcon from '../assets/filter.svg'
-import { lsKeys } from '../common/Constants'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
+import filterIcon from '../../assets/filter.svg'
+import { lsKeys } from '../../common/Constants'
 
-import styles from './MarketEquipsFilterModule.lazy.scss'
+import styles from './styles.lazy.scss'
 
 const {$} = Helpers
 const MODULE_KEY = 'marketEquipsFilter'

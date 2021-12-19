@@ -1,10 +1,10 @@
 /* global Hero */
-import Helpers from '../common/Helpers'
-import HHModule from './HHModule'
-import I18n from '../i18n'
-import VILLAINS from '../data/Villains'
-import { lsKeys } from '../common/Constants'
-import styles from './FightAVillainModule.lazy.scss'
+import Helpers from '../../common/Helpers'
+import HHModule from '../HHModule'
+import I18n from '../../i18n'
+import VILLAINS from '../../data/Villains'
+import { lsKeys } from '../../common/Constants'
+import styles from './styles.lazy.scss'
 
 class FightAVillainModule extends HHModule {
     constructor () {

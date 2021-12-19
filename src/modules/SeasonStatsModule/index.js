@@ -1,9 +1,9 @@
-import { lsKeys } from '../common/Constants'
-import Helpers from '../common/Helpers'
-import I18n from '../i18n'
-import HHModule from './HHModule'
+import { lsKeys } from '../../common/Constants'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+import HHModule from '../HHModule'
 
-import styles from './SeasonStatsModule.lazy.scss'
+import styles from './styles.lazy.scss'
 
 class SeasonStatsModule extends HHModule {
     constructor () {
