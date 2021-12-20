@@ -5,21 +5,11 @@ import HHModule from '../HHModule'
 import filterIcon from '../../assets/filter.svg'
 import Snippets from '../../common/Snippets'
 import { lsKeys } from '../../common/Constants'
+import {ICON_NAMES as ELEMENTS_ICON_NAMES} from '../../data/Elements'
 import styles from './styles.lazy.scss'
 
 const {$} = Helpers
 const MODULE_KEY = 'marketGirlsFilter'
-
-const ELEMENTS_ICON_NAMES = {
-    'fire': 'Eccentric',
-    'nature': 'Exhibitionist',
-    'stone': 'Physical',
-    'sun': 'Playful',
-    'water': 'Sensual',
-    'darkness': 'Dominatrix',
-    'light': 'Submissive',
-    'psychic': 'Voyeurs'
-}
 
 const DEFAULT_FILTER = {
     carac: 'all',
@@ -381,12 +371,19 @@ class MarketGirlsFilterModule extends HHModule {
         }
 
         Helpers.defer(() => {
-            const marketReadyObserver = new MutationObserver(() => {
-                marketReadyObserver.disconnect()
+            if ($('#type_item > .selected').length) {
                 deferredRun()
-            })
+            } else {
+                const marketReadyObserver = new MutationObserver(() => {
+                    if ($('#type_item > .selected').length) {
+                        marketReadyObserver.disconnect()
+                        deferredRun()
+                    }
+                })
 
-            marketReadyObserver.observe($('.shop_count [rel="count"]')[0], {childList: true})
+                marketReadyObserver.observe($('#type_item')[0], {attributes: true, attributeFilter:['class']})
+            }
+
         })
 
         this.hasRun = true

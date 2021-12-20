@@ -12,6 +12,7 @@ import {
     BetterXPAndMoneyModule,
     ContestRewardsModule,
     FightAVillainModule,
+    GemStockModule,
     MarketEquipsFilterModule,
     MarketGirlsFilterModule,
     MarketHideSellButtonModule,
@@ -52,6 +53,7 @@ const runScript = () => {
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())
     config.registerModule(new BattleEndstateModule())
+    config.registerModule(new GemStockModule())
 
     // style tweaks
     config.registerGroup({

@@ -1,0 +1,29 @@
+@import "../../common/constants.scss";
+
+.gemStock {
+    display: block;
+    position: absolute;
+    background-size: contain;
+    height: 34px;
+    width: 34px;
+    z-index: 30;
+
+    #shops_right #girls_list > & {
+        top: -12px;
+        left: 38px;
+
+        @media #{$mediaMobile} {
+            top: -1px;
+        }
+    }
+
+    #harem_whole #harem_right > & {
+        top: 4px;
+        right: 200px;
+    }
+
+    &-table img {
+        height: 25px;
+        width: 25px;
+    }
+}

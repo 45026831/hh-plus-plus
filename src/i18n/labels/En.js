@@ -48,6 +48,7 @@ export const config = {
     pachinkoNames: 'Show names in Pachinko',
     contestSummary: 'Saved Contests rewards summary',
     battleEndstate: 'Show final values when skipping battle',
+    gemStock: 'Gem stock in Market/Harem',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
