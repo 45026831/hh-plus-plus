@@ -381,7 +381,7 @@ class MarketGirlsFilterModule extends HHModule {
                     }
                 })
 
-                marketReadyObserver.observe($('#type_item')[0], {attributes: true, attributeFilter:['class']})
+                marketReadyObserver.observe($('#type_item')[0], {attributes: true, attributeFilter:['class'], subtree: true})
             }
 
         })
