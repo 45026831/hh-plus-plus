@@ -1,4 +1,4 @@
-/* global Hero, heroStatsPrices, GT, girls_requirement_amount, high_level_girl_owned */
+/* global Hero, heroStatsPrices, GT */
 import { lsKeys } from '../../common/Constants'
 import Helpers from '../../common/Helpers'
 import {HC, CH, KH} from '../../data/Classes'
@@ -190,12 +190,12 @@ class MarketInfoModule extends HHModule {
     }
 
     attachGirlQuota () {
-        const thresholds = Object.keys(girls_requirement_amount)
+        const awakeningThreshold = Helpers.getAwakeningThreshold()
 
-        const currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold])
+        if (awakeningThreshold) {
+            const {currentThreshold, currentThresholdOwned, currentThresholdMin} = awakeningThreshold
 
-        if (currentThreshold) {
-            const levelText = `${GT.design.Lvl} ${currentThreshold} : ${high_level_girl_owned[currentThreshold]} / ${girls_requirement_amount[currentThreshold]} ${GT.design.Girls}`
+            const levelText = `${GT.design.Lvl} ${currentThreshold} : ${currentThresholdOwned} / ${currentThresholdMin} ${GT.design.Girls}`
             $('#girls_list .level_target').attr('hh_title', levelText)
         }
     }

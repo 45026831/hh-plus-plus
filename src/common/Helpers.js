@@ -1,4 +1,4 @@
-/* global IMAGES_URL, GT */
+/* global IMAGES_URL, girls_requirement_amount, high_level_girl_owned, awakening_requirements */
 import { lsKeys } from './Constants'
 
 let sheet
@@ -8,7 +8,8 @@ let isCxH
 let cdnHost
 let girlDictionary
 let teamsDictionary
-let elementsEnabled
+let awakeningThreshold
+let canAwaken = true
 
 const deferred = []
 
@@ -171,11 +172,39 @@ class Helpers {
         return wikiLink
     }
 
-    static isElementsEnabled () {
-        if (typeof elementsEnabled === 'undefined') {
-            elementsEnabled = !!GT.design.fire_flavor_element
+    static getAwakeningThreshold () {
+        if (!awakeningThreshold && canAwaken) {
+            let currentThreshold
+            let currentThresholdOwned
+            let currentThresholdMin
+
+            if (window.girls_requirement_amount) {
+                const thresholds = Object.keys(girls_requirement_amount)
+                currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold])
+                if (currentThreshold) {
+                    currentThresholdOwned = high_level_girl_owned[currentThreshold]
+                    currentThresholdMin = girls_requirement_amount[currentThreshold]
+                }
+            } else if (window.awakening_requirements) {
+                const thresholdIndex = awakening_requirements.findIndex(({girls_required}, i) => girls_required > high_level_girl_owned[i])
+                if (thresholdIndex > 0) {
+                    currentThreshold = awakening_requirements[thresholdIndex-1].cap_level
+                    currentThresholdOwned = high_level_girl_owned[thresholdIndex]
+                    currentThresholdMin = awakening_requirements[thresholdIndex].girls_required
+                }
+            }
+
+            if (currentThreshold) {
+                awakeningThreshold = {
+                    currentThreshold,
+                    currentThresholdOwned,
+                    currentThresholdMin
+                }
+            } else {
+                canAwaken = false
+            }
         }
-        return elementsEnabled
+        return awakeningThreshold
     }
 
     static defer (callback) {

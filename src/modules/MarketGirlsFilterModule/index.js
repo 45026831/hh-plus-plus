@@ -1,4 +1,4 @@
-/* global GT, GIRL_MAX_LEVEL, girls_requirement_amount, high_level_girl_owned */
+/* global GT, GIRL_MAX_LEVEL */
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
 import HHModule from '../HHModule'
@@ -187,8 +187,8 @@ class MarketGirlsFilterModule extends HHModule {
                     const affectionGradeOption = grade => ({ label: this.label(`grade${grade}`), value: grade })
                     const {carac, rarity, element, name, range, affCategory, affLvl} = loadFilter()
 
-                    const thresholds = Object.keys(girls_requirement_amount)
-                    const currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold]) || GIRL_MAX_LEVEL
+                    const awakeningThreshold = Helpers.getAwakeningThreshold()
+                    const currentThreshold = awakeningThreshold ? awakeningThreshold.currentThreshold : GIRL_MAX_LEVEL
                     return $(`
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
