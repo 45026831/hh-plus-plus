@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.36
+// @version         0.37.37
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -2037,12 +2037,28 @@ function moduleMarket() {
     });
 
     const displayGirlCounts = () => {
-        const thresholds = Object.keys(girls_requirement_amount)
+        let currentThreshold
+        let currentThresholdOwned
+        let currentThresholdMin
 
-        const currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold])
+        if (window.girls_requirement_amount) {
+            const thresholds = Object.keys(girls_requirement_amount)
+            currentThreshold = thresholds.find(threshold => girls_requirement_amount[threshold] > high_level_girl_owned[threshold])
+            if (currentThreshold) {
+                currentThresholdOwned = high_level_girl_owned[currentThreshold]
+                currentThresholdMin = girls_requirement_amount[currentThreshold]
+            }
+        } else if (window.awakening_requirements) {
+            const thresholdIndex = awakening_requirements.findIndex(({girls_required}, i) => girls_required > high_level_girl_owned[i])
+            if (thresholdIndex > 0) {
+                currentThreshold = awakening_requirements[thresholdIndex-1].cap_level
+                currentThresholdOwned = high_level_girl_owned[thresholdIndex]
+                currentThresholdMin = awakening_requirements[thresholdIndex].girls_required
+            }
+        }
 
         if (currentThreshold) {
-            const levelText = `${GT.design.Lvl} ${currentThreshold} : ${high_level_girl_owned[currentThreshold]} / ${girls_requirement_amount[currentThreshold]} ${GT.design.Girls}`
+            const levelText = `${GT.design.Lvl} ${currentThreshold} : ${currentThresholdOwned} / ${currentThresholdMin} ${GT.design.Girls}`
             $('#girls_list .level_target').attr('hh_title', levelText)
         }
     }
