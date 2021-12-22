@@ -24,10 +24,8 @@ class STModule extends HHModule {
     }
 
     tearDown () {
-        const sheet = Helpers.getSheet()
-
         this.insertedRuleIndexes.sort((a, b) => b-a).forEach(index => {
-            sheet.deleteRule(index)
+            this.sheet.deleteRule(index)
         })
 
         this.insertedRuleIndexes = []

@@ -71,7 +71,12 @@ const runScript = () => {
     Helpers.runDeferred()
 
     // expose config for other scripts to register their own modules
-    // window.hhPlusPlusConfig = config
+    window.hhPlusPlusConfig = {
+        registerGroup: config.registerGroup.bind(config),
+        registerModule: config.registerModule.bind(config),
+        runModules: config.runModules.bind(config),
+        loadConfig: config.loadConfig.bind(config),
+    }
 }
 
 if (!$) {

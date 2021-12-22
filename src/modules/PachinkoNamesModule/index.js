@@ -39,10 +39,24 @@ class PachinkoNamesModule extends HHModule {
                 this.girlLists[type] = girlList
             })
 
-            const observer = new MutationObserver(this.applyPanel.bind(this))
-            observer.observe($('.playing-zone')[0], {attributes: true})
+            const deferredAttachment = () => {
+                const observer = new MutationObserver(() => this.applyPanel())
+                observer.observe($('.playing-zone')[0], {attributes: true})
 
-            this.applyPanel()
+                this.applyPanel()
+            }
+
+            if ($('.playing-zone').length) {
+                deferredAttachment()
+            } else {
+                const pachinkoReadyObserver = new MutationObserver(() => {
+                    if ($('.playing-zone').length) {
+                        pachinkoReadyObserver.disconnect()
+                        deferredAttachment()
+                    }
+                })
+                pachinkoReadyObserver.observe($('#pachinko_whole')[0], {childList: true})
+            }
         })
 
         this.hasRun = true

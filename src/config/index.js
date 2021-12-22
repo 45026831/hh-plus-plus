@@ -192,6 +192,8 @@ class Config {
             .append(this.buildConfigPaneContent())
             .prepend($closePaneButton)
         $('#contains_all').append(this.$configPane)
+
+        this.$configPane.find('.group-panel').niceScroll('.panel-contents', {bouncescroll: false})
         this.setupEvents()
         this.selectConfigTab(this.groups[0].key)
     }
@@ -220,7 +222,7 @@ class Config {
         $('.hh-plus-plus-config-panel .tabs h4').removeClass('selected')
         $(`.hh-plus-plus-config-panel .tabs h4[rel=${key}]`).addClass('selected')
         $('.hh-plus-plus-config-panel .group-panel').removeClass('shown')
-        $(`.hh-plus-plus-config-panel .group-panel[rel=${key}]`).addClass('shown')
+        $(`.hh-plus-plus-config-panel .group-panel[rel=${key}]`).addClass('shown').getNiceScroll().resize()
     }
 
     setupEvents () {
