@@ -1,25 +1,19 @@
 import { lsKeys } from '../../common/Constants'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
+import CoreModule from '../CoreModule'
 
 import styles from './styles.lazy.scss'
 
-class SeasonStatsModule extends HHModule {
+const MODULE_KEY = 'seasonStats'
+class SeasonStatsModule extends CoreModule {
     constructor () {
-        const configSchema = {
-            baseKey: 'seasonStats',
-            label: I18n.getModuleLabel('config', 'seasonStats'),
-            default: true
-        }
         super({
-            group: 'core',
-            name: 'seasonStats',
-            configSchema
+            baseKey: MODULE_KEY,
+            label: I18n.getModuleLabel('config', MODULE_KEY),
+            default: true
         })
-        this.label = I18n.getModuleLabel.bind(this, 'seasonStats')
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
+        this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
 
     shouldRun() {

@@ -1,9 +1,9 @@
 /* global GT, GIRL_MAX_LEVEL */
+import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
-import filterIcon from '../../assets/filter.svg'
 import Snippets from '../../common/Snippets'
+import filterIcon from '../../assets/filter.svg'
 import { lsKeys } from '../../common/Constants'
 import {ICON_NAMES as ELEMENTS_ICON_NAMES} from '../../data/Elements'
 import styles from './styles.lazy.scss'
@@ -22,21 +22,14 @@ const DEFAULT_FILTER = {
     team: null,
 }
 
-class MarketGirlsFilterModule extends HHModule {
+class MarketGirlsFilterModule extends CoreModule {
     constructor () {
-        const configSchema = {
+        super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true
-        }
-        super({
-            group: 'core',
-            name: MODULE_KEY,
-            configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
     }
 
     shouldRun () {
@@ -406,10 +399,6 @@ class MarketGirlsFilterModule extends HHModule {
                 background: url(${Helpers.getCDNHost()}/clubs/ic_xCross.png);
             }
         `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 

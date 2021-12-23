@@ -1,33 +1,28 @@
 /* global Hero */
+import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
-import HHModule from '../HHModule'
 import I18n from '../../i18n'
 import VILLAINS from '../../data/Villains'
 import { lsKeys } from '../../common/Constants'
+
 import styles from './styles.lazy.scss'
 
-class FightAVillainModule extends HHModule {
+const MODULE_KEY = 'villain'
+class FightAVillainModule extends CoreModule {
     constructor () {
-        const configSchema = {
-            baseKey: 'villain',
-            label: I18n.getModuleLabel('config', 'villain'),
+        super({
+            baseKey: MODULE_KEY,
+            label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true,
             subSettings: [
                 {
                     key: 'tiers',
-                    label: I18n.getModuleLabel('config', 'villain_tiers'),
+                    label: I18n.getModuleLabel('config', `${MODULE_KEY}_tiers`),
                     default: true
                 }
             ]
-        }
-        super({
-            group: 'core',
-            name: 'villain',
-            configSchema
         })
-        this.label = I18n.getModuleLabel.bind(this, 'villain')
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
+        this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
 
     run ({tiers}) {
@@ -106,10 +101,6 @@ class FightAVillainModule extends HHModule {
                 font-weight: ${Helpers.isCxH() ? '800' : '400'};
             }
         `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 

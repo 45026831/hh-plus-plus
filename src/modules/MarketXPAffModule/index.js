@@ -1,22 +1,17 @@
 /* global Hero */
+import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
 import GirlXP from '../../data/GirlXP'
 import styles from './styles.lazy.scss'
 const MODULE_KEY = 'marketXPAff'
 
-class MarketXPAffModule extends HHModule {
+class MarketXPAffModule extends CoreModule {
     constructor () {
-        const configSchema = {
+        super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true
-        }
-        super({
-            group: 'core',
-            name: MODULE_KEY,
-            configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }

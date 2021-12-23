@@ -1,23 +1,19 @@
 /* global pachinkoDef */
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
+import CoreModule from '../CoreModule'
 
 import styles from './styles.lazy.scss'
 
-class PachinkoNamesModule extends HHModule {
+const MODULE_KEY = 'pachinkoNames'
+class PachinkoNamesModule extends CoreModule {
     constructor () {
-        const configSchema = {
-            baseKey: 'pachinkoNames',
-            label: I18n.getModuleLabel('config', 'pachinkoNames'),
-            default: true
-        }
         super({
-            group: 'core',
-            name: 'pachinkoNames',
-            configSchema
+            baseKey: MODULE_KEY,
+            label: I18n.getModuleLabel('config', MODULE_KEY),
+            default: true
         })
-        this.label = I18n.getModuleLabel.bind(this, 'pachinkoNames')
+        this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
 
     shouldRun() {

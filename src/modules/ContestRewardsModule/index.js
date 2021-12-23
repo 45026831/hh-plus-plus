@@ -1,21 +1,18 @@
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
+import CoreModule from '../CoreModule'
+
 import styles from './styles.lazy.scss'
 
-class ContestRewardsModule extends HHModule {
+const MODULE_KEY = 'contestSummary'
+class ContestRewardsModule extends CoreModule {
     constructor () {
-        const configSchema = {
-            baseKey: 'contestSummary',
-            label: I18n.getModuleLabel('config', 'contestSummary'),
-            default: true
-        }
         super({
-            group: 'core',
-            name: 'contestSummary',
-            configSchema
+            baseKey: MODULE_KEY,
+            label: I18n.getModuleLabel('config', MODULE_KEY),
+            default: true
         })
-        this.label = I18n.getModuleLabel.bind(this, 'contestSummary')
+        this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
 
     shouldRun() {

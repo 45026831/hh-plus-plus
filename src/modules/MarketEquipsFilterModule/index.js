@@ -1,7 +1,6 @@
-/* global  */
+import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
 import filterIcon from '../../assets/filter.svg'
 import { lsKeys } from '../../common/Constants'
 
@@ -125,21 +124,14 @@ const createFilterBtn = () => {
 
 const makeEquipKey = ({identifier, id_equip, level, carac1_equip, carac2_equip, carac3_equip, endurance_equip, chance_equip, subtype}) => [identifier, subtype, id_equip, level, carac1_equip, carac2_equip, carac3_equip, endurance_equip, chance_equip].join('_')
 
-class MarketEquipsFilterModule extends HHModule {
+class MarketEquipsFilterModule extends CoreModule {
     constructor () {
-        const configSchema = {
+        super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true
-        }
-        super({
-            group: 'core',
-            name: MODULE_KEY,
-            configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
 
         this.currentFilter = {
             subtype: FILTER_DEFAULT,
@@ -319,10 +311,6 @@ class MarketEquipsFilterModule extends HHModule {
                 background-image: url(${Helpers.getCDNHost()}/design/ic_star_orange.svg);
             }
         `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 

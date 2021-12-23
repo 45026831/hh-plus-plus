@@ -1,23 +1,18 @@
 /* global Hero */
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
+import Helpers from '../../common/Helpers'
+import CoreModule from '../CoreModule'
 
 import styles from './styles.lazy.scss'
-import Helpers from '../../common/Helpers'
 
 const MODULE_KEY = 'xpMoney'
 
-class BetterXPAndMoneyModule extends HHModule {
+class BetterXPAndMoneyModule extends CoreModule {
     constructor () {
-        const configSchema = {
+        super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true
-        }
-        super({
-            group: 'core',
-            name: MODULE_KEY,
-            configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }

@@ -1,28 +1,21 @@
 /* global player_gems_amount */
+import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
 import {ICON_NAMES as ELEMENTS_ICON_NAMES} from '../../data/Elements'
 
 import styles from './styles.lazy.scss'
 
 const MODULE_KEY = 'gemStock'
 
-class GemStockModule extends HHModule {
+class GemStockModule extends CoreModule {
     constructor () {
-        const configSchema = {
+        super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true
-        }
-        super({
-            group: 'core',
-            name: MODULE_KEY,
-            configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
     }
 
     shouldRun () {
@@ -79,11 +72,6 @@ class GemStockModule extends HHModule {
             }
         `)
     }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
-    }
-
 }
 
 export default GemStockModule

@@ -1,6 +1,6 @@
+import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
 import { lsKeys } from '../../common/Constants'
 
 import styles from './styles.lazy.scss'
@@ -8,17 +8,12 @@ import styles from './styles.lazy.scss'
 const {$} = Helpers
 const MODULE_KEY = 'marketHideSellButton'
 
-class MarketHideSellButtonModule extends HHModule {
+class MarketHideSellButtonModule extends CoreModule {
     constructor () {
-        const configSchema = {
+        super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true
-        }
-        super({
-            group: 'core',
-            name: MODULE_KEY,
-            configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }

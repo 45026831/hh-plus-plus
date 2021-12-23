@@ -4,7 +4,7 @@ import Helpers from '../../common/Helpers'
 import {HC, CH, KH} from '../../data/Classes'
 import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES} from '../../data/Market'
 import I18n from '../../i18n'
-import HHModule from '../HHModule'
+import CoreModule from '../CoreModule'
 import styles from './styles.lazy.scss'
 
 const MODULE_KEY = 'market'
@@ -12,21 +12,14 @@ const CLASSES = [HC, CH, KH]
 
 const caracKey = carac => `carac${carac}`
 
-class MarketInfoModule extends HHModule {
+class MarketInfoModule extends CoreModule {
     constructor () {
-        const configSchema = {
+        super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true
-        }
-        super({
-            group: 'core',
-            name: MODULE_KEY,
-            configSchema
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
-        this.sheet = Helpers.getSheet()
-        this.insertedRules = []
         this.$tooltips = {}
         this.previousCaracs = {
             1: 0,
@@ -230,10 +223,6 @@ class MarketInfoModule extends HHModule {
                 background: url(${Helpers.getCDNHost()}/design/ic_info.svg) center / 65% 65% no-repeat, linear-gradient(180deg,#0af 0,#068 50%,#057 51%,#0af 100%);
             }
         `)
-    }
-
-    insertRule (rule) {
-        this.insertedRules.push(this.sheet.insertRule(rule))
     }
 }
 
