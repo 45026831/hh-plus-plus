@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.37
+// @version         0.37.38
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -7101,7 +7101,8 @@ function cloneOwnLeaderboardRow () {
     while((($(`div.leaderboard_row:nth-child(${i})`).css('color') != "rgb(34, 150, 228)") && ($(`div.leaderboard_row:nth-child(${i})`).css('color') != "rgb(55, 160, 231)")) && (i < 1000)){
         i++;
     }
-    if (($(`div.leaderboard_row:nth-child(${i})`).css('color') == "rgb(34, 150, 228)") || ($(`div.leaderboard_row:nth-child(${i})`).css('color') == "rgb(55, 160, 231)")) {
+    $leaderBoardRow = $(`div.leaderboard_row:nth-child(${i})`)
+    if (!$leaderBoardRow.hasClass('build-at-bottom') && (($leaderBoardRow.css('color') == "rgb(34, 150, 228)") || ($leaderBoardRow.css('color') == "rgb(55, 160, 231)"))) {
         let player_row = $('div.leaderboard_row:nth-child(' + i + '').clone();
         player_row.css('position', 'fixed');
         player_row.css('width', '904px');
@@ -7127,7 +7128,11 @@ if (CurrentPage == '/season.html' || CurrentPage.includes('pantheon') || Current
                     );
     }
     if (CurrentPage === '/pantheon.html' || CurrentPage.includes('path-of-valor')) {
-        new MutationObserver(cloneOwnLeaderboardRow).observe($('#leaderboard_list')[0], {childList: true})
+        const leaderBoardReadyObserver = new MutationObserver(() => {
+            leaderBoardReadyObserver.disconnect()
+            cloneOwnLeaderboardRow()
+        })
+        leaderBoardReadyObserver.observe($('#leaderboard_list')[0], {childList: true})
 
         sheet.insertRule('@media only screen and (min-width: 1026px) {'
                         + '.player_row {'
