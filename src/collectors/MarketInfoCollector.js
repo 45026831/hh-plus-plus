@@ -1,4 +1,4 @@
-/* global server_now_ts */
+/* global server_now_ts, Hero */
 import { lsKeys } from '../common/Constants'
 import Helpers from '../common/Helpers'
 import { BUYABLE, SELLABLE, TYPES } from '../data/Market'
@@ -56,6 +56,7 @@ class MarketInfoCollector {
 
     static collectRefreshTime () {
         marketInfo.refreshTime = server_now_ts + parseInt($('.shop_count [rel=count]').attr('time'), 10)
+        marketInfo.refreshLevel = Hero.infos.level
     }
 
     static collectBuyableItems () {

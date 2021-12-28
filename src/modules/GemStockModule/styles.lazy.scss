@@ -20,6 +20,11 @@
     #harem_whole #harem_right > & {
         top: 4px;
         right: 200px;
+
+        @media #{$mediaMobile} {
+            top: 92px;
+            right: 62px;
+        }
     }
 
     &-table img {

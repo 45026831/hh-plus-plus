@@ -13,6 +13,7 @@ import {
     ContestRewardsModule,
     FightAVillainModule,
     GemStockModule,
+    HaremInfoModule,
     MarketEquipsFilterModule,
     MarketGirlsFilterModule,
     MarketHideSellButtonModule,
@@ -48,6 +49,7 @@ const runScript = () => {
     config.registerModule(new MarketEquipsFilterModule())
     config.registerModule(new MarketXPAffModule())
     config.registerModule(new MarketHideSellButtonModule())
+    config.registerModule(new HaremInfoModule())
 
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())

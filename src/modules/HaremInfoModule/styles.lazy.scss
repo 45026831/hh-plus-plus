@@ -1,0 +1,253 @@
+@import "../../common/constants.scss";
+@import "../../common/mixins.scss";
+
+.harem-info-panel {
+    display: none;
+    background-color: #080808f5;
+    color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+        "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    position: absolute;
+    bottom: 50px;
+    left: 10px;
+    z-index: 20;
+    border-radius: 5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #cccccc42;
+    padding: 16px;
+    grid-gap: 10px;
+    grid-template-columns: auto auto auto;
+
+    .summary-block {
+        display: inline-block;
+        width: 280px;
+
+        &.general-summary {
+            width: 250px;
+        }
+    }
+
+    &.visible {
+        display: grid;
+    }
+
+    h1 {
+        font-size: 1.2em;
+    }
+
+    &-toggle {
+        display: block;
+        position: absolute;
+        height: 32px;
+        width: 32px;
+        background-size: contain;
+        bottom: 8px;
+        left: 6px;
+    }
+
+    .to-max-label {
+        margin-top: -6px;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-gap: 6px;
+        list-style: none;
+        padding-left: 0px;
+        margin-block-end: 0px;
+
+        li {
+            display: inline-block;
+            background: #cccccc42;
+            border-radius: 5px;
+            padding-right: 7px;
+            line-height: 20px;
+            margin-left: 10px;
+
+            & > span {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-left: -10px;
+            }
+        }
+
+        @each $element in $elements {
+            .#{$element}_element_icn {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                background-size: contain;
+            }
+        }
+
+        [carac]::before {
+            width: 20px;
+            height: 20px;
+        }
+
+        .rarity-icon {
+            display: inline-block;
+            height: 20px;
+            width: 20px;
+            font-family: "Carter One", "Alegreya Sans", Montserrat;
+
+            &.starting {
+                background-color: #ccc;
+            }
+
+            .initial {
+                display: inline-block;
+                width: 100%;
+                text-align: center;
+                line-height: 20px;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                vertical-align: middle;
+                color: #fff;
+                @include text-stroke-hack;
+            }
+        }
+
+        &.caracs-summary {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        &.rarity-summary {
+            grid-auto-flow: column;
+            grid-template-rows: auto auto;
+        }
+        &.elements-summary {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+        &.xp-aff-summary {
+            grid-template-columns: 1fr 1fr;
+            .xp-aff-label {
+                display: inline-block;
+                height: 20px;
+                padding-left: 7px;
+                font-family: "Carter One", "Alegreya Sans", Montserrat;
+
+                &.unlocked-scenes-icon {
+                    height: 40px;
+                    width: 40px;
+                    background-size: contain;
+                }
+            }
+            li {
+                margin-left: 0px;
+                & > span {
+                    margin-left: 0px;
+                    & > span:last-child {
+                        text-align: right;
+                    }
+                }
+            }
+        }
+        &.salary-summary {
+            grid-template-columns: 1fr;
+            .salary-label::before {
+                height: 40px;
+                width: 40px;
+                background-size: contain;
+            }
+            li {
+                margin-left: 0px;
+                & > span {
+                    margin-left: 0px;
+                }
+            }
+        }
+        &.upgrade-costs {
+            grid-template-columns: 1fr;
+            margin-block-start: 0.3em;
+            margin-block-end: 0.5em;
+
+            .cost-value {
+                text-align: right;
+                [cur]::before {
+                    height: 18px;
+                    width: 18px;
+                }
+            }
+
+            .affection-label {
+                display: inline-block;
+                height: 40px;
+                width: 40px;
+                background-size: contain;
+            }
+
+            li {
+                margin-left: 0px;
+                & > span {
+                    margin-left: 0px;
+                }
+            }
+        }
+        &.gems-summary,
+        &.gems-stock {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            margin-block-start: 0px;
+
+            .gem-icon {
+                display: inline-block;
+                height: 20px;
+                width: 20px;
+                background-size: contain;
+            }
+        }
+        &.gems-summary {
+            font-size: 10px;
+        }
+        &.gems-stock {
+            font-size: 12px;
+            margin-block-end: 1em;
+        }
+    }
+    .to-max-combi .upgrade-costs {
+        margin-block-end: 6px;
+    }
+
+    .restock-info,
+    .market-warning {
+        color: #aaa;
+        font-size: 10px;
+        margin-block-start: 0.3em;
+    }
+}
+
+#harem_left {
+    z-index: 1; // Force new stacking context
+}
+
+.harem-info-overlay-bg {
+    display: none;
+    width: 100vw;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 19;
+
+    &.visible {
+        display: block;
+    }
+}
+
+#harem_whole .WikiLinkDialogbox a {
+    text-decoration: none;
+    color: #24a0ff !important;
+}
+
+#harem_right .WikiLink a:hover {
+    color: #b14;
+    text-decoration: underline;
+}
+
+.scene-costs-tooltip [cur]::before {
+    height: 18px;
+    width: 18px;
+}

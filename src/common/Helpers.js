@@ -1,10 +1,11 @@
-/* global IMAGES_URL, girls_requirement_amount, high_level_girl_owned, awakening_requirements */
+/* global IMAGES_URL, HH_UNIVERSE, girls_requirement_amount, high_level_girl_owned, awakening_requirements */
 import { lsKeys } from './Constants'
 
 let sheet
 let isHH
 let isGH
 let isCxH
+let isNutakuKobans
 let cdnHost
 let girlDictionary
 let teamsDictionary
@@ -79,6 +80,13 @@ class Helpers {
         if (Helpers.isCxH()) {
             return 'CxH'
         }
+    }
+
+    static isNutakuKobans () {
+        if (typeof isNutakuKobans === 'undefined') {
+            isNutakuKobans = HH_UNIVERSE === 'nutaku'
+        }
+        return isNutakuKobans
     }
 
     static $ (formattedHtml) {

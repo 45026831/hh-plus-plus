@@ -132,6 +132,34 @@ export const marketHideSellButton = {
     hide: 'Hide "Sell" button'
 }
 
+export const harem = {
+    marketRestocked: '> The <a href="../shop.html">Market</a> restocked since your last visit.',
+    visitMarket: '> Visit the <a href="../shop.html">Market</a> first to see an inventory summary here',
+    itemSummary: '{{count}} ({{value}} {{type}})',
+    costSC: '{{cost}} <span cur="soft_currency"></span>',
+    costHC: '{{cost}} <span cur="hard_currency"></span>',
+    haremStats: 'Harem Stats',
+    upgrades: 'Upgrades',
+    levelsAwakening: 'Levels & Awakening',
+    market: 'Inventory & Market',
+    wikiPage: '{{name}}\'s wiki page',
+    haremLevel: 'Harem level',
+    unlockedScenes: 'Unlocked scenes',
+    income: 'Income',
+    or: '{{left}} or {{right}}',
+    toUpgrade: 'To upgrade all:',
+    toLevelCap: 'To level to cap:',
+    toLevelMax: 'To level to max ({{max}}):',
+    affectionScenes: 'Affection Scenes',
+    buyable: 'Available in the market:',
+    sellable: 'In inventory:',
+    gifts: 'Gifts',
+    books: 'Books',
+    canBeSold: 'Can be sold for {{sc}}',
+    canBeBought: '{{item}} for {{amount}}',
+    marketRestock: 'Market restocks at {{time}} or at level {{level}}',
+}
+
 export const seasonStats = {
     fights: 'Fights',
     victories: 'Victories',
