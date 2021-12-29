@@ -31,6 +31,7 @@ export const villain = {
     ninjaspy: 'Ninja Spion',
     jacksoncrew: 'Jacksons Crew',
     pandorawitch: 'Pandora Hexe',
+    werebunnypolice: 'Wer-Kaninchen Polizei',
 }
 
 export const market = {

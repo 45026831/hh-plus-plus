@@ -144,12 +144,23 @@ export default {
             gems: ['light']
         },
         {
+            key: 'werebunnypolice',
             world: 16,
+            girls: {
+                1: ['164866290', '696124016', '841591253'],
+                2: [],
+                3: []
+            },
+            gems: ['psychic']
+        },
+        {
+            world: 17,
             girls: {
                 1: [],
                 2: [],
                 3: []
-            }
+            },
+            gems: ['water']
         }
     ],
     GH: [

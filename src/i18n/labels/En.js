@@ -70,6 +70,7 @@ export const villain = {
     pandorawitch: 'Pandora Witch',
     nike: 'Nike',
     sake: 'Sake',
+    werebunnypolice: 'WereBunny Police',
     edward: 'Edward',
     edernas: 'Edernas',
     maro: 'Maro',

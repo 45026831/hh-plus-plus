@@ -30,6 +30,7 @@ export const villain = {
     ninjaspy: 'Espion Ninja',
     jacksoncrew: 'Éq. de Jackson',
     pandorawitch: 'Sorcière Pandora',
+    werebunnypolice: 'Police des Lapines-Garous',
     fallback: 'Monde {{world}} troll'
 }
 

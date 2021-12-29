@@ -85,12 +85,14 @@
 
 @media #{$mediaMobile} {
     .TrollsMenu {
-        width: 200%;
-        margin: 64px 0 0 -79px;
+        width: 300%;
+        margin: 64px 0 0 -150px;
         font-size: 16px;
         line-height: 22px;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         grid-auto-flow: row;
+        padding-left: 10px;
+        padding-right: 10px;
 
         & > a {
             padding-top: 10px;
