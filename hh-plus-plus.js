@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.38
+// @version         0.37.39
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -1044,7 +1044,8 @@ if (isHH) {
         ['24316446', '219651566', '501847856', '383709663', '90685795'],
         ['225365882', '478693885', '231765083', '155415482', '769649470'],
         ['86962133', '243793871', '284483399', 0, 0],
-        ['612527302', '167231135', '560979916', '784911160', '549524850', '184523411', 0, 0]
+        ['612527302', '167231135', '560979916', '784911160', '549524850', '184523411', 0, 0],
+        ['164866290', '696124016', '841591253', 0, 0],
     ];
 }
 else if (isGH) {
@@ -1414,7 +1415,7 @@ function moduleVillain() {
         localStorage.setItem('mythicEventTrolls', '[]');
     }
     if (localStorage.getItem('tierGirlsOwned') === null) {
-        localStorage.setItem('tierGirlsOwned', '[[], [], [], [], [], [], [], [], [], [], [], [], [], []]');
+        localStorage.setItem('tierGirlsOwned', '[[], [], [], [], [], [], [], [], [], [], [], [], [], [], []]');
     }
 
     let eventTrolls = JSON.parse(localStorage.getItem('eventTrolls'));
@@ -1481,7 +1482,7 @@ function moduleVillain() {
     if (CurrentPage.indexOf('home') != -1) {
         if (includeTiers) {
             //Check if villain tier girls have been collected
-            tierGirlsOwned = [[], [], [], [], [], [], [], [], [], [], [], [], [], []];
+            tierGirlsOwned = [[], [], [], [], [], [], [], [], [], [], [], [], [], [], []];
 
             for (var tIdx = 0; tIdx < tierGirlsID.length; tIdx++) {
                 for (var gIdx = 0; gIdx < tierGirlsID[tIdx].length; gIdx++) {
@@ -1510,7 +1511,7 @@ function moduleVillain() {
     //Add the actual menu
     var trolls;
     if (isHH) {
-        trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edwarda', 'Donatien', 'Silvanus', 'Bremen', 'Finalmecia', 'Roko Senseï', 'Karole', 'Jackson&#8217;s Crew', 'Pandora Witch', 'Nike', 'Sake'];
+        trolls = ['Dark Lord', 'Ninja Spy', 'Gruntt', 'Edwarda', 'Donatien', 'Silvanus', 'Bremen', 'Finalmecia', 'Roko Senseï', 'Karole', 'Jackson&#8217;s Crew', 'Pandora Witch', 'Nike', 'Sake', 'WereBunny Police'];
         if (lang == 'fr') {
             trolls[1] = 'Espion Ninja';
             trolls[10] = 'Éq. de Jackson';
