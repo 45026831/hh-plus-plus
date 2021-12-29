@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.39
+// @version         0.37.40
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -1516,22 +1516,26 @@ function moduleVillain() {
             trolls[1] = 'Espion Ninja';
             trolls[10] = 'Éq. de Jackson';
             trolls[11] = 'Sorcière Pandora';
+            trolls[14] = 'Police des Lapines-Garous';
         }
         if (lang == 'es') {
             trolls[0] = 'Señor Oscuro';
             trolls[1] = 'Ninja espía';
+            trolls[14] = 'Policía hombres-conejos';
         }
         if (lang == 'it') {
             trolls[0] = 'Signore Oscuro';
             trolls[1] = 'Spia Ninja';
             trolls[10] ='Ciurma di Jackson';
             trolls[11] ='Strega Pandora';
+            trolls[14] = 'Polizia del Conigli Mannari';
         }
         if (lang == 'de') {
             trolls[0] = 'Dunkler Lord';
             trolls[1] = 'Ninja Spion';
             trolls[10] = 'Jacksons Crew';
             trolls[11] = 'Pandora Hexe';
+            trolls[14] = 'Wer-Kaninchen Polizei';
         }
     }
     else if (isCxH) {
