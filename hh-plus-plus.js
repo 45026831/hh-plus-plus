@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.42
+// @version         0.37.43
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -6508,7 +6508,14 @@ function moduleSeasonSim() {
 
         const simu = calculateBattleProbabilities(player, opponent)
 
-        $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') .team-total-power').append(`<span class="matchRating ${simu.scoreClass}">${nRounding(100*simu.win, 2, -1)}%</span>`);
+        let $gridWrapper = $opponentData.find('.gridWrapper')
+        if (!$gridWrapper.length) {
+            $opponentData.find('.average-lvl').wrap('<div class="gridWrapper"></div>')
+            $gridWrapper = $opponentData.find('.gridWrapper')
+        }
+
+        $gridWrapper.find('.matchRating').remove()
+        $gridWrapper.append(`<span class="matchRating ${simu.scoreClass}">${nRounding(100*simu.win, 2, -1)}%</span>`);
     }
 
     calculateSeasonPower(1);
@@ -6518,11 +6525,8 @@ function moduleSeasonSim() {
     let button = document.querySelector('#refresh_villains');
     button.addEventListener('click', function(){
         setTimeout(function(){
-            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(3) .average-lvl .matchRating').remove();
             calculateSeasonPower(1);
-            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(5) .average-lvl .matchRating').remove();
             calculateSeasonPower(2);
-            $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(7) .average-lvl .matchRating').remove();
             calculateSeasonPower(3);
         }, 5000);
     });
@@ -6533,7 +6537,7 @@ function moduleSeasonSim() {
                      + 'text-align: center; '
                      + 'margin-left: 10px; '
                      + 'text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000; '
-                     + 'line-height: 17px; '
+                     + 'line-height: 28px; '
                      + 'font-size: 16px;}'
                     );
 
@@ -6549,10 +6553,25 @@ function moduleSeasonSim() {
                      + 'color: #FFA500;}'
                     );
 
-    sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                     + '#season-arena .average-lvl {'
-                     + 'margin-left: -15px;}}'
-                    );
+    sheet.insertRule(`
+        #season-arena .season_arena_block.opponent .hero_team {
+            padding: 0px;
+        }
+    `)
+    sheet.insertRule(`
+        .gridWrapper {
+            margin-top: -26px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 24px;
+            z-index: 0;
+        }
+    `)
+    sheet.insertRule(`
+        .average-lvl {
+            text-align: center;
+        }
+    `);
 }
 
 /* ==============
@@ -7994,11 +8013,6 @@ sheet.insertRule('@media only screen and (max-width: 1025px) {'
                  + 'position: absolute; '
                  + 'top : 50px; '
                  + 'margin-left: 0px !important;}}'
-                 );
-
-sheet.insertRule('@media only screen and (max-width: 1025px) {'
-                 + '.rewards_list .slot_victory_points p, .rewards_list .slot_season_xp_girl p:nth-child(3), .rewards_list .slot_season_affection_girl p:nth-child(3) {'
-                 + 'font-size: 13px !important;}}'
                  );
 
 
