@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.41
+// @version         0.37.42
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3801,7 +3801,7 @@ function moduleLeague() {
                 localStorage.setItem('newLeagueResults', 1)
             }
 
-            let player=playerLeaguesData.id_member;
+            let player=playerLeaguesData.id_member || playerLeaguesData.id_fighter;
             let points;
             try{
                 points=JSON.parse(localStorage.getItem('pointHistory'))[player].points;
@@ -3929,14 +3929,14 @@ function moduleLeague() {
             }
 
             let data = JSON.parse(localStorage.getItem('leagueResults')) || {};
-            let player = `${playerLeaguesData.id_member}`
+            let player = `${playerLeaguesData.id_member || playerLeaguesData.id_fighter}`
             let spec = playerLeaguesData.class
             let $themeIcons = $('#leagues_middle .selected-player-leagues .theme-container img')
             if (!$themeIcons.length) {
                 $themeIcons = $('#leagues_right .team-theme')
             }
             const themeIcons = $themeIcons.map((i,el)=>$(el).attr('src')).toArray()
-            let results = playerLeaguesData.match_history
+            let results = playerLeaguesData.match_history || window.match_history[player]
             const nb_victories = results.filter(match => match === 'won').length;
             const nb_defeats = results.filter(match => match === 'lost').length;
 
@@ -4163,15 +4163,29 @@ function moduleLeague() {
 function moduleSim() {
     function calculatePower() {
         // INIT
+        const opponentId = playerLeaguesData.id_fighter
+        let playerCrit
+        let playerAtk
+        let playerDef
+        let playerEgo
+        if (opponentId && window.caracs_per_opponent && window.caracs_per_opponent[opponentId]) {
+            ({
+                chance: playerCrit,
+                damage: playerAtk,
+                defense: playerDef,
+                total_ego: playerEgo,
+            } = window.caracs_per_opponent[opponentId])
+        } else {
+            ({
+                chance: playerCrit,
+                damage: playerAtk,
+                defense: playerDef,
+                total_ego: playerEgo,
+            } = heroLeaguesData)
+        }
         const {
-            chance: playerCrit,
-            damage: playerAtk,
-            defense: playerDef,
-            totalEgo: playerTotalEgo,
-            total_ego: player_total_ego,
             team: playerTeam
         } = heroLeaguesData
-        const playerEgo = playerTotalEgo || player_total_ego
         let normalisedElements = playerTeam.theme_elements
         let normalisedSynergies = playerTeam.synergies
 
@@ -4198,12 +4212,26 @@ function moduleSim() {
             healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
         }
 
-        const {
-            chance: opponentCrit,
-            damage: opponentAtk,
-            defense: opponentDef,
-            ego: opponentEgo,
-        } = playerLeaguesData.caracs
+        let opponentCrit
+        let opponentAtk
+        let opponentDef
+        let opponentEgo
+
+        if (playerLeaguesData.caracs) {
+            ({
+                chance: opponentCrit,
+                damage: opponentAtk,
+                defense: opponentDef,
+                ego: opponentEgo,
+            } = playerLeaguesData.caracs)
+        } else {
+            ({
+                chance: opponentCrit,
+                damage: opponentAtk,
+                defense: opponentDef,
+                total_ego: opponentEgo,
+            } = playerLeaguesData)
+        }
         const {
             team: opponentTeam
         } = playerLeaguesData
@@ -4214,20 +4242,37 @@ function moduleSim() {
                 opponentTeamMemberElements.push(teamMember.element)
             }
         })
-        const opponentElements = (opponentTeam.themeElements || opponentTeam.theme_elements).map(({type}) => type)
-        const opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+        const opponentElements = opponentTeam.theme_elements.map(({type}) => type)
+        let opponentBonuses
+
+        let alreadyAppliedSunBonus = false
+        let alreadyAppliedAtkDomBonus = false
+
+        if (opponentTeam.synergies) {
+            const opponentSynergies = opponentTeam.synergies
+            opponentBonuses = {
+                critDamage: findBonusFromSynergies(opponentSynergies, 'fire'),
+                critChance: findBonusFromSynergies(opponentSynergies, 'stone'),
+                defReduce: 0, // Already applied
+                healOnHit: findBonusFromSynergies(opponentSynergies, 'water'),
+            }
+            alreadyAppliedSunBonus = true
+            alreadyAppliedAtkDomBonus = true
+        } else {
+            opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+        }
 
         const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         const player = {
             hp: playerEgo * (1 + dominanceBonuses.player.ego),
-            dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
+            dmg: (playerAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.player.attack))) - (opponentDef * (1 - (alreadyAppliedSunBonus ? 0 : playerBonuses.defReduce))),
             critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         const opponent = {
             hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
-            dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
+            dmg: (opponentAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.opponent.attack))) - (playerDef * (1 - (alreadyAppliedSunBonus ? 0 : opponentBonuses.defReduce))),
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name: $('#leagues_right .player_block .title').text(),
             bonuses: opponentBonuses
@@ -6404,23 +6449,38 @@ function moduleSeasonSim() {
     function calculateSeasonPower(idOpponent) {
         // INIT
         const $playerData = $('#season-arena .battle_hero')
-        playerEgo = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerAtk = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerDef = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        playerCrit = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        let $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
+        const opponentId = $opponentData.attr('data-opponent') // using attr as we want a string, not a number
+        let alreadyAppliedSunBonus = false
+        let alreadyAppliedAtkDomBonus = false
+
+        if (window.caracs_per_opponent) {
+            ({
+                total_ego: playerEgo,
+                damage: playerAtk,
+                defense: playerDef,
+                chance: playerCrit
+            } = caracs_per_opponent[opponentId])
+            alreadyAppliedSunBonus = true
+            alreadyAppliedAtkDomBonus = true
+        } else {
+            playerEgo = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+            playerAtk = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+            playerDef = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+            playerCrit = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
+        }
         const playerSynergyDataJSON = $playerData.find('.hero_team .icon-area').attr('synergy-data')
         const playerSynergies = JSON.parse(playerSynergyDataJSON)
         const playerTeam = $playerData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
-        const playerTeamMemberElements = playerTeam.map(({elementData, element_data})=>(elementData || element_data).type)
+        const playerTeamMemberElements = playerTeam.map(({element_data})=>element_data.type)
         const playerElements = calculateThemeFromElements(playerTeamMemberElements)
         const playerBonuses = {
             critDamage: findBonusFromSynergies(playerSynergies, 'fire'),
             critChance: findBonusFromSynergies(playerSynergies, 'stone'),
-            defReduce: findBonusFromSynergies(playerSynergies, 'sun'),
+            defReduce: alreadyAppliedSunBonus ? 0 : findBonusFromSynergies(playerSynergies, 'sun'),
             healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
         }
 
-        let $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
         opponentEgo = parseInt($opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentDef = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
         opponentAtk = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
@@ -6434,13 +6494,13 @@ function moduleSeasonSim() {
 
         const player = {
             hp: playerEgo * (1 + dominanceBonuses.player.ego),
-            dmg: (playerAtk * (1 + dominanceBonuses.player.attack)) - (opponentDef * (1 - playerBonuses.defReduce)),
+            dmg: (playerAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.player.attack))) - (opponentDef * (1 - (alreadyAppliedSunBonus ? 0 : playerBonuses.defReduce))),
             critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         const opponent = {
             hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
-            dmg: (opponentAtk * (1 + dominanceBonuses.opponent.attack)) - (playerDef * (1 - opponentBonuses.defReduce)),
+            dmg: (opponentAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.opponent.attack))) - (playerDef * (1 - (alreadyAppliedSunBonus ? 0 : opponentBonuses.defReduce))),
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
             bonuses: opponentBonuses
