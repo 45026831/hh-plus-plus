@@ -1,3 +1,4 @@
+0.37.44: Fixing bug in mobile leagues where the underlying data had moved
 0.37.43: Adjusting spacing in seasons opponent blocks to fit sim result (also centers the team in the block)
 0.37.42: Pre-empting changes to sim required for new dynamic stats
 0.37.41: Fixing copy+paste error in backported Fight-a-villain code

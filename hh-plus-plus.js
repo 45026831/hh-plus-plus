@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.43
+// @version         0.37.44
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3447,7 +3447,7 @@ function moduleLeague() {
 
             if ($playerData.hasClass('selected-player-leagues')) {
                 // Mobile selected row has completely different layout and is missing data, thankfully the player is highlighted so we can use playerLeagesData instead.
-                playerChallengesDone = playerLeaguesData.match_history.reduce((sum, match) => match ? sum+1: sum, 0)
+                playerChallengesDone = window.match_history[playerLeaguesData.id_fighter].reduce((sum, match) => match ? sum+1: sum, 0)
                 pos = parseInt(playerLeaguesData.rank, 10)
                 points = parseLocaleRoundedInt(playerLeaguesData.points)
                 levels.push(parseInt(playerLeaguesData.level, 10))
