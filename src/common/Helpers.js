@@ -1,7 +1,6 @@
 /* global IMAGES_URL, HH_UNIVERSE, girls_requirement_amount, high_level_girl_owned, awakening_requirements */
 import { lsKeys } from './Constants'
 
-let sheet
 let isHH
 let isGH
 let isCxH
@@ -32,16 +31,6 @@ class Helpers {
     }
     static hasSearch(matcher) {
         return window.location.search.includes(matcher)
-    }
-
-    static getSheet() {
-        if (!sheet) {
-            const style = document.createElement('style')
-            document.head.appendChild(style);
-            ({sheet} = style)
-        }
-
-        return sheet
     }
 
     static isHH() {

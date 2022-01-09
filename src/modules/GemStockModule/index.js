@@ -5,6 +5,7 @@ import I18n from '../../i18n'
 import {ICON_NAMES as ELEMENTS_ICON_NAMES} from '../../data/Elements'
 
 import styles from './styles.lazy.scss'
+import Sheet from '../../common/Sheet'
 
 const MODULE_KEY = 'gemStock'
 
@@ -48,7 +49,7 @@ class GemStockModule extends CoreModule {
         styles.use()
 
         Helpers.defer(() => {
-            this.injectDynamicCSS()
+            this.injectCSSVars()
 
             const $gemStock = this.buildGemsStockElem()
 
@@ -65,12 +66,8 @@ class GemStockModule extends CoreModule {
         this.hasRun = true
     }
 
-    injectDynamicCSS() {
-        this.insertRule(`
-            .gemStock {
-                background-image: url(${Helpers.getCDNHost()}/pictures/design/gems/all.png);
-            }
-        `)
+    injectCSSVars() {
+        Sheet.registerVar('gem-stock-icon', `url('${Helpers.getCDNHost()}/pictures/design/gems/all.png')`)
     }
 }
 

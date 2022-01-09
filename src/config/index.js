@@ -1,5 +1,6 @@
 import Helpers from '../common/Helpers'
 import { colors, lsKeys } from '../common/Constants'
+import Sheet from '../common/Sheet'
 import styles from './styles.lazy.scss'
 const {$} = Helpers
 
@@ -131,7 +132,7 @@ class Config {
             return
         }
 
-        this.injectDynamicCSS()
+        this.injectCSSVars()
 
         // $(document).ready
         this.renderConfigButton()
@@ -236,36 +237,14 @@ class Config {
         })
     }
 
-    injectDynamicCSS () {
-        const sheet = Helpers.getSheet()
-
-        sheet.insertRule(`
-            .hh-plus-plus-config-button {
-                background-image: url(${this.gameIcon});
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel {
-                background: ${this.colors.panelBackground};
-                border-image-source: ${this.colors.panelBorderGradient};
-                box-shadow: ${this.colors.panelInset};
-            }
-        `)
-        sheet.insertRule(`
-            .close-config-panel {
-                background-image: url(${Helpers.getCDNHost()}/clubs/ic_xCross.png);
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .config-setting {
-                background: ${this.colors.homeDark};
-            }
-        `)
-        sheet.insertRule(`
-            .hh-plus-plus-config-panel .config-setting.enabled {
-                border: 1px solid ${this.colors.homeBorder};
-            }
-        `)
+    injectCSSVars () {
+        Sheet.registerVar('config-button-icon', `url(${this.gameIcon})`)
+        Sheet.registerVar('config-panel-background', this.colors.panelBackground)
+        Sheet.registerVar('config-border-image-source', this.colors.panelBorderGradient)
+        Sheet.registerVar('config-panel-box-shadow', this.colors.panelInset)
+        Sheet.registerVar('cross-icon', `url('${Helpers.getCDNHost()}/clubs/ic_xCross.png')`)
+        Sheet.registerVar('config-setting-background', this.colors.homeDark)
+        Sheet.registerVar('config-setting-border', this.colors.homeBorder)
     }
 }
 

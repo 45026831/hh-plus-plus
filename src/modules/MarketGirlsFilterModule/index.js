@@ -6,6 +6,7 @@ import Snippets from '../../common/Snippets'
 import filterIcon from '../../assets/filter.svg'
 import { lsKeys } from '../../common/Constants'
 import {ICON_NAMES as ELEMENTS_ICON_NAMES} from '../../data/Elements'
+import Sheet from '../../common/Sheet'
 import styles from './styles.lazy.scss'
 
 const {$} = Helpers
@@ -41,7 +42,7 @@ class MarketGirlsFilterModule extends CoreModule {
         styles.use()
 
         const deferredRun = () => {
-            this.injectCSS()
+            this.injectCSSVars()
 
             const clearFilter = () => {
                 saveFilter(DEFAULT_FILTER)
@@ -200,7 +201,7 @@ class MarketGirlsFilterModule extends CoreModule {
                     </div>`)
                 }
 
-                function createTeamsBox() {
+                const createTeamsBox = () => {
                     const bdsmTeams = Helpers.lsGet(lsKeys.TEAMS_DICTIONARY)
                     if (!bdsmTeams) {
                         return $(`
@@ -382,23 +383,9 @@ class MarketGirlsFilterModule extends CoreModule {
         this.hasRun = true
     }
 
-    injectCSS() {
-        this.insertRule(`
-            label.girl_filter::before {
-                background-image: url(${filterIcon});
-            }
-        `)
-        this.insertRule(`
-            label.clear_girl_filter::before {
-                -webkit-mask-image: url("${Helpers.getCDNHost()}/clubs/ic_xCross.png");
-                mask-image: url("${Helpers.getCDNHost()}/clubs/ic_xCross.png");
-            }
-        `)
-        this.insertRule(`
-            .close-team-selection {
-                background: url(${Helpers.getCDNHost()}/clubs/ic_xCross.png);
-            }
-        `)
+    injectCSSVars() {
+        Sheet.registerVar('filter-icon', `url('${filterIcon}')`)
+        Sheet.registerVar('cross-icon', `url('${Helpers.getCDNHost()}/clubs/ic_xCross.png')`)
     }
 }
 

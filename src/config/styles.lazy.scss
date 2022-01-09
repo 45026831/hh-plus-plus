@@ -6,6 +6,7 @@
     right: 15px;
     cursor: pointer;
     background-size: contain;
+    background-image: var(--config-button-icon);
 
     &:after {
         content: "++";
@@ -29,6 +30,9 @@
     border-style: solid;
     border-image-slice: 1;
     border-width: 4px;
+    background: var(--config-panel-background);
+    border-image-source: var(--config-border-image-source);
+    box-shadow: var(--config-panel-box-shadow);
 
     &.shown {
         display: block;
@@ -63,9 +67,14 @@
         border: 1px solid #aaa;
         padding: 7px;
         font-size: 14px;
+        background: var(--config-setting-background);
 
         &.has-subsettings {
             grid-row-end: span 2;
+        }
+
+        &.enabled {
+            border: 1px solid var(--config-setting-border);
         }
     }
 
@@ -83,6 +92,7 @@
         label {
             display: flex;
             align-items: center;
+            margin-bottom: 6px;
 
             span {
                 flex: 1;
@@ -103,6 +113,7 @@
     position: absolute;
     display: block;
     background-size: cover;
+    background-image: var(--cross-icon);
     height: 37px;
     width: 41px;
     top: 6px;

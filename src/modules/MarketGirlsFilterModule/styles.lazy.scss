@@ -40,6 +40,7 @@
         background-position: center;
         background-size: 24px;
         background-repeat: no-repeat;
+        background-image: var(--filter-icon);
         pointer-events: none;
     }
 }
@@ -69,6 +70,8 @@
         mask-size: 24px;
         -webkit-mask-repeat: no-repeat;
         mask-repeat: no-repeat;
+        -webkit-mask-image: var(--cross-icon);
+        mask-image: var(--cross-icon);
         pointer-events: none;
     }
 }
@@ -117,6 +120,7 @@
     position: absolute;
     display: block;
     background-size: cover;
+    background-image: var(--cross-icon);
     height: 32px;
     width: 35px;
     top: -16px;

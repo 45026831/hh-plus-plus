@@ -16,7 +16,7 @@ label.equip_filter input {
 }
 
 label.equip_filter::before {
-    content: ' ';
+    content: " ";
     display: block;
     position: absolute;
     height: 100%;
@@ -24,6 +24,7 @@ label.equip_filter::before {
     background-position: center;
     background-size: 24px;
     background-repeat: no-repeat;
+    background-image: var(--filter-icon);
     pointer-events: none;
 }
 
@@ -95,8 +96,8 @@ label.equip_filter::before {
     width: 36px;
 }
 
-#shops #inventory .grid-selector input:checked+label,
-#shops #inventory .grid-selector input:hover+label {
+#shops #inventory .grid-selector input:checked + label,
+#shops #inventory .grid-selector input:hover + label {
     background-color: #fff8;
 }
 
@@ -115,16 +116,19 @@ label.equip_filter::before {
     border-bottom-left-radius: 5px;
 }
 
-#inventory .armor .slot:hover .favorite-toggle[data-is-favorite=false], #inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
+#inventory .armor .slot:hover .favorite-toggle[data-is-favorite="false"],
+#inventory .armor .slot .favorite-toggle[data-is-favorite="true"] {
     display: block;
 }
 
-#inventory .armor .slot .favorite-toggle[data-is-favorite=false] {
+#inventory .armor .slot .favorite-toggle[data-is-favorite="false"] {
+    background-image: var(--star-icon-white);
     opacity: 0.7;
 }
 
-#inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
+#inventory .armor .slot .favorite-toggle[data-is-favorite="true"] {
     background-color: rgba(30, 38, 30, 0.7);
+    background-image: var(--star-icon-orange);
 }
 
 #inventory .armor .slot.filtered_out {

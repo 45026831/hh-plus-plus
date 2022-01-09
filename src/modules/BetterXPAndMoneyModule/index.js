@@ -19,9 +19,9 @@ class BetterXPAndMoneyModule extends CoreModule {
 
     run () {
         if (this.hasRun) {return}
-        styles.use()
 
         Helpers.defer(() => {
+            styles.use()
             this.betterXP()
 
             const xpObserver = new MutationObserver(this.betterXP.bind(this))

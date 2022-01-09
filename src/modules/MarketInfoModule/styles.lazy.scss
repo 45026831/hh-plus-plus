@@ -5,6 +5,8 @@
     width: 18px;
     border-radius: 50%;
     cursor: help;
+    background: var(--info-icon) center / 65% 65% no-repeat,
+        linear-gradient(180deg, #0af 0, #068 50%, #057 51%, #0af 100%);
 }
 
 @each $carac in $classes {

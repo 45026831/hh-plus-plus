@@ -1,6 +1,7 @@
 /* global Hero, heroStatsPrices, GT */
 import { lsKeys } from '../../common/Constants'
 import Helpers from '../../common/Helpers'
+import Sheet from '../../common/Sheet'
 import {HC, CH, KH} from '../../data/Classes'
 import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES} from '../../data/Market'
 import I18n from '../../i18n'
@@ -37,7 +38,7 @@ class MarketInfoModule extends CoreModule {
         styles.use()
 
         Helpers.defer(() => {
-            this.injectCSS()
+            this.injectCSSVars()
             this.setupHooks()
 
             this.updateStats()
@@ -217,12 +218,8 @@ class MarketInfoModule extends CoreModule {
         $(document).on('market:equips-updated', () => this.updateEquips())
     }
 
-    injectCSS () {
-        this.insertRule(`
-            .marketInfoIcon {
-                background: url(${Helpers.getCDNHost()}/design/ic_info.svg) center / 65% 65% no-repeat, linear-gradient(180deg,#0af 0,#068 50%,#057 51%,#0af 100%);
-            }
-        `)
+    injectCSSVars () {
+        Sheet.registerVar('info-icon', `url(${Helpers.getCDNHost()}/design/ic_info.svg)`)
     }
 }
 

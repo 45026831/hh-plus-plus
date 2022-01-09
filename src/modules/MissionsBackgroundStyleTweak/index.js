@@ -11,21 +11,13 @@ class MissionsBackgroundStyleTweak extends STModule {
             label: I18n.getModuleLabel('stConfig', 'missionsBackground')
         }
         super({
-            name: 'missionsBackground',
-            configSchema
+            configSchema,
+            styles
         })
     }
 
     shouldRun () {
         return Helpers.isCurrentPage('activities')
-    }
-
-    injectCss () {
-        styles.use()
-    }
-
-    tearDown () {
-        styles.unUse()
     }
 }
 

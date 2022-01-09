@@ -20,7 +20,7 @@ const generateModule = (name, key) => {
 
     fs.mkdirSync(newModuleDirectory)
     fs.writeFileSync(path.resolve(newModuleDirectory, 'index.js'), populatedTemplate)
-    fs.writeFileSync(path.resolve(newModuleDirectory, 'index.scss'), '')
+    fs.writeFileSync(path.resolve(newModuleDirectory, 'styles.lazy.scss'), '')
     console.log('created')
 }
 

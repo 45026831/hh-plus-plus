@@ -5,6 +5,7 @@ import filterIcon from '../../assets/filter.svg'
 import { lsKeys } from '../../common/Constants'
 
 import styles from './styles.lazy.scss'
+import Sheet from '../../common/Sheet'
 
 const {$} = Helpers
 const MODULE_KEY = 'marketEquipsFilter'
@@ -283,7 +284,7 @@ class MarketEquipsFilterModule extends CoreModule {
         }
 
         Helpers.defer(() => {
-            this.injectDynamicCSS()
+            this.injectCSSVars()
 
             attachFilterBox()
             this.applyFilter()
@@ -295,22 +296,10 @@ class MarketEquipsFilterModule extends CoreModule {
         this.hasRun = true
     }
 
-    injectDynamicCSS() {
-        this.insertRule(`
-            label.equip_filter::before {
-                background-image: url(${filterIcon});
-            }
-        `)
-        this.insertRule(`
-            #inventory .armor .slot .favorite-toggle[data-is-favorite=false] {
-                background-image: url(${Helpers.getCDNHost()}/design/ic_star_white.svg);
-            }
-        `)
-        this.insertRule(`
-            #inventory .armor .slot .favorite-toggle[data-is-favorite=true] {
-                background-image: url(${Helpers.getCDNHost()}/design/ic_star_orange.svg);
-            }
-        `)
+    injectCSSVars() {
+        Sheet.registerVar('filter-icon', `url('${filterIcon}')`)
+        Sheet.registerVar('star-icon-white', `url('${Helpers.getCDNHost()}/design/ic_star_white.svg')`)
+        Sheet.registerVar('star-icon-orange', `url('${Helpers.getCDNHost()}/design/ic_star_orange.svg')`)
     }
 }
 

@@ -6,6 +6,7 @@ import VILLAINS from '../../data/Villains'
 import { lsKeys } from '../../common/Constants'
 
 import styles from './styles.lazy.scss'
+import Sheet from '../../common/Sheet'
 
 const MODULE_KEY = 'villain'
 class FightAVillainModule extends CoreModule {
@@ -30,7 +31,7 @@ class FightAVillainModule extends CoreModule {
             return
         }
         styles.use()
-        this.injectCSS()
+        this.injectCSSVars()
 
         Helpers.defer(() => {
 
@@ -95,12 +96,8 @@ class FightAVillainModule extends CoreModule {
         this.hasRun = true
     }
 
-    injectCSS () {
-        this.insertRule(`
-            .TrollsMenu {
-                font-weight: ${Helpers.isCxH() ? '800' : '400'};
-            }
-        `)
+    injectCSSVars () {
+        Sheet.registerVar('troll-menu-font-weight', Helpers.isCxH() ? '800' : '400')
     }
 }
 

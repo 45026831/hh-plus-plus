@@ -11,21 +11,13 @@ class MoneyAnimationStyleTweak extends STModule {
             label: I18n.getModuleLabel('stConfig', 'collectMoneyAnimation')
         }
         super({
-            name: 'collectMoneyAnimation',
-            configSchema
+            configSchema,
+            styles
         })
     }
 
     shouldRun () {
         return Helpers.isCurrentPage('harem')
-    }
-
-    injectCss () {
-        styles.use()
-    }
-
-    tearDown () {
-        styles.unUse()
     }
 }
 
