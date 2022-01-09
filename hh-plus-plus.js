@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.44
+// @version         0.37.45
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -4164,25 +4164,12 @@ function moduleSim() {
     function calculatePower() {
         // INIT
         const opponentId = playerLeaguesData.id_fighter
-        let playerCrit
-        let playerAtk
-        let playerDef
-        let playerEgo
-        if (opponentId && window.caracs_per_opponent && window.caracs_per_opponent[opponentId]) {
-            ({
-                chance: playerCrit,
-                damage: playerAtk,
-                defense: playerDef,
-                total_ego: playerEgo,
-            } = window.caracs_per_opponent[opponentId])
-        } else {
-            ({
-                chance: playerCrit,
-                damage: playerAtk,
-                defense: playerDef,
-                total_ego: playerEgo,
-            } = heroLeaguesData)
-        }
+        const {
+            chance: playerCrit,
+            damage: playerAtk,
+            defense: playerDef,
+            total_ego: playerEgo,
+        } = window.caracs_per_opponent[opponentId]
         const {
             team: playerTeam
         } = heroLeaguesData
@@ -4208,30 +4195,16 @@ function moduleSim() {
         const playerBonuses = {
             critDamage: findBonusFromSynergies(playerSynergies, 'fire'),
             critChance: findBonusFromSynergies(playerSynergies, 'stone'),
-            defReduce: findBonusFromSynergies(playerSynergies, 'sun'),
             healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
         }
 
-        let opponentCrit
-        let opponentAtk
-        let opponentDef
-        let opponentEgo
-
-        if (playerLeaguesData.caracs) {
-            ({
-                chance: opponentCrit,
-                damage: opponentAtk,
-                defense: opponentDef,
-                ego: opponentEgo,
-            } = playerLeaguesData.caracs)
-        } else {
-            ({
-                chance: opponentCrit,
-                damage: opponentAtk,
-                defense: opponentDef,
-                total_ego: opponentEgo,
-            } = playerLeaguesData)
-        }
+        const {
+            chance: opponentCrit,
+            damage: opponentAtk,
+            defense: opponentDef,
+            total_ego: opponentEgo,
+            nickname: name
+        } = playerLeaguesData
         const {
             team: opponentTeam
         } = playerLeaguesData
@@ -4243,38 +4216,44 @@ function moduleSim() {
             }
         })
         const opponentElements = opponentTeam.theme_elements.map(({type}) => type)
-        let opponentBonuses
 
-        let alreadyAppliedSunBonus = false
-        let alreadyAppliedAtkDomBonus = false
-
-        if (opponentTeam.synergies) {
-            const opponentSynergies = opponentTeam.synergies
-            opponentBonuses = {
-                critDamage: findBonusFromSynergies(opponentSynergies, 'fire'),
-                critChance: findBonusFromSynergies(opponentSynergies, 'stone'),
-                defReduce: 0, // Already applied
-                healOnHit: findBonusFromSynergies(opponentSynergies, 'water'),
-            }
-            alreadyAppliedSunBonus = true
-            alreadyAppliedAtkDomBonus = true
-        } else {
-            opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+        const opponentSynergies = opponentTeam.synergies
+        const teamGirlSynergyBonusesMissing = opponentSynergies.every(({team_girls_count}) => !team_girls_count)
+        let counts
+        if (teamGirlSynergyBonusesMissing) {
+            // Open bug, sometimes opponent syergy data is missing team bonuses, so we need to rebuild it from the team
+            counts = opponentTeamMemberElements.reduce((a,b)=>{a[b]++;return a}, {
+                fire: 0,
+                stone: 0,
+                sun: 0,
+                water: 0,
+                nature: 0,
+                darkness: 0,
+                light: 0,
+                psychic: 0
+            })
         }
+
+        const opponentBonuses = {
+            critDamage: findBonusFromSynergies(opponentSynergies, 'fire', teamGirlSynergyBonusesMissing, counts),
+            critChance: findBonusFromSynergies(opponentSynergies, 'stone', teamGirlSynergyBonusesMissing, counts),
+            healOnHit: findBonusFromSynergies(opponentSynergies, 'water', teamGirlSynergyBonusesMissing, counts),
+        }
+
 
         const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         const player = {
             hp: playerEgo * (1 + dominanceBonuses.player.ego),
-            dmg: (playerAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.player.attack))) - (opponentDef * (1 - (alreadyAppliedSunBonus ? 0 : playerBonuses.defReduce))),
+            dmg: playerAtk - opponentDef,
             critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         const opponent = {
             hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
-            dmg: (opponentAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.opponent.attack))) - (playerDef * (1 - (alreadyAppliedSunBonus ? 0 : opponentBonuses.defReduce))),
+            dmg: opponentAtk - playerDef,
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
-            name: $('#leagues_right .player_block .title').text(),
+            name,
             bonuses: opponentBonuses
         };
 
@@ -4481,9 +4460,10 @@ function countElementsInTeam(elements) {
     })
 }
 
-function findBonusFromSynergies(synergies, element) {
-    const {bonusMultiplier, bonus_multiplier} = synergies.find(({element: {type}})=>type===element)
-    return (bonusMultiplier || bonus_multiplier)
+function findBonusFromSynergies(synergies, element, teamGirlSynergyBonusesMissing, counts) {
+    const {bonus_multiplier, team_bonus_per_girl} = synergies.find(({element: {type}})=>type===element)
+
+    return bonus_multiplier + (teamGirlSynergyBonusesMissing ? counts[element]*team_bonus_per_girl : 0)
 }
 
 function calculateSynergiesFromTeamMemberElements(elements) {
