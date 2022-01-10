@@ -6,6 +6,7 @@ export {default as MarketEquipsFilterModule} from './MarketEquipsFilterModule'
 export {default as MarketXPAffModule} from './MarketXPAffModule'
 export {default as MarketHideSellButtonModule} from './MarketHideSellButtonModule'
 export {default as HaremInfoModule} from './HaremInfoModule'
+export {default as LeagueInfoModule} from './LeagueInfoModule'
 
 export {default as SeasonStatsModule} from './SeasonStatsModule'
 export {default as PachinkoNamesModule} from './PachinkoNamesModule'

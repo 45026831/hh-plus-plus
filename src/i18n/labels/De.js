@@ -9,8 +9,8 @@ export const config = {
     // hideSellButton: 'Schaltfläche zum Ausblenden der Schaltfläche "Verkaufen"', REPLACEME
     harem: 'Harem-Informationen',
     league: 'Liga-Informationen',
-    leagueBoard: 'Die Liga-Spitzen anzeigen',
-    leaguePromo: 'Werbeinformationen anzeigen',
+    league_board: 'Die Liga-Spitzen anzeigen',
+    league_promo: 'Werbeinformationen anzeigen',
     simFight: 'Liga/Saison/Widersacher-Simulation',
     logSimFight: 'Detaillierte Protokollierung in der Browserkonsole',
     teamsFilter: 'Mannschaften filtern',

@@ -1,0 +1,188 @@
+@import "../../common/constants.scss";
+@import "../../common//mixins.scss";
+
+#leagues_middle .league_end_in {
+    line-height: 16px;
+}
+
+.scriptLeagueInfo {
+    display: block;
+    float: right;
+    margin-right: 9px;
+
+    @media #{$mediaDesktop} {
+        font-size: 13px;
+    }
+
+    @media #{$mediaMobile} {
+        position: absolute;
+        right: 300px;
+        top: -20px;
+        font-size: 14px;
+    }
+}
+
+.scriptLeagueInfoIcon {
+    position: relative;
+    top: 1px;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    font-size: 10px;
+    border-radius: 5px;
+    margin-left: 6px;
+    margin-right: 2px;
+    @include text-stroke-hack;
+
+    &:after {
+        display: block;
+        position: relative;
+        top: 2px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    &.top4 {
+        background: var(--legendary-bg);
+        background-size: cover;
+
+        &:after {
+            content: "4";
+        }
+    }
+
+    &.top15 {
+        background-color: #ffb244;
+        &:after {
+            content: "15";
+        }
+    }
+
+    &.top30 {
+        background-color: #23b56b;
+        &:after {
+            content: "30";
+        }
+    }
+}
+
+.hh_tooltip_new em {
+    color: white;
+}
+
+#leagues_middle .leagues_middle_header .leagues_girl_reward_container {
+    right: 9px;
+    top: -35px;
+}
+
+#beaten_opponents {
+    position: absolute;
+    padding-left: 5px;
+    padding-right: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    @media #{$mediaDesktop} {
+        height: 28px;
+        top: -40px;
+        left: 10px;
+    }
+
+    @media #{$mediaMobile} {
+        height: 32px;
+        z-index: 1;
+        right: 517px;
+    }
+}
+
+#hide_beaten {
+    position: relative;
+
+    img {
+        width: auto;
+
+        @media #{$mediaDesktop} {
+            height: 20px;
+        }
+
+        @media #{$mediaMobile} {
+            height: 26px;
+        }
+    }
+}
+
+#leagues_middle > .leagues_table.lead_table > .lead_table_view table .square-avatar-wrapper .classLeague {
+    position: absolute;
+    display: flex;
+    left: -38px;
+    top: 6px;
+    width: 100%;
+    justify-content: flex-end;
+
+    @media #{$mediaMobile} {
+        left: -66px;
+        top: 17px;
+    }
+
+    img.theme-icon {
+        flex: 0 1 0%;
+        height: 17px;
+        width: 17px;
+        border: none;
+        position: initial;
+
+        @media #{$mediaMobile} {
+            height: 25px;
+            width: 25px;
+        }
+    }
+}
+
+#leagueStats table,
+#oldLeagueStats table {
+    margin-left: auto;
+    margin-right: auto;
+
+    & tr td:first-child {
+        text-align: right;
+    }
+
+    & tr td:last-child {
+        text-align: left;
+    }
+}
+
+// #leagueStats table tr td:first-child,
+// #oldLeagueStats table
+
+// #leagueStats table tr td:last-child,
+// #oldLeagueStats table
+
+.individualDisplaySwitch {
+    position: absolute;
+    input {
+        display: none;
+        & + span {
+            color: #d08467;
+            padding: 5px;
+            cursor: pointer;
+        }
+        &:checked + span,
+        &:hover + span {
+            color: #fff;
+        }
+    }
+
+    @media #{$mediaDesktop} {
+        top: -33px;
+        left: 90px;
+    }
+
+    @media #{$mediaMobile} {
+        top: 10px;
+        left: 335px;
+        font-size: 16px;
+    }
+}

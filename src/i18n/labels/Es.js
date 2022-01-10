@@ -9,8 +9,8 @@ export const config = {
     // hideSellButton: 'Botón para ocultar el botón de "Venta"', REPLACEME
     harem: 'Informacion de Harén',
     league: 'Informacion de Liga',
-    leagueBoard: 'Mostrar los mejores de la liga',
-    leaguePromo: 'Mostrar información de promoción',
+    league_board: 'Mostrar los mejores de la liga',
+    league_promo: 'Mostrar información de promoción',
     simFight: 'Simulacion de Liga / Temporada / Villano',
     logSimFight : 'Registro detallado en la consola del navegador',
     teamsFilter: 'Filtro de equipos',

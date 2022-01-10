@@ -9,8 +9,8 @@ export const config = {
     // hideSellButton: 'Pulsante per nascondere il pulsante "Vendi"', REPLACEME
     harem: 'Informazioni Harem',
     league: 'Informazioni sulle Leghe',
-    leagueBoard: 'Mostra i top della lega',
-    leaguePromo: 'Mostra informazioni sulla promozione',
+    league_board: 'Mostra i top della lega',
+    league_promo: 'Mostra informazioni sulla promozione',
     simFight: 'Simulazione Leghe / Stagione / Troll',
     logSimFight : 'Accesso dettagliato nella console del browser',
     teamsFilter: 'Filtro delle squadre',

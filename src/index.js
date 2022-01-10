@@ -1,6 +1,7 @@
 import {
     EventVillainsCollector,
     GirlDictionaryCollector,
+    LeagueInfoCollector,
     MarketInfoCollector,
     SeasonStatsCollector,
     TeamsCollector
@@ -14,6 +15,7 @@ import {
     FightAVillainModule,
     GemStockModule,
     HaremInfoModule,
+    LeagueInfoModule,
     MarketEquipsFilterModule,
     MarketGirlsFilterModule,
     MarketHideSellButtonModule,
@@ -34,6 +36,7 @@ const runScript = () => {
     EventVillainsCollector.collect()
     SeasonStatsCollector.collect()
     MarketInfoCollector.collect()
+    LeagueInfoCollector.collect()
 
     // configurable modules
 
@@ -50,6 +53,7 @@ const runScript = () => {
     config.registerModule(new MarketXPAffModule())
     config.registerModule(new MarketHideSellButtonModule())
     config.registerModule(new HaremInfoModule())
+    config.registerModule(new LeagueInfoModule())
 
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
@@ -85,6 +89,9 @@ if (!$) {
     console.log('HH++ WARNING: No jQuery found. Probably an error page. Ending the script here')
 } else if (location.pathname === '/' && location.hostname.includes('www')) {
     // iframe container, do nothing.
+} else if (location.pathname === '/integrations/' && location.hostname.includes('nutaku')) {
+    // nutaku post-login home screen, redirect.
+    location.replace(`${location.origin}/home.html`)
 } else {
     runScript()
 }
