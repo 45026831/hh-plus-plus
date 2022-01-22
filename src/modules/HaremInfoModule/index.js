@@ -81,12 +81,12 @@ class HaremInfoModule extends CoreModule {
             this.aggregates.unlockedScenes += graded
             this.aggregates.totalScenes += maxGrade
             if (graded < maxGrade) {
-                this.aggregates.aff += Affection[rarity].totalAff(maxGrade - 1) - girl.Affection.cur
+                this.aggregates.aff += Math.max(Affection[rarity].totalAff(maxGrade) - girl.Affection.cur, 0)
                 let currentGradeSC = 0,
                     currentGradeHC = 0
                 if (girl.graded > 0) {
-                    currentGradeSC = Affection[rarity].totalSC(girl.graded - 1)
-                    currentGradeHC = Affection[rarity].totalHC(girl.graded - 1)
+                    currentGradeSC = Affection[rarity].totalSC(girl.graded)
+                    currentGradeHC = Affection[rarity].totalHC(girl.graded)
                 }
                 this.aggregates.affSC += Affection[rarity].totalSC(maxGrade) - currentGradeSC
                 const hcDiff = Affection[rarity].totalHC(maxGrade) - currentGradeHC
