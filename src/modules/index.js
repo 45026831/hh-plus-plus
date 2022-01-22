@@ -8,6 +8,7 @@ export {default as MarketHideSellButtonModule} from './MarketHideSellButtonModul
 export {default as HaremInfoModule} from './HaremInfoModule'
 export {default as LeagueInfoModule} from './LeagueInfoModule'
 
+export {default as ResourceBars} from './ResourceBars'
 export {default as SeasonStatsModule} from './SeasonStatsModule'
 export {default as PachinkoNamesModule} from './PachinkoNamesModule'
 export {default as ContestRewardsModule} from './ContestRewardsModule'

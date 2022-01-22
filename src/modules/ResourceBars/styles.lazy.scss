@@ -1,0 +1,613 @@
+@import "../../common/mixins.scss";
+@import "../../common/constants.scss";
+
+body > div > header {
+    padding-top: 8px;
+
+    img.new_notif {
+        top: 8px;
+    }
+
+    div.currency:nth-child(8) {
+        // FOUC prevention
+        margin-left: 354px;
+    }
+
+    div[rel="xp"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+
+        div[rel="level"] {
+            position: absolute;
+            top: 8px;
+            left: 116px;
+            z-index: 150;
+            text-align: center;
+            pointer-events: none;
+
+            div[hero="level"] {
+                margin-top: 9px;
+            }
+        }
+
+        .bar-wrapper {
+            width: 100%;
+            height: 11px;
+            margin: 0px;
+            box-shadow: none;
+            border-radius: 0px;
+            border: 0;
+
+            .bar {
+                height: 100%;
+
+                &:after {
+                    height: 100%;
+                    width: 101%;
+                    left: 0px;
+                }
+            }
+
+            .over {
+                left: 0px;
+                right: 0px;
+                top: 0px;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+                    "Open Sans", "Helvetica Neue", sans-serif;
+                line-height: 11px;
+
+                span {
+                    font-size: 8px;
+                    @include text-stroke-hack;
+
+                    #hh_comix & {
+                        font-weight: normal;
+                    }
+                }
+            }
+        }
+    }
+
+    .script-pop-timer {
+        text-decoration: none;
+        color: #fff;
+        margin-top: 21px;
+        margin-left: -114px;
+        width: 114px;
+
+        .backbar {
+            width: 114px;
+            height: 7px;
+        }
+        .text {
+            font-size: 9px;
+            top: 3px;
+            pointer-events: none;
+        }
+    }
+
+    .script-booster-status {
+        display: grid;
+        grid-gap: 3px;
+        grid-template-columns: repeat(6, 1fr);
+        margin-top: 9px;
+        margin-left: 6px;
+
+        .circular-progress {
+            position: relative;
+            height: 24px;
+            width: 24px;
+
+            .green {
+                background-color: #01d10b;
+            }
+
+            .yellow {
+                background-color: #ffc400;
+            }
+
+            .red {
+                background-color: #ff0000;
+            }
+
+            .slot {
+                position: absolute;
+                height: 20px;
+                width: 20px;
+                top: 2px;
+                left: 2px;
+                z-index: 6;
+
+                &.empty {
+                    cursor: inherit !important;
+                }
+            }
+
+            .empty + .circle {
+                box-shadow: none;
+                .circle-bar {
+                    background-color: transparent;
+                }
+            }
+
+            .circle {
+                height: 100%;
+                width: 100%;
+                border-radius: 7px;
+                box-shadow: 0px 0px 5px #000;
+            }
+
+            .circle-bar {
+                position: absolute;
+                height: 100%;
+                width: 100%;
+                background-color: #000000bf;
+                clip-path: polygon(0% 0%, 0% 100%, 50% 100%, 50% 0%);
+                border-radius: 7px;
+                overflow: hidden;
+
+                .progress {
+                    position: absolute;
+                    height: 200%;
+                    width: 200%;
+                    top: -50%;
+                    left: -50%;
+                    clip-path: polygon(50% -50%, 150% -50%, 150% 150%, 50% 150%);
+                }
+
+                &.right {
+                    transform: rotate(180deg);
+                    z-index: 3;
+                }
+                &.left .progress {
+                    z-index: 1;
+                }
+            }
+        }
+    }
+
+    div.currency {
+        margin-left: 6px;
+        margin-top: 4px;
+        width: 116px;
+        height: 36px;
+
+        .hudSC_mix_icn,
+        .hudHC_mix_icn {
+            left: 6px;
+            right: auto;
+            height: 16px;
+            width: 16px;
+            background-size: contain;
+        }
+
+        .hudSC_mix_icn {
+            top: 2px;
+        }
+
+        .hudHC_mix_icn {
+            top: auto;
+            bottom: 2px;
+        }
+
+        div[hero="soft_currency"],
+        div[hero="hard_currency"],
+        .scriptMoneyContainer {
+            position: absolute;
+            left: 28px;
+            font-size: 10px;
+        }
+
+        div[hero="soft_currency"],
+        .scriptMoneyContainer {
+            top: 2px;
+        }
+        div[hero="hard_currency"] {
+            bottom: 2px;
+        }
+
+        plus {
+            top: 0;
+            right: -10px;
+        }
+    }
+
+    #blessings-button {
+        margin-left: 20px;
+        margin-top: 4px;
+    }
+}
+
+body > div > header > div.energy_counter {
+    a {
+        text-decoration: none;
+    }
+
+    &[type="quest"],
+    &[type="fight"] {
+        .bar-wrapper {
+            width: 87px;
+            height: 36px;
+            margin: 4px 0 0 18px;
+
+            .bar:after {
+                height: 100%;
+                left: -1px;
+            }
+
+            .over {
+                flex-direction: column;
+                align-content: flex-start;
+                align-items: flex-start;
+                justify-content: flex-start;
+                padding-left: 11px;
+                padding-top: 1px;
+
+                .energy_counter_amount {
+                    font-size: 8px;
+
+                    span[energy] {
+                        font-size: 12px;
+                    }
+                }
+
+                [rel="count_txt"] {
+                    font-size: 7px;
+                    & > [rel="count"] {
+                        font-size: 7px;
+                    }
+                }
+
+                span {
+                    font-size: 8px;
+                }
+            }
+        }
+    }
+
+    plus {
+        right: -14px;
+    }
+
+    .energy_counter_icon span {
+        position: absolute;
+        top: 9px;
+        left: 16px;
+        z-index: 36;
+
+        &.hudKiss_mix_icn,
+        &.hudWorship_mix_icn {
+            height: 20px;
+            width: 20px;
+            background-size: contain;
+            top: 4px;
+        }
+        &.hudChallenge_mix_icn {
+            height: 20px;
+            width: 20px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-image: var(--challenge-token-icon);
+            filter: drop-shadow(0px 2px 0px #000000bf);
+            left: -123px;
+            top: 23px;
+        }
+        &.hudBattlePts_mix_icn {
+            left: 2px;
+        }
+        &.hudEnergy_mix_icn {
+            left: 8px;
+        }
+        &.hudWorship_mix_icn {
+            left: 2px;
+        }
+    }
+
+    &[type="kiss"],
+    &[type="challenge"],
+    &[type="worship"] {
+        .bar-wrapper {
+            width: 114px;
+            height: 15px;
+
+            .bar:after {
+                left: 3px;
+            }
+
+            .over {
+                font-size: 10px;
+
+                span {
+                    font-size: 10px;
+                }
+
+                [rel="count_txt"] {
+                    font-size: 8px;
+
+                    & > [rel="count"] {
+                        font-size: 8px;
+                    }
+                }
+            }
+        }
+    }
+
+    &[type="kiss"],
+    &[type="worship"] {
+        .bar-wrapper {
+            margin-top: 6px;
+        }
+    }
+
+    &[type="worship"] {
+        .bar-wrapper {
+            margin-left: 11px;
+        }
+    }
+
+    &[type="challenge"] {
+        .bar-wrapper {
+            margin-left: -114px;
+            margin-top: 24px;
+        }
+    }
+}
+
+body > div > header > div.script-bar-spacer {
+    margin: 12px 0 0 27px;
+
+    &[type="kiss"],
+    &[type="challenge"],
+    &[type="worship"] {
+        width: 114px;
+        height: 15px;
+    }
+
+    &[type="kiss"],
+    &[type="worship"] {
+        margin-top: 6px;
+    }
+
+    &[type="worship"] {
+        margin-left: 11px;
+    }
+
+    &[type="challenge"] {
+        margin-left: -114px;
+        margin-top: 24px;
+    }
+}
+
+#contains_all > nav > [rel="open"] {
+    top: 12px;
+}
+
+body#hh_comix > div > header div[rel="xp"] {
+    div[rel="level"] div[hero="level"] {
+        margin-top: 17px !important;
+    }
+
+    .bar-wrapper .over span {
+        font-weight: 400 !important;
+    }
+}
+
+@media #{$mediaDesktop} {
+    #homepage .social_links {
+        margin-top: -30px;
+    }
+}
+
+.script-booster-status-item {
+    .season_rewards_tier_info,
+    .item-price {
+        display: none;
+    }
+}
+
+#contests > div > div.right_part img {
+    height: 286px;
+    margin-top: -74px;
+}
+
+@media #{$mediaMobile} {
+    body > div > header {
+        & > a.hh_logo,
+        a#chat_btn,
+        & > div[rel="avatar"] {
+            margin-top: 4px;
+        }
+
+        div[rel="xp"] div[rel="level"] {
+            left: 154px;
+            top: 4px;
+
+            & > div {
+                flex-direction: column;
+            }
+
+            div[hero="level"] {
+                margin-top: 32px;
+            }
+        }
+
+        plus {
+            top: 4px;
+            border-radius: 8px;
+            width: 44px;
+            height: 60px;
+            right: -20px;
+
+            &[disabled] {
+                border-radius: 8px;
+            }
+
+            .hudPlus_mix_icn {
+                width: 24px;
+                height: 24px;
+                background-size: contain;
+            }
+        }
+
+        div.energy_counter {
+            &[type="quest"],
+            &[type="fight"] {
+                .energy_counter_icon {
+                    span.hudEnergy_mix_icn,
+                    span.hudBattlePts_mix_icn {
+                        left: 8px;
+                        top: 8px;
+                    }
+                    span.hudBattlePts_mix_icn {
+                        left: 0px;
+                    }
+                }
+
+                .bar-wrapper {
+                    height: 60px;
+                    width: 80px;
+                    margin-left: 14px;
+
+                    .bar:after {
+                        left: -8px;
+                    }
+
+                    .over {
+                        padding-left: 4px;
+                        margin-left: 2px;
+                        padding-top: 2px;
+
+                        .energy_counter_amount {
+                            margin-left: 8px;
+
+                            span[energy] {
+                                display: block;
+                                font-size: 16px;
+                            }
+                        }
+
+                        [rel="count_txt"] {
+                            margin-top: 6px;
+
+                            [rel="count"] {
+                                display: block;
+                                font-size: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .energy_counter_icon span {
+                &.hudKiss_mix_icn {
+                    top: 9px;
+                    left: 20px;
+                }
+                &.hudWorship_mix_icn {
+                    top: 9px;
+                    left: 6px;
+                }
+                &.hudChallenge_mix_icn {
+                    left: -119px;
+                    top: 40px;
+                }
+                &.hudBattlePts_mix_icn {
+                    left: 0px;
+                    top: 8px;
+                }
+                &.hudEnergy_mix_icn {
+                    left: 8px;
+                    top: 8px;
+                }
+            }
+
+            &[type="kiss"],
+            &[type="challenge"],
+            &[type="worship"] {
+                .bar-wrapper {
+                    height: 26px;
+
+                    .bar:after {
+                        left: -2px;
+                        width: calc(100% + 9px);
+                    }
+                }
+            }
+
+            &[type="kiss"] {
+                .bar-wrapper {
+                    margin-left: 26px;
+                }
+            }
+
+            &[type="challenge"] {
+                .bar-wrapper {
+                    margin-top: 36px;
+                }
+            }
+        }
+
+        .script-pop-timer {
+            margin-top: 42px;
+        }
+
+        .script-booster-status {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        div.currency {
+            height: 60px;
+
+            div[hero="soft_currency"],
+            .scriptMoneyContainer,
+            .hudSC_mix_icn {
+                top: 10px;
+            }
+
+            div[hero="hard_currency"],
+            .hudHC_mix_icn {
+                bottom: 10px;
+            }
+        }
+
+        img.new_notif.daily-reward-notif {
+            left: 24px;
+        }
+
+        #blessings-button {
+            height: 60px;
+            border-radius: 8px;
+        }
+    }
+
+    #contains_all > nav > [rel="open"] {
+        height: 60px;
+        width: 60px;
+    }
+
+    #homepage .social_links {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+
+        .redirect {
+            &.comix,
+            &.gay,
+            &.hentai {
+                margin-left: 0;
+            }
+        }
+    }
+
+    body#hh_comix > div > header div[rel="xp"] {
+        div[rel="level"] {
+            top: 8px;
+
+            div[hero="level"] {
+                margin-top: 40px !important;
+            }
+        }
+    }
+}

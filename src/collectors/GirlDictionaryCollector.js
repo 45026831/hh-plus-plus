@@ -79,14 +79,15 @@ class GirlDictionaryCollector {
     static collectFromHarem () {
         if (!$('#harem_whole').length) {return}
         Object.entries(girlsDataList).forEach(([girlId, girl]) => {
-            const {name, shards: girlShards, class: carac, rarity} = girl
+            const {name, shards: girlShards, class: carac, rarity, graded} = girl
             const shards = (girlShards !== undefined) ? girlShards : 100
             const girlClass = parseInt(carac, 10)
             const girlData = {
                 name,
                 shards,
                 class: girlClass,
-                rarity
+                rarity,
+                graded,
             }
             if (name) {
                 girlDictionary.set(girlId, girlData)

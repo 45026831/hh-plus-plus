@@ -86,8 +86,8 @@
 
 @media #{$mediaMobile} {
     .TrollsMenu {
-        width: 300%;
-        margin: 64px 0 0 -150px;
+        width: 500px;
+        margin: 62px 0 0 -96px;
         font-size: 16px;
         line-height: 22px;
         grid-template-columns: 1fr 1fr 1fr;
@@ -114,8 +114,8 @@
 
 @media #{$mediaDesktop} {
     .TrollsMenu {
-        width: 88%;
-        margin: 34px 0 0 34px;
+        width: 200px;
+        margin: 40px 0 0 -40px;
         font-size: 14px;
         line-height: 18px;
 

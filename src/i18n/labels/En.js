@@ -44,6 +44,7 @@ export const config = {
     teamsFilter: 'Teams filter',
     champions: 'Champions information',
     links: 'Shortcuts/Timers',
+    resourceBars: 'Resource bars / Booster tracking',
     seasonStats: 'Season stats',
     pachinkoNames: 'Show names in Pachinko',
     contestSummary: 'Saved Contests rewards summary',
@@ -186,6 +187,14 @@ export const league = {
     opponents: 'Opponents',
     leaguePoints: 'Points',
     avg: 'Average',
+}
+
+export const resourceBars = {
+    popsIn: 'PoPs in {{time}}',
+    popsReady: 'PoPs ready',
+    readyAt: 'Ready at {{time}}',
+    endAt: 'Ends at {{time}}',
+    fullAt: 'Full at {{time}}',
 }
 
 export const seasonStats = {

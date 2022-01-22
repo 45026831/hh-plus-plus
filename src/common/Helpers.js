@@ -174,6 +174,7 @@ class Helpers {
             let currentThreshold
             let currentThresholdOwned
             let currentThresholdMin
+            let awakeningLevel
 
             if (window.girls_requirement_amount) {
                 const thresholds = Object.keys(girls_requirement_amount)
@@ -188,6 +189,7 @@ class Helpers {
                     currentThreshold = awakening_requirements[thresholdIndex-1].cap_level
                     currentThresholdOwned = high_level_girl_owned[thresholdIndex]
                     currentThresholdMin = awakening_requirements[thresholdIndex].girls_required
+                    awakeningLevel = thresholdIndex
                 }
             }
 
@@ -195,7 +197,8 @@ class Helpers {
                 awakeningThreshold = {
                     currentThreshold,
                     currentThresholdOwned,
-                    currentThresholdMin
+                    currentThresholdMin,
+                    awakeningLevel
                 }
             } else {
                 canAwaken = false

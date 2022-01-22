@@ -242,9 +242,11 @@
     color: #24a0ff !important;
 }
 
-#harem_right .WikiLink a:hover {
-    color: #b14;
-    text-decoration: underline;
+#harem_right .WikiLink a {
+    text-decoration: none;
+    &:hover h3 {
+        text-shadow: 0 0 2px #000, 0 0 4px #fff;
+    }
 }
 
 .scene-costs-tooltip [cur]::before {

@@ -1,10 +1,14 @@
 import {
+    BoosterStatusCollector,
+    ClubStatusCollector,
     EventVillainsCollector,
     GirlDictionaryCollector,
     LeagueInfoCollector,
     MarketInfoCollector,
     SeasonStatsCollector,
-    TeamsCollector
+    SidequestStatusCollector,
+    TeamsCollector,
+    TimerCollector
 } from './collectors'
 import Helpers from './common/Helpers'
 import Config from './config'
@@ -24,6 +28,7 @@ import {
     MissionsBackgroundStyleTweak,
     MoneyAnimationStyleTweak,
     PachinkoNamesModule,
+    ResourceBars,
     SeasonStatsModule
 } from './modules'
 
@@ -37,6 +42,10 @@ const runScript = () => {
     SeasonStatsCollector.collect()
     MarketInfoCollector.collect()
     LeagueInfoCollector.collect()
+    TimerCollector.collect()
+    BoosterStatusCollector.collect()
+    ClubStatusCollector.collect()
+    SidequestStatusCollector.collect()
 
     // configurable modules
 
@@ -55,6 +64,7 @@ const runScript = () => {
     config.registerModule(new HaremInfoModule())
     config.registerModule(new LeagueInfoModule())
 
+    config.registerModule(new ResourceBars())
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())

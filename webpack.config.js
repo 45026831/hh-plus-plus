@@ -6,7 +6,7 @@ const BannerBuilder = require('./build/BannerBuilder')
 
 const banner = BannerBuilder.buildBanner()
 
-module.exports = {
+const config = {
     mode: 'production',
     entry: './src/index.js',
     output: {
@@ -45,11 +45,14 @@ module.exports = {
                         beautify: false,
                         preamble: banner,
                     },
+                    sourceMap: {
+                        url: 'inline',
+                    },
                 },
+                sourceMap: false,
             }),
         ],
     },
-    // devtool: 'inline-cheap-source-map',
     plugins: [
         new webpack.BannerPlugin({
             banner,
@@ -57,4 +60,13 @@ module.exports = {
             entryOnly: true
         })
     ]
+}
+
+module.exports = (env, argv) => {
+
+    if (argv.mode === 'development') {
+        config.output.filename = 'hh-plus-plus.dev.user.js'
+    }
+
+    return config
 }
