@@ -30,7 +30,7 @@ class BoosterStatusCollector {
     }
 
     static collectFromAjaxResponses () {
-        Helpers.onAjaxResponse(/action/, (response, opt) => {
+        Helpers.onAjaxResponse(/(action|class)/, (response, opt) => {
             const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || DEFAULT_BOOSTERS
 
             const searchParams = new URLSearchParams(opt.data)

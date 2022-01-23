@@ -2,7 +2,7 @@
 
 .TrollsMenu {
     position: absolute;
-    z-index: 35;
+    z-index: 99;
     display: none;
     border-radius: 0px 0px 8px 8px;
     background-color: rgba(0, 0, 0, 0.8);
@@ -82,6 +82,24 @@
     &:hover {
         color: #ff003e !important;
     }
+}
+
+// Pachinko page hack
+#contains_all {
+    pointer-events: none;
+
+    * {
+        pointer-events: all;
+    }
+}
+#pachinko_whole {
+    pointer-events: none;
+    .playing-zone {
+        pointer-events: all;
+    }
+}
+#content-unscaled {
+    z-index: 1;
 }
 
 @media #{$mediaMobile} {

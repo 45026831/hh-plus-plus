@@ -1,4 +1,6 @@
 @mixin text-stroke-hack {
     text-shadow: 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black,
         0 0 1px black, 0 0 1px black, 0 0 1px black, 0 0 1px black;
+    // Firefox hack: force subpixel rendering/anti-aliasing
+    -moz-transform: rotate(0.05deg);
 }

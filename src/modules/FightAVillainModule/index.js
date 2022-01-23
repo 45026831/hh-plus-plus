@@ -93,6 +93,9 @@ class FightAVillainModule extends CoreModule {
             $('#contains_all > header').children('[type=fight]').append(menuHtml.replace(/ {4}/g, '').replace(/\n/g, ''))
         })
 
+        // Fix pachinko
+        $('section:has(#pachinko_whole)').css('pointer-events', 'none')
+
         this.hasRun = true
     }
 
