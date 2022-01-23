@@ -126,7 +126,7 @@ export const marketGirlsFilter = {
 }
 
 export const marketXPAff = {
-    xp: '🠕 {{remainNext}} · ⭱ {{remainMax}}',
+    xp: '↑ {{remainNext}} · ⤒ {{remainMax}}',
     aff: 'Next: {{remainNext}}'
 }
 

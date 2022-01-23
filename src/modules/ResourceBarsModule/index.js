@@ -13,12 +13,18 @@ const {$} = Helpers
 const MODULE_KEY = 'resourceBars'
 
 const makeEnergyBarHTML = ({type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max, shortcutLink, fullIn}, label) => {
-    const fullAt = server_now_ts + fullIn
-    const formattedDate = `<span class=&quot;orange&quot;>${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
+    let tooltip
+    if (fullIn > 0) {
+        const fullAt = server_now_ts + fullIn
+        const formattedDate = `<span class=&quot;orange&quot;>${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
+        tooltip = label('fullAt', {time: formattedDate})
+    } else {
+        tooltip = `<span class=&quot;orange&quot;>${GT.design.Full}</span>`
+    }
     return `
         <div class="energy_counter" type="${type}" id="canvas_${type}_energy">
             <div class="energy_counter_bar">
-                <div class="energy_counter_icon"><span generic-tooltip="${label('fullAt', {time: formattedDate})}" class="${iconClass}"></span></div>
+                <div class="energy_counter_icon"><span generic-tooltip="${tooltip}" class="${iconClass}"></span></div>
                 <a href="${shortcutLink}">
                     <div class="bar-wrapper">
                         <div class="bar red" style="width:${100*Math.min(currentVal,max)/max}%"></div>
@@ -43,7 +49,7 @@ const CIRCULAR_THRESHOLDS = {
     0.2: 'red'
 }
 
-class ResourceBars extends CoreModule {
+class ResourceBarsModule extends CoreModule {
     constructor () {
         super({
             baseKey: MODULE_KEY,
@@ -116,10 +122,16 @@ class ResourceBars extends CoreModule {
             fight: 'hudBattlePts_mix_icn'
         }).forEach(([type, mixin]) => {
             const {recharge_time} = Hero.energies[type]
-            const fullAt = recharge_time + server_now_ts
-            const formattedDate = `<span class="orange">${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
 
-            $(`header .energy_counter[type=${type}] .${mixin}`).attr('generic-tooltip', this.label('fullAt', {time: formattedDate}))
+            let label
+            if (recharge_time > 0) {
+                const fullAt = recharge_time + server_now_ts
+                const formattedDate = `<span class="orange">${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
+                label = this.label('fullAt', {time: formattedDate})
+            } else {
+                label = `<span class="orange">${GT.design.Full}</span>`
+            }
+            $(`header .energy_counter[type=${type}] .${mixin}`).attr('generic-tooltip', label)
         })
     }
 
@@ -418,4 +430,4 @@ class ResourceBars extends CoreModule {
     }
 }
 
-export default ResourceBars
+export default ResourceBarsModule

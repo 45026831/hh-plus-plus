@@ -28,7 +28,7 @@ import {
     MissionsBackgroundStyleTweak,
     MoneyAnimationStyleTweak,
     PachinkoNamesModule,
-    ResourceBars,
+    ResourceBarsModule,
     SeasonStatsModule
 } from './modules'
 
@@ -64,7 +64,7 @@ const runScript = () => {
     config.registerModule(new HaremInfoModule())
     config.registerModule(new LeagueInfoModule())
 
-    config.registerModule(new ResourceBars())
+    config.registerModule(new ResourceBarsModule())
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())
