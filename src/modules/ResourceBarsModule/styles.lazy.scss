@@ -73,10 +73,12 @@ body > div > header {
     .script-pop-timer {
         text-decoration: none;
         color: #fff;
-        margin-top: 21px;
+        margin-top: 22px;
         margin-left: -114px;
         width: 114px;
-
+        .hh_bar {
+            height: 20px;
+        }
         .backbar {
             width: 114px;
             height: 7px;

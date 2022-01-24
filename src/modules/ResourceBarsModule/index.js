@@ -193,16 +193,20 @@ class ResourceBarsModule extends CoreModule {
             formattedDate = `<span class=&quot;orange&quot;>${new Date(times.pop * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
         }
 
-        const barWidth = 100 * (popDuration - popEndIn) / popDuration
+        const inProgress = popEndIn > 0
 
+        let barWidth = 100
+        if (inProgress) {
+            barWidth = 100 * (popDuration - popEndIn) / popDuration
+        }
 
         const $barHTML = $(`
             <a class="script-pop-timer" href="/activities.html?tab=pop">
-                <div class="hh_bar finish_in_bar">
-                    <div class="backbar borderbar" ${formattedDate ? `generic-tooltip="${this.label('readyAt', {time: formattedDate})}"` : ''}>
-                        <div class="frontbar pinkbar" style="width: ${barWidth}%"></div>
+                <div class="hh_bar finish_in_bar" ${inProgress ? `generic-tooltip="${this.label('readyAt', {time: formattedDate})}"` : ''}>
+                    <div class="backbar borderbar">
+                        <div class="frontbar ${inProgress ? 'pinkbar' : 'bluebar'}" style="width: ${barWidth}%"></div>
                     </div>
-                    <div class="text">${popEndIn > 0 ? this.label('popsIn', {time: `<span>${window.format_time_short(popEndIn)}</span>`}) : this.label('popsReady')}</div>
+                    <div class="text">${inProgress ? this.label('popsIn', {time: `<span>${window.format_time_short(popEndIn)}</span>`}) : this.label('popsReady')}</div>
                 </div>
             </a>
         `)
@@ -212,6 +216,7 @@ class ResourceBarsModule extends CoreModule {
         if (popEndIn > 0) {
             const onComplete = () => {
                 $barHTML.find('.text').text(this.label('popsReady'))
+                $barHTML.find('.pinkbar').addClass('bluebar').removeClass('pinkbar')
             }
             const noop = ()=>{}
             const dummyElm = {show: noop, hide: noop, selector: ''}
