@@ -62,7 +62,7 @@ class BoosterStatusCollector {
                         clonedData.id_m_i = [id_m_i]
                     }
                     if (isMythic) {
-                        boosterStatus.mythic.push(clonedData)
+                        boosterStatus.mythic.push({...clonedData, usages_remaining: `${clonedData.usages}`})
                     } else {
                         boosterStatus.normal.push({...clonedData, endAt: response.lifetime})
                     }

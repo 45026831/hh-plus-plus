@@ -214,7 +214,7 @@ class ResourceBarsModule extends CoreModule {
                 $barHTML.find('.text').text(this.label('popsReady'))
             }
             const noop = ()=>{}
-            const dummyElm = {show: noop, hide: noop}
+            const dummyElm = {show: noop, hide: noop, selector: ''}
             const oldMobileCheck = window.is_mobile_size
             window.is_mobile_size = () => false
             HHTimers.initBarTimer(popDuration, popEndIn, dummyElm, {barElm: $barHTML.find('.frontbar'), textElm: $barHTML.find('div.text>span')}, onComplete)
