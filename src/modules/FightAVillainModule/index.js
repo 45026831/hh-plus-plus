@@ -94,7 +94,7 @@ class FightAVillainModule extends CoreModule {
         })
 
         // Fix pachinko
-        $('section:has(#pachinko_whole)').css('pointer-events', 'none')
+        // $('section:has(#pachinko_whole)').css('pointer-events', 'none')
 
         this.hasRun = true
     }

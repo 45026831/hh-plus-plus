@@ -43,7 +43,7 @@ export const config = {
     logSimFight : 'Detailed logging in the browser console',
     teamsFilter: 'Teams filter',
     champions: 'Champions information',
-    links: 'Shortcuts/Timers',
+    homeScreen: 'Home Screen Shortcuts & Timers',
     resourceBars: 'Resource bars / Booster tracking',
     seasonStats: 'Season stats',
     pachinkoNames: 'Show names in Pachinko',
@@ -195,6 +195,13 @@ export const resourceBars = {
     readyAt: 'Ready at {{time}}',
     endAt: 'Ends at {{time}}',
     fullAt: 'Full at {{time}}',
+}
+
+export const homeScreen = {
+    clubChamp: 'Club Champion',
+    completeIn: 'Complete in ',
+    newMissionsIn: 'New missions in ',
+    missionsReady: 'Missions ready',
 }
 
 export const seasonStats = {

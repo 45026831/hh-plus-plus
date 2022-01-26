@@ -15,8 +15,8 @@ const countGirls = () => {
 
     let totalGirls = 0
     girlDictionary.forEach(girl => {
-        const {own, nb_grades} = girl
-        if (own && parseInt(nb_grades) > 1) {
+        const {shards, grade} = girl
+        if (shards === 100 && grade > 1) {
             totalGirls++
         }
     })

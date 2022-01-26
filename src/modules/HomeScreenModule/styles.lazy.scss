@@ -1,0 +1,139 @@
+@import "../../common/constants.scss";
+
+.script-home-timer {
+    color: #999;
+    margin-top: -5px;
+}
+
+#homepage {
+    & > a > .position > span {
+        height: auto;
+        min-height: 26px;
+
+        @media #{$mediaMobile} {
+            height: auto;
+            min-height: 44px;
+        }
+    }
+    & > a[rel="pachinko"] > .position > span {
+        @media #{$mediaMobile} {
+            width: 140px;
+        }
+        @media #{$mediaDesktop} {
+            width: 110px;
+        }
+    }
+
+    & > a[rel="shop"] > .position > span {
+        @media #{$mediaMobile} {
+            width: 130px;
+        }
+        @media #{$mediaDesktop} {
+            width: 100px;
+        }
+    }
+
+    & > a[rel="clubs"] {
+        // Move clubs button out of the way of seasons
+        top: 148px;
+        left: 151px;
+
+        @media #{$mediaMobile} {
+            top: 128px;
+            left: 203px;
+            z-index: 1;
+        }
+
+        & > .position {
+            width: auto;
+
+            & > span {
+                @media #{$mediaMobile} {
+                    width: 130px;
+                }
+                @media #{$mediaDesktop} {
+                    width: 100px;
+                }
+            }
+        }
+    }
+
+    & > a[rel="leaderboard"] {
+        height: 167px;
+    }
+
+    & > a[rel="sex-god-path"] .position {
+        @media #{$mediaMobile} {
+            top: 84px;
+        }
+    }
+}
+
+.champions_flat_icn {
+    background-image: var(--champions-icon);
+}
+
+.pantheon_flat_icn {
+    background-image: var(--pantheon-icon);
+}
+
+.script-home-shortcut-container {
+    display: flex;
+    height: 30px;
+    margin-top: -38px;
+    margin-bottom: 8px;
+    justify-content: center;
+
+    @media #{$mediaMobile} {
+        height: 40px;
+        margin-top: -48px;
+    }
+}
+
+.script-home-shortcut {
+    width: 30px;
+    height: 30px;
+    margin-left: 3px;
+    margin-right: 3px;
+
+    @media #{$mediaMobile} {
+        width: 40px;
+        height: 40px;
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .clubChampions_flat_icn,
+    .champions_flat_icn,
+    .pantheon_flat_icn {
+        height: 16px;
+        width: 16px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+
+        @media #{$mediaMobile} {
+            height: 22px;
+            width: 22px;
+        }
+    }
+}
+
+#home_missions_bar-script {
+    position: absolute;
+    top: 395px;
+    left: 595px;
+    font-size: 11px;
+
+    .backbar {
+        top: 20px;
+        height: 7px;
+        width: 140px;
+        overflow: hidden;
+    }
+
+    .text {
+        top: 9px;
+        width: 150px;
+    }
+}

@@ -5,6 +5,7 @@ const defaultTimes = {
     pop: 0,
     popDuration: 0,
     champ: 0,
+    champs: {},
     clubChamp: 0,
     gp: 0,
 }
@@ -23,7 +24,21 @@ class TimerCollector {
             if (Helpers.isCurrentPage('activities')) {
                 TimerCollector.collectPoPTime()
             }
-
+            if (Helpers.isCurrentPage('pachinko')) {
+                TimerCollector.collectPachinkoTime()
+                TimerCollector.collectRealtimePachinkoUpdateFromAjax()
+            }
+            if (Helpers.isCurrentPage('club-champion') || Helpers.isCurrentPage('clubs')) {
+                TimerCollector.collectClubChampionTime()
+                TimerCollector.collectRealtimeClubChampionUpdateFromAjax()
+            }
+            if (Helpers.isCurrentPage('champions-map')) {
+                TimerCollector.collectChampionTimesFromMap()
+            }
+            if (Helpers.isCurrentPage('champions/')) {
+                TimerCollector.collectChampionTime()
+                TimerCollector.collectRealtimeChampionUpdateFromAjax()
+            }
         })
     }
 
@@ -44,6 +59,150 @@ class TimerCollector {
         times.popDuration = soonest.duration
 
         saveTimes(times)
+    }
+
+    static collectPachinkoTime() {
+        const times = loadTimes()
+
+        const {server_now_ts, pachinkoVar} = window
+        const {next_game} = pachinkoVar
+
+        if (next_game > 86400) {
+            // When updated in real time, it's set to a full millisecond timestamp instead of seconds until...
+            times.gp = Math.round(next_game / 1000)
+        } else {
+            times.gp = server_now_ts + next_game
+        }
+
+        saveTimes(times)
+    }
+    static collectRealtimePachinkoUpdateFromAjax() {
+        Helpers.onAjaxResponse(/action=play/, (response) => {
+            if (response.success) {
+                TimerCollector.collectPachinkoTime()
+            }
+        })
+    }
+
+    static collectClubChampionTime () {
+        const times = loadTimes()
+
+        const {championData, clubChampionsData} = window;
+
+        [championData, clubChampionsData].forEach(data => {
+            if (data && data.timers && (data.timers.teamRest || data.timers.championRest)) {
+                times.clubChamp = parseInt(data.timers.teamRest || data.timers.championRest)
+            }
+        })
+
+        saveTimes(times)
+    }
+    static collectRealtimeClubChampionUpdateFromAjax() {
+        Helpers.onAjaxResponse(/battle_type=club_champion/, (response) => {
+            if (!response.success) {
+                return
+            }
+
+            const times = loadTimes()
+
+            if (response.final.attacker_ego > 0) {
+                times.clubChamp = window.server_now_ts + (24*60*60)
+            } else {
+                times.clubChamp = window.server_now_ts + (15*60)
+            }
+
+            saveTimes(times)
+        })
+    }
+
+    static collectChampionTimesFromMap () {
+        const times = loadTimes()
+
+        const champs = {}
+        let soonestTime = 0
+
+        const idExtractRegex = /champions\/(?<id>\d+)/
+
+        $('a.champion-lair').each((i,el) => {
+            const $el = $(el)
+            const href = $el.attr('href')
+
+            const matches = href.match(idExtractRegex)
+            if (!matches || !matches.groups) {
+                return
+            }
+
+            const {groups: {id}} = matches
+            const champ = {
+                available: true
+            }
+
+            const $timer = $el.find('[timer]')
+
+            if ($timer.length) {
+                champ.time = parseInt($timer.attr('timer'))
+
+                if (!soonestTime || champ.time < soonestTime) {
+                    soonestTime = champ.time
+                }
+            }
+
+            champs[id] = champ
+        })
+
+        times.champs = champs
+        times.champ = soonestTime
+        saveTimes(times)
+    }
+    static collectChampionTime () {
+        const times = loadTimes()
+
+        const {championData, server_now_ts} = window
+
+        if (championData && championData.timers && championData.timers && !Array.isArray(championData.timers)) {
+            const {champion: {id}, timers: {teamRest:teamRestStr, championRest:championRestStr}} = championData
+
+            let newTime
+            if (teamRestStr) {
+                newTime = parseInt(teamRestStr)
+            } else if (championRestStr) {
+                newTime = parseInt(championRestStr)
+            }
+
+            times.champs[id] = {
+                available: true,
+                time: newTime
+            }
+
+            if (newTime && (times.champ < server_now_ts || times.champ > newTime)) {
+                times.champ = newTime
+            }
+        }
+
+        saveTimes(times)
+    }
+    static collectRealtimeChampionUpdateFromAjax() {
+        Helpers.onAjaxResponse(/battle_type=champion/, (response) => {
+            if (!response.success) {
+                return
+            }
+
+            const times = loadTimes()
+            const id = response.defender.id
+            let newTime
+            if (response.final.attacker_ego > 0) {
+                newTime = window.server_now_ts + (24*60*60)
+            } else {
+                newTime = window.server_now_ts + (15*60)
+            }
+
+            times.champs[id].time = newTime
+            if (times.champ > newTime || times.champ < window.server_now_ts) {
+                times.champ = newTime
+            }
+
+            saveTimes(times)
+        })
     }
 }
 

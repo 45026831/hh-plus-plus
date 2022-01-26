@@ -19,6 +19,7 @@ import {
     FightAVillainModule,
     GemStockModule,
     HaremInfoModule,
+    HomeScreenModule,
     LeagueInfoModule,
     MarketEquipsFilterModule,
     MarketGirlsFilterModule,
@@ -65,6 +66,7 @@ const runScript = () => {
     config.registerModule(new LeagueInfoModule())
 
     config.registerModule(new ResourceBarsModule())
+    config.registerModule(new HomeScreenModule())
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())

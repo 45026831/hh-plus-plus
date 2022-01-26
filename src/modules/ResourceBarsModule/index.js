@@ -217,6 +217,10 @@ class ResourceBarsModule extends CoreModule {
             const onComplete = () => {
                 $barHTML.find('.text').text(this.label('popsReady'))
                 $barHTML.find('.pinkbar').addClass('bluebar').removeClass('pinkbar')
+                if (window.notificationData && window.notificationData.activities) {
+                    window.notificationData.activities.push('reward')
+                    window.displayNotifications()
+                }
             }
             const noop = ()=>{}
             const dummyElm = {show: noop, hide: noop, selector: ''}

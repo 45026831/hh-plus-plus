@@ -85,22 +85,22 @@
 }
 
 // Pachinko page hack
-#contains_all {
-    pointer-events: none;
+// #contains_all {
+//     pointer-events: none;
 
-    & > * {
-        pointer-events: all;
-    }
-}
-#pachinko_whole {
-    pointer-events: none;
-    .playing-zone {
-        pointer-events: all;
-    }
-}
-#content-unscaled {
-    z-index: 1;
-}
+//     & > * {
+//         pointer-events: all;
+//     }
+// }
+// #pachinko_whole {
+//     pointer-events: none;
+//     .playing-zone {
+//         pointer-events: all;
+//     }
+// }
+// #content-unscaled {
+//     z-index: 1;
+// }
 
 @media #{$mediaMobile} {
     .TrollsMenu {
