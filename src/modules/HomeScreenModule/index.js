@@ -121,15 +121,19 @@ class HomeScreenModule extends CoreModule {
         const {duration, remaining_time, next_missions} = missions_datas
 
         const existingTimers = ['#home_missions_bar1', '#home_missions_bar2']
-
-        existingTimers.forEach(selector => {
-            const existingTimer = Object.values(HHTimers.timers).find(timer => timer.$elm.selector === selector)
+        const findAndRemoveTimer = selector => {
+            const existingTimer = Object.values(HHTimers.timers).find(timer => timer.$elm && timer.$elm.selector === selector)
 
             if (existingTimer) {
                 existingTimer.$elm.hide()
                 existingTimer.destroy()
             }
-        })
+        }
+
+        existingTimers.forEach(findAndRemoveTimer)
+        new MutationObserver(() => {
+            existingTimers.forEach(findAndRemoveTimer)
+        }).observe(document.getElementById('homepage'), {childList:true})
 
         const completedText = this.label('missionsReady')
         let text = completedText
