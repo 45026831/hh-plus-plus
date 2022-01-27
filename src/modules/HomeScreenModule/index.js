@@ -38,6 +38,7 @@ class HomeScreenModule extends CoreModule {
             this.addTimers()
             this.addShortcuts()
             this.fixMissionsTimer()
+            this.forceActivitiesTab()
         })
 
         this.hasRun = true
@@ -188,6 +189,10 @@ class HomeScreenModule extends CoreModule {
             HHTimers.initBarTimer(timerDuration, remaining, dummyElm, {barElm: $newBar.find('.frontbar'), textElm: $newBar.find('div.text>span')}, onComplete)
             window.is_mobile_size = oldMobileCheck
         }
+    }
+
+    forceActivitiesTab () {
+        $('a[rel=activities]').attr('href', '/activities.html?tab=missions')
     }
 }
 
