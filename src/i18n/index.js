@@ -86,13 +86,13 @@ class I18n {
             }
         }
         if (updown === 1) {
-            return +(Math.ceil(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol
+            return I18n.nThousand(+(Math.ceil(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits)) + power[i].symbol
         }
         else if (updown === 0) {
-            return +(Math.round(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol
+            return I18n.nThousand(+(Math.round(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits)) + power[i].symbol
         }
         else if (updown === -1) {
-            return +(Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits) + power[i].symbol
+            return I18n.nThousand(+(Math.floor(num / power[i].value * Math.pow(10, digits)) / Math.pow(10, digits)).toFixed(digits)) + power[i].symbol
         }
     }
 }
