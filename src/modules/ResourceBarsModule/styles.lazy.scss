@@ -71,6 +71,16 @@ body > div > header {
         }
     }
 
+    .promo_fight_discount_text,
+    .promo_profile_discount_text,
+    .promo_quest_discount_text {
+        top: 38px;
+    }
+
+    .promo_fight_discount_text {
+        left: 237px;
+    }
+
     .script-pop-timer {
         text-decoration: none;
         color: #fff;
@@ -614,4 +624,11 @@ body#hh_comix > div > header div[rel="xp"] {
             }
         }
     }
+}
+
+body > div > header .promo_fight_discount_text,
+body > div > header .promo_profile_discount_text,
+body > div > header .promo_quest_discount_text {
+    left: 237px;
+    top: 38px;
 }
