@@ -79,6 +79,10 @@ body > div > header {
 
     .promo_fight_discount_text {
         left: 237px;
+
+        @media #{$mediaMobile} {
+            left: 308px;
+        }
     }
 
     .script-pop-timer {
@@ -624,11 +628,4 @@ body#hh_comix > div > header div[rel="xp"] {
             }
         }
     }
-}
-
-body > div > header .promo_fight_discount_text,
-body > div > header .promo_profile_discount_text,
-body > div > header .promo_quest_discount_text {
-    left: 237px;
-    top: 38px;
 }
