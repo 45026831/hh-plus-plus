@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.46
+// @version         0.37.47
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -4395,26 +4395,6 @@ function moduleSim() {
 }
 
 // == Helper functions for probability calculations ==
-// Calculate the chance to get a sequence with given amount of crits and non-crits at a given critchance
-function calculateChance(crits, hits, critchance) {
-    // returns (crits+hits)!/(crits!*hits!) * critchance^crits * (1-critchance)^hits
-    let binCoeffNumerator = 1;
-    for(let i = crits+hits; i>crits; i--) {
-        binCoeffNumerator *= i;
-    }
-
-    let binCoeffDenominator = 1;
-    for(let j = 1; j<=hits; j++) {
-        binCoeffDenominator *= j;
-    }
-
-    return binCoeffNumerator/binCoeffDenominator * Math.pow(critchance, crits) * Math.pow(1-critchance, hits);
-}
-// Calculate the chance to finish a match with a crit even though a normal hit would have been enough
-function calculateOverkillChance(crits, hits, critchance) {
-    if (hits==0) return 0;
-    return calculateChance(crits, hits-1, critchance)*critchance;
-}
 function calculateDominationBonuses(playerElements, opponentElements) {
     const bonuses = {
         player: {
@@ -4466,20 +4446,19 @@ function findBonusFromSynergies(synergies, element, teamGirlSynergyBonusesMissin
     return bonus_multiplier + (teamGirlSynergyBonusesMissing ? counts[element]*team_bonus_per_girl : 0)
 }
 
-function calculateSynergiesFromTeamMemberElements(elements) {
+function calculateSynergiesFromTeamMemberElements(elements, ignorePassives) {
     const counts = countElementsInTeam(elements)
 
-    // Only care about those not included in the stats already: fire, stone, sun and water
+    // Only care about those not included in the stats already: fire, stone and water
     // Assume max harem synergy
     const girlDictionary = (typeof(localStorage.HHPNMap) == "undefined") ? new Map(): new Map(JSON.parse(localStorage.HHPNMap));
     const girlCount = girlDictionary.size || 800
     const girlsPerElement = Math.min(girlCount / 8, 100)
 
     return {
-        critDamage: (0.0035 * girlsPerElement) + (0.1  * counts.fire),
-        critChance: (0.0007 * girlsPerElement) + (0.02 * counts.stone),
-        defReduce:  (0.0007 * girlsPerElement) + (0.02 * counts.sun),
-        healOnHit:  (0.001  * girlsPerElement) + (0.03 * counts.water)
+        critDamage: (ignorePassives ? 0 : (0.0035 * girlsPerElement)) + (0.1  * counts.fire),
+        critChance: (ignorePassives ? 0 : (0.0007 * girlsPerElement)) + (0.02 * counts.stone),
+        healOnHit:  (ignorePassives ? 0 : (0.001  * girlsPerElement)) + (0.03 * counts.water)
     }
 }
 
@@ -4497,171 +4476,6 @@ function calculateThemeFromElements(elements) {
 
 function calculateCritChanceShare(ownHarmony, otherHarmony) {
     return 0.3*ownHarmony/(ownHarmony+otherHarmony)
-}
-
-// Calculate the chance to win the fight
-function calcWinProbability(player, opponent) {
-    const logging = loadSetting("logSimFight");
-    // check edge cases and shortcuts
-    if (player.dmg <= 0) {
-        return {
-            scoreStr: "0%",
-            scoreClass: "minus"
-        };
-    } else if (opponent.dmg <= 0) {
-        return {
-            scoreStr: "100%",
-            scoreClass: "plus"
-        };
-    } else if (Math.floor(1+player.hp/opponent.dmg)*2*player.dmg < opponent.hp) {
-        // guaranteed loss
-        return {
-            scoreStr: "0%",
-            scoreClass: "minus"
-        };
-    } else if (Math.ceil(opponent.hp/player.dmg-1)*2*opponent.dmg < player.hp) {
-        // guaranteed win
-        return {
-            scoreStr: "100%",
-            scoreClass: "plus"
-        };
-    }
-
-    // Amount of non-crit hits we can take without losing
-    const tolerableHits = Math.ceil(player.hp/opponent.dmg)-1;
-
-    let winChance = 0;
-    let loseChance = 0;
-    let playerCrits = 0;
-    let playerNormalHits = Math.ceil(opponent.hp/player.dmg);
-
-    if(logging) console.log('Probability calculation log for: ' + opponent.name);
-    do {
-        if(logging) console.log(' Scenario: ' + playerCrits + ' crits and ' + playerNormalHits + ' hits');
-        let scenarioLikelihood = calculateChance(playerCrits, playerNormalHits, player.critchance);
-        let overkillChance = calculateOverkillChance(playerCrits, playerNormalHits, player.critchance);
-        if(logging) console.log('  Scenario likelihood: ' + 100*scenarioLikelihood + ' % + ' + 100*overkillChance + ' % chance for overkill');
-        scenarioLikelihood += overkillChance;
-
-        let rounds = playerCrits + playerNormalHits;
-        let tolerableCrits = tolerableHits-rounds+1;
-        if(logging) console.log('  Opponent is allowed to crit ' + tolerableCrits + ' times');
-
-        if (tolerableCrits < 0) {
-            if(logging) console.log('  => impossible, we lose');
-            loseChance += scenarioLikelihood;
-        } else if (tolerableCrits >= rounds-1) {
-            if(logging) console.log ('  => guaranteed, we win');
-            winChance += scenarioLikelihood;
-        } else {
-            let opponentLikelihood = 0;
-            for(let i=0; i<=tolerableCrits; i++) {
-                let tmp = calculateChance(i, rounds-i-1, opponent.critchance);
-                if(logging) console.log('   probability for ' + i + ' crits and ' + (rounds-i-1) + ' hits: ' + 100*tmp + ' %');
-                opponentLikelihood += tmp;
-            }
-            if(logging) console.log('  ' + 100*opponentLikelihood + ' % chance that this condition is fulfilled');
-            if(logging) console.log('  => ' + 100*opponentLikelihood*scenarioLikelihood + ' % to win through this scenario');
-            winChance += opponentLikelihood*scenarioLikelihood;
-            loseChance += (1-opponentLikelihood)*scenarioLikelihood;
-        }
-
-        playerCrits++;
-        playerNormalHits-=2;
-    } while (playerNormalHits >= 0);
-
-    if(logging) console.log(100*winChance+ ' % chance to win vs. ' + 100*loseChance + ' % chance to lose => ' + 100*(winChance+loseChance) + ' % total coverage.');
-
-    return {
-        scoreStr: nRounding(100*winChance, 2, -1) + '%',
-        scoreClass: winChance>0.9?"plus":winChance<0.5?"minus":"close"
-    };
-}
-
-function calcLeagueProbabilities(player, opponent) {
-    const logging = loadSetting("logSimFight");
-    let ret = new Array(26); // Array with probabilities, key = points
-
-    if (player.dmg <= 0) {
-        ret[3]=1;
-        return ret;
-    } else if (opponent.dmg <= 0) {
-        ret[25]=1;
-        return ret;
-    }
-
-    const requiredHitsForPlayerDeath = Math.ceil(player.hp/opponent.dmg);
-    const requiredHitsForOpponentDeath = Math.ceil(opponent.hp/player.dmg);
-
-    if(logging) console.log('Probability calculation log for: ' + opponent.name);
-    // Lose scenarios
-    let opponentCrits = Math.floor(requiredHitsForPlayerDeath/2);
-    let opponentHits = requiredHitsForPlayerDeath%2;
-    do {
-        let scenarioLikelihood = calculateChance(opponentCrits, opponentHits, opponent.critchance)
-            + calculateOverkillChance(opponentCrits, opponentHits, opponent.critchance);
-        let rounds = opponentCrits+opponentHits;
-        let tolerablePlayerCrits = Math.min(rounds, requiredHitsForOpponentDeath-rounds-1);
-        if(logging) {
-            console.log(' Scenario: Opponent crits ' + opponentCrits + ' and hits ' + opponentHits + ' times (' + 100*scenarioLikelihood + ' %)');
-            console.log('  Opponent wins if player crits ' + tolerablePlayerCrits + ' times or less');
-        }
-        if(tolerablePlayerCrits < 0) {
-            if(logging) console.log('   => impossible');
-            break; // less crits won't make it better
-        }
-        for(let playerCrits=0; playerCrits <= tolerablePlayerCrits; playerCrits++) {
-            let playerHits = rounds-playerCrits;
-            let opponentHpLeft = opponent.hp-player.dmg*(playerHits+2*playerCrits);
-            let points = 3 + Math.ceil(10-10*opponentHpLeft/opponent.hp);
-            let totalResultChance = scenarioLikelihood * calculateChance(playerCrits, playerHits, player.critchance);
-            if(logging) {
-                console.log('   If player crits ' + playerCrits + ' and hits ' + playerHits + ' times, opponent has ' + opponentHpLeft +
-                    ' Hp left (' + (100*opponentHpLeft/opponent.hp).toFixed(2) + ' %) => ' + points +
-                    ' points (Probability for this outcome: ' + 100*totalResultChance + ' %)');
-            }
-            ret[points] = (ret[points]||0) + totalResultChance;
-        }
-
-        opponentCrits--;
-        opponentHits+=2;
-    } while (opponentCrits >= 0);
-
-    // Win scenarios
-    let playerCrits = Math.floor(requiredHitsForOpponentDeath/2);
-    let playerHits = requiredHitsForOpponentDeath%2;
-    do {
-        let scenarioLikelihood = calculateChance(playerCrits, playerHits, player.critchance)
-            + calculateOverkillChance(playerCrits, playerHits, player.critchance);
-        let rounds = playerCrits+playerHits;
-        let tolerableOpponentCrits = Math.min(rounds-1, requiredHitsForPlayerDeath-rounds);
-        if(logging) {
-            console.log(' Scenario: Player crits ' + playerCrits + ' and hits ' + playerHits + ' times (' + 100*scenarioLikelihood + ' %)');
-            console.log('  Player wins if opponent crits ' + tolerableOpponentCrits + ' times or less');
-        }
-        if(tolerableOpponentCrits < 0) {
-            if(logging) console.log('   => impossible');
-            break; // less crits won't make it better
-        }
-        for(opponentCrits=0; opponentCrits <= tolerableOpponentCrits; opponentCrits++) {
-            opponentHits = rounds-opponentCrits-1;
-            let playerHpLeft = player.hp-opponent.dmg*(opponentHits+2*opponentCrits);
-            let points = 15 + Math.ceil(10*playerHpLeft/player.hp);
-            let totalResultChance = scenarioLikelihood * calculateChance(opponentCrits, opponentHits, opponent.critchance);
-            if(logging) {
-                console.log('   If opponent crits ' + opponentCrits + ' and hits ' + opponentHits + ' times, player has ' + playerHpLeft +
-                    ' Hp left (' + (100*playerHpLeft/player.hp).toFixed(2) + ' %) => ' + points +
-                    ' points (Probability for this outcome: ' + 100*totalResultChance + ' %)');
-            }
-            ret[points] = (ret[points]||0) + totalResultChance;
-        }
-
-        playerCrits--;
-        playerHits+=2;
-    } while (playerCrits >= 0);
-    if(logging) console.log(`If you win: opponent ego at end [${nThousand(opponent.hp - (requiredHitsForOpponentDeath * player.dmg))}]; ego just before loss [${nThousand(opponent.hp - ((requiredHitsForOpponentDeath - 1) * player.dmg))}]`)
-    if(logging) console.log('Total % covered (should be 100): ' + 100*ret.reduce((a,b)=>a+b,0));
-    return ret;
 }
 
 function calculateBattleProbabilities (player, opponent) {
@@ -6906,29 +6720,51 @@ function moduleBattleSim() {
         playerDef = parseLocaleRoundedInt(playerStats[2].innerText);
         playerHarmony = parseLocaleRoundedInt(playerStats[3].innerText);
 
+        const $playerData = $('#player-panel')
+        const playerSynergyDataJSON = $playerData.find('.icon-area').attr('synergy-data')
+        const playerSynergies = JSON.parse(playerSynergyDataJSON)
+        const playerTeam = $playerData.find('.team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
+        const playerTeamMemberElements = playerTeam.map(({element_data})=>element_data.type)
+        const playerElements = calculateThemeFromElements(playerTeamMemberElements)
+        const playerBonuses = {
+            critDamage: findBonusFromSynergies(playerSynergies, 'fire'),
+            critChance: findBonusFromSynergies(playerSynergies, 'stone'),
+            healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
+        }
+
         const opponentStats = $('#pre-battle #opponent-panel .stat');
         opponentAtk = parseLocaleRoundedInt(opponentStats[0].innerText);
         opponentEgo = parseLocaleRoundedInt(opponentStats[1].innerText);
         opponentDef = parseLocaleRoundedInt(opponentStats[2].innerText);
         opponentHarmony = parseLocaleRoundedInt(opponentStats[3].innerText);
 
+        const $opponentData = $('#opponent-panel')
+        const opponentTeam = $opponentData.find('.team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
+        const opponentTeamMemberElements = opponentTeam.map(({element})=>element)
+        const opponentElements = calculateThemeFromElements(opponentTeamMemberElements)
+        const opponentBonuses = calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements, true)
+
+        const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
+
         const player = {
-            hp: playerEgo,
+            hp: playerEgo * (1 + dominanceBonuses.player.ego),
             dmg: playerAtk - opponentDef,
-            critchance: 0.3*playerHarmony/(playerHarmony+opponentHarmony)
+            critchance: calculateCritChanceShare(playerHarmony, opponentHarmony) + dominanceBonuses.player.chance + playerBonuses.critChance,
+            bonuses: playerBonuses
         };
         const opponent = {
-            hp: opponentEgo,
+            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
             dmg: opponentAtk - playerDef,
-            critchance: 0.3-player.critchance,
-            name: $('#opponent-panel .hero-name-container').text()
+            critchance: calculateCritChanceShare(opponentHarmony, playerHarmony) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
+            name: $('#opponent-panel .hero-name-container').text(),
+            bonuses: opponentBonuses
         };
 
-        const simu = calcWinProbability(player, opponent);
+        const simu = calculateBattleProbabilities(player, opponent);
 
         $('#opponent-panel .average-lvl')
             .wrap('<div class="gridWrapper"></div>')
-            .after('<div class="matchRating ' + simu.scoreClass + '">' + simu.scoreStr + '</div>');
+            .after(`<div class="matchRating ${simu.scoreClass}">${nRounding(100*simu.win, 2, -1)}%</div>`);
     }
 
     calculatePower();
