@@ -120,12 +120,16 @@ class HomeScreenModule extends CoreModule {
 
         const {duration, remaining_time, next_missions} = missions_datas
 
-        const existingTimer = Object.values(HHTimers.timers).find(timer => timer.$elm.selector === '#home_missions_bar1')
+        const existingTimers = ['#home_missions_bar1', '#home_missions_bar2']
 
-        if (existingTimer) {
-            existingTimer.$elm.hide()
-            existingTimer.destroy()
-        }
+        existingTimers.forEach(selector => {
+            const existingTimer = Object.values(HHTimers.timers).find(timer => timer.$elm.selector === selector)
+
+            if (existingTimer) {
+                existingTimer.$elm.hide()
+                existingTimer.destroy()
+            }
+        })
 
         const completedText = this.label('missionsReady')
         let text = completedText
