@@ -77,11 +77,29 @@ body > div > header {
         top: 38px;
     }
 
+    .promo_quest_discount_text {
+        left: 119px;
+
+        @media #{$mediaMobile} {
+            left: 199px;
+        }
+    }
+
     .promo_fight_discount_text {
         left: 237px;
 
         @media #{$mediaMobile} {
             left: 308px;
+        }
+    }
+
+    .promo_profile_discount_text {
+        left: 44px;
+        top: 46px;
+
+        @media #{$mediaMobile} {
+            left: 116px;
+            top: 67px !important;
         }
     }
 

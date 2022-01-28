@@ -40,12 +40,13 @@
 
         @media #{$mediaMobile} {
             top: 128px;
-            left: 203px;
+            left: 194px;
             z-index: 1;
         }
 
         & > .position {
             width: auto;
+            left: 44px;
 
             & > span {
                 @media #{$mediaMobile} {
