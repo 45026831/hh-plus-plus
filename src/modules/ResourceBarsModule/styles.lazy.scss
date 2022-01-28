@@ -8,9 +8,9 @@ body > div > header {
         top: 8px;
     }
 
-    div.currency:nth-child(8) {
+    [type="fight"] + div.currency {
         // FOUC prevention
-        margin-left: 438px;
+        margin-left: 437px;
     }
 
     div[rel="xp"] {
