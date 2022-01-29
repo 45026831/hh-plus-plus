@@ -123,15 +123,12 @@ class PopNavSortModule extends CoreModule {
             girlsToAnnotate = girls.filter(({assigned}) => assigned === currentPoPId)
         }
 
-        console.log('girls to annotate', girlsToAnnotate)
-
         const $girlsContainer = $('.pop_right_part .grid_view')
 
         girlsToAnnotate.forEach(({id_girl}) => {
             const {class: carac} = girlDictionary.get(id_girl)
 
             const $girl = $girlsContainer.find(`[girl=${id_girl}]`)
-            console.log('appending to el', $girl)
             $girl.append(`<span class="script-girl-class" carac="${carac}"></span>`)
         })
     }
