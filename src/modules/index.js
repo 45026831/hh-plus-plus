@@ -19,3 +19,4 @@ export {default as GemStockModule} from './GemStockModule'
 
 export {default as MissionsBackgroundStyleTweak} from './MissionsBackgroundStyleTweak'
 export {default as MoneyAnimationStyleTweak} from './MoneyAnimationStyleTweak'
+export {default as MobileBattleStyleTweak} from './MobileBattleStyleTweak'

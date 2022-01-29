@@ -1,0 +1,7 @@
+@import "../../common/constants.scss";
+
+@media #{$mediaMobile} {
+    #new_battle .new-battle-container {
+        margin-top: 12px;
+    }
+}

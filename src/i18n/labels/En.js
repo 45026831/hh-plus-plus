@@ -55,6 +55,7 @@ export const config = {
 export const stConfig = {
     missionsBackground: 'Change missions background',
     collectMoneyAnimation: 'Delete the collect money animation',
+    mobileBattle: 'Fix Mobile battle screen',
 }
 
 export const villain = {

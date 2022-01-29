@@ -27,6 +27,7 @@ import {
     MarketInfoModule,
     MarketXPAffModule,
     MissionsBackgroundStyleTweak,
+    MobileBattleStyleTweak,
     MoneyAnimationStyleTweak,
     PachinkoNamesModule,
     PopNavSortModule,
@@ -85,6 +86,7 @@ const runScript = () => {
     })
     config.registerModule(new MissionsBackgroundStyleTweak())
     config.registerModule(new MoneyAnimationStyleTweak())
+    config.registerModule(new MobileBattleStyleTweak())
 
     config.loadConfig()
 
