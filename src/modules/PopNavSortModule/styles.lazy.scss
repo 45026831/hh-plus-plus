@@ -1,0 +1,38 @@
+@import "../../common/constants.scss";
+
+.pop-quick-nav {
+    display: flex;
+    justify-content: space-between;
+    width: 303px;
+    position: absolute;
+    bottom: 3px;
+    right: 15px;
+
+    @media #{$mediaMobile} {
+        width: 316px;
+        bottom: 14px;
+        right: 9px;
+    }
+
+    &-prev,
+    &-next {
+        background-size: contain;
+        height: 20px;
+        width: 20px;
+    }
+
+    &-prev {
+        transform: scaleX(-1);
+    }
+}
+
+.script-girl-class {
+    position: relative;
+    top: -73px;
+    right: -47px;
+
+    &::before {
+        width: 17px;
+        height: 17px;
+    }
+}

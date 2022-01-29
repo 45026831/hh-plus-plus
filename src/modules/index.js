@@ -10,6 +10,7 @@ export {default as LeagueInfoModule} from './LeagueInfoModule'
 
 export {default as ResourceBarsModule} from './ResourceBarsModule'
 export {default as HomeScreenModule} from './HomeScreenModule'
+export {default as PopNavSortModule} from './PopNavSortModule'
 export {default as SeasonStatsModule} from './SeasonStatsModule'
 export {default as PachinkoNamesModule} from './PachinkoNamesModule'
 export {default as ContestRewardsModule} from './ContestRewardsModule'
