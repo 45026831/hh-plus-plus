@@ -1,3 +1,4 @@
+0.37.49: Fixing bug in league sim for handling missing data in playerLeaguesData
 0.37.48: Fixing bug where rounding didn't respect locale (#29)
 0.37.47: Finally getting around to updating villains and pantheon sim for element bonuses. Removing now defunct sim.
 0.37.46: Forcing Activities to open on the Missions tab

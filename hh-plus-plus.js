@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.48
+// @version         0.37.49
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -4178,7 +4178,7 @@ function moduleSim() {
 
         if (!normalisedElements) {
             normalisedElements = []
-            const teamElementCounts = countElementsInTeam([0,1,2,3,4,5,6].map(key => playerTeam[key].element_data.type))
+            const teamElementCounts = countElementsInTeam([0,1,2,3,4,5,6].map(key => playerTeam.girls[key].element_data.type))
             Object.entries(teamElementCounts).forEach(([type, count]) => {
                 if (count >= 3) {
                     normalisedElements.push({type})
@@ -4210,7 +4210,7 @@ function moduleSim() {
         } = playerLeaguesData
         const opponentTeamMemberElements = [];
         [0,1,2,3,4,5,6].forEach(key => {
-            const teamMember = opponentTeam[key]
+            const teamMember = opponentTeam.girls[key]
             if (teamMember && teamMember.element) {
                 opponentTeamMemberElements.push(teamMember.element)
             }
