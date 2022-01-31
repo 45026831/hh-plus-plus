@@ -74,6 +74,10 @@ export const marketGirlsFilter = {
     visitTeams: 'Besuche zuerst die <a href="../teams.html">Teams</a>.'
 }
 
+export const champions = {
+    clubChampDuration: '{{duration}} seit Rundenbeginn'
+}
+
 export const seasonStats = {
     fights: 'Kämpfe',
     victories: 'Siege',

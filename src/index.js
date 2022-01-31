@@ -15,6 +15,7 @@ import Config from './config'
 import {
     BattleEndstateModule,
     BetterXPAndMoneyModule,
+    ChampionsModule,
     ContestRewardsModule,
     FightAVillainModule,
     GemStockModule,
@@ -67,6 +68,7 @@ const runScript = () => {
     config.registerModule(new HaremInfoModule())
     config.registerModule(new LeagueInfoModule())
 
+    config.registerModule(new ChampionsModule())
     config.registerModule(new ResourceBarsModule())
     config.registerModule(new HomeScreenModule())
     if (!Helpers.isCxH()) {

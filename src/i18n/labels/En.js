@@ -191,6 +191,11 @@ export const league = {
     avg: 'Average',
 }
 
+export const champions = {
+    participants: 'Participants: {{participants}}/{{members}}',
+    clubChampDuration: '{{duration}} since round start',
+}
+
 export const resourceBars = {
     popsIn: 'PoPs in {{time}}',
     popsReady: 'PoPs ready',

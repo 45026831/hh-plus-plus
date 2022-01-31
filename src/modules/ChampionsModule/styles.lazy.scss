@@ -1,0 +1,43 @@
+#club_champions_body_table {
+    td.impression {
+        div {
+            line-height: 1.2;
+            font-size: 0.9rem;
+        }
+        .shard {
+            height: 1rem;
+            width: 1rem;
+            display: inline-block;
+            background-size: 140%;
+            background-position: center;
+        }
+    }
+
+    .script-participant-count {
+        display: block;
+        position: absolute;
+        top: 15px;
+        left: 500px;
+    }
+}
+
+#members .non-participant td {
+    color: #ffa07a;
+}
+
+.inner_club_tables.club_champions_participants_container > .lead_table_view .nicescroll-rails {
+    right: 5px !important;
+}
+
+.champions-middle__girl-selection .green-tick-icon.script-pose-match {
+    margin-left: 35px;
+    filter: hue-rotate(-45deg);
+}
+
+.champions-bottom__ticket-amount {
+    width: 145px;
+
+    &.right {
+        text-align: left !important;
+    }
+}

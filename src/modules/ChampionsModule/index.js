@@ -1,0 +1,229 @@
+import CoreModule from '../CoreModule'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+
+import styles from './styles.lazy.scss'
+
+const {$} = Helpers
+
+const MODULE_KEY = 'champions'
+
+const calculateCCShardProjection = (percentage, participants) => {
+    // formula from zoopokemon's spreadsheet
+    return Math.max(
+        1,
+        Math.floor(
+            (Math.round(percentage * 100) / 100) *
+            (3 * participants + 4)
+        )
+    )
+}
+
+class ChampionsModule extends CoreModule {
+    constructor () {
+        super({
+            baseKey: MODULE_KEY,
+            label: I18n.getModuleLabel('config', MODULE_KEY),
+            default: true
+        })
+        this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
+    }
+
+    shouldRun () {
+        return ['champions/', 'clubs', 'club-champion'].some(page => Helpers.isCurrentPage(page))
+    }
+
+    run () {
+        if (this.hasRun || !this.shouldRun()) {return}
+
+        styles.use()
+
+        Helpers.defer(() => {
+            if (Helpers.isCurrentPage('clubs')) {
+                this.addChampionInfoOnClubsPage()
+            }
+            if (Helpers.isCurrentPage('champions/') || Helpers.isCurrentPage('club-champion')) {
+                this.poseMatching()
+                this.showTicketsWhileResting()
+            }
+        })
+
+        this.hasRun = true
+    }
+
+    addChampionInfoOnClubsPage () {
+        const {clubChampionsData, membersList, server_now_ts, HHTimers} = window
+        if (!clubChampionsData || !clubChampionsData.fight.active || !clubChampionsData.fight.participants.length) {return}
+
+        const {champion: {bar}, fight: {participants, start_time}, timers} = clubChampionsData
+        const totalPositiveImpressionParticipants = participants.filter(({challenge_impression_done}) => parseInt(challenge_impression_done) > 0).length
+
+        const totalImpression = parseInt(bar.max)
+
+        // Display impression and shard projections on the champ table
+        participants.forEach(({id_member, challenge_impression_done}) => {
+            const impression = parseInt(challenge_impression_done)
+            const percentage = impression / totalImpression
+            const shards = calculateCCShardProjection(percentage, totalPositiveImpressionParticipants)
+
+            const $cellHTML = $(`
+                <div>${I18n.nThousand(impression)}</div>
+                <div>${I18n.nRounding(percentage * 100, 2, 0)}% / <span class="shard"></span> x ${shards}</div>
+            `)
+
+            $(`#club_champions_body_table tbody [sorting_id=${id_member}] td.impression`).empty().append($cellHTML)
+        })
+
+        // Show participant count
+        $('#club_champions_body_table').prepend(`<div class="script-participant-count">${this.label('participants', {participants: totalPositiveImpressionParticipants, members: membersList.length})}</div>`)
+
+        // Mark members that haven't hit the champ
+        const participatingMembers = participants.map(({id_member})=>id_member)
+        const nonParticipatingMembers = membersList.filter(({id_member})=>!participatingMembers.includes(id_member))
+
+        const highlightNonParticipants = () => {
+            nonParticipatingMembers.forEach(({id_member}) => {
+                $(`#members [sorting_id=${id_member}]`).addClass('non-participant')
+            })
+        }
+        highlightNonParticipants()
+        new MutationObserver(highlightNonParticipants).observe(document.getElementById('members'), {childList: true, subtree: true})
+
+        // Fix broken progress bar in non-english locales
+        const $clubChampionsBar = $('.club_champions_bar')
+        $clubChampionsBar.attr('style', $clubChampionsBar.attr('style').replace(',','.'))
+
+        // Add time since start
+        const $timerFight = $('.club_champions_timer_fight')
+        if ($timerFight.length) {
+            const {format_time_short} = window
+
+            const durationString = `<span class="script-round-duration-time">${format_time_short(server_now_ts - start_time)}</span>`
+            const $dummyTimerTarget = $('<span class="dumy-timer-target" style="display:none!important;"></span>')
+            $timerFight.append('<br/>').append(`<span class="script-round-duration">${this.label('clubChampDuration', {duration: durationString})}</span>`).append($dummyTimerTarget)
+            const $durationEl = $timerFight.find('.script-round-duration')
+            const $durationText = $durationEl.find('.script-round-duration-time')
+
+            const timerDuration = clubChampionsData.timers.championFight - server_now_ts
+
+            let timerId
+
+            const onUpdate = () => {
+                if (!timerId) {
+                    return
+                }
+                const timer = HHTimers.timers[timerId]
+                const remainingTime = timer.remainingTime
+
+                $durationText.text(format_time_short(clubChampionsData.timers.championFight - remainingTime - clubChampionsData.fight.start_time))
+            }
+            const onComplete = ()=>{}
+
+            timerId = HHTimers.initDecTimer($dummyTimerTarget, timerDuration, onComplete, onUpdate)
+        }
+
+        // Show challenge button instead of refill button while team resting
+        $('.btn_skip_team_cooldown').hide()
+        if (!$('.btn_skip_champion_cooldown').length) {
+            $('.challenge_container').show()
+        }
+
+        // Fix team rest timer
+        if (timers.teamRest) {
+            const getTeamRestTimer = () => Object.values(HHTimers.timers).find(({$elm}) => $elm && $elm.selector === '.team_rest_timer')
+            let teamRestTimer = getTeamRestTimer()
+            const fixTimer = () => {
+                teamRestTimer.remainingTime = parseInt(timers.teamRest) - server_now_ts
+                teamRestTimer.update()
+            }
+            if (teamRestTimer) {
+                fixTimer()
+            } else {
+                const observer = new MutationObserver(() => {
+                    teamRestTimer = getTeamRestTimer()
+                    if (teamRestTimer) {
+                        observer.disconnect()
+                        fixTimer()
+                    }
+                })
+
+                observer.observe($('.team_rest_timer .text > span')[0], {childList: true})
+            }
+        }
+    }
+
+    poseMatching () {
+        const {championData} = window
+        const {canDraft, champion} = championData
+
+        if (!canDraft) {return}
+
+        const {poses} = champion
+        const figures = poses.map(fig=>`${fig}`)
+        const figuresExtrapolated = [...figures, ...figures]
+
+        const attachMatches = () => {
+            const $girlSelection = $('.champions-middle__girl-selection')
+            const {team} = championData
+
+            team.forEach(({id_girl, figure}, i) => {
+                const rightPoseWrongPlace = figures.includes(figure)
+                const rightPoseRightPlace = figuresExtrapolated[i] === figure
+
+                const $girl = $girlSelection.find(`[id_girl=${id_girl}]`)
+
+                let $marker = $girl.find('.script-pose-match')
+                if (!$marker.length) {
+                    $marker = $('<span class="script-pose-match"></span>')
+                    $girl.append($marker)
+                }
+
+                if (rightPoseRightPlace) {
+                    $marker.addClass('green-tick-icon')
+                    $marker.removeClass('empty')
+                } else if (rightPoseWrongPlace) {
+                    $marker.addClass('green-tick-icon')
+                    $marker.addClass('empty')
+                }
+            })
+        }
+        attachMatches()
+
+        new MutationObserver(attachMatches).observe($('#contains_all>section')[0], {childList: true})
+
+        Helpers.onAjaxResponse(/action=team_draft/, (response) => {
+            const {teamArray} = response
+            window.championData.team = teamArray
+        })
+        Helpers.onAjaxResponse(/action=team_reorder/, (response, opt) => {
+            if (!response.success) {return}
+
+            const searchParams = new URLSearchParams(opt.data)
+            const reorderedIDs = searchParams.getAll('team_order[]')
+
+            const {team} = championData
+
+            const reorderedTeam = []
+            reorderedIDs.forEach(id => {
+                reorderedTeam.push(team.find(({id_girl})=>id_girl===id))
+            })
+
+            window.championData.team = reorderedTeam
+            attachMatches()
+        })
+    }
+
+    showTicketsWhileResting () {
+        const attachCount = () => {
+            if (!$('.champions-bottom__ticket-amount').length) {
+                const {championData} = window
+                $('.champions-bottom__rest').css({'width': '280px'})
+                    .before(`<div class="champions-bottom__ticket-amount"><span cur="ticket">x ${championData.champion.currentTickets}</span></div>`)
+            }
+        }
+        attachCount()
+        new MutationObserver(attachCount).observe($('#contains_all>section')[0], {childList: true})
+    }
+}
+
+export default ChampionsModule

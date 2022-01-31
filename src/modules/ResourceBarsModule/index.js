@@ -160,19 +160,28 @@ class ResourceBarsModule extends CoreModule {
             $elemToAppendAfter = $barHTML
 
             if (amount < max_amount) {
-                const timer = HHTimers.initEnergyTimer($(`header .energy_counter[type="${type}"]`))
-
                 if (!Hero.c) {
                     Hero.c = {}
                 }
-                if (!Hero.c[type]) {
-                    Hero.c[type] = timer
+
+                const existingTimer = Object.values(HHTimers.timers).find(timer => timer.type === type)
+                let existingOnDestroy
+                if (existingTimer) {
+                    existingOnDestroy = existingTimer.onDestroy
+                    existingTimer.onDestroy = () => {}
+                    existingTimer.destroy()
+                }
+
+                Hero.c[type] = HHTimers.initEnergyTimer($(`.energy_counter[type="${type}"]`))
+                if (existingOnDestroy) {
+                    Hero.c[type].onDestroy = existingOnDestroy
+                }
+
+                if (type==='challenge' && !Helpers.isCurrentPage('tower-of-fame')) {
+                    window.hasMultipleLeagueBattles = false
                 }
             }
 
-            if (type==='challenge' && !Helpers.isCurrentPage('tower-of-fame')) {
-                window.hasMultipleLeagueBattles = false
-            }
         })
     }
 
