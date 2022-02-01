@@ -34,6 +34,7 @@ import {
     PopNavSortModule,
     ResourceBarsModule,
     SeasonStatsModule,
+    StaticBackgroundModule,
     TeamsFilterModule
 } from './modules'
 
@@ -81,6 +82,7 @@ const runScript = () => {
     config.registerModule(new ContestRewardsModule())
     config.registerModule(new BattleEndstateModule())
     config.registerModule(new GemStockModule())
+    config.registerModule(new StaticBackgroundModule())
 
     // style tweaks
     config.registerGroup({

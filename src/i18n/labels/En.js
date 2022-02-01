@@ -51,6 +51,7 @@ export const config = {
     contestSummary: 'Saved Contests rewards summary',
     battleEndstate: 'Show final values when skipping battle',
     gemStock: 'Gem stock in Market/Harem',
+    staticBackground: 'Prevent background switching during Orgy Days',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
