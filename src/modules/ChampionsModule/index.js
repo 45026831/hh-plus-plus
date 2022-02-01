@@ -41,6 +41,7 @@ class ChampionsModule extends CoreModule {
         Helpers.defer(() => {
             if (Helpers.isCurrentPage('clubs')) {
                 this.addChampionInfoOnClubsPage()
+                this.fixChampRestTimer()
             }
             if (Helpers.isCurrentPage('champions/') || Helpers.isCurrentPage('club-champion')) {
                 this.poseMatching()
@@ -148,6 +149,36 @@ class ChampionsModule extends CoreModule {
                 })
 
                 observer.observe($('.team_rest_timer .text > span')[0], {childList: true})
+            }
+        }
+
+    }
+
+    fixChampRestTimer () {
+        const {clubChampionsData, server_now_ts, HHTimers} = window
+        if (!clubChampionsData || clubChampionsData.fight.active) {return}
+        const {timers} = clubChampionsData
+
+        // Fix champ rest timer
+        if (timers.championRest) {
+            const getTeamRestTimer = () => Object.values(HHTimers.timers).find(({$elm}) => $elm && $elm.selector === '.champion_rest_timer')
+            let championRestTimer = getTeamRestTimer()
+            const fixTimer = () => {
+                championRestTimer.remainingTime = parseInt(timers.championRest) - server_now_ts
+                championRestTimer.update()
+            }
+            if (championRestTimer) {
+                fixTimer()
+            } else {
+                const observer = new MutationObserver(() => {
+                    championRestTimer = getTeamRestTimer()
+                    if (championRestTimer) {
+                        observer.disconnect()
+                        fixTimer()
+                    }
+                })
+
+                observer.observe($('.champion_rest_timer .text > span')[0], {childList: true})
             }
         }
     }
