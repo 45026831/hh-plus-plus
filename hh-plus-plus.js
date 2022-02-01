@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.49
+// @version         0.37.50
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -4168,8 +4168,10 @@ function moduleSim() {
             chance: playerCrit,
             damage: playerAtk,
             defense: playerDef,
-            total_ego: playerEgo,
+            total_ego: playerTotalEgo,
+            remaining_ego: playerRemainingEgo,
         } = window.caracs_per_opponent[opponentId]
+        const playerEgo = playerTotalEgo || playerRemainingEgo
         const {
             team: playerTeam
         } = heroLeaguesData
@@ -6247,24 +6249,16 @@ function moduleSeasonSim() {
         const $playerData = $('#season-arena .battle_hero')
         let $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ')');
         const opponentId = $opponentData.attr('data-opponent') // using attr as we want a string, not a number
-        let alreadyAppliedSunBonus = false
-        let alreadyAppliedAtkDomBonus = false
 
-        if (window.caracs_per_opponent) {
-            ({
-                total_ego: playerEgo,
-                damage: playerAtk,
-                defense: playerDef,
-                chance: playerCrit
-            } = caracs_per_opponent[opponentId])
-            alreadyAppliedSunBonus = true
-            alreadyAppliedAtkDomBonus = true
-        } else {
-            playerEgo = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-            playerAtk = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-            playerDef = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-            playerCrit = parseInt($playerData.find('.hero_stats .hero_stats_row:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10);
-        }
+        const {
+            total_ego: playerTotalEgo,
+            remaining_ego: playerRemainingEgo,
+            damage: playerAtk,
+            defense: playerDef,
+            chance: playerCrit
+        } = caracs_per_opponent[opponentId]
+        const playerEgo = playerTotalEgo || playerRemainingEgo
+
         const playerSynergyDataJSON = $playerData.find('.hero_team .icon-area').attr('synergy-data')
         const playerSynergies = JSON.parse(playerSynergyDataJSON)
         const playerTeam = $playerData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
@@ -6273,7 +6267,6 @@ function moduleSeasonSim() {
         const playerBonuses = {
             critDamage: findBonusFromSynergies(playerSynergies, 'fire'),
             critChance: findBonusFromSynergies(playerSynergies, 'stone'),
-            defReduce: alreadyAppliedSunBonus ? 0 : findBonusFromSynergies(playerSynergies, 'sun'),
             healOnHit: findBonusFromSynergies(playerSynergies, 'water'),
         }
 
@@ -6290,13 +6283,13 @@ function moduleSeasonSim() {
 
         const player = {
             hp: playerEgo * (1 + dominanceBonuses.player.ego),
-            dmg: (playerAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.player.attack))) - (opponentDef * (1 - (alreadyAppliedSunBonus ? 0 : playerBonuses.defReduce))),
+            dmg: playerAtk - opponentDef,
             critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         const opponent = {
             hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
-            dmg: (opponentAtk * (1 + (alreadyAppliedAtkDomBonus ? 0 : dominanceBonuses.opponent.attack))) - (playerDef * (1 - (alreadyAppliedSunBonus ? 0 : opponentBonuses.defReduce))),
+            dmg: opponentAtk - playerDef,
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
             bonuses: opponentBonuses
@@ -6393,7 +6386,7 @@ function moduleSeasonStats() {
         // Rollover
         const now = server_now_ts
         let seasonEndTime = parseInt(localStorage.getItem(lsKeys.SEASON_END_TIME) || '0', 10)
-    
+
         if (now > seasonEndTime) {
             localStorage.setItem(lsKeys.OLD_SEASON_STATS, localStorage.getItem(lsKeys.SEASON_STATS))
             localStorage.setItem(lsKeys.SEASON_STATS, JSON.stringify(DEFAULT_STATS))
