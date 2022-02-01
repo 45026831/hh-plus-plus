@@ -109,7 +109,7 @@ export const market = {
 
 export const marketGirlsFilter = {
     searchedName: 'Search',
-    girlName: 'Girl name',
+    girlName: `${gameConfig.Girl} name`,
     searchedClass: 'Class',
     searchedElement: 'Element',
     searchedRarity: 'Rarity',
@@ -189,6 +189,27 @@ export const league = {
     opponents: 'Opponents',
     leaguePoints: 'Points',
     avg: 'Average',
+}
+
+export const teamsFilter = {
+    searchedName: 'Search',
+    girlName: `${gameConfig.Girl} name`,
+    searchedClass: 'Class',
+    searchedElement: 'Element',
+    searchedRarity: 'Rarity',
+    levelRange: 'Level range',
+    searchedAffCategory: 'Affection category',
+    searchedAffLevel: 'Affection level',
+    grade0: '0 stars',
+    grade1: '1 star',
+    grade2: '2 stars',
+    grade3: '3 stars',
+    grade4: '4 stars',
+    grade5: '5 stars',
+    grade6: '6 stars',
+    searchedBlessedAttributes: 'Blessings',
+    blessedAttributes: `Blessed ${gameConfig.girl}s`,
+    nonBlessedAttributes: `Non-blessed ${gameConfig.girl}s`,
 }
 
 export const champions = {

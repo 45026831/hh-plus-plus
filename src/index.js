@@ -33,7 +33,8 @@ import {
     PachinkoNamesModule,
     PopNavSortModule,
     ResourceBarsModule,
-    SeasonStatsModule
+    SeasonStatsModule,
+    TeamsFilterModule
 } from './modules'
 
 const runScript = () => {
@@ -68,6 +69,7 @@ const runScript = () => {
     config.registerModule(new HaremInfoModule())
     config.registerModule(new LeagueInfoModule())
 
+    config.registerModule(new TeamsFilterModule())
     config.registerModule(new ChampionsModule())
     config.registerModule(new ResourceBarsModule())
     config.registerModule(new HomeScreenModule())

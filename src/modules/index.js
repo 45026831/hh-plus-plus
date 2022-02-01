@@ -8,6 +8,7 @@ export {default as MarketHideSellButtonModule} from './MarketHideSellButtonModul
 export {default as HaremInfoModule} from './HaremInfoModule'
 export {default as LeagueInfoModule} from './LeagueInfoModule'
 
+export {default as TeamsFilterModule} from './TeamsFilterModule'
 export {default as ChampionsModule} from './ChampionsModule'
 export {default as ResourceBarsModule} from './ResourceBarsModule'
 export {default as HomeScreenModule} from './HomeScreenModule'

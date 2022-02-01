@@ -1,0 +1,61 @@
+@import "../../common/constants.scss";
+
+#arena_filter_box {
+    position: absolute;
+    width: 275px;
+    right: 408px;
+    z-index: 99;
+    border-radius: 8px 10px 10px 8px;
+    background-color: #1e261e;
+    box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
+    padding: 5px;
+    border: 1px solid #ffa23e;
+
+    @media #{$mediaMobile} {
+        top: 98px;
+    }
+
+    @media #{$mediaDesktop} {
+        top: 66px;
+    }
+}
+
+.change-team-panel #filter_girls {
+    display: none;
+}
+
+.change-team-panel #arena_filter {
+    // position: absolute;
+    height: 32px;
+    width: 32px;
+    padding: 0;
+    float: left;
+
+    @media #{$mediaMobile} {
+        //     top: 99px;
+        //     right: 98px;
+        margin-top: 5px;
+    }
+
+    // @media #{$mediaDesktop} {
+    //     top: 76px;
+    //     right: 98px;
+    // }
+
+    .filter_mix_icn {
+        display: block;
+        height: 32px;
+        width: 24px;
+        background-position: center;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-image: var(--filter-icon);
+        margin: auto;
+    }
+}
+
+@media #{$mediaMobile} {
+    #edit-team-page .change-team-panel.harem-panel {
+        margin-top: 17px;
+    }
+}
