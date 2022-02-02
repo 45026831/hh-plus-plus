@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.51
+// @version         0.37.52
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -4246,13 +4246,13 @@ function moduleSim() {
         const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         const player = {
-            hp: playerEgo * (1 + dominanceBonuses.player.ego),
+            hp: playerEgo,
             dmg: playerAtk - opponentDef,
             critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         const opponent = {
-            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
+            hp: opponentEgo,
             dmg: opponentAtk - playerDef,
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name,
@@ -6282,13 +6282,13 @@ function moduleSeasonSim() {
         const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         const player = {
-            hp: playerEgo * (1 + dominanceBonuses.player.ego),
+            hp: playerEgo,
             dmg: playerAtk - opponentDef,
             critchance: calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         const opponent = {
-            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
+            hp: opponentEgo,
             dmg: opponentAtk - playerDef,
             critchance: calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name: $('.season_arena_opponent_container:nth-child(' + (2*idOpponent+1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
@@ -6740,13 +6740,13 @@ function moduleBattleSim() {
         const dominanceBonuses = calculateDominationBonuses(playerElements, opponentElements)
 
         const player = {
-            hp: playerEgo * (1 + dominanceBonuses.player.ego),
+            hp: playerEgo,
             dmg: playerAtk - opponentDef,
             critchance: calculateCritChanceShare(playerHarmony, opponentHarmony) + dominanceBonuses.player.chance + playerBonuses.critChance,
             bonuses: playerBonuses
         };
         const opponent = {
-            hp: opponentEgo * (1 + dominanceBonuses.opponent.ego),
+            hp: opponentEgo,
             dmg: opponentAtk - playerDef,
             critchance: calculateCritChanceShare(opponentHarmony, playerHarmony) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name: $('#opponent-panel .hero-name-container').text(),

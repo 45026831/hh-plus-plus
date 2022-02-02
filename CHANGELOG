@@ -1,3 +1,4 @@
+0.37.52: Updating the sim now that domination ego is included in the stats
 0.37.51: Commenting out leaderboard fix now that it is _sort of_ fixed in-game
 0.37.50: Pre-empting league and season sim updates required for next update currently on test server.
 0.37.49: Fixing bug in league sim for handling missing data in playerLeaguesData
