@@ -1,0 +1,167 @@
+import CoreModule from '../CoreModule'
+import Helpers from '../../common/Helpers'
+import I18n from '../../i18n'
+
+import styles from './styles.lazy.scss'
+
+const MODULE_KEY = 'rewardShards'
+
+const ID_FROM_URL_REGEX = /(?<id>[0-9]+)\/ico[0-9]-[0-9]+x.[a-z]+(\?v=[0-9]+)?$/i
+
+const extractIdFromUrl = (url) => {
+    const matches = url.match(ID_FROM_URL_REGEX)
+    if (!matches || !matches.groups) {
+        return
+    }
+
+    const {groups: {id}} = matches
+    return id
+}
+const makeShardCount = ({shards, name, className}) => `<div class="script-shard-count ${className ? className : ''}" shards="${shards}" name="${name}"><span class="shard"></span> ${shards}</div>`
+
+class RewardShardsModule extends CoreModule {
+    constructor () {
+        super({
+            baseKey: MODULE_KEY,
+            label: I18n.getModuleLabel('config', MODULE_KEY),
+            default: true
+        })
+        this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
+    }
+
+    shouldRun () {
+        return ['pre-battle', 'clubs', 'pachinko', 'season-arena', 'tower-of-fame'].some(page => Helpers.isCurrentPage(page))
+    }
+
+    run () {
+        if (this.hasRun || !this.shouldRun()) {return}
+
+        styles.use()
+
+        Helpers.defer(() => {
+            if (Helpers.isCurrentPage('pre-battle')) {
+                this.displayOnPreBattle()
+            }
+            if (Helpers.isCurrentPage('clubs')) {
+                this.displayOnClubChampion()
+            }
+            if (Helpers.isCurrentPage('pachinko')) {
+                this.displayOnPachinko()
+            }
+            if (Helpers.isCurrentPage('season-arena')) {
+                this.displayOnSeason()
+            }
+            if (Helpers.isCurrentPage('tower-of-fame')) {
+                this.displayOnLeague()
+            }
+        })
+
+        this.hasRun = true
+    }
+
+    displayOnPreBattle () {
+        const girlDictionary = Helpers.getGirlDictionary()
+
+        const $girlsReward = $('.girls_reward')
+        if (!$girlsReward.length) {return}
+
+        const girls = $girlsReward.data('rewards')
+
+        const annotate = ($girlsReward) => {
+            const $girlIcos = $girlsReward.find('.girl_ico')
+            girls.forEach(({id_girl}, i) => {
+                const girl = girlDictionary.get(id_girl)
+                const {shards, name} = girl
+                $girlIcos.eq(i).append(makeShardCount({shards: shards || 0, name}))
+            })
+        }
+
+        if ($('.slot_girl_shards .girl_ico').length) {
+            annotate($girlsReward)
+        } else {
+            new MutationObserver(() => {
+                if ($('.slot_girl_shards .girl_ico').length) {
+                    annotate($girlsReward)
+                }
+            }).observe($girlsReward.find('[data-reward-display]')[0], {childList: true})
+        }
+        new MutationObserver(() => {
+            if ($('.rewards_tooltip .girl_ico').length) {
+                annotate($('.rewards_tooltip'))
+            }
+        }).observe(document.body, {childList: true})
+    }
+
+    displayOnClubChampion () {
+        const {clubChampionsData} = window
+        if (!clubChampionsData || !clubChampionsData.reward.shards) {return}
+        const {previous_value: shards, name} = clubChampionsData.reward.shards[0]
+        $('.shards_girl_ico').append(makeShardCount({shards, name}))
+    }
+
+    displayOnPachinko () {
+        const annotate = () => {
+            const girlDictionary = Helpers.getGirlDictionary()
+            $('.rewards_tooltip .girl_ico').each((i,el) => {
+                const $el = $(el)
+                const $img = $el.find('img')
+                if (!$img.length) {return}
+                const url = $img.attr('src')
+
+                const id = extractIdFromUrl(url)
+                if (!id) {return}
+                const girl = girlDictionary.get(id)
+                const {name, shards} = girl
+
+                $el.append(makeShardCount({name, shards}))
+            })
+        }
+
+        new MutationObserver(() => {
+            if ($('.rewards_tooltip .girl_ico').length) {
+                annotate()
+            }
+        }).observe(document.body, {childList: true})
+    }
+
+    displayOnSeason () {
+        const girlDictionary = Helpers.getGirlDictionary()
+        $('.arena-rewards-list .girl_ico').each((i,el) => {
+            const $el = $(el)
+            const $img = $el.find('img')
+            if (!$img.length) {return}
+            const url = $img.attr('src')
+
+            const id = extractIdFromUrl(url)
+            if (!id) {return}
+            const girl = girlDictionary.get(id)
+            const {name, shards} = girl
+
+            $el.append(makeShardCount({name, shards}))
+        })
+    }
+
+    displayOnLeague () {
+        const annotate = () => {
+            const girlDictionary = Helpers.getGirlDictionary()
+            const $girl = $('.leagues_girl_reward_container .girl_ico')
+            if (!$girl.length) {return}
+            const $img = $girl.find('img')
+            if (!$img.length) {return}
+            const url = $img.attr('src')
+
+            const id = extractIdFromUrl(url)
+            if (!id) {return}
+            const girl = girlDictionary.get(id)
+            const {name, shards} = girl
+
+            $girl.find('.script-shard-count').remove()
+            $girl.append(makeShardCount({name, shards}))
+        }
+
+        annotate()
+        $(document).on('girl-dictionary:updated', annotate)
+    }
+}
+
+export default RewardShardsModule

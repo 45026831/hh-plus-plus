@@ -33,6 +33,7 @@ import {
     PachinkoNamesModule,
     PopNavSortModule,
     ResourceBarsModule,
+    RewardShardsModule,
     SeasonStatsModule,
     StaticBackgroundModule,
     TeamsFilterModule
@@ -83,6 +84,7 @@ const runScript = () => {
     config.registerModule(new BattleEndstateModule())
     config.registerModule(new GemStockModule())
     config.registerModule(new StaticBackgroundModule())
+    config.registerModule(new RewardShardsModule())
 
     // style tweaks
     config.registerGroup({

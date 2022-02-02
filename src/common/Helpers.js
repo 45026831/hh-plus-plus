@@ -104,6 +104,7 @@ class Helpers {
     static setGirlDictionary (updated) {
         girlDictionary = updated
         Helpers.lsSet(lsKeys.GIRL_DICTIONARY, Array.from(girlDictionary))
+        $(window).trigger('girl-dictionary:updated')
     }
 
     static getTeamsDictionary() {
