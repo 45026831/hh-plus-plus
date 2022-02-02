@@ -71,7 +71,12 @@ class RewardShardsModule extends CoreModule {
             const $girlIcos = $girlsReward.find('.girl_ico')
             girls.forEach(({id_girl}, i) => {
                 const girl = girlDictionary.get(id_girl)
-                const {shards, name} = girl
+                let name, shards
+                if (girl) {
+                    ({name, shards} = girl)
+                } else {
+                    shards = 0
+                }
                 $girlIcos.eq(i).append(makeShardCount({shards: shards || 0, name}))
             })
         }
@@ -111,7 +116,12 @@ class RewardShardsModule extends CoreModule {
                 const id = extractIdFromUrl(url)
                 if (!id) {return}
                 const girl = girlDictionary.get(id)
-                const {name, shards} = girl
+                let name, shards
+                if (girl) {
+                    ({name, shards} = girl)
+                } else {
+                    shards = 0
+                }
 
                 $el.append(makeShardCount({name, shards}))
             })
@@ -135,7 +145,12 @@ class RewardShardsModule extends CoreModule {
             const id = extractIdFromUrl(url)
             if (!id) {return}
             const girl = girlDictionary.get(id)
-            const {name, shards} = girl
+            let name, shards
+            if (girl) {
+                ({name, shards} = girl)
+            } else {
+                shards = 0
+            }
 
             $el.append(makeShardCount({name, shards}))
         })
@@ -153,7 +168,12 @@ class RewardShardsModule extends CoreModule {
             const id = extractIdFromUrl(url)
             if (!id) {return}
             const girl = girlDictionary.get(id)
-            const {name, shards} = girl
+            let name, shards
+            if (girl) {
+                ({name, shards} = girl)
+            } else {
+                shards = 0
+            }
 
             $girl.find('.script-shard-count').remove()
             $girl.append(makeShardCount({name, shards}))
