@@ -8,16 +8,62 @@ const {$} = Helpers
 
 const MODULE_KEY = 'champions'
 
-const calculateCCShardProjection = (percentage, participants) => {
-    // formula from zoopokemon's spreadsheet
-    return Math.max(
-        1,
-        Math.floor(
-            (Math.round(percentage * 100) / 100) *
-            (3 * participants + 4)
-        )
-    )
-}
+// const calculateCCShardProjection = (percentage, participants) => {
+// formula from zoopokemon's spreadsheet
+// return Math.max(
+//     1,
+//     Math.floor(
+//         (Math.round(percentage * 100) / 100) *
+//         (3 * participants + 4)
+//     )
+// )
+
+// the "socialist" formula
+// return Math.round((7/8) * Math.sqrt(participants))
+
+// zoopokemon's proposed shard range
+// percentage = Math.max(percentage, 0)
+// const percentagePoint = Math.round(percentage * 100)
+// const I = (p) => Math.ceil(100/p)
+// const h = (x) => 0.0075 * Math.pow(x - 1, 2) + 2
+
+// let max, min
+// const fairShare = I(participants)
+// const scale = h(participants)
+// if (percentagePoint <= fairShare) {
+//     max = Math.round(
+//         (
+//             (Math.ceil((5/3) * scale) - 1)
+//             /
+//             fairShare
+//         )
+//         * percentagePoint
+//         + 1
+//     )
+//     min = Math.round(
+//         (
+//             (Math.ceil((1/3) * scale) - 1)
+//             /
+//             fairShare
+//         )
+//         * percentagePoint
+//         + 1
+//     )
+// } else {
+//     max = Math.round(
+//         (
+//             (Math.ceil((5/3) * scale) - 1)
+//             /
+//             (4 * fairShare)
+//         )
+//         * (percentagePoint - fairShare)
+//         + Math.ceil((5/3) * scale)
+//     )
+//     min = Math.ceil((1/3) * scale)
+// }
+
+// return `${min}-${max}`
+// }
 
 class ChampionsModule extends CoreModule {
     constructor () {
@@ -57,7 +103,7 @@ class ChampionsModule extends CoreModule {
         if (!clubChampionsData || !clubChampionsData.fight.active || !clubChampionsData.fight.participants.length) {return}
 
         const {champion: {bar}, fight: {participants, start_time}, timers} = clubChampionsData
-        const totalPositiveImpressionParticipants = participants.filter(({challenge_impression_done}) => parseInt(challenge_impression_done) > 0).length
+        const totalPositiveImpressionParticipants = participants.length //.filter(({challenge_impression_done}) => parseInt(challenge_impression_done) > 0).length
 
         const totalImpression = parseInt(bar.max)
 
@@ -65,11 +111,12 @@ class ChampionsModule extends CoreModule {
         participants.forEach(({id_member, challenge_impression_done}) => {
             const impression = parseInt(challenge_impression_done)
             const percentage = impression / totalImpression
-            const shards = calculateCCShardProjection(percentage, totalPositiveImpressionParticipants)
+            // const shards = calculateCCShardProjection(percentage, totalPositiveImpressionParticipants)
 
+            //  / <span class="shard"></span> x ${shards}
             const $cellHTML = $(`
                 <div>${I18n.nThousand(impression)}</div>
-                <div>${I18n.nRounding(percentage * 100, 2, 0)}% / <span class="shard"></span> x ${shards}</div>
+                <div>${I18n.nRounding(percentage * 100, 2, 0)}%</div>
             `)
 
             $(`#club_champions_body_table tbody [sorting_id=${id_member}] td.impression`).empty().append($cellHTML)
