@@ -14,6 +14,7 @@ import Helpers from './common/Helpers'
 import Config from './config'
 import {
     BattleEndstateModule,
+    BattleSimulatorModule,
     BetterXPAndMoneyModule,
     ChampionsModule,
     ContestRewardsModule,
@@ -70,7 +71,7 @@ const runScript = () => {
     config.registerModule(new MarketHideSellButtonModule())
     config.registerModule(new HaremInfoModule())
     config.registerModule(new LeagueInfoModule())
-
+    config.registerModule(new BattleSimulatorModule())
     config.registerModule(new TeamsFilterModule())
     config.registerModule(new ChampionsModule())
     config.registerModule(new ResourceBarsModule())

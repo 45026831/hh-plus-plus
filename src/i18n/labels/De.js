@@ -12,7 +12,7 @@ export const config = {
     league_board: 'Die Liga-Spitzen anzeigen',
     league_promo: 'Werbeinformationen anzeigen',
     simFight: 'Liga/Saison/Widersacher-Simulation',
-    logSimFight: 'Detaillierte Protokollierung in der Browserkonsole',
+    simFight_logging: 'Detaillierte Protokollierung in der Browserkonsole',
     teamsFilter: 'Mannschaften filtern',
     champions: 'Champion-Informationen',
     links: 'Abkürzungen/Zeitgeber',

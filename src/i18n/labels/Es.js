@@ -12,7 +12,7 @@ export const config = {
     league_board: 'Mostrar los mejores de la liga',
     league_promo: 'Mostrar información de promoción',
     simFight: 'Simulacion de Liga / Temporada / Villano',
-    logSimFight : 'Registro detallado en la consola del navegador',
+    simFight_logging : 'Registro detallado en la consola del navegador',
     teamsFilter: 'Filtro de equipos',
     champions: 'Informacion de Campeones',
     links: 'Atajos/Temporizadores',

@@ -1,0 +1,136 @@
+@import "../../common/constants.scss";
+
+$plus: #66cd00;
+$minus: #ff2f2f;
+$close: #ffa500;
+$plus-bg: #66cd0028;
+$minus-bg: #ff2f2f28;
+
+#leagues {
+    .matchRating {
+        text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+        font-size: 18px;
+
+        @media #{$mediaDesktop} {
+            text-align: center;
+            line-height: 25px;
+        }
+
+        @media #{$mediaMobile} {
+            margin-left: 75px;
+            line-height: 0px;
+        }
+    }
+
+    .average-lvl {
+        text-align: center;
+    }
+
+    .gridWrapper {
+        margin-top: -42px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 24px;
+        z-index: 0;
+    }
+
+    .player_block .team-hexagon-container .icon {
+        z-index: 1;
+    }
+}
+
+.probabilityTable {
+    tr {
+        line-height: 16px;
+        color: #fff;
+
+        &:nth-of-type(odd) {
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        &:nth-of-type(even) {
+            &[data-tint="w"] {
+                background-color: $plus-bg;
+            }
+            &[data-tint="l"] {
+                background-color: $minus-bg;
+            }
+        }
+    }
+
+    .plus {
+        color: $plus;
+    }
+    .minus {
+        color: $minus;
+    }
+    .close {
+        color: $close;
+    }
+}
+
+#season-arena {
+    .matchRating {
+        text-align: center;
+        margin-left: 10px;
+        text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+        line-height: 28px;
+        font-size: 16px;
+    }
+
+    .plus {
+        color: $plus;
+    }
+    .minus {
+        color: $minus;
+    }
+    .close {
+        color: $close;
+    }
+    .season_arena_block.opponent .hero_team {
+        padding: 0px;
+    }
+
+    .gridWrapper {
+        margin-top: -26px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 24px;
+        z-index: 0;
+    }
+
+    .average-lvl {
+        text-align: center;
+    }
+}
+
+#pre-battle {
+    .plus {
+        color: $plus;
+    }
+
+    .minus {
+        color: $minus;
+    }
+
+    .close {
+        color: $close;
+    }
+
+    .gridWrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 100%;
+    }
+
+    .matchRating {
+        text-align: center;
+        font-size: 16px;
+    }
+
+    .fighter-team .team-hexagon-container .average-lvl {
+        text-align: center;
+        margin-top: 0px;
+        line-height: 26px;
+    }
+}

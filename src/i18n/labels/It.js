@@ -12,7 +12,7 @@ export const config = {
     league_board: 'Mostra i top della lega',
     league_promo: 'Mostra informazioni sulla promozione',
     simFight: 'Simulazione Leghe / Stagione / Troll',
-    logSimFight : 'Accesso dettagliato nella console del browser',
+    simFight_logging: 'Accesso dettagliato nella console del browser',
     teamsFilter: 'Filtro delle squadre',
     champions: 'Informazioni sui Campioni',
     links: 'Scorciatoie/Timer',
