@@ -202,7 +202,7 @@ class RewardShardsModule extends CoreModule {
                     observer.disconnect()
                 }
             })
-            observer.observe($('.leagues_girl_reward_container')[0], {childList: true})
+            observer.observe($('.leagues_middle_header')[0], {childList: true})
         }
         $(document).on('girl-dictionary:updated', annotate)
     }
