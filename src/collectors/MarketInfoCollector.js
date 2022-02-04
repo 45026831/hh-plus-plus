@@ -2,6 +2,7 @@
 import { lsKeys } from '../common/Constants'
 import Helpers from '../common/Helpers'
 import { BUYABLE, SELLABLE, TYPES } from '../data/Market'
+import debounce from 'lodash.debounce'
 
 let marketInfo
 
@@ -13,6 +14,8 @@ const castInt = (value) => {
     return typeof value === 'string' ? parseInt(value, 10) : value
 }
 
+const debounceWrap = (func) => debounce(func, 200, {leading: false, trailing: true})
+
 class MarketInfoCollector {
     static collect () {
         if (!Helpers.isCurrentPage('shop')) {
@@ -22,20 +25,20 @@ class MarketInfoCollector {
         Helpers.defer(() => {
             marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO) || {}
 
-            const handleBuyableItemUpdate = async type => {
+            const handleBuyableItemUpdate = debounceWrap(async type => {
                 MarketInfoCollector.collectBuyableItemsOfType(type)
                 saveMarketInfo()
-            }
-            const handleSellableItemUpdate = async type => {
+            })
+            const handleSellableItemUpdate = debounceWrap(async type => {
                 MarketInfoCollector.collectSellableItemsOfType(type)
                 saveMarketInfo()
                 $(document).trigger('market:inventory-updated')
-            }
-            const handleEquipsInventoryUpdate = async () => {
+            })
+            const handleEquipsInventoryUpdate = debounceWrap(async () => {
                 MarketInfoCollector.collectEquipsList()
                 saveMarketInfo()
                 $(document).trigger('market:equips-updated')
-            }
+            })
 
             BUYABLE.forEach(type => {
                 new MutationObserver(() => handleBuyableItemUpdate(type)).observe($(`#shops_left .${TYPES[type]}`)[0], {childList: true})

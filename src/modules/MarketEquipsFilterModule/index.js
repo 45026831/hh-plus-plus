@@ -194,7 +194,6 @@ class MarketEquipsFilterModule extends CoreModule {
             }
         }
         $container.getNiceScroll().resize()
-        $(document).trigger('market:equip-filter:done')
     }
 
     checkSelection () {
