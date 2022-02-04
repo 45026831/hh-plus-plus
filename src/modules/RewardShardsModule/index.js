@@ -100,8 +100,22 @@ class RewardShardsModule extends CoreModule {
     displayOnClubChampion () {
         const {clubChampionsData} = window
         if (!clubChampionsData || !clubChampionsData.reward.shards) {return}
-        const {previous_value: shards, name} = clubChampionsData.reward.shards[0]
-        $('.shards_girl_ico').append(makeShardCount({shards, name}))
+        const annotate = () => {
+            const {previous_value: shards, name} = clubChampionsData.reward.shards[0]
+            $('.reward_wrap .shards_girl_ico').append(makeShardCount({shards, name}))
+        }
+
+        if ($('.reward_wrap .shards_girl_ico').length) {
+            annotate()
+        } else {
+            const observer = new MutationObserver(() => {
+                if ($('.reward_wrap .shards_girl_ico').length) {
+                    annotate()
+                    observer.disconnect()
+                }
+            })
+            observer.observe($('.reward_wrap')[0], {childList: true})
+        }
     }
 
     displayOnPachinko () {
@@ -179,7 +193,17 @@ class RewardShardsModule extends CoreModule {
             $girl.append(makeShardCount({name, shards}))
         }
 
-        annotate()
+        if ($('.leagues_girl_reward_container .girl_ico').length) {
+            annotate()
+        } else {
+            const observer = new MutationObserver(() => {
+                if ($('.leagues_girl_reward_container .girl_ico').length) {
+                    annotate()
+                    observer.disconnect()
+                }
+            })
+            observer.observe($('.leagues_girl_reward_container')[0], {childList: true})
+        }
         $(document).on('girl-dictionary:updated', annotate)
     }
 }

@@ -63,6 +63,9 @@ const MODULE_KEY = 'champions'
 // }
 
 // return `${min}-${max}`
+
+// upcoming formula as promised by Noacc
+//     return Math.round(0.6 * Math.sqrt(participants)) + Math.ceil(percentage * 100)
 // }
 
 class ChampionsModule extends CoreModule {
