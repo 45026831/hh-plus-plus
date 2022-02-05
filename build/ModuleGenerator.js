@@ -1,10 +1,13 @@
 const fs = require('fs')
 const path = require('path')
 
-const generateModule = (name, key) => {
-    if (!name || !key) {
+const generateModule = (type, name, key) => {
+    if (!type || !name || !key) {
         console.error('cannot create module: missing argument(s)')
         return
+    }
+    if (!['core', 'st'].includes(type)) {
+        console.error('invalid type: must be core or st')
     }
     const newModuleDirectory = path.resolve(__dirname, '../src/modules', name)
 
@@ -15,7 +18,14 @@ const generateModule = (name, key) => {
     }
     console.log('creating module with name', name, 'and key', key)
 
-    const template = fs.readFileSync(path.resolve(__dirname, './index.boilerplate.template.js'))
+    let templateFilename
+    if (type==='core') {
+        templateFilename = './index.boilerplate.template.js'
+    } else if (type==='st') {
+        templateFilename = './index.st-boilerplate.template.js'
+    }
+
+    const template = fs.readFileSync(path.resolve(__dirname, templateFilename))
     const populatedTemplate = template.toString().replace(/{{moduleName}}/g, name).replace(/{{moduleKey}}/g, key)
 
     fs.mkdirSync(newModuleDirectory)
