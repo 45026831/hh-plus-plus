@@ -60,6 +60,9 @@ export const stConfig = {
     missionsBackground: 'Change missions background',
     collectMoneyAnimation: 'Delete the collect money animation',
     mobileBattle: 'Fix Mobile battle screen',
+    darkMobileLeague: 'Dark background on mobile league',
+    hideRotateDevice: 'Hide the device rotation reminder on mobile',
+    salaryTimers: `Readable ${gameConfig.girl} salary timers`,
 }
 
 export const villain = {

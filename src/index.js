@@ -20,7 +20,9 @@ import {
     ContestRewardsModule,
     FightAVillainModule,
     GemStockModule,
+    GirlSalaryTimersStyleTweak,
     HaremInfoModule,
+    HideRotateDeviceStyleTweak,
     HomeScreenModule,
     LeaderboardFixModule,
     LeagueInfoModule,
@@ -31,6 +33,7 @@ import {
     MarketXPAffModule,
     MissionsBackgroundStyleTweak,
     MobileBattleStyleTweak,
+    MobileLeagueDarkBackgroundStyleTweak,
     MoneyAnimationStyleTweak,
     PachinkoNamesModule,
     PopNavSortModule,
@@ -98,6 +101,11 @@ const runScript = () => {
     config.registerModule(new MissionsBackgroundStyleTweak())
     config.registerModule(new MoneyAnimationStyleTweak())
     config.registerModule(new MobileBattleStyleTweak())
+    config.registerModule(new MobileLeagueDarkBackgroundStyleTweak())
+    config.registerModule(new HideRotateDeviceStyleTweak())
+    if (Helpers.isCxH()) {
+        config.registerModule(new GirlSalaryTimersStyleTweak())
+    }
 
     config.loadConfig()
 

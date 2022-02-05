@@ -1,0 +1,7 @@
+@import "../../common/constants.scss";
+
+@media #{$mediaMobile} {
+    .rotate_device {
+        display: none !important;
+    }
+}
