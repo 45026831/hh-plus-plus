@@ -54,6 +54,7 @@ export const config = {
     gemStock: 'Gem stock in Market/Harem',
     staticBackground: 'Prevent background switching during Orgy Days',
     rewardShards: `Display current shard counts on ${gameConfig.girl} rewards`,
+    leaderboardFix: 'Fix Season and PoV leaderboards',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

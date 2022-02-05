@@ -19,6 +19,10 @@ $minus-bg: #ff2f2f28;
         @media #{$mediaMobile} {
             margin-left: 75px;
             line-height: 0px;
+
+            br {
+                display: none;
+            }
         }
     }
 

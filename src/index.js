@@ -22,6 +22,7 @@ import {
     GemStockModule,
     HaremInfoModule,
     HomeScreenModule,
+    LeaderboardFixModule,
     LeagueInfoModule,
     MarketEquipsFilterModule,
     MarketGirlsFilterModule,
@@ -86,6 +87,7 @@ const runScript = () => {
     config.registerModule(new GemStockModule())
     config.registerModule(new StaticBackgroundModule())
     config.registerModule(new RewardShardsModule())
+    config.registerModule(new LeaderboardFixModule())
 
     // style tweaks
     config.registerGroup({
