@@ -319,13 +319,23 @@ export default {
             gems: ['nature', 'stone']
         },
         {
+            key: 'jockstrap',
             world: 6,
+            girls: {
+                1: ['623293037' , '764791769' , '801271903'],
+                2: [],
+                3: []
+            },
+            gems: ['darkness']
+        },
+        {
+            world: 7,
             girls: {
                 1: [],
                 2: [],
                 3: []
             },
-            gems: ['darkness']
+            gems: ['light']
         },
     ]
 }

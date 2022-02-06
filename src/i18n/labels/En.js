@@ -88,6 +88,7 @@ export const villain = {
     greygolem: 'Grey Golem',
     nymph: 'The Nymph',
     athicus: 'Athicus Ho’ole',
+    jockstrap: 'Jockstrap',
     fallback: 'World {{world}} villain'
 }
 
