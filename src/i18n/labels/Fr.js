@@ -179,7 +179,7 @@ export const champions = {
 export const resourceBars = {
     popsIn: 'LdP dans {{time}}', // TODO
     popsReady: 'LdP dispo', // TODO
-    readyAt: 'Ready at {{time}}', // TODO
+    readyAt: 'Prêt à {{time}}', // TODO
     endAt: 'Fin à {{time}}', // TODO
     fullAt: 'Rempli à {{time}}', // TODO
 }
