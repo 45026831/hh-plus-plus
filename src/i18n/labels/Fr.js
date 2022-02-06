@@ -30,7 +30,7 @@ export const config = {
     battleEndstate: 'Afficher le détail quand tu passes le combat', //FIXED A TYPO
     gemStock: 'Stock de gemmes au marché/harem', // TODO
     staticBackground: 'Empêche les changements de décor durant les Jours d\'Orgie', // TODO
-    rewardShards: 'Affiche le nombre de Fragments d\'Affection actuels sur les ${gameConfig.girl} en récompense', // TODO
+    rewardShards: 'Affiche le nombre de Fragments d\'Affection actuels sur les filles en récompense', // TODO 'Affiche le nombre de Fragments d\'Affection actuels sur les mecs en récompense'
     leaderboardFix: 'Corrige les classements de Saisons et Voie de la Valeur', // TODO
 }
 export const stConfig = {
@@ -39,7 +39,7 @@ export const stConfig = {
     mobileBattle: 'Corrige l\'écran de bataille sur mobile', // TODO
     darkMobileLeague: 'Fond sombre en Ligue sur mobile', // TODO
     hideRotateDevice: 'Masque le message de rotation de l\'écran sur mobile', // TODO
-    salaryTimers: 'Timers de salaires de ${gameConfig.girl} lisibles', // TODO
+    salaryTimers: 'Timers des salaires des filles visibles', // TODO 'Timers des salaires des mecs visibles'
 }
 
 export const villain = {
