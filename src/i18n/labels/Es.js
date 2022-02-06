@@ -1,29 +1,45 @@
+export const common = {
+    all: 'Todo',
+}
+
 export const config = {
     refresh: 'Actualizacion Menu principal',
     villain: 'Menu Pelear contra villano',
-    villain_tiers: 'Mostrar Rangos con Chicas',
+    villain_tiers: 'Mostrar Rangos con Chicas', // TODO GH
     xpMoney : 'Mejor XP / Dinero',
     market: 'Informacion de Mercado',
-    marketGirlsFilter: 'Filtro de chicas en el mercado',
+    marketGirlsFilter: 'Filtro de chicas en el mercado', // TODO GH
+    marketEquipsFilter: false, // TODO
     marketXPAff: 'El XP y el afecto en el mercado',
-    // hideSellButton: 'Botón para ocultar el botón de "Venta"', REPLACEME
+    marketHideSellButton: false, // TODO
     harem: 'Informacion de Harén',
     league: 'Informacion de Liga',
     league_board: 'Mostrar los mejores de la liga',
     league_promo: 'Mostrar información de promoción',
     simFight: 'Simulacion de Liga / Temporada / Villano',
     simFight_logging : 'Registro detallado en la consola del navegador',
+    simFight_highPrecisionMode: false, // TODO
     teamsFilter: 'Filtro de equipos',
     champions: 'Informacion de Campeones',
-    links: 'Atajos/Temporizadores',
-    seasonStats: 'Season stats',
-    pachinkoNames: 'Mostra i nomi nel Pachinko',
-    contestSummary: 'Riepilogo dei premi salvati dei contest',
-    battleEndstate: 'Mostra i valori finali dopo aver saltato la battaglia',
+    homeScreen: false, // TODO
+    resourceBars: false, // TODO
+    popSort: false, // TODO
+    seasonStats: false, // TODO
+    pachinkoNames: 'Mostrar nombres en Pachinko',
+    contestSummary: 'Resumen de recompensas guardadas de las competiciones',
+    battleEndstate: 'Muestra los valores finales después de omitir la batalla.',
+    gemStock: false, // TODO
+    staticBackground: false, // TODO
+    rewardShards: false, // TODO
+    leaderboardFix: false, // TODO
 }
 export const stConfig = {
-    missionsBackground: 'Cambiare lo sfondo delle missioni',
-    collectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
+    missionsBackground: 'Cambiar el fondo de las misiones',
+    collectMoneyAnimation: 'Desactivar la animación de recogida de dinero',
+    mobileBattle: false, // TODO
+    darkMobileLeague: false, // TODO
+    hideRotateDevice: false, // TODO
+    salaryTimers: false, // TODO
 }
 
 export const villain = {
@@ -56,15 +72,14 @@ export const market = {
 }
 
 export const marketGirlsFilter = {
-    all: 'Todo',
-    searchedName: 'Nombre buscado',
-    girlName: 'Nombre de la chica',
-    searchedClass: 'Clase buscada',
-    searchedElement: 'Elemento buscado',
-    searchedRarity: 'Rareza buscada',
+    searchedName: 'Nombre',
+    girlName: 'Nombre de la chica', // TODO GH
+    searchedClass: 'Clase',
+    searchedElement: 'Elemento',
+    searchedRarity: 'Rareza',
     levelRange: 'Rango de nivel',
-    searchedAffCategory: 'Categoría de afecto buscada',
-    searchedAffLevel: 'Nivel de afecto buscado',
+    searchedAffCategory: 'Categoría de afecto',
+    searchedAffLevel: 'Nivel de afecto',
     grade0: '0 estrella',
     grade1: '1 estrella',
     grade2: '2 estrellas',
@@ -76,8 +91,104 @@ export const marketGirlsFilter = {
     visitTeams: 'Visita el <a href="../teams.html">Equipos</a> primero.'
 }
 
+export const marketXPAff = {
+    aff: false, // TODO
+}
+
+export const marketHideSellButton = {
+    hide: false, // TODO
+}
+
+export const harem = {
+    marketRestocked: false, // TODO
+    visitMarket: false, // TODO
+    haremStats: false, // TODO
+    upgrades: false, // TODO
+    levelsAwakening: false, // TODO
+    market: false, // TODO
+    wikiPage: false, // TODO
+    haremLevel: 'Nivel de Harén',
+    unlockedScenes: false, // TODO
+    income: 'Ingresos',
+    or: '{{left}} o {{right}}',
+    toUpgrade: false, // TODO
+    toLevelCap: false, // TODO
+    toLevelMax: false, // TODO
+    affectionScenes: false, // TODO
+    buyable: false, // TODO
+    sellable: false, // TODO
+    gifts: 'Regalos',
+    books: 'Libros',
+    canBeSold: false, // TODO
+    canBeBought: '{{item}} por {{amount}}',
+    marketRestock: false, // TODO
+}
+
+export const league = {
+    stayInTop: 'Para <em><u>quedar entre los {{top}} primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+    notInTop: 'Para <em><u>estar entre los {{top}} primeros</u></em>, debes tener un mínimo de <em>{{points}}</em> puntos',
+    challengesRegen: 'Regeneracion naturel: <em>{{challenges}}</em>',
+    challengesLeft: 'Retos pendientes: <em>{{challenges}}</em>',
+    averageScore: 'Puntuación media por combate: <em>{{average}}</em>',
+    scoreExpected: 'Puntuación esperada: <em>{{score}}</em>',
+    toDemote: 'Para <em><u>descender</u></em>, debes ser superado por <em>{{players}}</em> jugadores',
+    willDemote: 'Para <em><u>descender</u></em>, puedes tener un máximo de <em>{{points}}</em> puntos',
+    willDemoteZero: 'Para <em><u>descender</u></em>, debes mantenerte en <em>0</em> puntos',
+    toNotDemote: 'Para <em><u>no descender</u></em>, debes tener más de <em>0</em> puntos',
+    toStay: 'Para <em><u>no promocionar</u></em>, debes ser superado por <em>{{players}}</em> jugadores',
+    willStay: 'Para <em><u>no promocionar</u></em>, puedes tener un máximo de <em>{{points}}</em> puntos',
+    hideFoughtOpponents: false, // TODO
+    showFoughtOpponents: false, // TODO
+    currentLeague: 'Liga actual',
+    victories: 'Victorias',
+    defeats: 'Derrota',
+    unknown: 'Desconocido',
+    notPlayed: 'No jugado',
+    levelRange: 'Rango de nivel',
+    leagueFinished: 'Liga terminó el {{date}}',
+    opponents: 'Opositores',
+    leaguePoints: 'Puntos',
+    avg: 'Media',
+}
+
+export const teamsFilter = {
+    searchedName: 'Nombre',
+    girlName: 'Nombre de la chica', // TODO GH
+    searchedClass: 'Clase',
+    searchedElement: 'Elemento',
+    searchedRarity: 'Rareza',
+    levelRange: 'Rango de nivel',
+    searchedAffCategory: 'Categoría de afecto',
+    searchedAffLevel: 'Nivel de afecto',
+    grade0: '0 estrella',
+    grade1: '1 estrella',
+    grade2: '2 estrellas',
+    grade3: '3 estrellas',
+    grade4: '4 estrellas',
+    grade5: '5 estrellas',
+    grade6: '6 estrellas',
+    searchedBlessedAttributes: 'Benediciones',
+    blessedAttributes: 'Benditas chicas', // TODO GH
+    nonBlessedAttributes: 'Chicas no bendecidas', // TODO GH
+}
+
 export const champions = {
     clubChampDuration: '{{duration}} desde el comienzo de la ronda',
+}
+
+export const resourceBars = {
+    popsIn: false, // TODO
+    popsReady: false, // TODO
+    readyAt: false, // TODO
+    endAt: false, // TODO
+    fullAt: false, // TODO
+}
+
+export const homeScreen = {
+    clubChamp: 'El Campeón de Club',
+    completeIn: false, // TODO
+    newMissionsIn: false, // TODO
+    missionsReady: false, // TODO
 }
 
 export const seasonStats = {
@@ -92,7 +203,7 @@ export const seasonStats = {
 }
 
 export const pachinkoNames = {
-    availableGirls: 'Chicas disponibles: '
+    availableGirls: 'Chicas disponibles: ' // TODO GH
 }
 
 export const contestSummary = {

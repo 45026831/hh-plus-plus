@@ -3,8 +3,9 @@ import * as fr from './labels/Fr'
 import * as es from './labels/Es'
 import * as it from './labels/It'
 import * as de from './labels/De'
+import * as ru from './labels/Ru'
 
-const labels = {en, fr, es, it, de}
+const labels = {en, fr, es, it, de, ru}
 const supportedLanguages = Object.keys(labels)
 const defaultLanguage = supportedLanguages[0]
 let lang
