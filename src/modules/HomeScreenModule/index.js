@@ -55,9 +55,13 @@ class HomeScreenModule extends CoreModule {
         if (marketInfo) {
             const {refreshTime} = marketInfo
             if (refreshTime > server_now_ts) {
+                const onComplete = () => {
+                    window.notificationData.shop.push('action')
+                    window.displayNotifications()
+                }
                 const $elm = $('<div class="script-home-timer"></div>')
                 $('[rel=shop] > .position > span').append($elm)
-                HHTimers.initDecTimer($elm, refreshTime - server_now_ts)
+                HHTimers.initDecTimer($elm, refreshTime - server_now_ts, onComplete)
             }
         }
 
@@ -67,23 +71,35 @@ class HomeScreenModule extends CoreModule {
         }
         // Pachinko
         if (trackedTimes.gp && trackedTimes.gp > server_now_ts) {
+            const onComplete = () => {
+                window.notificationData.pachinko.push('action')
+                window.displayNotifications()
+            }
             const $elm = $('<div class="script-home-timer"></div>')
             $('[rel=pachinko] > .position > span').append($elm)
-            HHTimers.initDecTimer($elm, trackedTimes.gp - server_now_ts)
+            HHTimers.initDecTimer($elm, trackedTimes.gp - server_now_ts, onComplete)
         }
 
         // Champions
         if (trackedTimes.champ && trackedTimes.champ > server_now_ts) {
+            const onComplete = () => {
+                window.notificationData['sex-god-path'].push('action')
+                window.displayNotifications()
+            }
             const $elm = $('<div class="script-home-timer"></div>')
             $('[rel=sex-god-path] > .position > span').append($elm)
-            HHTimers.initDecTimer($elm, trackedTimes.champ - server_now_ts)
+            HHTimers.initDecTimer($elm, trackedTimes.champ - server_now_ts, onComplete)
         }
 
         // Club Champ
         if (trackedTimes.clubChamp && trackedTimes.clubChamp > server_now_ts) {
+            const onComplete = () => {
+                window.notificationData.clubs.push('action')
+                window.displayNotifications()
+            }
             const $elm = $('<div class="script-home-timer"></div>')
             $('[rel=clubs] > .position > span').append($elm)
-            HHTimers.initDecTimer($elm, trackedTimes.clubChamp - server_now_ts)
+            HHTimers.initDecTimer($elm, trackedTimes.clubChamp - server_now_ts, onComplete)
         }
     }
 
