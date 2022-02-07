@@ -56,6 +56,10 @@ export const villain = {
     fallback: false, // TODO
 }
 
+export const xpMoney = {
+    xp: false, // TODO
+}
+
 export const market = {
     pointsUnbought: false, // TODO
     moneyUnspent: false, // TODO

@@ -51,6 +51,10 @@ export const villain = {
     fallback: 'Mondo {{world}} nemico'
 }
 
+export const xpMoney = {
+    xp: false, // TODO
+}
+
 export const market = {
     pointsUnbought: 'Puntos de estatus necesarios para maximo',
     moneyUnspent: 'Dinero necesario para maximo',

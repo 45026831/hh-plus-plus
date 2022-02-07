@@ -52,6 +52,10 @@ export const villain = {
     fallback: 'Monde {{world}} troll',
 }
 
+export const xpMoney = {
+    xp: 'Suiv.: {{xp}} XP',
+}
+
 export const market = {
     pointsUnbought: 'Nombre de points requis pour max',
     moneyUnspent: 'Argent demandé pour max',
@@ -112,8 +116,8 @@ export const harem = {
     unlockedScenes: 'Scènes déverrouillées',
     income: 'Revenus',
     or: '{{left}} ou {{right}}',
-    toUpgrade: 'Pour tout améliorer',
-    toLevelCap: 'Pour limite de niveau',
+    toUpgrade: 'Pour tout améliorer:',
+    toLevelCap: 'Pour limite de niveau:',
     toLevelMax: 'Pour niveau max ({{max}}):',
     affectionScenes: 'Scènes d\'affection',
     buyable: 'Dispo au marché',

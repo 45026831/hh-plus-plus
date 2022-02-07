@@ -1,45 +1,46 @@
+import Helpers from '../../common/Helpers'
+
 export const common = {
     all: 'Alle',
 }
 
 export const config = {
-    refresh: 'Homepage aktualisieren',
-    villain: 'Widersacher-Menü',
-    villain_tiers: 'Stufen mit Girls anzeigen', // TODO GH
-    xpMoney : 'Migliora XP / soldi',
-    market: 'Marktplatz-Informationen',
-    marketGirlsFilter: 'Mädchenfilter auf dem Markt', // TODO GH
-    marketEquipsFilter: false, // TODO
-    marketXPAff: 'XP und Zuneigung auf dem Markt',
-    marketHideSellButton: false, // TODO
+    villain: 'Schurken-Menü',
+    villain_tiers: `Stufen mit ${Helpers.isGH() ? 'Kerlen' : 'Mädels'} anzeigen`,
+    xpMoney : 'Bessere XP / Besseres Geld',
+    market: 'Markt-Informationen',
+    marketGirlsFilter: `${Helpers.isGH() ? 'Jungs' : 'Mädchen' }filter im Markt`,
+    marketEquipsFilter: 'Ausrüstungsfilter im Markt',
+    marketXPAff: 'XP und Zuneigung im Markt',
+    marketHideSellButton: 'Umschaltbarer Verkaufs-Button im Markt',
     harem: 'Harem-Informationen',
     league: 'Liga-Informationen',
     league_board: 'Die Liga-Spitzen anzeigen',
     league_promo: 'Werbeinformationen anzeigen',
-    simFight: 'Liga/Saison/Widersacher-Simulation',
+    simFight: 'Liga/Saison/Schurken-Simulation',
     simFight_logging: 'Detaillierte Protokollierung in der Browserkonsole',
-    simFight_highPrecisionMode: false, // TODO
-    teamsFilter: 'Mannschaften filtern',
+    simFight_highPrecisionMode: 'Hochpräzisionsmodus (Warnung: langsam!)',
+    teamsFilter: 'Teamfilter',
     champions: 'Champion-Informationen',
-    homeScreen: false, // TODO
-    resourceBars: false, // TODO
-    popSort: false, // TODO
-    seasonStats: false, // TODO
-    pachinkoNames: 'Namen in Pachinko anzeigen',
+    homeScreen: 'Homepage Verknüpfungen & Timer',
+    resourceBars: 'Ressourcen-Leisten / Booster Tracking',
+    popSort: 'PoP-Sortierung und schnelle Navigation',
+    seasonStats: 'Saison-Werte',
+    pachinkoNames: 'Namen im Pachinko anzeigen',
     contestSummary: 'Zusammenfassung der gespeicherten Wettbewerbsprämien',
     battleEndstate: 'Endgültige Werte beim Überspringen des Kampfes anzeigen',
-    gemStock: false, // TODO
-    staticBackground: false, // TODO
-    rewardShards: false, // TODO
-    leaderboardFix: false, // TODO
+    gemStock: 'Juwelen-Vorrat im Markt/Harem',
+    staticBackground: 'Verhindere Hintergrundveränderung währden Orgien Tagen',
+    rewardShards: `Aktuelle Splitteranzahl für ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} anzeigen`,
+    leaderboardFix: 'Fix für Ranglisten von Saison und PoV',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
-    collectMoneyAnimation: 'Deaktivieren Sie die Animation "Geld sammeln"',
-    mobileBattle: false, // TODO
-    darkMobileLeague: false, // TODO
-    hideRotateDevice: false, // TODO
-    salaryTimers: false, // TODO
+    collectMoneyAnimation: 'Geldsammel-Animation deaktivieren',
+    mobileBattle: 'Fix für den Kampfbildschirm am Handy',
+    darkMobileLeague: 'Dunkler Liga-Hintergrund am Handy',
+    hideRotateDevice: 'Gerät-drehen-Hinweis am Handy verbergen',
+    salaryTimers: `Lesbarer Lohntimer der ${Helpers.isGH() ? 'Jungs' : 'Mädchen'}`,
 }
 
 export const villain = {
@@ -48,14 +49,18 @@ export const villain = {
     jacksoncrew: 'Jacksons Crew',
     pandorawitch: 'Pandora Hexe',
     werebunnypolice: 'Wer-Kaninchen Polizei',
-    fallback: false, // TODO
+    fallback: 'Welt {{world}} Schurke',
+}
+
+export const xpMoney = {
+    xp: 'Nächstes: {{xp}} XP',
 }
 
 export const market = {
-    pointsUnbought: 'Benötigte Statuspunkte bis Maximum',
+    pointsUnbought: 'Kaufbare Statuspunkte bis Maximum',
     moneyUnspent: 'Nötiges Geld bis Maximum',
-    moneySpent: 'Bisher ausgegeben',
-    pointsLevel: 'Statuspunkte durch Heldenlevel',
+    moneySpent: 'Bisher ausgegebens Geld',
+    pointsLevel: 'Levelbasierte Statuspunkte',
     pointsBought: 'Gekaufte Statuspunkte',
     pointsEquip: 'Statuspunkte durch Ausrüstung',
     pointsBooster: 'Statuspunkte durch Booster',
@@ -76,7 +81,7 @@ export const marketGirlsFilter = {
     girlName: 'Name',
     searchedClass: 'Klasse',
     searchedRarity: 'Seltenheit',
-    levelRange: 'Level',
+    levelRange: 'Level-Spanne',
     searchedAffCategory: 'Maximale Zuneigung',
     searchedAffLevel: 'Aktuelle Zuneigung',
     grade0: '0 Sterne',
@@ -91,41 +96,41 @@ export const marketGirlsFilter = {
 }
 
 export const marketXPAff = {
-    aff: false, // TODO
+    aff: 'Nächstes: {{remainNext}}',
 }
 
 export const marketHideSellButton = {
-    hide: false, // TODO
+    hide: 'Verkaufs-Button verbergen',
 }
 
 export const harem = {
-    marketRestocked: false, // TODO
-    visitMarket: false, // TODO
-    haremStats: false, // TODO
-    upgrades: false, // TODO
-    levelsAwakening: false, // TODO
-    market: false, // TODO
-    wikiPage: '{{name}}-Wikiseite',
+    marketRestocked: '> Der <a href="../shop.html">Markt</a> wurde seit deinem letzten Besuch aufgefüllt.',
+    visitMarket: '> Besuche zuerst den <a href="../shop.html">Markt</a>, um hier eine Inventarzusammenfassung zu sehen',
+    haremStats: 'Haremwerte',
+    upgrades: 'Upgrades',
+    levelsAwakening: 'Level & Erwachen',
+    market: 'Inventar & Markt',
+    wikiPage: '{{name}}s Wikiseite',
     haremLevel: 'Harem-Level',
-    unlockedScenes: false, // TODO
+    unlockedScenes: 'Freigeschaltete Szenen',
     income: 'Einkommen',
     or: '{{left}} oder {{right}}',
-    toUpgrade: false, // TODO
-    toLevelCap: false, // TODO
-    toLevelMax: false, // TODO
-    affectionScenes: false, // TODO
-    buyable: false, // TODO
-    sellable: false, // TODO
+    toUpgrade: 'Um alle upzugraden',
+    toLevelCap: 'Um bis zur Grenze zu leveln',
+    toLevelMax: 'Um bis zum Maximum zu leveln ({{max}})',
+    affectionScenes: 'Zuneigungsszenen',
+    buyable: 'Im Markt zu kaufen',
+    sellable: 'Im Inventar',
     gifts: 'Geschenke',
     books: 'Bücher',
-    canBeSold: false, // TODO
+    canBeSold: 'Kann für {{sc}} verkauft werden',
     canBeBought: '{{item}} für {{amount}}',
-    marketRestock: false, // TODO
+    marketRestock: 'Markt füllt sich um {{time}} oder bei Level {{level}} wieder auf',
 }
 
 export const league = {
     stayInTop: 'Um <em><u>in den Top {{top}} zu bleiben</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
-    notInTop: 'Um <em><u>in die Top 4 zu kommen</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
+    notInTop: 'Um <em><u>in die Top {{top}} zu kommen</u></em>, musst du mindestens <em>{{points}}</em> Punkte haben',
     challengesRegen: 'Regeneration: <em>{{challenges}}</em>',
     challengesLeft: 'Verbleibende Kämpfe: <em>{{challenges}}</em>',
     averageScore: 'Durchschnitt pro Kampf: <em>{{average}}</em>',
@@ -136,8 +141,8 @@ export const league = {
     toNotDemote: 'Um <em><u>nicht abzusteigen</u></em>, musst du mehr als <em>0</em> Punkte',
     toStay: 'Um <em><u>nicht aufzusteigen</u></em>, musst du von <em>{{players}}</em> Spielern überholt werden',
     willStay: 'Um <em><u>nicht aufzusteigen</u></em>, darfst du maximal <em>{{points}}</em> Punkte haben',
-    hideFoughtOpponents: false, // TODO
-    showFoughtOpponents: false, // TODO
+    hideFoughtOpponents: 'Bereits bekämpfte Gegner verbergen',
+    showFoughtOpponents: 'Bereits bekämpfte Gegner anzeigen',
     currentLeague: 'Aktuelle Liga',
     victories: 'Siege',
     defeats: 'Niederlagen',
@@ -151,11 +156,11 @@ export const league = {
 }
 
 export const teamsFilter = {
-    searchedName: 'Name',
+    searchedName: 'Suche',
     girlName: 'Name',
     searchedClass: 'Klasse',
     searchedRarity: 'Seltenheit',
-    levelRange: 'Level',
+    levelRange: 'Level-Spanne',
     searchedAffCategory: 'Maximale Zuneigung',
     searchedAffLevel: 'Aktuelle Zuneigung',
     grade0: '0 Sterne',
@@ -166,27 +171,27 @@ export const teamsFilter = {
     grade5: '5 Sterne',
     grade6: '6 Sterne',
     searchedBlessedAttributes: 'Segnungen',
-    blessedAttributes: 'Gesegnet',
-    nonBlessedAttributes: 'Nicht gesegnet',
+    blessedAttributes: `Gesegnete ${Helpers.isGH() ? 'Kerle' : 'Mädchen'}`,
+    nonBlessedAttributes: `Nicht gesegnete ${Helpers.isGH() ? 'Kerle' : 'Mädchen'}`,
 }
 
 export const champions = {
-    participants: false, // TODO
-    clubChampDuration: '{{duration}} seit Rundenbeginn'
+    participants: 'Teilnehmer: {{participants}}/{{members}}',
+    clubChampDuration: '{{duration}} seit Rundenbeginn',
 }
 export const resourceBars = {
-    popsIn: false, // TODO
-    popsReady: false, // TODO
-    readyAt: false, // TODO
-    endAt: false, // TODO
-    fullAt: false, // TODO
+    popsIn: 'PoPs in {{time}}',
+    popsReady: 'PoPs bereit',
+    readyAt: 'Bereit um {{time}}',
+    endAt: 'Endet um {{time}}',
+    fullAt: 'Voll um {{time}}',
 }
 
 export const homeScreen = {
     clubChamp: 'Club-Champion',
-    completeIn: false, // TODO
-    newMissionsIn: false, // TODO
-    missionsReady: false, // TODO
+    completeIn: 'Beendet in ',
+    newMissionsIn: 'Neue Missionen in ',
+    missionsReady: 'Missionen bereit in ',
 }
 
 export const seasonStats = {
@@ -201,10 +206,10 @@ export const seasonStats = {
 }
 
 export const pachinkoNames = {
-    availableGirls: 'Freie Mädchen: ' // TODO GH
+    availableGirls: `Verfügbare ${Helpers.isGH() ? 'Kerle' : 'Mädchen'}: `,
 }
 
 export const contestSummary = {
     totalRewards: 'Gesamtzahl der gespeicherten Belohnungen ({{contests}} Wettbewerbe):',
-    contestsWarning: 'Wettbewerbe verfallen nach 21 Tagen!'
+    contestsWarning: 'Wettbewerbe verfallen nach 21 Tagen!',
 }
