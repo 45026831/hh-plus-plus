@@ -175,9 +175,12 @@
 
             .cost-value {
                 text-align: right;
-                [cur]::before {
-                    height: 18px;
-                    width: 18px;
+                [cur] {
+                    white-space: nowrap;
+                    &::before {
+                        height: 18px;
+                        width: 18px;
+                    }
                 }
             }
 

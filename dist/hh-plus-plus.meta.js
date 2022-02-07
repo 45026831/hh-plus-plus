@@ -49,6 +49,7 @@
  * - Vampi
  * - Sozan
  * - Reisen
+ * - Dogurasu53
  *
  * It:
  * - Daniel/Danutaku
