@@ -6,7 +6,6 @@ export const config = {
     refresh: 'Actualizacion Menu principal',
     villain: 'Menu Pelear contra villano',
     villain_tiers: 'Mostrar Rangos con Chicas', // TODO GH
-    xpMoney : 'Mejor XP / Dinero',
     market: 'Informacion de Mercado',
     marketGirlsFilter: 'Filtro de chicas en el mercado', // TODO GH
     marketEquipsFilter: false, // TODO
@@ -49,10 +48,6 @@ export const villain = {
     pandorawitch: 'Pandora Bruja',
     werebunnypolice: 'Policía hombres-conejos',
     fallback: 'Mondo {{world}} nemico'
-}
-
-export const xpMoney = {
-    xp: false, // TODO
 }
 
 export const market = {
@@ -186,6 +181,7 @@ export const resourceBars = {
     readyAt: false, // TODO
     endAt: false, // TODO
     fullAt: false, // TODO
+    xp: false, // TODO
 }
 
 export const homeScreen = {
@@ -211,6 +207,6 @@ export const pachinkoNames = {
 }
 
 export const contestSummary = {
-    totalRewards: 'Ricompense totali salvate ({{contests}} contest):',
-    contestsWarning: 'I contest scadono dopo 21 giorni!'
+    totalRewards: 'Recompensas totales guardadas ({{contests}} Competiciones):',
+    contestsWarning: '¡Los Competiciones caducan después de 21 días!'
 }

@@ -8,7 +8,6 @@ export const config = {
     refresh: 'Rafraîchir page d\'accueil',
     villain: 'Menu des combats des trolls',
     villain_tiers: `Montrer les paliers/${Helpers.isGH() ? 'mecs' : 'filles'}`,
-    xpMoney : 'XP / Argent + précis',
     market: 'Infos marché',
     marketGirlsFilter: `Filtre des ${Helpers.isGH() ? 'mecs' : 'filles'} au marché`,
     marketEquipsFilter: 'Filtre d\'équipements au marché',
@@ -50,10 +49,6 @@ export const villain = {
     pandorawitch: 'Sorcière Pandora',
     werebunnypolice: 'Police des Lapines-Garous',
     fallback: 'Monde {{world}} troll',
-}
-
-export const xpMoney = {
-    xp: 'Suiv.: {{xp}} XP',
 }
 
 export const market = {
@@ -188,6 +183,7 @@ export const resourceBars = {
     readyAt: 'Prêt à {{time}}',
     endAt: 'Fin à {{time}}',
     fullAt: 'Rempli à {{time}}',
+    xp: 'Suiv.: {{xp}} XP',
 }
 
 export const homeScreen = {

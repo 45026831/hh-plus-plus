@@ -2,7 +2,6 @@ export const config = {
     refresh: false, // TODO
     villain: false, // TODO
     villain_tiers: false, // TODO
-    xpMoney : false, // TODO
     market: false, // TODO
     marketGirlsFilter: false, // TODO
     marketXPAff: false, // TODO
@@ -54,10 +53,6 @@ export const villain = {
     sake: false, // TODO
     werebunnypolice: false, // TODO
     fallback: false, // TODO
-}
-
-export const xpMoney = {
-    xp: false, // TODO
 }
 
 export const market = {
@@ -193,6 +188,7 @@ export const resourceBars = {
     readyAt: false, // TODO
     endAt: false, // TODO
     fullAt: false, // TODO
+    xp: false, // TODO
 }
 
 export const homeScreen = {

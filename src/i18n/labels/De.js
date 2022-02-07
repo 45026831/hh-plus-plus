@@ -7,7 +7,6 @@ export const common = {
 export const config = {
     villain: 'Schurken-Menü',
     villain_tiers: `Stufen mit ${Helpers.isGH() ? 'Kerlen' : 'Mädels'} anzeigen`,
-    xpMoney : 'Bessere XP / Besseres Geld',
     market: 'Markt-Informationen',
     marketGirlsFilter: `${Helpers.isGH() ? 'Jungs' : 'Mädchen' }filter im Markt`,
     marketEquipsFilter: 'Ausrüstungsfilter im Markt',
@@ -50,10 +49,6 @@ export const villain = {
     pandorawitch: 'Pandora Hexe',
     werebunnypolice: 'Wer-Kaninchen Polizei',
     fallback: 'Welt {{world}} Schurke',
-}
-
-export const xpMoney = {
-    xp: 'Nächstes: {{xp}} XP',
 }
 
 export const market = {
@@ -185,6 +180,7 @@ export const resourceBars = {
     readyAt: 'Bereit um {{time}}',
     endAt: 'Endet um {{time}}',
     fullAt: 'Voll um {{time}}',
+    xp: 'Nächstes: {{xp}} XP',
 }
 
 export const homeScreen = {

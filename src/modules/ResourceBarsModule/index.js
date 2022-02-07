@@ -1,4 +1,4 @@
-/* global Hero, HHTimers, GT, server_now_ts */
+/* global Hero, HHTimers, GT, server_now_ts, HH_MAX_LEVEL */
 import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
@@ -72,12 +72,20 @@ class ResourceBarsModule extends CoreModule {
 
         Helpers.defer(() => {
             this.injectCSSVars()
+            this.betterXP()
+            this.betterMoney()
             this.forceTimerInterval()
             this.addEnergyBarShortcut()
             this.addQuestAndFightTooltips()
             this.addAdditionalBars()
             this.addPoPTimer()
             this.addBoosterStatus()
+
+            const xpObserver = new MutationObserver(() => {this.betterXP()})
+            xpObserver.observe($('[hero=xp]')[0], {childList: true})
+
+            const moneyObserver = new MutationObserver(() => {this.betterMoney()})
+            moneyObserver.observe($('[hero=soft_currency]')[0], {childList: true})
         })
 
         this.hasRun = true
@@ -85,6 +93,44 @@ class ResourceBarsModule extends CoreModule {
 
     injectCSSVars () {
         Sheet.registerVar('challenge-token-icon', `url("${Helpers.getCDNHost()}/league_points.png")`)
+    }
+
+    betterXP () {
+        const $wrapper = $('[rel=xp] .bar-wrapper .over')
+        if (!this.$xpContainer) {
+            this.$xpContainer = $('<span class="scriptXPContainer"></span>')
+            $wrapper.append(this.$xpContainer)
+        }
+
+        const {level, left, cur, max} = Hero.infos.Xp
+        let leftText
+        let maxText = GT.design.Max
+        if (level < HH_MAX_LEVEL) {
+            leftText = this.label('xp', {xp: I18n.nThousand(left)})
+            maxText = I18n.nThousand(max)
+        }
+
+        this.$xpContainer.text(`${I18n.nThousand(cur)} / ${maxText}${leftText? ` (${leftText})` : ''}`)
+        $wrapper.addClass('hideDefault')
+    }
+
+    betterMoney () {
+        if (!this.$moneyContainer) {
+            this.$moneyContainer = $('<span class="scriptMoneyContainer"></span>')
+            $('[hero=soft_currency]').after(this.$moneyContainer)
+        }
+
+        const money = Hero.infos.soft_currency
+        let displayAmount
+        const thousandSeparatedMoney = I18n.nThousand(money)
+
+        if (money >= 1e6) {
+            displayAmount = I18n.nRounding(money, 3, 0)
+            this.$moneyContainer.text(displayAmount).attr('hh_title', thousandSeparatedMoney)
+        } else {
+            this.$moneyContainer.text($('[hero=soft_currency]').text()).attr('hh_title', thousandSeparatedMoney)
+        }
+
     }
 
     forceTimerInterval () {

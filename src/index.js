@@ -15,7 +15,6 @@ import Config from './config'
 import {
     BattleEndstateModule,
     BattleSimulatorModule,
-    BetterXPAndMoneyModule,
     ChampionsModule,
     ContestRewardsModule,
     FightAVillainModule,
@@ -67,7 +66,6 @@ const runScript = () => {
         name: `${Helpers.getGameKey()}++ Core`
     })
     config.registerModule(new FightAVillainModule())
-    config.registerModule(new BetterXPAndMoneyModule())
     config.registerModule(new MarketInfoModule())
     config.registerModule(new MarketGirlsFilterModule())
     config.registerModule(new MarketEquipsFilterModule())

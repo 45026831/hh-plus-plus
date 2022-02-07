@@ -29,7 +29,6 @@ export const config = {
     refresh: 'Home screen refresh',
     villain: 'Fight a villain menu',
     villain_tiers: `Show tiers with ${gameConfig.girl}s`,
-    xpMoney : 'Better XP / Money',
     market: 'Market information',
     marketGirlsFilter: `${gameConfig.Girl}s filter at the market`,
     marketEquipsFilter: 'Equips filter at the market',
@@ -90,10 +89,6 @@ export const villain = {
     athicus: 'Athicus Ho’ole',
     jockstrap: 'The Mimic',
     fallback: 'World {{world}} villain'
-}
-
-export const xpMoney = {
-    xp: 'Next: {{xp}} XP'
 }
 
 export const market = {
@@ -232,6 +227,7 @@ export const resourceBars = {
     readyAt: 'Ready at {{time}}',
     endAt: 'Ends at {{time}}',
     fullAt: 'Full at {{time}}',
+    xp: 'Next: {{xp}} XP',
 }
 
 export const homeScreen = {

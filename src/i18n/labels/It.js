@@ -6,7 +6,6 @@ export const config = {
     refresh: 'Refresh pagina Home',
     villain: 'Menù battaglia Troll',
     villain_tiers: 'Mostra battaglie con ragazze', // TODO GH
-    xpMoney : 'Migliora XP / soldi',
     market: 'Informazioni negozio',
     marketGirlsFilter: 'Filtro per ragazze nel mercato', // TODO GH
     marketEquipsFilter: false, // TODO
@@ -45,10 +44,6 @@ export const villain = {
     pandorawitch: 'Strega Pandora',
     werebunnypolice: 'Polizia del Conigli Mannari',
     fallback: 'Mundo {{world}} villano'
-}
-
-export const xpMoney = {
-    xp: false, // TODO
 }
 
 export const market = {
@@ -183,6 +178,7 @@ export const resourceBars = {
     readyAt: false, // TODO
     endAt: false, // TODO
     fullAt: false, // TODO
+    xp: false, // TODO
 }
 
 export const homeScreen = {
@@ -208,6 +204,6 @@ export const pachinkoNames = {
 }
 
 export const contestSummary = {
-    totalRewards: 'Recompensas totales guardadas ({{contests}} Competiciones):',
-    contestsWarning: '¡Los Competiciones caducan después de 21 días!'
+    totalRewards: 'Ricompense totali salvate ({{contests}} contest):',
+    contestsWarning: 'I contest scadono dopo 21 giorni!'
 }

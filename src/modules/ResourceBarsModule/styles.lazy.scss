@@ -19,6 +19,12 @@ body > div > header {
         left: 0;
         width: 100%;
 
+        [hero="xp"],
+        [hero="xp_sep"],
+        [hero="xp_max"] {
+            display: none;
+        }
+
         div[rel="level"] {
             position: absolute;
             top: 8px;
@@ -226,6 +232,20 @@ body > div > header {
         .hudHC_mix_icn {
             top: auto;
             bottom: 2px;
+        }
+
+        [hero="soft_currency"] {
+            display: none;
+        }
+
+        .scriptMoneyContainer {
+            margin-left: -1px;
+            @media #{$mediaMobile} {
+                position: absolute;
+                top: 2px;
+                left: 40px;
+                font-size: 16px;
+            }
         }
 
         div[hero="soft_currency"],
