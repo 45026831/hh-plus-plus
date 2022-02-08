@@ -1,23 +1,28 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         0.37.52
+// @version         0.37.53
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
 // @match           https://*.comixharem.com/*
 // @run-at          document-end
 // @namespace       https://github.com/45026831/hh-plus-plus
-// @updateURL       https://raw.githubusercontent.com/45026831/hh-plus-plus/main/hh-plus-plus.js
-// @downloadURL     https://raw.githubusercontent.com/45026831/hh-plus-plus/main/hh-plus-plus.js
+// @updateURL       https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.meta.js
+// @downloadURL     https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.user.js
 // @grant           none
 // @author          Raphael, 1121, Sluimerstand, shal, Tom208, test_anon, 45026831(Numbers)
 // ==/UserScript==
 
+//
+// WARNING: THIS VERSION OF THE SCRIPT IS NOW DEPRECATED. IT WILL SLOWLY LOSE FUNCTIONALITY OVER TIME AS KINKOID CHANGES THE GAME
+// PLEASE UPGRADE TO VERSION 1.x ASAP HERE https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.user.js
+//
+
 /*  ===========
      CHANGELOG
     =========== */
-// The changelog can be found at https://raw.githubusercontent.com/45026831/hh-plus-plus/main/CHANGELOG
+// The changelog can be found at https://raw.githubusercontent.com/45026831/hh-plus-plus/main/CHANGELOG-0.x
 
 
 /* =========
