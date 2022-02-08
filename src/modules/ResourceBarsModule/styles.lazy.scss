@@ -387,6 +387,14 @@ body > div > header > div.energy_counter {
                         font-size: 8px;
                     }
                 }
+
+                @media #{$mediaDesktop} {
+                    justify-content: space-between;
+
+                    .energy_counter_amount {
+                        margin-left: 14px;
+                    }
+                }
             }
         }
     }
