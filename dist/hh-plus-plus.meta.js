@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Hentai Heroes++ BDSM version webpack
+// @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
 // @version         1.0.0
 // @match           https://*.hentaiheroes.com/*
@@ -53,6 +53,7 @@
  *
  * It:
  * - Daniel/Danutaku
+ * - holymolly
  */
 
 // WARNING: This file has been generated, DO NOT EDIT.

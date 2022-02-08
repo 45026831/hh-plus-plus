@@ -1,3 +1,5 @@
+import Helpers from '../../common/Helpers'
+
 export const common = {
     all: 'Tutti',
 }
@@ -5,25 +7,25 @@ export const common = {
 export const config = {
     refresh: 'Refresh pagina Home',
     villain: 'Menù battaglia Troll',
-    villain_tiers: 'Mostra battaglie con ragazze', // TODO GH
+    villain_tiers: `Mostra battaglie con ${Helpers.isGH() ? 'ragazzi' : 'ragazze'}`,
     market: 'Informazioni negozio',
-    marketGirlsFilter: 'Filtro per ragazze nel mercato', // TODO GH
-    marketEquipsFilter: false, // TODO
+    marketGirlsFilter: `Filtro per ${Helpers.isGH() ? 'ragazzi' : 'ragazze'} nel mercato`,
+    marketEquipsFilter: 'Filtro per ogetti nel mercato',
     marketXPAff: 'XP e affetto nel mercato',
-    marketHideSellButton: false, // TODO
+    marketHideSellButton: 'Nascondi il bottone di vendita nel mercato',
     harem: 'Informazioni Harem',
     league: 'Informazioni sulle Leghe',
     league_board: 'Mostra i top della lega',
     league_promo: 'Mostra informazioni sulla promozione',
     simFight: 'Simulazione Leghe / Stagione / Troll',
     simFight_logging: 'Accesso dettagliato nella console del browser',
-    simFight_highPrecisionMode: false, // TODO
+    simFight_highPrecisionMode: 'Modalità ad alta precisione (attenzione: lento!)',
     teamsFilter: 'Filtro delle squadre',
     champions: 'Informazioni sui Campioni',
-    homeScreen: false, // TODO
-    resourceBars: false, // TODO
-    popSort: false, // TODO
-    seasonStats: false, // TODO
+    homeScreen: 'Scorciatoie e timer della schermata principale',
+    resourceBars: 'Barre di risorse / Monitoraggio dei booster',
+    popSort: 'LdP ordinamento e navigazione rapida',
+    seasonStats: 'Statistiche di stagione',
     pachinkoNames: 'Mostra i nomi nel Pachinko',
     contestSummary: 'Riepilogo dei premi salvati dei contest',
     battleEndstate: 'Mostra i valori finali dopo aver saltato la battaglia',
@@ -31,10 +33,10 @@ export const config = {
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
     collectMoneyAnimation: 'Disattivare l\'animazione di raccolta dei soldi',
-    mobileBattle: false, // TODO
-    darkMobileLeague: false, // TODO
-    hideRotateDevice: false, // TODO
-    salaryTimers: false, // TODO
+    mobileBattle: 'Correggi schermata di battaglia mobile',
+    darkMobileLeague: 'Sfondo scuro nella lega mobile',
+    hideRotateDevice: 'Nascondi il ricordo della rotazione del device su mobile',
+    salaryTimers: 'Leggibile timer di salario',
 }
 
 export const villain = {
@@ -43,7 +45,7 @@ export const villain = {
     jacksoncrew: 'Ciurma di Jackson',
     pandorawitch: 'Strega Pandora',
     werebunnypolice: 'Polizia del Conigli Mannari',
-    fallback: 'Mundo {{world}} villano'
+    fallback: 'Mundo {{world}} villano',
 }
 
 export const market = {
@@ -63,12 +65,12 @@ export const market = {
     equips: 'equipaggiamento',
     youOwn: 'Possiedi <b>{{count}}</b> {{type}}.',
     youCanSell: 'Puoi vendere tutto per <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
-    youCanGive: 'Puoi dare un massimo di <b>{{value}}</b> {{currency}}.'
+    youCanGive: 'Puoi dare un massimo di <b>{{value}}</b> {{currency}}.',
 }
 
 export const marketGirlsFilter = {
     searchedName: 'Nome',
-    girlName: 'Nome della ragazza', // TODO GH
+    girlName: `Nome ${Helpers.isGH() ? 'del ragazzo' : 'della ragazza'}`,
     searchedClass: 'Classe',
     searchedElement: 'Elemento',
     searchedRarity: 'Rarità',
@@ -87,36 +89,36 @@ export const marketGirlsFilter = {
 }
 
 export const marketXPAff = {
-    aff: false, // TODO
+    aff: 'Prossimo: {{remainNext}}',
 }
 
 export const marketHideSellButton = {
-    hide: false, // TODO
+    hide: 'Nascondi il bottone "Vendi"',
 }
 
 export const harem = {
-    marketRestocked: false, // TODO
-    visitMarket: false, // TODO
-    haremStats: false, // TODO
-    upgrades: false, // TODO
-    levelsAwakening: false, // TODO
-    market: false, // TODO
-    wikiPage: false, // TODO
+    marketRestocked: '> Il <a href="../shop.html">mercato</a> si è rifornito dalla tua ultima visita.',
+    visitMarket: '> Visita prima il <a href="../shop.html">Mercato</a> per vedere un riassunto dell\'inventario qui',
+    haremStats: 'Statistiche dell\'harem',
+    upgrades: 'Aggiornamenti',
+    levelsAwakening: 'Livelli e risveglio',
+    market: 'Inventario e mercato',
+    wikiPage: 'La pagina wiki di {{name}}}',
     haremLevel: 'Il livello del Harem',
-    unlockedScenes: false, // TODO
+    unlockedScenes: 'Scene sbloccate',
     income: 'Guadagno',
     or: '{{left}} o {{right}}',
-    toUpgrade: false, // TODO
-    toLevelCap: false, // TODO
-    toLevelMax: false, // TODO
-    affectionScenes: false, // TODO
-    buyable: false, // TODO
-    sellable: false, // TODO
+    toUpgrade: 'Per aggiornare tutti:',
+    toLevelCap: 'Per salire di livello fino:',
+    toLevelMax: 'Per salire di livello al massimo ({{max}}):',
+    affectionScenes: 'Scene d\'affetto',
+    buyable: 'Dispondibili nel mercato:',
+    sellable: 'Nell\'inventario:',
     gifts: 'Regali',
     books: 'Libri',
-    canBeSold: false, // TODO
+    canBeSold: 'Può essere venduto per {{sc}}',
     canBeBought: '{{item}} per {{amount}}',
-    marketRestock: false, // TODO
+    marketRestock: 'Il mercato si rifornisce in {{time}} o al livello {{level}}',
 }
 
 export const league = {
@@ -132,8 +134,8 @@ export const league = {
     toNotDemote: 'Per <em><u>non retrocedere</u></em>, devi avere più di <em>0</em> punti',
     toStay: 'Per <em><u>non essere promosso</u></em>, devi essere sorpassato da <em>{{players}}</em> giocatori',
     willStay: 'Per <em><u>non essere promosso</u></em>, puoi avere al massimo <em>{{points}}</em> punti',
-    hideFoughtOpponents: false, // TODO
-    showFoughtOpponents: false, // TODO
+    hideFoughtOpponents: 'Nascondi avversari combattuti',
+    showFoughtOpponents: 'Mostra avversari combattuti',
     currentLeague: 'Lega attuale',
     victories: 'Vittorie',
     defeats: 'Sconfitte',
@@ -148,7 +150,7 @@ export const league = {
 
 export const teamsFilter = {
     searchedName: 'Nome',
-    girlName: 'Nome della ragazza', // TODO GH
+    girlName: `Nome ${Helpers.isGH() ? 'del ragazzo' : 'della ragazza'}`,
     searchedClass: 'Classe',
     searchedElement: 'Elemento',
     searchedRarity: 'Rarità',
@@ -163,29 +165,29 @@ export const teamsFilter = {
     grade5: '5 stelle',
     grade6: '6 stelle',
     searchedBlessedAttributes: 'Benedizioni',
-    blessedAttributes: 'Ragazze benedette', // TODO GH
-    nonBlessedAttributes: 'Ragazze non benedette', // TODO GH
+    blessedAttributes: Helpers.isGH() ? 'Ragazzi benedetti' : 'Ragazze benedette',
+    nonBlessedAttributes: Helpers.isGH() ? 'Ragazzi non benedetti' : 'Ragazze non benedette',
 }
 
 export const champions = {
-    participants: false, // TODO
-    clubChampDuration: false, // TODO
+    participants: 'Partecipanti: {{participants}}/{{members}}',
+    clubChampDuration: '{{duration}} dall\'inizio del giro',
 }
 
 export const resourceBars = {
-    popsIn: false, // TODO
-    popsReady: false, // TODO
-    readyAt: false, // TODO
-    endAt: false, // TODO
-    fullAt: false, // TODO
-    xp: false, // TODO
+    popsIn: 'LdP in {{time}}',
+    popsReady: 'LdP pronti',
+    readyAt: 'Pronto in {{time}}',
+    endAt: 'Termina in {{time}}',
+    fullAt: 'Pieno in {{time}}',
+    xp: 'Prossimo: {{xp}} XP',
 }
 
 export const homeScreen = {
     clubChamp: 'Il Campione per Club',
-    completeIn: false, // TODO
-    newMissionsIn: false, // TODO
-    missionsReady: false, // TODO
+    completeIn: 'Completa in',
+    newMissionsIn: 'Nuova Missione in',
+    missionsReady: 'Missioni pronte',
 }
 
 export const seasonStats = {
@@ -200,10 +202,10 @@ export const seasonStats = {
 }
 
 export const pachinkoNames = {
-    availableGirls: 'Ragazze disponibili: ' // TODO GH
+    availableGirls: `${Helpers.isGH() ? 'Ragazzi' : 'Ragazze'} disponibili: `,
 }
 
 export const contestSummary = {
     totalRewards: 'Ricompense totali salvate ({{contests}} contest):',
-    contestsWarning: 'I contest scadono dopo 21 giorni!'
+    contestsWarning: 'I contest scadono dopo 21 giorni!',
 }

@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name            Hentai Heroes++ BDSM version webpack
+// @name            Hentai Heroes++ BDSM version
 // @description     {{description}}
 // @version         {{version}}
 // @match           https://*.hentaiheroes.com/*
@@ -53,6 +53,7 @@
  *
  * It:
  * - Daniel/Danutaku
+ * - holymolly
  */
 
 // WARNING: This file has been generated, DO NOT EDIT.
