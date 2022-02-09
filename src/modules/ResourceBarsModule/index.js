@@ -1,4 +1,4 @@
-/* global Hero, HHTimers, GT, server_now_ts, HH_MAX_LEVEL */
+/* global Hero, HHTimers, GT, server_now_ts, format_time_short, HH_MAX_LEVEL */
 import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
@@ -12,19 +12,11 @@ const {$} = Helpers
 
 const MODULE_KEY = 'resourceBars'
 
-const makeEnergyBarHTML = ({type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max, shortcutLink, fullIn}, label) => {
-    let tooltip
-    if (fullIn > 0) {
-        const fullAt = server_now_ts + fullIn
-        const formattedDate = `<span class=&quot;orange&quot;>${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
-        tooltip = label('fullAt', {time: formattedDate})
-    } else {
-        tooltip = `<span class=&quot;orange&quot;>${GT.design.Full}</span>`
-    }
+const makeEnergyBarHTML = ({type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max, shortcutLink}) => {
     return `
         <div class="energy_counter" type="${type}" id="canvas_${type}_energy">
             <div class="energy_counter_bar">
-                <div class="energy_counter_icon"><span generic-tooltip="${tooltip}" class="${iconClass}"></span></div>
+                <div class="energy_counter_icon"><span class="${iconClass}"></span></div>
                 <a href="${shortcutLink}">
                     <div class="bar-wrapper">
                         <div class="bar red" style="width:${100*Math.min(currentVal,max)/max}%"></div>
@@ -76,7 +68,7 @@ class ResourceBarsModule extends CoreModule {
             this.betterMoney()
             this.forceTimerInterval()
             this.addEnergyBarShortcut()
-            this.addQuestAndFightTooltips()
+            this.initTooltips()
             this.addAdditionalBars()
             this.addPoPTimer()
             this.addBoosterStatus()
@@ -93,6 +85,44 @@ class ResourceBarsModule extends CoreModule {
 
     injectCSSVars () {
         Sheet.registerVar('challenge-token-icon', `url("${Helpers.getCDNHost()}/league_points.png")`)
+    }
+
+    initTooltips () {
+        const types = {
+            quest: 'hudEnergy_mix_icn',
+            fight: 'hudBattlePts_mix_icn',
+            kiss: 'hudKiss_mix_icn',
+            challenge: 'hudChallenge_mix_icn',
+            worship: 'hudWorship_mix_icn'
+        }
+
+        const {is_mobile, is_tablet, TooltipManager, Tooltip} = window
+        const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
+
+        Object.entries(types).forEach(([type, icon]) => {
+            const selector = `header .energy_counter .${icon}`
+            if (isMobile) {
+                $('body').off('touchstart', selector)
+            } else {
+                $('body').off('mouseenter', selector)
+                $('body').off('mouseleave', selector)
+            }
+
+            TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
+                let text
+                if (Hero.energies[type].amount >= Hero.energies[type].max_amount)
+                    text = `<span class="orange">${GT.design.Full}</span>`
+                else {
+                    const fullIn = Hero.c[type].getTotalRemainingTime()
+                    const fullAt = server_now_ts + fullIn
+                    const formattedDate = `<span class="orange">${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
+                    const formattedIn = `${GT.design.full_in}<span class="orange" rel="timer">${format_time_short(fullIn)}</span>`
+                    text = `${formattedIn}<br/>${this.label('fullAt', {time: formattedDate})}`
+                }
+                let newTooltip = new Tooltip($(target),'',text)
+                TooltipManager.initNewTooltip(target, newTooltip)
+            })
+        })
     }
 
     betterXP () {
@@ -162,25 +192,6 @@ class ResourceBarsModule extends CoreModule {
         $('.energy_counter[type=quest] .bar-wrapper').wrap(`<a href="${shortcutLink}"></a>`)
     }
 
-    addQuestAndFightTooltips () {
-        Object.entries({
-            quest: 'hudEnergy_mix_icn',
-            fight: 'hudBattlePts_mix_icn'
-        }).forEach(([type, mixin]) => {
-            const {recharge_time} = Hero.energies[type]
-
-            let label
-            if (recharge_time > 0) {
-                const fullAt = recharge_time + server_now_ts
-                const formattedDate = `<span class="orange">${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
-                label = this.label('fullAt', {time: formattedDate})
-            } else {
-                label = `<span class="orange">${GT.design.Full}</span>`
-            }
-            $(`header .energy_counter[type=${type}] .${mixin}`).attr('generic-tooltip', label)
-        })
-    }
-
     addAdditionalBars () {
         const barTypes = [
             {type: 'kiss', feature: 'seasons', iconClass: 'hudKiss_mix_icn', shortcutLink: '/season-arena.html'},
@@ -198,9 +209,9 @@ class ResourceBarsModule extends CoreModule {
                 return
             }
 
-            const {amount, max_amount, seconds_per_point, next_refresh_ts, recharge_time} = Hero.energies[type]
+            const {amount, max_amount, seconds_per_point, next_refresh_ts} = Hero.energies[type]
 
-            const $barHTML = $(makeEnergyBarHTML({type, iconClass, shortcutLink, currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts, fullIn: recharge_time}, this.label))
+            const $barHTML = $(makeEnergyBarHTML({type, iconClass, shortcutLink, currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts}))
 
             $elemToAppendAfter.after($barHTML)
             $elemToAppendAfter = $barHTML
