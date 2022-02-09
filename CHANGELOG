@@ -1,2 +1,2 @@
-1.0.1: Adding back Full in to the resource bar tooltips and adjusted font sizes.
+1.0.1: Adding back Full in to the resource bar tooltips and adjusting font sizes.
 1.0.0: A complete rewrite of the script using modern technologies to improve performance and maintainability. The equip sort button has been replaced with a new equip filter and favourites system, the resource bars have been completely redesigned, and many other changes.
