@@ -78,6 +78,14 @@ class ResourceBarsModule extends CoreModule {
 
             const moneyObserver = new MutationObserver(() => {this.betterMoney()})
             moneyObserver.observe($('[hero=soft_currency]')[0], {childList: true})
+
+            // Catch late tooltip inits
+            const {TooltipManager} = window
+            const actualInit = TooltipManager.init.bind(TooltipManager)
+            TooltipManager.init = () => {
+                actualInit()
+                this.initTooltips()
+            }
         })
 
         this.hasRun = true
@@ -101,12 +109,13 @@ class ResourceBarsModule extends CoreModule {
 
         Object.entries(types).forEach(([type, icon]) => {
             const selector = `header .energy_counter .${icon}`
-            if (isMobile) {
-                $('body').off('touchstart', selector)
-            } else {
-                $('body').off('mouseenter', selector)
-                $('body').off('mouseleave', selector)
-            }
+
+            $('body').off('touchstart', selector)
+            $('body').off('touchend', selector)
+            $('body').off('touchcancel', selector)
+
+            $('body').off('mouseenter', selector)
+            $('body').off('mouseleave', selector)
 
             TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
                 let text
