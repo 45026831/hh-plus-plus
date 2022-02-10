@@ -176,7 +176,7 @@ class RewardShardsModule extends CoreModule {
 
         if ($('.arena-rewards-list .slot_girl_shards .girl_ico').length) {
             annotate()
-        } else {
+        } else if ($('.arena-rewards-list .slot_girl_shards').length) {
             const observer = new MutationObserver(() => {
                 if ($('.arena-rewards-list .slot_girl_shards .girl_ico').length) {
                     annotate()

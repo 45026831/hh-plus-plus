@@ -95,6 +95,7 @@ class ChampionsModule extends CoreModule {
             if (Helpers.isCurrentPage('champions/') || Helpers.isCurrentPage('club-champion')) {
                 this.poseMatching()
                 this.showTicketsWhileResting()
+                this.fasterSkipButton()
             }
         })
 
@@ -304,6 +305,18 @@ class ChampionsModule extends CoreModule {
         }
         attachCount()
         new MutationObserver(attachCount).observe($('#contains_all>section')[0], {childList: true})
+    }
+
+    fasterSkipButton () {
+        Helpers.onAjaxResponse(/class=TeamBattle/i, () => {
+            const observer = new MutationObserver(() => {
+                if ($('button.skip-button').length) {
+                    $('button.skip-button').show()
+                    observer.disconnect()
+                }
+            })
+            observer.observe($('#contains_all > section')[0], {childList: true})
+        })
     }
 }
 

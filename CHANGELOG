@@ -1,3 +1,4 @@
+1.0.4: Adding faster skip button to champions module (#25)
 1.0.3: Fixing bug in Full at that was causing it to count down. Fixing bug in rewards shards displayed in season. Intensifying the ambient occlusion on the booster status.
 1.0.2: Fixing a bug with the resource bars tooltips on firefox.
 1.0.1: Adding back Full in to the resource bar tooltips and adjusting font sizes.
