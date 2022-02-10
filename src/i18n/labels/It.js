@@ -29,6 +29,10 @@ export const config = {
     pachinkoNames: 'Mostra i nomi nel Pachinko',
     contestSummary: 'Riepilogo dei premi salvati dei contest',
     battleEndstate: 'Mostra i valori finali dopo aver saltato la battaglia',
+    gemStock: false, // TODO
+    staticBackground: false, // TODO
+    rewardShards: false, // TODO
+    leaderboardFix: false, // TODO
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',

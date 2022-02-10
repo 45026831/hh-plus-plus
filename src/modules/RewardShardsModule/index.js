@@ -149,25 +149,42 @@ class RewardShardsModule extends CoreModule {
     }
 
     displayOnSeason () {
-        const girlDictionary = Helpers.getGirlDictionary()
-        $('.arena-rewards-list .girl_ico').each((i,el) => {
-            const $el = $(el)
-            const $img = $el.find('img')
-            if (!$img.length) {return}
-            const url = $img.attr('src')
+        const annotate = () => {
+            const girlDictionary = Helpers.getGirlDictionary()
+            $('.arena-rewards-list .slot_girl_shards .girl_ico').each((i,el) => {
+                const $el = $(el)
+                const $img = $el.find('img')
+                if (!$img.length) {return}
+                const url = $img.attr('src')
 
-            const id = extractIdFromUrl(url)
-            if (!id) {return}
-            const girl = girlDictionary.get(id)
-            let name, shards
-            if (girl) {
-                ({name, shards} = girl)
-            } else {
-                shards = 0
-            }
+                const id = extractIdFromUrl(url)
+                if (!id) {return}
+                const girl = girlDictionary.get(id)
+                let name, shards
+                if (girl) {
+                    ({name, shards} = girl)
+                } else {
+                    shards = 0
+                }
 
-            $el.append(makeShardCount({name, shards}))
-        })
+                $el.append(makeShardCount({name, shards}))
+
+                // Fix layout widths
+                $el.parents('.arena-rewards-list').addClass('script-has-girl-reward')
+            })
+        }
+
+        if ($('.arena-rewards-list .slot_girl_shards .girl_ico').length) {
+            annotate()
+        } else {
+            const observer = new MutationObserver(() => {
+                if ($('.arena-rewards-list .slot_girl_shards .girl_ico').length) {
+                    annotate()
+                    observer.disconnect()
+                }
+            })
+            observer.observe($('.arena-rewards-list .slot_girl_shards')[0], {childList: true})
+        }
     }
 
     displayOnLeague () {

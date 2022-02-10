@@ -27,3 +27,23 @@
 .leagues_girl_reward_container .girl_ico {
     position: relative;
 }
+
+#season-arena .season_arena_block.opponent .opponent_rewards {
+    .arena-rewards-list.script-has-girl-reward {
+        .slot {
+            width: 30px;
+            & > img {
+                height: auto;
+            }
+            &.slot_gems {
+                & > img {
+                    margin-left: 1px;
+                }
+            }
+            &.slot_season_affection_girl p:nth-child(2),
+            &.slot_season_xp_girl p:nth-child(2) {
+                font-size: 12px;
+            }
+        }
+    }
+}

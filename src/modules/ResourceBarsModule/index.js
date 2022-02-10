@@ -123,7 +123,8 @@ class ResourceBarsModule extends CoreModule {
                     text = `<span class="orange">${GT.design.Full}</span>`
                 else {
                     const fullIn = Hero.c[type].getTotalRemainingTime()
-                    const fullAt = server_now_ts + fullIn
+                    const now = Math.round(new Date().getTime() / 1000)
+                    const fullAt = now + fullIn
                     const formattedDate = `<span class="orange">${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
                     const formattedIn = `${GT.design.full_in}<span class="orange" rel="timer">${format_time_short(fullIn)}</span>`
                     text = `${formattedIn}<br/>${this.label('fullAt', {time: formattedDate})}`

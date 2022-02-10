@@ -122,7 +122,7 @@ const runScript = () => {
 
 if (!$) {
     console.log('HH++ WARNING: No jQuery found. Probably an error page. Ending the script here')
-} else if (location.pathname === '/' && location.hostname.includes('www')) {
+} else if (location.pathname === '/' && (location.hostname.includes('www') || location.hostname.includes('test'))) {
     // iframe container, do nothing.
 } else if (location.pathname === '/integrations/' && location.hostname.includes('nutaku')) {
     // nutaku post-login home screen, redirect.
