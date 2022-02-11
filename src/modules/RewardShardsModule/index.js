@@ -184,6 +184,14 @@ class RewardShardsModule extends CoreModule {
                 }
             })
             observer.observe($('.arena-rewards-list .slot_girl_shards')[0], {childList: true})
+        } else if ($('.arena-rewards-list .girls_reward [data-reward-display]').length) {
+            const observer = new MutationObserver(() => {
+                if ($('.arena-rewards-list .slot_girl_shards .girl_ico').length) {
+                    annotate()
+                    observer.disconnect()
+                }
+            })
+            observer.observe($('.arena-rewards-list .girls_reward [data-reward-display]')[0], {childList: true})
         }
     }
 
