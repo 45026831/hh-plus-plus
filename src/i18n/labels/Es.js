@@ -49,7 +49,8 @@ export const villain = {
     jacksoncrew: 'La tripulación de Jackson',
     pandorawitch: 'Pandora Bruja',
     werebunnypolice: 'Policía hombres-conejos',
-    fallback: 'Mondo {{world}} nemico'
+    fallback: 'Mondo {{world}} nemico',
+    event: 'Evento',
 }
 
 export const market = {

@@ -29,10 +29,10 @@ export const config = {
     pachinkoNames: 'Mostra i nomi nel Pachinko',
     contestSummary: 'Riepilogo dei premi salvati dei contest',
     battleEndstate: 'Mostra i valori finali dopo aver saltato la battaglia',
-    gemStock: false, // TODO
-    staticBackground: false, // TODO
-    rewardShards: false, // TODO
-    leaderboardFix: false, // TODO
+    gemStock: 'Scorte di gemme nel Mercato/Harem',
+    staticBackground: 'Impedi lo scambio di sfondo durante i giorni dell\'orgia',
+    rewardShards:  'Mostra i conti attuali dei frammenti sulle ricompense',
+    leaderboardFix: 'Correggi le classifiche di Stagione e SdV',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
@@ -50,6 +50,7 @@ export const villain = {
     pandorawitch: 'Strega Pandora',
     werebunnypolice: 'Polizia del Conigli Mannari',
     fallback: 'Mundo {{world}} villano',
+    event: 'Evento',
 }
 
 export const market = {

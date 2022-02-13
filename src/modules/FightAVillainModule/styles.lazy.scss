@@ -1,150 +1,234 @@
-@import "../../common/constants.scss";
-
-.TrollsMenu {
-    position: absolute;
-    z-index: 99;
+.script-fight-a-villain-menu-overlay {
     display: none;
-    border-radius: 0px 0px 8px 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.73);
-    letter-spacing: 0.22px;
+    background-color: #080808f5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+
+    &.shown {
+        display: block;
+    }
+}
+
+.script-fight-a-villain-menu-container {
+    display: none;
+    align-items: center;
+    justify-content: center;
     color: #fff;
-    text-align: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 400ms, visibility 400ms;
-    grid-gap: 7px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-weight: var(--troll-menu-font-weight);
+    width: 1040px;
+    height: 585px;
+    z-index: 10;
+    font-size: 16px;
+    pointer-events: none;
 
-    .energy_counter:hover > & {
-        opacity: 1;
+    &.shown {
+        display: flex;
+    }
+
+    .script-fight-a-villain-menu {
         display: grid;
-        visibility: visible;
-    }
-
-    a {
-        color: rgb(255, 255, 255);
-        text-decoration: none;
-    }
-}
-
-#TrollsID a {
-    color: rgb(255, 255, 255);
-    text-decoration: none;
-
-    &:hover {
-        color: rgb(255, 247, 204);
-        text-decoration: underline;
-    }
-}
-
-.eventTroll {
-    color: #f70 !important;
-
-    &:hover {
-        color: #fa0 !important;
-    }
-
-    &.common {
-        color: #8d8e9f !important;
-        &:hover {
-            color: #b4b5c9 !important;
-        }
-    }
-
-    &.rare {
-        color: #23b56b !important;
-        &:hover {
-            color: #2bdf84 !important;
-        }
-    }
-
-    &.epic {
-        color: #ffb244 !important;
-        &:hover {
-            color: #ffc97b !important;
-        }
-    }
-
-    &.legendary {
-        color: #9370db !important;
-        &:hover {
-            color: #b19cd9 !important;
-        }
-    }
-}
-
-.mythicEventTroll {
-    color: #ec0039 !important;
-
-    &:hover {
-        color: #ff003e !important;
-    }
-}
-
-// Pachinko page hack
-// #contains_all {
-//     pointer-events: none;
-
-//     & > * {
-//         pointer-events: all;
-//     }
-// }
-// #pachinko_whole {
-//     pointer-events: none;
-//     .playing-zone {
-//         pointer-events: all;
-//     }
-// }
-// #content-unscaled {
-//     z-index: 1;
-// }
-
-@media #{$mediaMobile} {
-    .TrollsMenu {
-        width: 500px;
-        margin: 62px 0 0 -96px;
-        font-size: 16px;
-        line-height: 22px;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
         grid-auto-flow: row;
-        padding-left: 10px;
-        padding-right: 10px;
+        grid-gap: 0.3em;
 
-        & > a {
-            padding-top: 10px;
-            padding-bottom: 10px;
+        &.width-1 {
+            grid-template-columns: 1fr;
+        }
+        &.width-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+        &.width-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        &.width-4 {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
         }
 
-        .villain_gem,
-        .villain_item {
-            height: 18px;
-            width: 18px;
-        }
-
-        .villain_rewards {
+        .menu-villain {
+            text-decoration: none;
+            color: unset;
+            background-color: #cccccc42;
             display: block;
+            padding: 0.2em;
+            border-radius: 0.3em;
+            pointer-events: all;
+
+            &:hover {
+                background-color: #cccccc62;
+            }
+
+            &.eventTroll {
+                &.common {
+                    background-color: #8d8e9f42;
+                    &:hover {
+                        background-color: #b4b5c942;
+                    }
+                }
+
+                &.rare {
+                    background-color: #23b56b42;
+                    &:hover {
+                        background-color: #2bdf8442;
+                    }
+                }
+
+                &.epic {
+                    background-color: #ffb24442;
+                    &:hover {
+                        background-color: #ffc97b42;
+                    }
+                }
+
+                &.legendary {
+                    background-color: #9370db42;
+                    &:hover {
+                        background-color: #b19cd942;
+                    }
+                }
+            }
+
+            &.mythicEventTroll {
+                background-color: #ec003942;
+
+                &:hover {
+                    background-color: #ff003e42;
+                }
+            }
+
+            &-top {
+                display: flex;
+                justify-content: space-between;
+            }
+            &-icon {
+                width: 2.5rem;
+                height: auto;
+            }
+            &-name-and-drops {
+                flex: 1;
+                padding: {
+                    left: 0.5em;
+                    right: 0.5em;
+                }
+                display: flex;
+                flex-direction: column;
+            }
+            &-name {
+                font-size: 0.75em;
+            }
+            &-drops {
+                display: flex;
+            }
+            &-drop {
+                display: block;
+                width: 1.3em;
+                height: auto;
+            }
+            &-gem-drop-container {
+                width: 1.5em;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            &-gem-drop-amount {
+                position: absolute;
+                bottom: -0.5em;
+                font-size: 0.9em;
+                text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+            }
+            &-world {
+                img {
+                    width: 1.5em;
+                    height: auto;
+                    display: block;
+                }
+
+                &:hover {
+                    filter: drop-shadow(0px 0px 3px #fff);
+                }
+            }
+            &-bottom {
+                display: grid;
+                grid-template-columns: 3fr 1fr 1fr 1fr;
+                grid-gap: 0.2em;
+
+                .girl_ico {
+                    position: relative;
+                    width: fit-content;
+
+                    &.obtained {
+                        border-color: #75b400;
+                        &::after {
+                            content: " ";
+                            position: absolute;
+                            background-image: var(--girl-ico-tick);
+                            background-size: contain;
+                            background-repeat: no-repeat;
+                            display: block;
+                            width: 1em;
+                            height: 1em;
+                            top: 0;
+                            right: 0;
+                        }
+                    }
+
+                    img {
+                        width: 2em;
+                        height: auto;
+                    }
+                    .shard-count {
+                        position: absolute;
+                        text-align: center;
+                        display: block;
+                        width: 100%;
+                        font-size: 0.7em;
+                        bottom: -0.125em;
+                        color: #80058b;
+                        text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff;
+                        font-weight: var(--troll-menu-font-weight);
+
+                        .shard {
+                            height: 1.4em;
+                            width: 1.2em;
+                            display: inline-block;
+                            background-size: 140%;
+                            background-position: center;
+                        }
+                    }
+                }
+            }
+            &-tier {
+                display: flex;
+                flex-direction: column;
+
+                &-title {
+                    font-size: 0.7em;
+                    display: block;
+                    width: 100%;
+                    height: 1.3em;
+                    border-bottom: 1px solid #fff;
+                    margin-bottom: 0.2em;
+                }
+
+                &-girls {
+                    display: grid;
+                    grid-gap: 0.2em;
+
+                    &.tier1 {
+                        grid-template-columns: 1fr 1fr 1fr;
+                    }
+                    &.event {
+                        grid-template-columns: 1fr;
+                    }
+                }
+            }
         }
     }
 }
 
-@media #{$mediaDesktop} {
-    .TrollsMenu {
-        width: 200px;
-        margin: 40px 0 0 -40px;
-        font-size: 14px;
-        line-height: 18px;
-
-        .villain_gem,
-        .villain_item {
-            height: 16px;
-            width: 16px;
-        }
-
-        .villain_rewards {
-            display: inline;
-        }
-    }
+#contains_all > header [type="fight"] .bar-wrapper {
+    cursor: pointer;
 }

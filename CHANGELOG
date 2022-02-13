@@ -1,3 +1,4 @@
+1.1.0: Rewriting fight-a-villain menu module, now a full-screen grid showing a lot more information than before.
 1.0.5: Fixing seasons reward shards on Firefox
 1.0.4: Adding faster skip button to champions module (#25)
 1.0.3: Fixing bug in Full at that was causing it to count down. Fixing bug in rewards shards displayed in season. Intensifying the ambient occlusion on the booster status.

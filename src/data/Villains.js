@@ -8,7 +8,16 @@ export default {
                 2: ['7270263'],
                 3: ['979916751']
             },
-            gems: ['fire', 'sun']
+            gems: [
+                {
+                    element: 'fire',
+                    amount: 15
+                },
+                {
+                    element: 'sun',
+                    amount: 15
+                }
+            ]
         },
         {
             key: 'ninjaspy',
@@ -18,7 +27,13 @@ export default {
                 2: ['318292466'],
                 3: ['936580004']
             },
-            gems: ['darkness', 'light']
+            gems: [{
+                element: 'darkness',
+                amount: 15,
+            }, {
+                element: 'light',
+                amount: 15,
+            }]
         },
         {
             key: 'gruntt',
@@ -28,7 +43,13 @@ export default {
                 2: ['610468472'],
                 3: ['54950499']
             },
-            gems: ['psychic', 'water']
+            gems: [{
+                element: 'psychic',
+                amount: 15,
+            }, {
+                element: 'water',
+                amount: 15,
+            }]
         },
         {
             key: 'edwarda',
@@ -38,7 +59,13 @@ export default {
                 2: ['4749652'],
                 3: ['345655744']
             },
-            gems: ['nature', 'stone']
+            gems: [{
+                element: 'nature',
+                amount: 15,
+            }, {
+                element: 'stone',
+                amount: 15,
+            }]
         },
         {
             key: 'donatien',
@@ -48,7 +75,10 @@ export default {
                 2: ['267784162'],
                 3: ['763020698']
             },
-            gems: ['darkness']
+            gems: [{
+                element: 'darkness',
+                amount: 20,
+            }]
         },
         {
             key: 'silvanus',
@@ -58,7 +88,10 @@ export default {
                 2: ['406004250'],
                 3: ['864899873']
             },
-            gems: ['light']
+            gems: [{
+                element: 'light',
+                amount: 20,
+            }]
         },
         {
             key: 'bremen',
@@ -68,7 +101,10 @@ export default {
                 2: ['267120960'],
                 3: ['536361248']
             },
-            gems: ['psychic']
+            gems: [{
+                element: 'psychic',
+                amount: 20,
+            }]
         },
         {
             key: 'finalmecia',
@@ -78,7 +114,10 @@ export default {
                 2: ['379441499'],
                 3: ['447396000']
             },
-            gems: ['water']
+            gems: [{
+                element: 'water',
+                amount: 20,
+            }]
         },
         {
             key: 'rokosensei',
@@ -88,7 +127,10 @@ export default {
                 2: ['46227677'],
                 3: ['933487713']
             },
-            gems: ['fire']
+            gems: [{
+                element: 'fire',
+                amount: 20
+            }]
         },
         {
             key: 'karole',
@@ -98,7 +140,10 @@ export default {
                 2: ['985085118'],
                 3: ['339765042']
             },
-            gems: ['nature'],
+            gems: [{
+                element: 'nature',
+                amount: 20,
+            }],
             items: ['K4']
         },
         {
@@ -109,7 +154,10 @@ export default {
                 2: ['383709663'],
                 3: ['90685795']
             },
-            gems: ['stone'],
+            gems: [{
+                element: 'stone',
+                amount: 20,
+            }],
             items: ['XP4']
         },
         {
@@ -120,7 +168,10 @@ export default {
                 2: ['155415482'],
                 3: ['769649470']
             },
-            gems: ['sun'],
+            gems: [{
+                element: 'sun',
+                amount: 20
+            }],
             items: ['K4']
         },
         {
@@ -131,7 +182,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['darkness']
+            gems: [{
+                element: 'darkness',
+                amount: 25,
+            }]
         },
         {
             key: 'sake',
@@ -141,7 +195,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['light']
+            gems: [{
+                element: 'light',
+                amount: 25,
+            }]
         },
         {
             key: 'werebunnypolice',
@@ -151,7 +208,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['psychic']
+            gems: [{
+                element: 'psychic',
+                amount: 25,
+            }]
         },
         {
             world: 17,
@@ -160,7 +220,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['water']
+            gems: [{
+                element: 'water',
+                amount: 25,
+            }]
         }
     ],
     GH: [
@@ -172,7 +235,14 @@ export default {
                 2: ['7270263'],
                 3: ['979916751']
             },
-            gems: ['fire', 'sun']
+            gems: [{
+                element: 'fire',
+                amount: 15
+            },
+            {
+                element: 'sun',
+                amount: 15
+            }]
         },
         {
             key: 'ninjaspy',
@@ -182,7 +252,13 @@ export default {
                 2: ['318292466'],
                 3: ['936580004']
             },
-            gems: ['darkness', 'light']
+            gems: [{
+                element: 'darkness',
+                amount: 15,
+            }, {
+                element: 'light',
+                amount: 15,
+            }]
         },
         {
             key: 'gruntt',
@@ -192,7 +268,13 @@ export default {
                 2: ['610468472'],
                 3: ['54950499']
             },
-            gems: ['psychic', 'water']
+            gems: [{
+                element: 'psychic',
+                amount: 15,
+            }, {
+                element: 'water',
+                amount: 15,
+            }]
         },
         {
             key: 'edward',
@@ -202,7 +284,13 @@ export default {
                 2: ['4749652'],
                 3: ['345655744']
             },
-            gems: ['nature', 'stone']
+            gems: [{
+                element: 'nature',
+                amount: 15,
+            }, {
+                element: 'stone',
+                amount: 15,
+            }]
         },
         {
             key: 'donatien',
@@ -212,7 +300,10 @@ export default {
                 2: ['267784162'],
                 3: ['763020698']
             },
-            gems: ['darkness']
+            gems: [{
+                element: 'darkness',
+                amount: 20,
+            }]
         },
         {
             key: 'silvanus',
@@ -222,7 +313,10 @@ export default {
                 2: ['406004250'],
                 3: ['864899873']
             },
-            gems: ['light']
+            gems: [{
+                element: 'light',
+                amount: 20,
+            }]
         },
         {
             key: 'bremen',
@@ -232,7 +326,10 @@ export default {
                 2: ['267120960'],
                 3: ['536361248']
             },
-            gems: ['psychic']
+            gems: [{
+                element: 'psychic',
+                amount: 20,
+            }]
         },
         {
             key: 'edernas',
@@ -242,7 +339,10 @@ export default {
                 2: ['379441499'],
                 3: ['447396000']
             },
-            gems: ['water']
+            gems: [{
+                element: 'water',
+                amount: 20,
+            }]
         },
         {
             key: 'rokosensei',
@@ -252,7 +352,10 @@ export default {
                 2: ['46227677'],
                 3: ['933487713']
             },
-            gems: ['fire']
+            gems: [{
+                element: 'fire',
+                amount: 20
+            }]
         },
         {
             key: 'maro',
@@ -262,7 +365,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['nature'],
+            gems: [{
+                element: 'nature',
+                amount: 20,
+            }],
             items: ['K4']
         },
         {
@@ -273,7 +379,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['stone'],
+            gems: [{
+                element: 'stone',
+                amount: 20,
+            }],
             items: ['XP4']
         },
     ],
@@ -286,7 +395,14 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['fire', 'sun']
+            gems: [{
+                element: 'fire',
+                amount: 15
+            },
+            {
+                element: 'sun',
+                amount: 15
+            }]
         },
         {
             key: 'greygolem',
@@ -296,7 +412,13 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['darkness', 'light']
+            gems: [{
+                element: 'darkness',
+                amount: 15,
+            }, {
+                element: 'light',
+                amount: 15,
+            }]
         },
         {
             key: 'nymph',
@@ -306,7 +428,13 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['psychic', 'water']
+            gems: [{
+                element: 'psychic',
+                amount: 15,
+            }, {
+                element: 'water',
+                amount: 15,
+            }]
         },
         {
             key: 'athicus',
@@ -316,7 +444,13 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['nature', 'stone']
+            gems: [{
+                element: 'nature',
+                amount: 15,
+            }, {
+                element: 'stone',
+                amount: 15,
+            }]
         },
         {
             key: 'jockstrap',
@@ -326,7 +460,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['darkness']
+            gems: [{
+                element: 'darkness',
+                amount: 20,
+            }]
         },
         {
             world: 7,
@@ -335,7 +472,10 @@ export default {
                 2: [],
                 3: []
             },
-            gems: ['light']
+            gems: [{
+                element: 'light',
+                amount: 20,
+            }]
         },
     ]
 }

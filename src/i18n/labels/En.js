@@ -88,7 +88,8 @@ export const villain = {
     nymph: 'The Nymph',
     athicus: 'Athicus Ho’ole',
     jockstrap: 'The Mimic',
-    fallback: 'World {{world}} villain'
+    fallback: 'World {{world}} villain',
+    event: 'Event',
 }
 
 export const market = {

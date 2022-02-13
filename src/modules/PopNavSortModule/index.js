@@ -113,8 +113,7 @@ class PopNavSortModule extends CoreModule {
     displayGirlClasses (currentPoPId) {
         if (!currentPoPId) {return}
 
-        const {pop_data} = window
-        const girlDictionary = Helpers.getGirlDictionary()
+        const {pop_data, pop_hero_girls} = window
 
         const currentPoP = pop_data[currentPoPId]
         const {status, girls} = currentPoP
@@ -126,7 +125,7 @@ class PopNavSortModule extends CoreModule {
         const $girlsContainer = $('.pop_right_part .grid_view')
 
         girlsToAnnotate.forEach(({id_girl}) => {
-            const {class: carac} = girlDictionary.get(id_girl)
+            const {class: carac} = pop_hero_girls[id_girl]
 
             const $girl = $girlsContainer.find(`[girl=${id_girl}]`)
             $girl.append(`<span class="script-girl-class" carac="${carac}"></span>`)

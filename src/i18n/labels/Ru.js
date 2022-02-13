@@ -53,6 +53,7 @@ export const villain = {
     sake: false, // TODO
     werebunnypolice: false, // TODO
     fallback: false, // TODO
+    event: 'Ивент',
 }
 
 export const market = {

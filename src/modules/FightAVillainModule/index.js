@@ -1,4 +1,4 @@
-/* global Hero */
+/* global Hero, GT */
 import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
@@ -9,98 +9,184 @@ import styles from './styles.lazy.scss'
 import Sheet from '../../common/Sheet'
 
 const MODULE_KEY = 'villain'
+
+const DEFAULT_TIER_RARITY = {
+    1: 'common',
+    2: 'epic',
+    3: 'legendary',
+    event: 'epic',
+    mythicEvent: 'mythic',
+}
+
 class FightAVillainModule extends CoreModule {
     constructor () {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true,
-            subSettings: [
-                {
-                    key: 'tiers',
-                    label: I18n.getModuleLabel('config', `${MODULE_KEY}_tiers`),
-                    default: true
-                }
-            ]
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
 
-    run ({tiers}) {
+    run () {
         if (this.hasRun) {
             return
         }
         styles.use()
-        this.injectCSSVars()
 
         Helpers.defer(() => {
+            this.injectCSSVars()
 
-            const villainsSet = VILLAINS[Helpers.getGameKey()]
+            this.$overlay = $('<div class="script-fight-a-villain-menu-overlay"></div>')
+            $('body').append(this.$overlay)
 
-            const eventTrolls = Helpers.lsGet(lsKeys.EVENT_VILLAINS) || []
-            const mythicEventTrolls = Helpers.lsGet(lsKeys.MYTHIC_EVENT_VILLAINS) || []
-            const girlDictionary = Helpers.getGirlDictionary()
-
-            //Add the actual menu
-            const currentWorld = Hero.infos.questing.id_world
-
-            const menuHtml = `
-                <div class="TrollsMenu" id="TrollsID">
-                    ${villainsSet.filter(villain => villain.world <= currentWorld).map(({key, girls, world, gems, items}) => {
-        let tiersSuffix = ''
-        if (tiers) {
-            const haveGirl = idGirl => (girlDictionary.get(idGirl) && girlDictionary.get(idGirl).shards === 100)
-            const tier1 = girls[1].some(idGirl => !haveGirl(idGirl)) ? '&#185;' : ''
-            const tier2 = girls[2].some(idGirl => !haveGirl(idGirl)) ? '&#178;' : ''
-            const tier3 = girls[3].some(idGirl => !haveGirl(idGirl)) ? '&#179;' : ''
-            const tiers = `${tier1}${tier2}${tier3}`
-            tiersSuffix = ` ${tiers}${tiers.length ? ' ' : ''}`
-        }
-        let gemsSuffix = ''
-        if (gems) {
-            gemsSuffix = gems.map(element => `<img class='villain_gem' src="${Helpers.getCDNHost()}/pictures/design/gems/${element}.png" />`).join('')
-        }
-        let itemSuffix = ''
-        if (items) {
-            itemSuffix = items.map(item => `<img class='villain_item' src="${Helpers.getCDNHost()}/pictures/items/${item}.png" />`).join('')
-        }
-        const rewardsSuffix = `<div class="villain_rewards">${gemsSuffix}${itemSuffix}</div>`
-        const label = `${key ? this.label(key) : this.label('fallback', {world})}${tiersSuffix}${rewardsSuffix}`
-        let type = 'regular'
-        const villainId = `${world - 1}`
-        const eventTrollGirl = eventTrolls.find(({troll}) => troll === villainId)
-        if (eventTrollGirl) {
-            const {id, rarity} = eventTrollGirl
-            const dictGirl = girlDictionary.get(id)
-            const owned = dictGirl ? dictGirl.shards === 100 : false
-            if (!owned) {
-                type = `eventTroll ${rarity}`
-            }
-        }
-        const mythicTrollGirl = mythicEventTrolls.find(({troll}) => troll === villainId)
-        if (mythicTrollGirl) {
-            const dictGirl = girlDictionary.get(mythicTrollGirl.id)
-            const owned = dictGirl ? dictGirl.shards === 100 : false
-            if (!owned) {
-                type = 'mythicEventTroll'
-            }
-        }
-        return `<a class="${type}" href="/troll-pre-battle.html?id_opponent=${villainId}">${label}</a>`
-    }).join('')}
-                </div>
-            `
-
-            $('#contains_all > header').children('[type=fight]').append(menuHtml.replace(/ {4}/g, '').replace(/\n/g, ''))
+            this.$overlay.click(() => {
+                this.$container.removeClass('shown')
+                this.$overlay.removeClass('shown')
+            })
+            $('#contains_all > header [type=fight] .bar-wrapper').click(() => {
+                if (!this.$container) {
+                    const $menu = this.buildMenu()
+                    this.$container = $('<div class="script-fight-a-villain-menu-container fixed_scaled"></div>')
+                    this.$container.append($menu)
+                    $('body').append(this.$container)
+                }
+                this.$container.addClass('shown')
+                this.$overlay.addClass('shown')
+            })
         })
-
-        // Fix pachinko
-        // $('section:has(#pachinko_whole)').css('pointer-events', 'none')
 
         this.hasRun = true
     }
 
     injectCSSVars () {
         Sheet.registerVar('troll-menu-font-weight', Helpers.isCxH() ? '800' : '400')
+        Sheet.registerVar('girl-ico-tick', `url("${Helpers.getCDNHost()}/clubs/ic_Tick.png")`)
+    }
+
+    buildMenu () {
+        const villainsSet = VILLAINS[Helpers.getGameKey()]
+
+        const eventTrolls = Helpers.lsGet(lsKeys.EVENT_VILLAINS) || []
+        const mythicEventTrolls = Helpers.lsGet(lsKeys.MYTHIC_EVENT_VILLAINS) || []
+        const girlDictionary = Helpers.getGirlDictionary()
+
+
+        const currentWorld = Hero.infos.questing.id_world
+        const worldIcon = `${Helpers.getCDNHost()}/pictures/design/quest/ico-quest.png`
+
+        const filteredVillainSet = villainsSet.filter(villain => villain.world <= currentWorld)
+        const $menu = $(`<div class="script-fight-a-villain-menu width-${Math.min(4, filteredVillainSet.length)}"></div>`)
+
+        filteredVillainSet.forEach(({key, girls, world, gems, items}) => {
+            const villainId = `${world - 1}`
+            const villainName = this.label(key)
+            const villainIcon = `${Helpers.getCDNHost()}/pictures/trolls/${villainId}/ico1.png`
+            const villainWorld = `/world/${world}`
+            let type = 'regular'
+            const eventTrollGirl = eventTrolls.find(({troll}) => troll === villainId)
+            const events = {}
+            if (eventTrollGirl) {
+                const {id, rarity} = eventTrollGirl
+                events.event = id
+                const dictGirl = girlDictionary.get(id)
+                const owned = dictGirl ? dictGirl.shards === 100 : false
+                if (!owned) {
+                    type = `eventTroll ${rarity}`
+                }
+            }
+            const mythicTrollGirl = mythicEventTrolls.find(({troll}) => troll === villainId)
+            if (mythicTrollGirl) {
+                const {id} = mythicTrollGirl
+                events.mythicEvent = id
+                const dictGirl = girlDictionary.get(id)
+                const owned = dictGirl ? dictGirl.shards === 100 : false
+                if (!owned) {
+                    type = 'mythicEventTroll'
+                }
+            }
+
+            const $villain = $(`<a class="menu-villain ${type}" href="/troll-pre-battle.html?id_opponent=${villainId}"></a>`)
+
+            const $villainTopRow = $('<div class="menu-villain-top"></div>')
+            $villainTopRow.append(`<img class="menu-villain-icon" src="${villainIcon}" />`)
+            const $villainNameAndDrops = $('<div class="menu-villain-name-and-drops"></div>')
+            $villainNameAndDrops.append(`<div class="menu-villain-name">${villainName}</div>`)
+            const $villainDrops = $('<div class="menu-villain-drops"></div>')
+            if (gems) {
+                gems.forEach(({element, amount}) => {
+                    $villainDrops.append(`<div class="menu-villain-gem-drop-container" generic-tooltip="${GT.design[`${element}_gem`]}"><img class="menu-villain-drop" src="${Helpers.getCDNHost()}/pictures/design/gems/${element}.png" /><span class="menu-villain-gem-drop-amount">${amount}</span></div>`)
+                })
+            }
+            if (items) {
+                items.forEach(item => {
+                    $villainDrops.append(`<img class="menu-villain-drop" src="${Helpers.getCDNHost()}/pictures/items/${item}.png" />`)
+                })
+            }
+            $villainNameAndDrops.append($villainDrops)
+            $villainTopRow.append($villainNameAndDrops)
+            $villainTopRow.append(`<div class="menu-villain-world"><a href="${villainWorld}"><img src="${worldIcon}" /></a></div>`)
+
+            const $villainBottomRow = $('<div class="menu-villain-bottom"></div>')
+
+
+            Object.entries(girls).forEach(([tier, tierGirls]) => {
+                if (!tierGirls.length) {return}
+                const $villainTier = $('<div class="menu-villain-tier"></div>')
+                const $villainTierTitle = $(`<div class="menu-villain-tier-title">${tier}</div>`)
+                const $villainTierGirls = $(`<div class="menu-villain-tier-girls tier${tier}"></div>`)
+
+                tierGirls.forEach((girlId) => {
+                    const girl = girlDictionary.get(girlId)
+                    let name, rarity, shards
+                    if (girl) {
+                        ({name, rarity, shards} = girl)
+                    } else {
+                        name = 'Unknown',
+                        rarity = DEFAULT_TIER_RARITY[tier]
+                        shards = '?'
+                    }
+
+                    const girlIcon = `${Helpers.getCDNHost()}/pictures/girls/${girlId}/ico0-300x.webp`
+
+                    const showShards = shards === '?' || shards < 100
+                    $villainTierGirls.append(`<div class="girl_ico ${showShards ? '' : 'obtained'}" rarity="${rarity}"><img src="${girlIcon}"/>${showShards ? `<div class="shard-count" shards="${shards}" name="${name}"><span class="shard"></span>${shards}</div>` : '' }</div>`)
+                })
+                $villainTier.append($villainTierTitle).append($villainTierGirls)
+                $villainBottomRow.append($villainTier)
+            })
+            if (Object.entries(events).length) {
+                const $villainTier = $('<div class="menu-villain-tier"></div>')
+                const $villainTierTitle = $(`<div class="menu-villain-tier-title">${this.label('event')}</div>`)
+                const $villainTierGirls = $('<div class="menu-villain-tier-girls event"></div>')
+                Object.entries(events).forEach(([type, girlId]) => {
+
+                    const girl = girlDictionary.get(girlId)
+                    let name, rarity, shards
+                    if (girl) {
+                        ({name, rarity, shards} = girl)
+                    } else {
+                        name = 'Unknown',
+                        rarity = DEFAULT_TIER_RARITY[type]
+                        shards = '?'
+                    }
+
+                    const girlIcon = `${Helpers.getCDNHost()}/pictures/girls/${girlId}/ico0-300x.webp`
+
+                    const showShards = shards === '?' || shards < 100
+                    $villainTierGirls.append(`<div class="girl_ico ${showShards ? '' : 'obtained'}" rarity="${rarity}"><img src="${girlIcon}"/>${showShards ? `<div class="shard-count" shards="${shards}" name="${name}"><span class="shard"></span>${shards}</div>` : '' }</div>`)
+                })
+                $villainTier.append($villainTierTitle).append($villainTierGirls)
+                $villainBottomRow.append($villainTier)
+            }
+
+
+            $villain.append($villainTopRow)
+            $villain.append($villainBottomRow)
+            $menu.append($villain)
+        })
+
+        return $menu
     }
 }
 
