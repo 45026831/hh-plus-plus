@@ -1,5 +1,5 @@
 // Pantheon - level 15
-// Champs - 15 girls at 3-grade and above and world 3 scroll 5
+// Champs - 10 girls at 3-grade and above and world 3 scroll 5
 // Leagues - level 20
 // Seasons - world 1 scroll 4
 // PoPs - world 3
@@ -49,7 +49,7 @@ class AvailableFeatures {
             return false
         }
 
-        return countGirls() >= 15
+        return countGirls() >= 10
     }
 
     get clubs () {
