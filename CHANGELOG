@@ -1,3 +1,4 @@
+1.1.3: Fixing bug in reward shards for LD
 1.1.2: Dropping champion shortcut requirement to 10 3-grade and above
 1.1.1: Tweaking the style of the new fight-a-villain menu
 1.1.0: Rewriting fight-a-villain menu module, now a full-screen grid showing a lot more information than before.

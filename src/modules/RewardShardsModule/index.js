@@ -65,19 +65,25 @@ class RewardShardsModule extends CoreModule {
         const $girlsReward = $('.girls_reward')
         if (!$girlsReward.length) {return}
 
-        const girls = $girlsReward.data('rewards')
-
         const annotate = ($girlsReward) => {
             const $girlIcos = $girlsReward.find('.girl_ico')
-            girls.forEach(({id_girl}, i) => {
-                const girl = girlDictionary.get(id_girl)
+            $girlIcos.each((i,el) => {
+                const $el = $(el)
+                const $img = $el.find('img')
+                if (!$img.length) {return}
+                const url = $img.attr('src')
+
+                const id = extractIdFromUrl(url)
+                if (!id) {return}
+                const girl = girlDictionary.get(id)
                 let name, shards
                 if (girl) {
                     ({name, shards} = girl)
                 } else {
                     shards = 0
                 }
-                $girlIcos.eq(i).append(makeShardCount({shards: shards || 0, name}))
+
+                $el.append(makeShardCount({name, shards}))
             })
         }
 
