@@ -57,13 +57,20 @@
         .menu-villain {
             text-decoration: none;
             color: unset;
-            background-color: #cccccc42;
+            background-color: #cccccc5a;
             display: block;
             padding: 0.2em;
             border-radius: 0.3em;
 
             &:hover {
-                background-color: #cccccc62;
+                background-color: #cccccc72;
+            }
+
+            &.all-obtained {
+                background-color: #cccccc32;
+                &:hover {
+                    background-color: #cccccc72;
+                }
             }
 
             &.eventTroll {

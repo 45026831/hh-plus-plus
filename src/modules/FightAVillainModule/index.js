@@ -85,6 +85,7 @@ class FightAVillainModule extends CoreModule {
             const villainWorld = `/world/${world}`
             let type = 'regular'
             const eventTrollGirl = eventTrolls.find(({troll}) => troll === villainId)
+            let allGirlsObtained = true
             const events = {}
             if (eventTrollGirl) {
                 const {id, rarity} = eventTrollGirl
@@ -93,6 +94,7 @@ class FightAVillainModule extends CoreModule {
                 const owned = dictGirl ? dictGirl.shards === 100 : false
                 if (!owned) {
                     type = `eventTroll ${rarity}`
+                    allGirlsObtained = false
                 }
             }
             const mythicTrollGirl = mythicEventTrolls.find(({troll}) => troll === villainId)
@@ -103,6 +105,7 @@ class FightAVillainModule extends CoreModule {
                 const owned = dictGirl ? dictGirl.shards === 100 : false
                 if (!owned) {
                     type = 'mythicEventTroll'
+                    allGirlsObtained = false
                 }
             }
 
@@ -150,6 +153,8 @@ class FightAVillainModule extends CoreModule {
                     const girlIcon = `${Helpers.getCDNHost()}/pictures/girls/${girlId}/ico0-300x.webp`
 
                     const showShards = shards === '?' || shards < 100
+
+                    allGirlsObtained &= !showShards
                     $villainTierGirls.append(`<div class="girl_ico ${showShards ? '' : 'obtained'}" rarity="${rarity}"><img src="${girlIcon}"/>${showShards ? `<div class="shard-count" shards="${shards}" name="${name}"><span class="shard"></span>${shards}</div>` : '' }</div>`)
                 })
                 $villainTier.append($villainTierTitle).append($villainTierGirls)
@@ -180,6 +185,9 @@ class FightAVillainModule extends CoreModule {
                 $villainBottomRow.append($villainTier)
             }
 
+            if (allGirlsObtained) {
+                $villain.addClass('all-obtained')
+            }
 
             $villain.append($villainTopRow)
             $villain.append($villainBottomRow)
