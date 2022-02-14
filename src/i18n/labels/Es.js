@@ -33,6 +33,7 @@ export const config = {
     staticBackground: 'Previene cambios de fondo durante Días de Orgía',
     rewardShards: `Mostrar el contador de fragmentos actual en las recompensas para ${Helpers.isGH() ? 'chicos' : 'chicas'}`,
     leaderboardFix: 'Arreglar las tablas de clasificación de Temporada y CdV',
+    hideClaimedRewards: 'Ocultar recompensas reclamadas de Temporada/CdA/CdV',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',
@@ -41,6 +42,8 @@ export const stConfig = {
     darkMobileLeague: 'Fondo oscuro en ligas para Mobile',
     hideRotateDevice: 'Ocultar la etiqueta de rotación del dispositivo en Mobile',
     salaryTimers: `Timers legibles de salarios de ${Helpers.isGH() ? 'chicos' : 'chicas'}`,
+    moveSkipButton: 'Mueva el botón de salto de batalla hacia abajo',
+    poseAspectRatio: `Arreglar la relación de aspecto de la pose ${Helpers.isGH() ? 'del chico' : 'de la chica'} en la batalla`,
 }
 
 export const villain = {

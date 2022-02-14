@@ -34,8 +34,10 @@ import {
     MobileBattleStyleTweak,
     MobileLeagueDarkBackgroundStyleTweak,
     MoneyAnimationStyleTweak,
+    MoveSkipButtonStyleTweak,
     PachinkoNamesModule,
     PopNavSortModule,
+    PoseAspectRatioStyleTweak,
     ResourceBarsModule,
     RewardShardsModule,
     SeasonStatsModule,
@@ -104,6 +106,8 @@ const runScript = () => {
     if (Helpers.isCxH()) {
         config.registerModule(new GirlSalaryTimersStyleTweak())
     }
+    config.registerModule(new MoveSkipButtonStyleTweak())
+    config.registerModule(new PoseAspectRatioStyleTweak())
 
     config.loadConfig()
 

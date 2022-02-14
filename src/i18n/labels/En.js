@@ -54,6 +54,7 @@ export const config = {
     staticBackground: 'Prevent background switching during Orgy Days',
     rewardShards: `Display current shard counts on ${gameConfig.girl} rewards`,
     leaderboardFix: 'Fix Season and PoV leaderboards',
+    hideClaimedRewards: 'Hide claimed Season/PoA/PoV rewards',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
@@ -62,6 +63,8 @@ export const stConfig = {
     darkMobileLeague: 'Dark background on mobile league',
     hideRotateDevice: 'Hide the device rotation reminder on mobile',
     salaryTimers: `Readable ${gameConfig.girl} salary timers`,
+    moveSkipButton: 'Move the battle skip button down',
+    poseAspectRatio: `Fix ${gameConfig.girl} pose aspect ratio in battle`,
 }
 
 export const villain = {
