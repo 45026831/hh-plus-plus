@@ -33,6 +33,7 @@ export const config = {
     staticBackground: 'Empêche les changements de décor durant les Jours d\'Orgie',
     rewardShards: `Affiche le nombre de Fragments d'Affection actuels sur les ${Helpers.isGH() ? 'mecs' : 'filles'} en récompense`,
     leaderboardFix: 'Corrige les classements de Saisons et Voie de la Valeur',
+    hideClaimedRewards: 'Masquer les récompenses de Saison/CdA/VdV',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
@@ -41,6 +42,8 @@ export const stConfig = {
     darkMobileLeague: 'Fond sombre en Ligue sur mobile',
     hideRotateDevice: 'Masque le message de rotation de l\'écran sur mobile',
     salaryTimers: `Timers des salaires des ${Helpers.isGH() ? 'mecs' : 'filles'} visibles`,
+    moveSkipButton: 'Mettre le bouton pour passer les combats en-bas',
+    poseAspectRatio: `Corriger les proportions de la pose ${Helpers.isGH() ? 'du mec' : 'de la fille'} en combat`,
 }
 
 export const villain = {

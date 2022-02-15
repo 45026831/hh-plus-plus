@@ -32,6 +32,7 @@ export const config = {
     staticBackground: 'Verhindere Hintergrundveränderung währden Orgien Tagen',
     rewardShards: `Aktuelle Splitteranzahl für ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} anzeigen`,
     leaderboardFix: 'Fix für Ranglisten von Saison und PoV',
+    hideClaimedRewards: 'Bereits beanspruchte Saison/PoA/PoV Belohungen ausblenden',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
@@ -40,6 +41,8 @@ export const stConfig = {
     darkMobileLeague: 'Dunkler Liga-Hintergrund am Handy',
     hideRotateDevice: 'Gerät-drehen-Hinweis am Handy verbergen',
     salaryTimers: `Lesbarer Lohntimer der ${Helpers.isGH() ? 'Jungs' : 'Mädchen'}`,
+    moveSkipButton: 'Verschiebe die Kampf überspringen Taste nach unten',
+    poseAspectRatio: `${Helpers.isGH() ? 'Kerle' : 'Mädchen'} Posen-Seitenverhältnisse im Kampf korrigieren`,
 }
 
 export const villain = {

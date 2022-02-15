@@ -42,7 +42,7 @@ export const stConfig = {
     darkMobileLeague: 'Fondo oscuro en ligas para Mobile',
     hideRotateDevice: 'Ocultar la etiqueta de rotación del dispositivo en Mobile',
     salaryTimers: `Timers legibles de salarios de ${Helpers.isGH() ? 'chicos' : 'chicas'}`,
-    moveSkipButton: 'Mueva el botón de salto de batalla hacia abajo',
+    moveSkipButton: 'Mueve el botón de saltar batalla abajo',
     poseAspectRatio: `Arreglar la relación de aspecto de la pose ${Helpers.isGH() ? 'del chico' : 'de la chica'} en la batalla`,
 }
 

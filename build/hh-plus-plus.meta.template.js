@@ -38,6 +38,7 @@
  * De:
  * - Bellanaris
  * - shal
+ * - holymolly
  *
  * Fr:
  * - Tom208
@@ -50,6 +51,7 @@
  * - Sozan
  * - Reisen
  * - Dogurasu53
+ * - holymolly
  *
  * It:
  * - Daniel/Danutaku

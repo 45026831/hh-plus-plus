@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.2.0
+// @version         1.2.1
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -38,6 +38,7 @@
  * De:
  * - Bellanaris
  * - shal
+ * - holymolly
  *
  * Fr:
  * - Tom208
@@ -50,6 +51,7 @@
  * - Sozan
  * - Reisen
  * - Dogurasu53
+ * - holymolly
  *
  * It:
  * - Daniel/Danutaku

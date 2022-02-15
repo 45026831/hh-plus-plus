@@ -33,6 +33,7 @@ export const config = {
     staticBackground: 'Impedi lo scambio di sfondo durante i giorni dell\'orgia',
     rewardShards:  'Mostra i conti attuali dei frammenti sulle ricompense',
     leaderboardFix: 'Correggi le classifiche di Stagione e SdV',
+    hideClaimedRewards: 'Nascondi le ricompense già rivendicate per la stagione/PoA/PoV',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
@@ -41,6 +42,8 @@ export const stConfig = {
     darkMobileLeague: 'Sfondo scuro nella lega mobile',
     hideRotateDevice: 'Nascondi il ricordo della rotazione del device su mobile',
     salaryTimers: 'Leggibile timer di salario',
+    moveSkipButton: 'Sposta il bottone salta battaglia in basso',
+    poseAspectRatio: `Correggi le proporzioni delle pose ${Helpers.isGH() ? 'delli ragazzi' : 'delle ragazze'} in combattimento`,
 }
 
 export const villain = {
