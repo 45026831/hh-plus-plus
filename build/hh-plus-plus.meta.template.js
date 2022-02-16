@@ -56,6 +56,9 @@
  * It:
  * - Daniel/Danutaku
  * - holymolly
+ * 
+ * Ru:
+ * - FinderKeeper
  */
 
 // WARNING: This file has been generated, DO NOT EDIT.

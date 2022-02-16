@@ -31,12 +31,12 @@ class SidequestStatusCollector {
         $('#side_quests .side-quest').each((i,el) => {
             const $el = $(el)
 
-            if ($el.has('.Continue').length) {
+            if ($el.has('.Continue').length || $el.has('.Begin').length) {
                 const {rewards} = $el.find('.side-quest-rewards').data('reward-display')
                 const xpReward = rewards.find(({type})=>type==='xp')
                 if (xpReward) {
                     energySpendAvailable = true
-                    continueLink = $el.find('a.Continue').attr('href')
+                    continueLink = $el.find('a.Continue, a.Begin').attr('href')
                     // return false
                 }
             }

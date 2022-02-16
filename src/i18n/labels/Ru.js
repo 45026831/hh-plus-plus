@@ -1,39 +1,48 @@
+import Helpers from '../../common/Helpers'
+
+export const common = {
+    all: 'Все',//TODO Check if word form is correct for all places where it's used
+}
+
 export const config = {
-    refresh: false, // TODO
-    villain: false, // TODO
-    villain_tiers: false, // TODO
-    market: false, // TODO
-    marketGirlsFilter: false, // TODO
-    marketXPAff: false, // TODO
-    marketHideSellButton: false, // TODO
-    harem: false, // TODO
-    league: false, // TODO
-    league_board: false, // TODO
-    league_promo: false, // TODO
-    simFight: false, // TODO
-    simFight_logging : false, // TODO
-    simFight_highPrecisionMode: false, // TODO
-    teamsFilter: false, // TODO
-    champions: false, // TODO
-    homeScreen: false, // TODO
-    resourceBars: false, // TODO
-    popSort: false, // TODO
-    seasonStats: false, // TODO
-    pachinkoNames: false, // TODO
-    contestSummary: false, // TODO
-    battleEndstate: false, // TODO
-    gemStock: false, // TODO
-    staticBackground: false, // TODO
-    rewardShards: false, // TODO
-    leaderboardFix: false, // TODO
+    refresh: 'Обновлять главную страницу',
+    villain: 'Меню выбора злодея',
+    villain_tiers: `Показывать стадии с ${Helpers.isGH() ? 'парнями' : 'девушками'}`,
+    market: 'Информация о рынке',
+    marketGirlsFilter: `Фильтр ${Helpers.isGH() ? 'парней' : 'девушек'} на рынке`,
+    marketXPAff: 'XP и влечение на рынке',
+    marketHideSellButton: 'Отключаемая кнопка "Продать"',
+    harem: 'Информация о гареме',
+    league: 'Информация о лиге',
+    league_board: 'Показывать верхнюю строку в лиге',
+    league_promo: 'Показывать инфо о повышении',
+    simFight: 'Симуляция Лиги / Сезона / Злодеев',
+    simFight_logging : 'Подробный лог в консоли браузера',
+    simFight_highPrecisionMode: 'Режим высокой точности (внимание: медленный!)',
+    teamsFilter: 'Фильтр в Командах',
+    champions: 'Индикаторы в Чемпионах',
+    homeScreen: 'Ссылки и таймеры на главной странице',
+    resourceBars: 'Полоски ресурсов / Таймеры бустеров',
+    popSort: 'Сортировка и быстрая навигация по Рейдам',
+    seasonStats: 'Статистика Сезона',
+    pachinkoNames: 'Показывать имена в Пачинко',
+    contestSummary: 'Обзор сохраненных Состязаний',
+    battleEndstate: 'Показывать финальные значения при пропуске боя',
+    gemStock: 'Запас камней в Гареме/Рынке',
+    staticBackground: 'Остановить переключение фона во время Оргий',
+    rewardShards: `Показывать текущее притяжение на ${Helpers.isGH() ? 'парнях' : 'девушках'}-наградах`,
+    leaderboardFix: 'Исправить список лидеров Сезона и PoV',//TODO No official name for PoV yet
+    hideClaimedRewards: 'Скрывать полученные награды Сезона/Пути/PoV',//TODO No official name for PoV yet
 }
 export const stConfig = {
-    missionsBackground: false, // TODO
-    collectMoneyAnimation: false, // TODO
-    mobileBattle: false, // TODO
-    darkMobileLeague: false, // TODO
-    hideRotateDevice: false, // TODO
-    salaryTimers: false, // TODO
+    missionsBackground: 'Изменить фон миссий',
+    collectMoneyAnimation: 'Убрать анимацию сбора денег',
+    mobileBattle: 'Исправить мобильную версию экрана битв',
+    darkMobileLeague: 'Темный фон в мобильной версии лиг',
+    hideRotateDevice: 'Скрыть напоминание повернуть экран в мобильной версии',
+    salaryTimers: `Читаемые таймеры заработка ${Helpers.isGH() ? 'парней' : 'девушек'}`,
+    moveSkipButton: 'Переместить кнопку пропуска битв вниз',
+    poseAspectRatio: `Исправить соотношение сторон у поз ${Helpers.isGH() ? 'парней' : 'девушек'} в битвах`,
 }
 
 export const villain = {
@@ -50,171 +59,170 @@ export const villain = {
     jacksoncrew: 'Команда Джексона',
     pandorawitch: 'Пандорская ведьма',
     nike: 'Найк',
-    sake: false, // TODO
-    werebunnypolice: false, // TODO
-    fallback: false, // TODO
-    event: 'Ивент',
+    sake: 'Сейк', //TODO No official name yet
+    werebunnypolice: 'Кроличья полиция', //TODO No official name yet
+    fallback: 'Злодей мира {{world}}',
+    event: 'Сейчас',
 }
 
 export const market = {
-    pointsUnbought: false, // TODO
-    moneyUnspent: false, // TODO
-    moneySpent: false, // TODO
-    pointsLevel: false, // TODO
-    pointsBought: false, // TODO
-    pointsEquip: false, // TODO
-    pointsBooster: false, // TODO
-    pointsClub: false, // TODO
-    boosterItem: false, // TODO
-    xpItem: false, // TODO
-    xpCurrency: false, // TODO
-    affItem: false, // TODO
-    affCurrency: false, // TODO
-    equips: false, // TODO
-    youOwn: false, // TODO
-    youCanSell: false, // TODO
-    youCanGive: false, // TODO
+    pointsUnbought: 'Очков до максимума',
+    moneyUnspent: 'Нужно денег до максимума',
+    moneySpent: 'Потрачено денег на очки',
+    pointsLevel: 'Очков от уровня',
+    pointsBought: 'Куплено очков',
+    pointsEquip: 'Очков от снаряжения',
+    pointsBooster: 'Очков от бустеров',
+    pointsClub: 'Бонусных очков от клуба',
+    boosterItem: 'бустеров',
+    xpItem: 'книг',
+    xpCurrency: 'XP',
+    affItem: 'подарков',
+    affCurrency: 'влечения',
+    equips: 'снаряжения',
+    youOwn: 'У тебя есть <b>{{count}}</b> {{type}}.',
+    youCanSell: 'Можно продать все за <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
+    youCanGive: 'Всего можно дать <b>{{value}}</b> {{currency}}.',
 }
 
 export const marketGirlsFilter = {
-    all: false, // TODO
-    searchedName: false, // TODO
-    girlName: false, // TODO
-    searchedClass: false, // TODO
-    searchedElement: false, // TODO
-    searchedRarity: false, // TODO
-    levelRange: false, // TODO
-    searchedAffCategory: false, // TODO
-    searchedAffLevel: false, // TODO
-    grade0: false, // TODO
-    grade1: false, // TODO
-    grade2: false, // TODO
-    grade3: false, // TODO
-    grade4: false, // TODO
-    grade5: false, // TODO
-    grade6: false, // TODO
-    team: false, // TODO
-    visitTeams: false, // TODO
+    searchedName: 'Поиск',
+    girlName: `Имя ${Helpers.isGH() ? 'парня' : 'девушки'}`,
+    searchedClass: 'Класс',
+    searchedElement: 'Элемент',
+    searchedRarity: 'Редкость',
+    levelRange: 'Диапазон уровней',
+    searchedAffCategory: 'Категория по влечению',
+    searchedAffLevel: 'Уровень влечения',
+    grade0: '0 звезд',
+    grade1: '1 звезда',
+    grade2: '2 звезды',
+    grade3: '3 звезды',
+    grade4: '4 звезды',
+    grade5: '5 звезд',
+    grade6: '6 звезд',
+    team: 'Команда',
+    visitTeams: 'Сначала посетите <a href="../teams.html">Команды</a>.',
 }
 
 export const marketXPAff = {
-    aff: false, // TODO
+    aff: 'След.: {{remainNext}}'
 }
 
 export const marketHideSellButton = {
-    hide: false, // TODO
+    hide: 'Скрыть кнопку "Продать"',
 }
 
 export const harem = {
-    marketRestocked: false, // TODO
-    visitMarket: false, // TODO
-    haremStats: false, // TODO
-    upgrades: false, // TODO
-    levelsAwakening: false, // TODO
-    market: false, // TODO
-    wikiPage: false, // TODO
-    haremLevel: false, // TODO
-    unlockedScenes: false, // TODO
-    income: false, // TODO
-    or: false, // TODO
-    toUpgrade: false, // TODO
-    toLevelCap: false, // TODO
-    toLevelMax: false, // TODO
-    affectionScenes: false, // TODO
-    buyable: false, // TODO
-    sellable: false, // TODO
-    gifts: false, // TODO
-    books: false, // TODO
-    canBeSold: false, // TODO
-    canBeBought: false, // TODO
-    marketRestock: false, // TODO
+    marketRestocked: '> <a href="../shop.html">Рынок</a> обновился с последнего визита.',
+    visitMarket: '> Посети <a href="../shop.html">Рынок</a> чтобы здесь появился обзор по ресурсам',
+    haremStats: 'Статистика Гарема',
+    upgrades: 'Улучшения',
+    levelsAwakening: 'Уровни и Пробуждения',
+    market: 'Ресурсы и Рынок',
+    wikiPage: '{{name}} в вики',
+    haremLevel: 'Уровень гарема',
+    unlockedScenes: 'Открытые сцены',
+    income: 'Доход',
+    or: '{{left}} или {{right}}',
+    toUpgrade: 'Чтобы улучшить всех:',
+    toLevelCap: 'Довести уровень до предела:',
+    toLevelMax: 'Довести уровень до максимума ({{max}}):',
+    affectionScenes: 'Сцены Влечения',
+    buyable: 'Доступно на рынке:',
+    sellable: 'В запасе',
+    gifts: 'Подарки',
+    books: 'Книги',
+    canBeSold: 'Можно продать за {{sc}}',
+    canBeBought: '{{item}} за {{amount}}',
+    marketRestock: 'Рынок обновится в {{time}} или на {{level}} уровне',
 }
 
 export const league = {
-    stayInTop: false, // TODO
-    notInTop: false, // TODO
-    challengesRegen: false, // TODO
-    challengesLeft: false, // TODO
-    averageScore: false, // TODO
-    scoreExpected: false, // TODO
-    toDemote: false, // TODO
-    willDemote: false, // TODO
-    willDemoteZero: false, // TODO
-    toNotDemote: false, // TODO
-    toStay: false, // TODO
-    willStay: false, // TODO
-    hideFoughtOpponents: false, // TODO
-    showFoughtOpponents: false, // TODO
-    currentLeague: false, // TODO
-    victories: false, // TODO
-    defeats: false, // TODO
-    unknown: false, // TODO
-    notPlayed: false, // TODO
-    levelRange: false, // TODO
-    leagueFinished: false, // TODO
-    opponents: false, // TODO
-    leaguePoints: false, // TODO
-    avg: false, // TODO
+    stayInTop: 'Чтобы <em><u>остаться в топ {{top}}</u></em>, требуется минимум <em>{{points}}</em> очков',
+    notInTop: 'Чтобы <em><u>оказаться в топ {{top}}</u></em>, требуется минимум <em>{{points}}</em> очков',
+    challengesRegen: 'Обычная регенерация: <em>{{challenges}}</em>',
+    challengesLeft: 'Осталось битв: <em>{{challenges}}</em>',
+    averageScore: 'Очков в среднем за битву: <em>{{average}}</em>',
+    scoreExpected: 'Ожидаемый результат: <em>{{score}}</em>',
+    toDemote: 'Чтобы <em><u>опуститься в лиге</u></em>, тебя должны обогнать <em>{{players}}</em> игроков',
+    willDemote: 'Чтобы <em><u>опуститься в лиге</u></em>, у тебя должно быть не более <em>{{points}}</em> очков',
+    willDemoteZero: 'Чтобы <em><u>опуститься в лиге</u></em>, тебе надо остаться на <em>0</em> очков',
+    toNotDemote: 'Чтобы <em><u>остаться в этой лиге</u></em>, у тебя должно быть больше <em>0</em> очков',
+    toStay: 'Чтобы <em><u>не повысится в лиге</u></em>, тебя должны обогнать <em>{{players}}</em> игроков',
+    willStay: 'Чтобы <em><u>не повысится в лиге</u></em>, у тебя должно быть не больше <em>{{points}}</em> очков',
+    hideFoughtOpponents: 'Скрыть проведенные бои',
+    showFoughtOpponents: 'Показать проведенные бои',
+    currentLeague: 'Текущая лига',
+    victories: 'Побед',
+    defeats: 'Поражений',
+    unknown: 'Неизвестно',
+    notPlayed: 'Осталось',
+    levelRange: 'Диапазон уровней',
+    leagueFinished: 'Лига завершенная {{date}}',
+    opponents: 'Противников',
+    leaguePoints: 'Очков',
+    avg: 'В среднем',
 }
 
 export const teamsFilter = {
-    searchedName: false, // TODO
-    girlName: false, // TODO
-    searchedClass: false, // TODO
-    searchedElement: false, // TODO
-    searchedRarity: false, // TODO
-    levelRange: false, // TODO
-    searchedAffCategory: false, // TODO
-    searchedAffLevel: false, // TODO
-    grade0: false, // TODO
-    grade1: false, // TODO
-    grade2: false, // TODO
-    grade3: false, // TODO
-    grade4: false, // TODO
-    grade5: false, // TODO
-    grade6: false, // TODO
-    searchedBlessedAttributes: false, // TODO
-    blessedAttributes: false, // TODO
-    nonBlessedAttributes: false, // TODO
+    searchedName: 'Поиск',
+    girlName: `Имя ${Helpers.isGH() ? 'парня' : 'девушки'}`,
+    searchedClass: 'Класс',
+    searchedElement: 'Элемент',
+    searchedRarity: 'Редкость',
+    levelRange: 'Диапазон уровней',
+    searchedAffCategory: 'Категория по влечению',
+    searchedAffLevel: 'Уровень влечения',
+    grade0: '0 звезд',
+    grade1: '1 звезда',
+    grade2: '2 звезды',
+    grade3: '3 звезды',
+    grade4: '4 звезды',
+    grade5: '5 звезд',
+    grade6: '6 звезд',
+    searchedBlessedAttributes: 'Благословения',//TODO No official name for Blessings yet
+    blessedAttributes: `Благословленные ${Helpers.isGH() ? 'парни' : 'девушки'}`,//TODO No official name for Blessings yet
+    nonBlessedAttributes: `Неблагословленные ${Helpers.isGH() ? 'парни' : 'девушки'}`,//TODO No official name for Blessings yet
 }
 
 export const champions = {
-    participants: false, // TODO
-    clubChampDuration: false, // TODO
+    participants: 'Участников: {{participants}}/{{members}}',
+    clubChampDuration: '{{duration}} с начала раунда',
 }
 
 export const resourceBars = {
-    popsIn: false, // TODO
-    popsReady: false, // TODO
-    readyAt: false, // TODO
-    endAt: false, // TODO
-    fullAt: false, // TODO
-    xp: false, // TODO
+    popsIn: 'Рейды через {{time}}',
+    popsReady: 'Рейды завершены',
+    readyAt: 'Завершатся в {{time}}',
+    endAt: 'Закончится в {{time}}',
+    fullAt: 'Заполнится в {{time}}',
+    xp: 'Следующий: {{xp}} XP',
 }
 
 export const homeScreen = {
-    clubChamp: false, // TODO
-    completeIn: false, // TODO
-    newMissionsIn: false, // TODO
-    missionsReady: false, // TODO
+    clubChamp: 'Клубный Чемпион',
+    completeIn: 'Завершится через ',
+    newMissionsIn: 'Новые миссии через ',
+    missionsReady: 'Доступны миссии',
 }
 
 export const seasonStats = {
-    fights: false, // TODO
-    victories: false, // TODO
-    defeats: false, // TODO
-    mojoWon: false, // TODO
-    mojoLost: false, // TODO
-    mojoWonAvg: false, // TODO
-    mojoLostAvg: false, // TODO
-    mojoAvg: false, // TODO
+    fights: 'Битв',
+    victories: 'Побед',
+    defeats: 'Поражений',
+    mojoWon: 'Выиграно удали',
+    mojoLost: 'Потяряно удали',
+    mojoWonAvg: 'Средняя выигрываемая удаль',
+    mojoLostAvg: 'Средняя проигрываемая удаль',
+    mojoAvg: 'Средняя общая удаль',
 }
 
 export const pachinkoNames = {
-    availableGirls: false, // TODO
+    availableGirls: `Доступные ${Helpers.isGH() ? 'парни' : 'девушки'}: `,
 }
 
 export const contestSummary = {
-    totalRewards: false, // TODO
-    contestsWarning: false, // TODO
+    totalRewards: 'Всего Сохраненных Наград ({{contests}} Соревнований):',
+    contestsWarning: 'Соревнования будут потеряны после 21 дня!',
 }
