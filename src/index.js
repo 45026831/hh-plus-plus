@@ -21,6 +21,7 @@ import {
     GemStockModule,
     GirlSalaryTimersStyleTweak,
     HaremInfoModule,
+    HideClaimedRewardsModule,
     HideRotateDeviceStyleTweak,
     HomeScreenModule,
     LeaderboardFixModule,
@@ -91,6 +92,7 @@ const runScript = () => {
     config.registerModule(new StaticBackgroundModule())
     config.registerModule(new RewardShardsModule())
     config.registerModule(new LeaderboardFixModule())
+    config.registerModule(new HideClaimedRewardsModule())
 
     // style tweaks
     config.registerGroup({
