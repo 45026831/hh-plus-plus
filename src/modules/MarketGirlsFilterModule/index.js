@@ -75,20 +75,21 @@ class MarketGirlsFilterModule extends CoreModule {
 
             let container = $('.g1>div')
 
-            let cur_id = parseInt(container.find('.number.selected').text().split('/')[0])
-            container.find('.number').remove()
+            const nav = container.find('.number.selected, .nav_placement')
+
+            let cur_id = parseInt(nav.text().split('/')[0])
+            nav.empty().text('/')
+            container.find('.number:not(.selected)').remove()
 
             let allGirls = Array.from( container.find('.girl-ico').toArray(), e => $(e) )
 
-            let nb_girls = container.children().length
-            let nav = $('<span class="number selected">/</span>')
-            container.append(nav)
+            let nb_girls = container.children('.girl-ico').length
 
             let max_girl = $(`<span>${nb_girls}</span>`)
             nav.append(max_girl)
 
             function updateNavMax() {
-                nb_girls = container.children().length - 1
+                nb_girls = container.children('.girl-ico').length
                 max_girl.text(nb_girls)
             }
 
@@ -112,7 +113,7 @@ class MarketGirlsFilterModule extends CoreModule {
             }
 
             function girl_at(id = cur_id) {
-                return container.children().eq(id - 1)
+                return container.children('.girl-ico').eq(id - 1)
             }
 
             function hideCurrentGirl() {
