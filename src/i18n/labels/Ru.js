@@ -29,7 +29,7 @@ export const config = {
     pachinkoNames: 'Показывать имена в Пачинко',
     contestSummary: 'Обзор сохраненных Состязаний',
     battleEndstate: 'Показывать финальные значения при пропуске боя',
-    gemStock: 'Запас камней в Гареме/Рынке',
+    gemStock: 'Показывать запас камней в Гареме/Рынке',
     staticBackground: 'Остановить переключение фона во время Оргий',
     rewardShards: `Показывать текущее притяжение на ${Helpers.isGH() ? 'парнях' : 'девушках'}-наградах`,
     leaderboardFix: 'Исправить список лидеров Сезона и PoV',//TODO No official name for PoV yet
@@ -80,7 +80,7 @@ export const market = {
     xpCurrency: 'XP',
     affItem: 'подарков',
     affCurrency: 'влечения',
-    equips: 'предмет снаряжения',
+    equips: 'предметов снаряжения',
     youOwn: 'У тебя есть <b>{{count}}</b> {{type}}.',
     youCanSell: 'Можно продать все за <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'Всего можно дать <b>{{value}}</b> {{currency}}.',
@@ -144,7 +144,7 @@ export const league = {
     notInTop: 'Чтобы <em><u>оказаться в топ {{top}}</u></em>, требуется минимум <em>{{points}}</em> очков',
     challengesRegen: 'Обычная регенерация: <em>{{challenges}}</em>',
     challengesLeft: 'Осталось битв: <em>{{challenges}}</em>',
-    averageScore: 'Очков в среднем за битву: <em>{{average}}</em>',
+    averageScore: 'Среднее кол-во очков за битву: <em>{{average}}</em>',
     scoreExpected: 'Ожидаемый результат: <em>{{score}}</em>',
     toDemote: 'Чтобы <em><u>опуститься в лиге</u></em>, тебя должны обогнать <em>{{players}}</em> игроков',
     willDemote: 'Чтобы <em><u>опуститься в лиге</u></em>, у тебя должно быть не более <em>{{points}}</em> очков',
@@ -216,7 +216,7 @@ export const seasonStats = {
     mojoLost: 'Потяряно удали',
     mojoWonAvg: 'Средняя выигрываемая удаль',
     mojoLostAvg: 'Средняя проигрываемая удаль',
-    mojoAvg: 'Средняя общая удаль',
+    mojoAvg: 'Средняя удаль за битву',
 }
 
 export const pachinkoNames = {
@@ -225,5 +225,5 @@ export const pachinkoNames = {
 
 export const contestSummary = {
     totalRewards: 'Всего Сохраненных Наград ({{contests}} Соревнований):',
-    contestsWarning: 'Соревнования будут потеряны после 21 дня!',
+    contestsWarning: 'Награды соревнований исчезают через 21 день!',
 }
