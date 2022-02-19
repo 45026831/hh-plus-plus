@@ -65,7 +65,7 @@ const calculateCCShardProjection = (percentage, participants) => {
     // return `${min}-${max}`
 
     // upcoming formula as promised by Noacc
-    return Math.round(0.6 * Math.sqrt(participants)) + Math.ceil(percentage * 100)
+    return Math.round(0.6 * Math.sqrt(participants)) + Math.round(percentage * 100)
 }
 
 class ChampionsModule extends CoreModule {
