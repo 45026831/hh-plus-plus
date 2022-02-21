@@ -34,6 +34,7 @@ export const config = {
     rewardShards: `Показывать текущее притяжение на ${Helpers.isGH() ? 'парнях' : 'девушках'}-наградах`,
     leaderboardFix: 'Исправить список лидеров Сезона и PoV',//TODO No official name for PoV yet
     hideClaimedRewards: 'Скрывать полученные награды Сезона/Пути/PoV',//TODO No official name for PoV yet
+    disableDragDrop: 'Отключить перетаскивание на Рынке',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',

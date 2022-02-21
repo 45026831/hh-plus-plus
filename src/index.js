@@ -17,6 +17,7 @@ import {
     BattleSimulatorModule,
     ChampionsModule,
     ContestRewardsModule,
+    DisableDragDropModule,
     FightAVillainModule,
     GemStockModule,
     GirlSalaryTimersStyleTweak,
@@ -93,6 +94,7 @@ const runScript = () => {
     config.registerModule(new RewardShardsModule())
     config.registerModule(new LeaderboardFixModule())
     config.registerModule(new HideClaimedRewardsModule())
+    config.registerModule(new DisableDragDropModule())
 
     // style tweaks
     config.registerGroup({

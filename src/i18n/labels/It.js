@@ -34,6 +34,7 @@ export const config = {
     rewardShards:  'Mostra i conti attuali dei frammenti sulle ricompense',
     leaderboardFix: 'Correggi le classifiche di Stagione e SdV',
     hideClaimedRewards: 'Nascondi le ricompense già rivendicate per la stagione/PoA/PoV',
+    disableDragDrop: 'Disabilitare il drag-and-drop nel mercato',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',

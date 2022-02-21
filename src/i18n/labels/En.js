@@ -55,6 +55,7 @@ export const config = {
     rewardShards: `Display current shard counts on ${gameConfig.girl} rewards`,
     leaderboardFix: 'Fix Season and PoV leaderboards',
     hideClaimedRewards: 'Hide claimed Season/PoA/PoV rewards',
+    disableDragDrop: 'Disable Drag-and-Drop in the Market',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

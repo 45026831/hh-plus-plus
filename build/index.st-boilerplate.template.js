@@ -6,7 +6,7 @@ import styles from './styles.lazy.scss'
 
 const MODULE_KEY = '{{moduleKey}}'
 
-class {{moduleName}} extends STModule {
+class {{moduleName}}StyleTweak extends STModule {
     constructor () {
         const configSchema = ({
             baseKey: MODULE_KEY,
@@ -24,4 +24,4 @@ class {{moduleName}} extends STModule {
     }
 }
 
-export default {{moduleName}}
+export default {{moduleName}}StyleTweak

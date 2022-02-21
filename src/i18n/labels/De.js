@@ -33,6 +33,7 @@ export const config = {
     rewardShards: `Aktuelle Splitteranzahl für ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} anzeigen`,
     leaderboardFix: 'Fix für Ranglisten von Saison und PoV',
     hideClaimedRewards: 'Bereits beanspruchte Saison/PoA/PoV Belohungen ausblenden',
+    disableDragDrop: 'Drag-and-Drop im Markt deaktivieren',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

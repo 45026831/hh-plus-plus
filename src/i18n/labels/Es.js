@@ -34,6 +34,7 @@ export const config = {
     rewardShards: `Mostrar el contador de fragmentos actual en las recompensas para ${Helpers.isGH() ? 'chicos' : 'chicas'}`,
     leaderboardFix: 'Arreglar las tablas de clasificación de Temporada y CdV',
     hideClaimedRewards: 'Ocultar recompensas reclamadas de Temporada/CdA/CdV',
+    disableDragDrop: 'Desactivar la opción de Drag-and-Drop en el mercado',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',

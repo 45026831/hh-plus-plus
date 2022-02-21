@@ -6,7 +6,7 @@ import styles from './styles.lazy.scss'
 
 const MODULE_KEY = '{{moduleKey}}'
 
-class {{moduleName}} extends CoreModule {
+class {{moduleName}}Module extends CoreModule {
     constructor () {
         super({
             baseKey: MODULE_KEY,
@@ -33,4 +33,4 @@ class {{moduleName}} extends CoreModule {
     }
 }
 
-export default {{moduleName}}
+export default {{moduleName}}Module
