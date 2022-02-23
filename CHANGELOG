@@ -1,3 +1,4 @@
+1.5.2: Adding missing translations for FR and RU
 1.5.1: Fixing a bug in hiding claimed season rewards where the width wouldn't readjust correctly.
 1.5.0: Porting the auto-refresh module. Reducing the screen-scrape on hide claim rewards for PoA. Exposing some classes as global APIs.
 1.4.0: Adding module to disable drag-and-drop in the market

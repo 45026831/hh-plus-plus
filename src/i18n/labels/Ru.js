@@ -35,6 +35,7 @@ export const config = {
     leaderboardFix: 'Исправить список лидеров Сезона и PoV',//TODO No official name for PoV yet
     hideClaimedRewards: 'Скрывать полученные награды Сезона/Пути/PoV',//TODO No official name for PoV yet
     disableDragDrop: 'Отключить перетаскивание на Рынке',
+    autoRefresh: 'Обновлять окно игры каждые 10 минут',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',

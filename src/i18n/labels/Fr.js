@@ -34,6 +34,8 @@ export const config = {
     rewardShards: `Affiche le nombre de Fragments d'Affection actuels sur les ${Helpers.isGH() ? 'mecs' : 'filles'} en récompense`,
     leaderboardFix: 'Corrige les classements de Saisons et Voie de la Valeur',
     hideClaimedRewards: 'Masquer les récompenses de Saison/CdA/VdV',
+    disableDragDrop: 'Désactiver la fonction glisser-déposer dans le marché',
+    autoRefresh: 'Actualise automatiquement le jeu toutes les 10 minutes',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
