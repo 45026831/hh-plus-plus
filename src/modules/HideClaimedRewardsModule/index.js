@@ -157,51 +157,36 @@ class HideClaimedRewardsModule extends CoreModule {
     }
 
     poa () {
-        // Ben's original scraping code, to be replaced when a PoA is available to dev against.
-
         if(!$('a.active[href*="?tab=path_event_"]').length){return}
 
-        let i=0
-        //let sw =
-        $('#nc-poa-tape-rewards').css('width','max-content !important;')
-        function hiderew(){
-            i=0
-            $('.nc-poa-reward-pair').each(function(){
-                let w = $(this).find('.nc-poa-reward-container')
-                // eslint-disable-next-line eqeqeq
-                if( $(w).eq(0).hasClass('claimed') && ( $(w).eq(1).hasClass('claimed') || ($('#nc-poa-tape-blocker').length!=0))){
-                    $(this).css('display','none')
-                    i++
+        const {bonusRewardsUnlocked} = window
+
+        const assertHidden = () => {
+            $('.nc-poa-reward-pair').each((i, el) => {
+                const $free = $(el).find('.nc-poa-free-reward')
+                const $pass = $(el).find('.nc-poa-locked-reward')
+                if ( $free.hasClass('claimed') && ( $pass.hasClass('claimed') || !bonusRewardsUnlocked)) {
+                    $(el).addClass('script-hide-claimed')
                 }
             })
         }
-        function showrew(){
-            i=0
-            $('.nc-poa-reward-pair').each(function(){
-                $(this).css('display','inline-block')
-            })
+        const assertShown = () => {
+            $('.nc-poa-reward-pair').removeClass('script-hide-claimed')
         }
-        function scrollrew(){
-            let wth=$('.nc-poa-reward-pair').length-i
-            $('.scroll-area').css('display','none').css('display','')
-            let pos = $('.current-objective').parent().index()-i
-            if(pos<8){pos=0}else if(pos>wth-8){pos=wth}
-            let mwth=+$('.scroll-area').parent().parent().css('width').replace(/[^0-9]/gi, '')
-            $('.scroll-area')[0].scrollTo((wth*92-mwth)/wth*pos, 0)
+        const fixScroll = () => {
+            $('.scroll-area').getNiceScroll().resize()
         }
-        hiderew()
-        scrollrew()
-        function togglerew(){
-            // eslint-disable-next-line eqeqeq
-            if(i==0){
-                hiderew()
-            }else{
-                showrew()
+        assertHidden()
+        fixScroll()
+        const toggle = () => {
+            if ($('.script-hide-claimed').length) {
+                assertShown()
+            } else {
+                assertHidden()
             }
-            scrollrew()
+            fixScroll()
         }
-        //$('.current-objective').parent().click(()=>{togglerew()})
-        $('#poa-content .girls').click(()=>{togglerew()})
+        $('#poa-content .girls').click(()=>{toggle()})
     }
 }
 

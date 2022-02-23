@@ -34,6 +34,7 @@ export const config = {
     leaderboardFix: 'Fix für Ranglisten von Saison und PoV',
     hideClaimedRewards: 'Bereits beanspruchte Saison/PoA/PoV Belohungen ausblenden',
     disableDragDrop: 'Drag-and-Drop im Markt deaktivieren',
+    autoRefresh: 'Automatisches aktualisieren des Spiels alle 10 Minuten',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

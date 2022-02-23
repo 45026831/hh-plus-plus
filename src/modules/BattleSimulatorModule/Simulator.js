@@ -105,3 +105,4 @@ class Simulator {
 }
 
 export default Simulator
+window.HHPlusPlus.Simulator = Simulator

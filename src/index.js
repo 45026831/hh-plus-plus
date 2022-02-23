@@ -13,6 +13,7 @@ import {
 import Helpers from './common/Helpers'
 import Config from './config'
 import {
+    AutoRefreshModule,
     BattleEndstateModule,
     BattleSimulatorModule,
     ChampionsModule,
@@ -95,6 +96,7 @@ const runScript = () => {
     config.registerModule(new LeaderboardFixModule())
     config.registerModule(new HideClaimedRewardsModule())
     config.registerModule(new DisableDragDropModule())
+    config.registerModule(new AutoRefreshModule())
 
     // style tweaks
     config.registerGroup({

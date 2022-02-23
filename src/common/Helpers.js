@@ -228,3 +228,4 @@ class Helpers {
 }
 
 export default Helpers
+window.HHPlusPlus.Helpers = Helpers

@@ -62,3 +62,4 @@
  */
 
 // WARNING: This file has been generated, DO NOT EDIT.
+window.HHPlusPlus={};

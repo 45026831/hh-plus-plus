@@ -56,6 +56,7 @@ export const config = {
     leaderboardFix: 'Fix Season and PoV leaderboards',
     hideClaimedRewards: 'Hide claimed Season/PoA/PoV rewards',
     disableDragDrop: 'Disable Drag-and-Drop in the Market',
+    autoRefresh: 'Auto-refresh the game every 10 minutes',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

@@ -9,7 +9,14 @@ const generateModule = (type, name, key) => {
     if (!['core', 'st'].includes(type)) {
         console.error('invalid type: must be core or st')
     }
-    const newModuleDirectory = path.resolve(__dirname, '../src/modules', name)
+    let folderName
+    if (type === 'core') {
+        folderName = `${name}Module`
+    } else if (type === 'st') {
+        folderName = `${name}StyleTweak`
+    }
+
+    const newModuleDirectory = path.resolve(__dirname, '../src/modules', folderName)
 
     // Check if already exists
     if (fs.existsSync(newModuleDirectory)) {

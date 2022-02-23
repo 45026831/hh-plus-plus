@@ -114,3 +114,4 @@ class SimHelpers {
 }
 
 export default SimHelpers
+window.HHPlusPlus.SimHelpers = SimHelpers

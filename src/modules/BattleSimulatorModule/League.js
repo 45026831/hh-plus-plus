@@ -130,3 +130,4 @@ class League {
 }
 
 export default League
+window.HHPlusPlus.League = League

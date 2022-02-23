@@ -23,3 +23,4 @@ class Sheet {
 }
 
 export default Sheet
+window.HHPlusPlus.Sheet = Sheet
