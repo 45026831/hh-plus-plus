@@ -8,6 +8,7 @@ const MODULE_KEY = 'hideClaimedRewards'
 
 const POV_REM_PER_GROUP = 0.3 + 3.6 // margin-top + height
 const POV_PX_PER_GROUP = POV_REM_PER_GROUP * 16
+const SEASON_TIER_WIDTH = 69.6
 
 // Inspired by the hide claimed rewards module from the Ben Brazke script
 class HideClaimedRewardsModule extends CoreModule {
@@ -100,8 +101,7 @@ class HideClaimedRewardsModule extends CoreModule {
             })
 
             const $visibleTiers = $tiers.filter(':visible')
-            const tierWidthStr = $tiers.css('width')
-            const tierWidth = parseFloat(tierWidthStr)
+            const tierWidth = SEASON_TIER_WIDTH
             const totalWith = tierWidth * $visibleTiers.length
 
             const $row = $('.rewards_seasons_row')
