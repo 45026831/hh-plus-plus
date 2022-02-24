@@ -59,6 +59,8 @@ class LeagueInfoCollector {
 
             // rollover
             Helpers.lsSet(lsKeys.LEAGUE_TIME, leagueEndTime)
+
+            $(document).trigger('league:rollover')
         }
     }
 

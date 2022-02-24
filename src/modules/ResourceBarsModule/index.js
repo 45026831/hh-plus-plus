@@ -72,6 +72,7 @@ class ResourceBarsModule extends CoreModule {
             this.addAdditionalBars()
             this.addPoPTimer()
             this.addBoosterStatus()
+            this.overrideGlitter()
 
             const xpObserver = new MutationObserver(() => {this.betterXP()})
             xpObserver.observe($('[hero=xp]')[0], {childList: true})
@@ -512,6 +513,95 @@ class ResourceBarsModule extends CoreModule {
             // Nasty hack. Wish there was a better way of setting a custom class on a tooltip
             $('.hh_tooltip_new:has(.script-tooltip)').addClass('script-booster-status-item')
         }).observe(document.body, {childList: true})
+    }
+
+    overrideGlitter() {
+        const {is_mobile_size, star_glitter} = window
+        window.glitter_me = (field) => {
+            let x, y, w, h
+            switch (field) {
+            case 'soft_currency':
+                if (is_mobile_size()) {
+                    x = '780px'
+                    y = '14px'
+                    w = 100
+                    h = 30
+                } else {
+                    x = '800px'
+                    y = '6px'
+                    w = 90
+                    h = 30
+                }
+                break
+            case 'hard_currency':
+                if (is_mobile_size()) {
+                    x = '780px'
+                    y = '38px'
+                    w = 100
+                    h = 30
+                } else {
+                    x = '800px'
+                    y = '20px'
+                    w = 90
+                    h = 30
+                }
+                break
+            case 'energy_quest':
+                if (is_mobile_size()) {
+                    x = '240px'
+                    y = '10px'
+                    w = 80
+                    h = 60
+                } else {
+                    x = '150px'
+                    y = '8px'
+                    w = 90
+                    h = 40
+                }
+                break
+            case 'energy_battle':
+                if (is_mobile_size()) {
+                    x = '340px'
+                    y = '10px'
+                    w = 80
+                    h = 60
+                } else {
+                    x = '270px'
+                    y = '8px'
+                    w = 90
+                    h = 40
+                }
+                break
+            case 'xp':
+                if (is_mobile_size()) {
+                    x = '0px'
+                    y = '0px'
+                    w = 1040
+                    h = 14
+                } else {
+                    x = '0px'
+                    y = '0px'
+                    w = 1040
+                    h = 14
+                }
+                break
+            case 'affection':
+                x = '680px'
+                y = '260px'
+                w = 140
+                h = 40
+                break
+            case 'xp_shop':
+                x = '680px'
+                y = '240px'
+                w = 140
+                h = 40
+                break
+            default:
+                return
+            }
+            new star_glitter(x,y,w,h)
+        }
     }
 }
 
