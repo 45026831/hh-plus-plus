@@ -36,6 +36,7 @@ export const config = {
     hideClaimedRewards: 'Ocultar recompensas reclamadas de Temporada/CdA/CdV',
     disableDragDrop: 'Desactivar la opción de Drag-and-Drop en el mercado',
     autoRefresh: 'Refresca el juego automáticamente cada 10 minutos',
+    villainBreadcrumbs: 'Agregar ruta de navegación a las páginas de villanos',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',

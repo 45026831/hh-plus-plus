@@ -36,6 +36,7 @@ export const config = {
     hideClaimedRewards: 'Masquer les récompenses de Saison/CdA/VdV',
     disableDragDrop: 'Désactiver la fonction glisser-déposer dans le marché',
     autoRefresh: 'Actualise automatiquement le jeu toutes les 10 minutes',
+    villainBreadcrumbs: 'Ajouter une chaîne de navigation aux pages des boss du mode aventure',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
