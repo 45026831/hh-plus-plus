@@ -32,8 +32,8 @@ class BattleEndstateModule extends CoreModule {
 
             const arrRounds = respBattleData.rounds
 
-            const nPlayerInitialEgo = $('.new-battle-player .new-battle-hero-ego-value').data('initialEgo')
-            const nOpponentInitialEgo = $('.new-battle-opponent .new-battle-hero-ego-value').data('initialEgo')
+            const nPlayerInitialEgo = $('.new-battle-player .new-battle-hero-ego-value').data('total-ego')
+            const nOpponentInitialEgo = $('.new-battle-opponent .new-battle-hero-ego-value').data('total-ego')
             let nPlayerFinalEgo = 0
             let nOpponentFinalEgo = 0
 
@@ -76,8 +76,10 @@ class BattleEndstateModule extends CoreModule {
             $('#new-battle-skip-btn').on('click', function() {
                 const $playerBar = $('.new-battle-player .new-battle-hero-ego-initial-bar')
                 const $playerDamageBar = $('.new-battle-player .new-battle-hero-ego-damage-bar')
+                const $playerHealBar = $('.new-battle-player .new-battle-hero-ego-heal-bar')
                 const $opponentBar = $('.new-battle-opponent .new-battle-hero-ego-initial-bar')
                 const $opponentDamageBar = $('.new-battle-opponent .new-battle-hero-ego-damage-bar')
+                const $opponentHealBar = $('.new-battle-opponent .new-battle-hero-ego-heal-bar')
 
                 const $playerEgo = $('.new-battle-player .new-battle-hero-ego-value')
                 const $opponentEgo = $('.new-battle-opponent .new-battle-hero-ego-value')
@@ -88,6 +90,8 @@ class BattleEndstateModule extends CoreModule {
                 $playerDamageDone.css('opacity', '0')
                 $opponentDamageDone.css('opacity', '0')
                 $criticalDamageIndicator.css('opacity', '0')
+                $playerHealBar.css('opacity', '0')
+                $opponentHealBar.css('opacity', '0')
 
                 const strPlayerCurEgo = $playerEgo.text().split(GT.ego)[1].replace(/[, ]/g, '')
                 let nPlayerCurEgo = nPlayerInitialEgo
