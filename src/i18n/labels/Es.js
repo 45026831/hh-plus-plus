@@ -218,3 +218,24 @@ export const contestSummary = {
     totalRewards: 'Recompensas totales guardadas ({{contests}} Competiciones):',
     contestsWarning: '¡Los Competiciones caducan después de 21 días!'
 }
+
+export const villainBreadcrumbs = {
+    town: 'Cuidad',
+    adventure: 'Aventura',
+    begincity: 'Primera ciudad',
+    gemskingdom: 'El Reino de las Gemas',
+    ninjavillage: 'Aldea de los Ninjas',
+    invadedkingdom: 'El Reino Invadido',
+    juysea: 'El mar del Jugo',
+    admittance: 'Admisión de los muertos',
+    magicforest: 'Bosque mágico',
+    hamelintown: 'Ciudad de Hamelín',
+    plainofrituals: 'Llanura de los rituales',
+    heroesuniversity: 'Universidad de Héroes',
+    ninjasacredlands: 'Tierra sagrada Ninja',
+    splatters: 'Salpicaduras del archipiélago',
+    digisekai: 'Digisekai',
+    stairway: 'Escalera al cielo',
+    training: 'Training Dimension',
+    weresquidisland: 'Isla WereSquid',
+}

@@ -35,6 +35,7 @@ export const config = {
     hideClaimedRewards: 'Bereits beanspruchte Saison/PoA/PoV Belohungen ausblenden',
     disableDragDrop: 'Drag-and-Drop im Markt deaktivieren',
     autoRefresh: 'Automatisches Aktualisieren des Spiels alle 10 Minuten',
+    villainBreadcrumbs: 'Ergänze Breadcrumbs für die Schurken-Seite',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
@@ -192,7 +193,7 @@ export const homeScreen = {
     clubChamp: 'Club-Champion',
     completeIn: 'Beendet in ',
     newMissionsIn: 'Neue Missionen in ',
-    missionsReady: 'Missionen bereit in ',
+    missionsReady: 'Missionen bereit',
 }
 
 export const seasonStats = {
@@ -213,4 +214,25 @@ export const pachinkoNames = {
 export const contestSummary = {
     totalRewards: 'Gesamtzahl der gespeicherten Belohnungen ({{contests}} Wettbewerbe):',
     contestsWarning: 'Wettbewerbe verfallen nach 21 Tagen!',
+}
+
+export const villainBreadcrumbs = {
+    town: 'Stadt',
+    adventure: 'Abenteuer',
+    begincity: 'Vorspiel-Stadt',
+    gemskingdom: 'Edelstein-Königreich',
+    ninjavillage: 'Ninja Dorf',
+    invadedkingdom: 'Überfallenes Königreich',
+    juysea: 'Das feuchte Meer',
+    admittance: 'Einlass der Toten',
+    magicforest: 'Magischer Wald',
+    hamelintown: 'Die Stadt Hameln',
+    plainofrituals: 'Ebene der Rituale',
+    heroesuniversity: 'Helden Universität',
+    ninjasacredlands: 'Heilige Lande der Ninja',
+    splatters: 'Spritzer-Archipel',
+    digisekai: 'Digisekai',
+    stairway: 'Himmelstreppe',
+    training: 'Trainingsdimension',
+    weresquidisland: 'Wer-Tintenfisch-Insel',
 }

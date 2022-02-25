@@ -31,7 +31,7 @@ class I18n {
 
     static getModuleLabel(module, key, data={}) {
         const lang = I18n.getLang()
-        let workingLabel = (labels[lang][module] && labels[lang][module][key]) || labels[defaultLanguage][module][key] || key
+        let workingLabel = (labels[lang][module] && labels[lang][module][key]) || (labels[defaultLanguage][module] && labels[defaultLanguage][module][key]) || key
 
         Object.entries(data).forEach(([template, value])=> {
             workingLabel = workingLabel.replace(`{{${template}}}`, value)

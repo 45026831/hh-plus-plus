@@ -36,6 +36,7 @@ export const config = {
     hideClaimedRewards: 'Скрывать полученные награды Сезона/Пути/PoV',//TODO No official name for PoV yet
     disableDragDrop: 'Отключить перетаскивание на Рынке',
     autoRefresh: 'Обновлять окно игры каждые 10 минут',
+    villainBreadcrumbs: 'Показывать цепочку навигации на экранах злодеев',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',
@@ -228,4 +229,25 @@ export const pachinkoNames = {
 export const contestSummary = {
     totalRewards: 'Всего Сохраненных Наград ({{contests}} Соревнований):',
     contestsWarning: 'Награды соревнований исчезают через 21 день!',
+}
+
+export const villainBreadcrumbs = {
+    town: 'Город',
+    adventure: 'Похождения',
+    begincity: 'Стартовый город',
+    gemskingdom: 'Королевство самоцветов',
+    ninjavillage: 'Деревня ниндзя',
+    invadedkingdom: 'Осажденное королевство',
+    juysea: 'Жуевое море',
+    admittance: 'Царство мертвых',
+    magicforest: 'Волшебный лес',
+    hamelintown: 'Гамельн',
+    plainofrituals: 'Земля ритуалов',
+    heroesuniversity: 'Геройский университет',
+    ninjasacredlands: 'Священные земли ниндзя',
+    splatters: 'Влажный Архипелаг',
+    digisekai: 'Цифромир',
+    stairway: 'Небесная лестница',
+    training: 'Training Dimension',
+    weresquidisland: 'WereSquid Island',
 }

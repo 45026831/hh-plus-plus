@@ -45,7 +45,8 @@ import {
     RewardShardsModule,
     SeasonStatsModule,
     StaticBackgroundModule,
-    TeamsFilterModule
+    TeamsFilterModule,
+    VillainBreadcrumbsModule
 } from './modules'
 
 const runScript = () => {
@@ -97,6 +98,7 @@ const runScript = () => {
     config.registerModule(new HideClaimedRewardsModule())
     config.registerModule(new DisableDragDropModule())
     config.registerModule(new AutoRefreshModule())
+    config.registerModule(new VillainBreadcrumbsModule())
 
     // style tweaks
     config.registerGroup({

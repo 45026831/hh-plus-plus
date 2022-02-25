@@ -23,6 +23,7 @@ export {default as LeaderboardFixModule} from './LeaderboardFixModule'
 export {default as HideClaimedRewardsModule} from './HideClaimedRewardsModule'
 export {default as DisableDragDropModule} from './DisableDragDropModule'
 export {default as AutoRefreshModule} from './AutoRefreshModule'
+export {default as VillainBreadcrumbsModule} from './VillainBreadcrumbsModule'
 
 export {default as MissionsBackgroundStyleTweak} from './MissionsBackgroundStyleTweak'
 export {default as MoneyAnimationStyleTweak} from './MoneyAnimationStyleTweak'

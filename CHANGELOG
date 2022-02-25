@@ -1,3 +1,4 @@
+1.6.0: Adding module to add breadcrumbs to the villain pre-battle page
 1.5.3: Overriding the glitter_me function to match the new positions of resource bars
 1.5.2: Adding missing translations for FR and RU
 1.5.1: Fixing a bug in hiding claimed season rewards where the width wouldn't readjust correctly.

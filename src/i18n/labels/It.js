@@ -195,8 +195,8 @@ export const resourceBars = {
 
 export const homeScreen = {
     clubChamp: 'Il Campione per Club',
-    completeIn: 'Completa in',
-    newMissionsIn: 'Nuova Missione in',
+    completeIn: 'Completa in ',
+    newMissionsIn: 'Nuova Missione in ',
     missionsReady: 'Missioni pronte',
 }
 
@@ -218,4 +218,25 @@ export const pachinkoNames = {
 export const contestSummary = {
     totalRewards: 'Ricompense totali salvate ({{contests}} contest):',
     contestsWarning: 'I contest scadono dopo 21 giorni!',
+}
+
+export const villainBreadcrumbs = {
+    town: 'Città',
+    adventure: 'Avventura',
+    begincity: 'Città dell\'inizio',
+    gemskingdom: 'Il reame delle gemme',
+    ninjavillage: 'Villaggio dei ninja',
+    invadedkingdom: 'Il regno invaso',
+    juysea: 'Il mare Juy',
+    admittance: 'Ammissione del defunto',
+    magicforest: 'La foresta magica',
+    hamelintown: 'Città di Hamelin',
+    plainofrituals: 'Piano dei rituali',
+    heroesuniversity: 'Università degli Eroi',
+    ninjasacredlands: 'Terre Sacre dei Ninja',
+    splatters: 'Arcipelago Appiccicoso',
+    digisekai: 'Digisekai',
+    stairway: 'Scalinata verso il Cielo',
+    training: 'Dimensione d\'Allenamento',
+    weresquidisland: 'Isola dei Calamari Mannari',
 }

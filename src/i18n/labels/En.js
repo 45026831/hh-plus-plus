@@ -57,6 +57,7 @@ export const config = {
     hideClaimedRewards: 'Hide claimed Season/PoA/PoV rewards',
     disableDragDrop: 'Disable Drag-and-Drop in the Market',
     autoRefresh: 'Auto-refresh the game every 10 minutes',
+    villainBreadcrumbs: 'Add breadcrumbs to villain pages',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
@@ -261,4 +262,31 @@ export const pachinkoNames = {
 export const contestSummary = {
     totalRewards: 'Total Saved Rewards ({{contests}} Contests):',
     contestsWarning: 'Contests expire after 21 days!'
+}
+
+export const villainBreadcrumbs = {
+    town: 'Town',
+    adventure: 'Adventure',
+    begincity: 'Begin City',
+    gemskingdom: 'Gems Kingdom',
+    ninjavillage: 'Ninja Village',
+    invadedkingdom: 'Invaded Kingdom',
+    juysea: 'The Juy Sea',
+    admittance: 'Admittance of the dead',
+    magicforest: 'Magic Forest',
+    hamelintown: 'Hamelin Town',
+    plainofrituals: 'Plain of rituals',
+    heroesuniversity: 'Heroes University',
+    ninjasacredlands: 'Ninja sacred lands',
+    splatters: 'Splatters Archipelago',
+    digisekai: 'Digisekai',
+    stairway: 'Stairway to heaven',
+    training: 'Training Dimension',
+    weresquidisland: 'WereSquid Island',
+    begincitycxh: 'Begin City',
+    heroacademy: 'Hero Academy',
+    newcenabum: 'New Cenabum',
+    ontheprowl: 'On the Prowl',
+    bushexplorations: 'Bush Explorations',
+    thespy: 'The Spy Who Came Inside Me',
 }
