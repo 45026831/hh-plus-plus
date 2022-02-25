@@ -190,6 +190,12 @@ body > div > header {
                 border-radius: 7px;
                 overflow: hidden;
 
+                &.flashing {
+                    animation-name: flashing-background;
+                    animation-duration: 3s;
+                    animation-iteration-count: infinite;
+                }
+
                 .progress {
                     position: absolute;
                     height: 200%;
@@ -697,5 +703,17 @@ body#hh_comix > div > header div[rel="xp"] {
                 margin-top: 40px !important;
             }
         }
+    }
+}
+
+@keyframes flashing-background {
+    0% {
+        background-color: #000000bf;
+    }
+    50% {
+        background-color: #ff0000;
+    }
+    100% {
+        background-color: #000000bf;
     }
 }

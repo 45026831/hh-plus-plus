@@ -1,3 +1,4 @@
+1.6.3: Adding flashing warning to booster status when expiration is imminent
 1.6.2: Fixing battle endstate ego bars to deal with the new HTML in-game.
 1.6.1: Adding FR and ES translations for villain breadcrumb setting
 1.6.0: Adding module to add breadcrumbs to the villain pre-battle page

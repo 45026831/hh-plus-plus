@@ -351,6 +351,7 @@ class ResourceBarsModule extends CoreModule {
             const secondHalf = Math.max(percentage - 0.5, 0) * 2
 
             let colorClass = ''
+            let flashingClass = ''
 
             if (percentage > 0) {
                 Object.entries(CIRCULAR_THRESHOLDS).forEach(([threshold, className]) => {
@@ -358,15 +359,19 @@ class ResourceBarsModule extends CoreModule {
                         colorClass = className
                     }
                 })
+
+                if (percentage <= 0.0035) {
+                    flashingClass = 'flashing'
+                }
             }
 
             const $wrapper = $(`
                 <div class="circular-progress">
                     <div class="circle">
-                        <div class="circle-bar left">
+                        <div class="circle-bar left ${flashingClass}">
                             <div class="progress ${colorClass}" style="transform: rotate(${180 * secondHalf}deg)"></div>
                         </div>
-                        <div class="circle-bar right">
+                        <div class="circle-bar right ${flashingClass}">
                             <div class="progress ${colorClass}" style="transform: rotate(${180 * firstHalf}deg)"></div>
                         </div>
                         ${useTimer ? '<div class="dummy-timer-target" style="display: none;"></div>' : ''}
@@ -397,6 +402,14 @@ class ResourceBarsModule extends CoreModule {
                                 colorClass = className
                             }
                         })
+
+                        if (percentage <= 0.0035) {
+                            flashingClass = 'flashing'
+                        }
+                    }
+
+                    if (flashingClass) {
+                        $wrapper.find('.left, .right').addClass(flashingClass)
                     }
 
                     const $left = $wrapper.find('.left .progress')
