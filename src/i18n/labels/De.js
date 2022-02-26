@@ -21,6 +21,7 @@ export const config = {
     simFight_highPrecisionMode: 'Hochpräzisionsmodus (Warnung: langsam!)',
     teamsFilter: 'Teamfilter',
     champions: 'Champion-Informationen',
+    champions_fixPower: `Heldenstärke in Stärkeanzeige der ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} einbeziehen`,
     homeScreen: 'Homepage Verknüpfungen & Timer',
     resourceBars: 'Ressourcen-Leisten / Booster Tracking',
     popSort: 'PoP-Sortierung und schnelle Navigation',

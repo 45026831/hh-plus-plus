@@ -73,7 +73,14 @@ class ChampionsModule extends CoreModule {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
-            default: true
+            default: true,
+            subSettings: [
+                {
+                    key: 'fixPower',
+                    label: I18n.getModuleLabel('config', `${MODULE_KEY}_fixPower`),
+                    default: true
+                }
+            ]
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
@@ -82,7 +89,7 @@ class ChampionsModule extends CoreModule {
         return ['champions/', 'clubs', 'club-champion'].some(page => Helpers.isCurrentPage(page))
     }
 
-    run () {
+    run ({fixPower}) {
         if (this.hasRun || !this.shouldRun()) {return}
 
         styles.use()
@@ -93,7 +100,7 @@ class ChampionsModule extends CoreModule {
                 this.fixChampRestTimer()
             }
             if (Helpers.isCurrentPage('champions/') || Helpers.isCurrentPage('club-champion')) {
-                this.poseMatching()
+                this.poseMatching({fixPower})
                 this.showTicketsWhileResting()
                 this.fasterSkipButton()
             }
@@ -234,8 +241,8 @@ class ChampionsModule extends CoreModule {
         }
     }
 
-    poseMatching () {
-        const {championData} = window
+    poseMatching ({fixPower}) {
+        const {championData, Hero} = window
         const {canDraft, champion} = championData
 
         if (!canDraft) {return}
@@ -248,7 +255,7 @@ class ChampionsModule extends CoreModule {
             const $girlSelection = $('.champions-middle__girl-selection')
             const {team} = championData
 
-            team.forEach(({id_girl, figure}, i) => {
+            team.forEach(({id_girl, figure, damage}, i) => {
                 const rightPoseWrongPlace = figures.includes(figure)
                 const rightPoseRightPlace = figuresExtrapolated[i] === figure
 
@@ -266,6 +273,12 @@ class ChampionsModule extends CoreModule {
                 } else if (rightPoseWrongPlace) {
                     $marker.addClass('green-tick-icon')
                     $marker.addClass('empty')
+                }
+
+                if (fixPower) {
+                    const actualPower = damage + Hero.infos.caracs.primary_carac_amount
+                    const $damage = $girl.find('[carac=damage]')
+                    $damage.text(I18n.nRounding(actualPower, 1, 1)).attr('hh_title', I18n.nThousand(actualPower))
                 }
             })
         }

@@ -22,6 +22,7 @@ export const config = {
     simFight_highPrecisionMode: 'Modo de alta precisión (Advertencia: ¡Lento!)',
     teamsFilter: 'Filtro de equipos',
     champions: 'Informacion de Campeones',
+    champions_fixPower: `Incluya poder del héroe en la exhibición del poder ${Helpers.isGH() ? 'del chico' : 'de la chica'}`,
     homeScreen: 'Accesos directos y timers de la pantalla de inicio',
     resourceBars: 'Barra de recursos / Rastreador de boosters',
     popSort: 'Clasificación de LdP y navegación rápida', //'LdP' being short for 'Lugares de Poder'
