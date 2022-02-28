@@ -1,3 +1,4 @@
+1.6.5: Changing how icons are brought across from the teams page to the market girls filter. Attempting to handle cases where the game adds duplicate timers to the additional resource bars.
 1.6.4: Adding option to show full damage in champion team selection
 1.6.3: Adding flashing warning to booster status when expiration is imminent
 1.6.2: Fixing battle endstate ego bars to deal with the new HTML in-game.

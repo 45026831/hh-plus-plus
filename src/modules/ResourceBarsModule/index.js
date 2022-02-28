@@ -234,16 +234,35 @@ class ResourceBarsModule extends CoreModule {
 
                 const existingTimer = Object.values(HHTimers.timers).find(timer => timer.type === type)
                 let existingOnDestroy
-                if (existingTimer) {
+                const selector = `.energy_counter[type="${type}"]`
+                const destroyExistingTimer = (existingTimer) => {
                     existingOnDestroy = existingTimer.onDestroy
                     existingTimer.onDestroy = () => {}
                     existingTimer.destroy()
                 }
-
-                Hero.c[type] = HHTimers.initEnergyTimer($(`.energy_counter[type="${type}"]`))
-                if (existingOnDestroy) {
-                    Hero.c[type].onDestroy = existingOnDestroy
+                const addTimer = () => {
+                    Hero.c[type] = HHTimers.initEnergyTimer($(selector))
+                    if (existingOnDestroy) {
+                        Hero.c[type].onDestroy = existingOnDestroy
+                    }
                 }
+                if (existingTimer) {
+                    destroyExistingTimer(existingTimer)
+                } else {
+                    setTimeout(()=> {
+                        // Try and catch where the game tries to add another timer after we've already added ours.
+                        const duplicateTimer = Object.values(HHTimers.timers).find(({type: ttype, $elm}) => ttype === type && $elm.selector !== selector)
+                        if (duplicateTimer) {
+                            console.log('got duplicate timer!', duplicateTimer)
+                            destroyExistingTimer(duplicateTimer)
+                            if (existingOnDestroy) {
+                                Hero.c[type].onDestroy = existingOnDestroy
+                            }
+                        }
+                    }, 10)
+                }
+                addTimer()
+
 
                 if (type==='challenge' && !Helpers.isCurrentPage('tower-of-fame')) {
                     window.hasMultipleLeagueBattles = false

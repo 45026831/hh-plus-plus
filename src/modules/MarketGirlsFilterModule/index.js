@@ -221,10 +221,10 @@ class MarketGirlsFilterModule extends CoreModule {
                         <div class="teams-grid-container rarity-background">
                             ${teamIds.map(teamId => teamsDict[teamId]).map(team => `
                                 <div class="team-slot-container ${team.iconRarity}" data-id-team="${team.teamId}" data-girl-ids='${JSON.stringify(team.girls)}'>
-                                    <img src="${team.icon}" />
-                                    ${team.themeIcons ? `
+                                    <img src="${Helpers.getCDNHost()}/pictures/girls/${team.iconId}/ico${team.iconLevel}.png" />
+                                    ${team.themeElements ? `
                                         <div class="theme-icons">
-                                            ${team.themeIcons.map(icon=>`<img class="theme-icon" src="${icon}"/>`).join('')}
+                                            ${team.themeElements.map(element=>`<img class="theme-icon" src="${Helpers.getCDNHost()}/pictures/girls_elements/${element}.png"/>`).join('')}
                                         </div>
                                     ` : ''}
                                 </div>
