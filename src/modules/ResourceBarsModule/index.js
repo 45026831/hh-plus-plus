@@ -253,7 +253,6 @@ class ResourceBarsModule extends CoreModule {
                         // Try and catch where the game tries to add another timer after we've already added ours.
                         const duplicateTimer = Object.values(HHTimers.timers).find(({type: ttype, $elm}) => ttype === type && $elm.selector !== selector)
                         if (duplicateTimer) {
-                            console.log('got duplicate timer!', duplicateTimer)
                             destroyExistingTimer(duplicateTimer)
                             if (existingOnDestroy) {
                                 Hero.c[type].onDestroy = existingOnDestroy

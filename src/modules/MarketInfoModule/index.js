@@ -184,14 +184,21 @@ class MarketInfoModule extends CoreModule {
     }
 
     attachGirlQuota () {
-        const awakeningThreshold = Helpers.getAwakeningThreshold()
+        const {is_mobile, is_tablet, TooltipManager, Tooltip} = window
+        const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
 
-        if (awakeningThreshold) {
-            const {currentThreshold, currentThresholdOwned, currentThresholdMin} = awakeningThreshold
+        TooltipManager.initTooltipType(isMobile, '#girls_list > .level_target', false, (target) => {
+            const awakeningThreshold = Helpers.getAwakeningThreshold()
 
-            const levelText = `${GT.design.Lvl} ${currentThreshold} : ${currentThresholdOwned} / ${currentThresholdMin} ${GT.design.Girls}`
-            $('#girls_list .level_target').attr('hh_title', levelText)
-        }
+            if (awakeningThreshold) {
+                const {currentThreshold, currentThresholdOwned, currentThresholdMin} = awakeningThreshold
+
+                const levelText = `${GT.design.Lvl} ${currentThreshold} : ${currentThresholdOwned} / ${currentThresholdMin} ${GT.design.Girls}`
+
+                let newTooltip = new Tooltip($(target),'',levelText)
+                TooltipManager.initNewTooltip(target, newTooltip)
+            }
+        })
     }
 
     setupHooks () {

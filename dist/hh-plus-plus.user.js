@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.6.5
+// @version         1.6.6
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -113,7 +113,7 @@ window.HHPlusPlus={},(()=>{var a={971:(e,t,a)=>{"use strict";a.d(t,{Z:()=>s});va
             `)})}updateEquips(){var e=T.lsGet(f.MARKET_INFO);if(e.equipsAggregate){var t="equip";if(!this.$tooltips[t]){this.$tooltips[t]=$('<div class="inventoryToolTip"></div>');const i=$('<div class="marketInfoIcon inventoryInfo"></div>');$("#inventory .armor").prepend(i),i.after(this.$tooltips[t])}var{count:a,cost:e}=e.equipsAggregate;this.$tooltips[t].html(`
             ${this.label("youOwn",{count:Ga.nThousand(a),type:this.label("equips")})}<br />
             ${this.label("youCanSell",{cost:Ga.nThousand(e)})}
-        `)}}attachGirlQuota(){var e,t,a=T.getAwakeningThreshold();a&&({currentThreshold:e,currentThresholdOwned:t,currentThresholdMin:a}=a,a=`${GT.design.Lvl} ${e} : ${t} / ${a} ${GT.design.Girls}`,$("#girls_list .level_target").attr("hh_title",a))}setupHooks(){T.onAjaxResponse(/action=update_stats/,(e,t)=>{if(e.success){const a=new URLSearchParams(t.data);t=ii(a.get("carac")),e=e[t];Hero.infos[t]=e}}),ai.forEach(e=>{var t=ii(e);const a=new MutationObserver(()=>this.updateStats());a.observe($(`[hero=${t}] [carac=${e}]`)[0],{childList:!0})}),$(document).on("market:inventory-updated",()=>this.updateItems()),$(document).on("market:equips-updated",()=>this.updateEquips())}injectCSSVars(){ge.registerVar("info-icon",`url(${T.getCDNHost()}/design/ic_info.svg)`)}};const ni=class{static selectInput({id:e,label:t,options:a,value:i}){return`
+        `)}}attachGirlQuota(){const{is_mobile:e,is_tablet:t,TooltipManager:s,Tooltip:n}=window;var a=e&&e()||t&&t();s.initTooltipType(a,"#girls_list > .level_target",!1,e=>{var t,a,i=T.getAwakeningThreshold();i&&({currentThreshold:t,currentThresholdOwned:a,currentThresholdMin:i}=i,i=`${GT.design.Lvl} ${t} : ${a} / ${i} ${GT.design.Girls}`,i=new n($(e),"",i),s.initNewTooltip(e,i))})}setupHooks(){T.onAjaxResponse(/action=update_stats/,(e,t)=>{if(e.success){const a=new URLSearchParams(t.data);t=ii(a.get("carac")),e=e[t];Hero.infos[t]=e}}),ai.forEach(e=>{var t=ii(e);const a=new MutationObserver(()=>this.updateStats());a.observe($(`[hero=${t}] [carac=${e}]`)[0],{childList:!0})}),$(document).on("market:inventory-updated",()=>this.updateItems()),$(document).on("market:equips-updated",()=>this.updateEquips())}injectCSSVars(){ge.registerVar("info-icon",`url(${T.getCDNHost()}/design/ic_info.svg)`)}};const ni=class{static selectInput({id:e,label:t,options:a,value:i}){return`
             <div class="form-control">
                 <div class="select-group">
                     <label class="head-group" for="${e}">${t}</label>
@@ -417,7 +417,7 @@ window.HHPlusPlus={},(()=>{var a={971:(e,t,a)=>{"use strict";a.d(t,{Z:()=>s});va
                 </a>
             </div>
         </div>
-    `));if(u.after(s),u=s,r<o){Hero.c||(Hero.c={});o=Object.values(HHTimers.timers).find(e=>e.type===a);let t;const d=`.energy_counter[type="${a}"]`,p=e=>{t=e.onDestroy,e.onDestroy=()=>{},e.destroy()};o?p(o):setTimeout(()=>{var e=Object.values(HHTimers.timers).find(({type:e,$elm:t})=>e===a&&t.selector!==d);e&&(console.log("got duplicate timer!",e),p(e),t&&(Hero.c[a].onDestroy=t))},10),Hero.c[a]=HHTimers.initEnergyTimer(un(d)),t&&(Hero.c[a].onDestroy=t),"challenge"!==a||T.isCurrentPage("tower-of-fame")||(window.hasMultipleLeagueBattles=!1)}})}addPoPTimer(){if(pn.pop){var s=T.lsGet(f.TRACKED_TIMES);let e=0,t=1,a;s&&s.pop&&(e=Math.max(s.pop-server_now_ts,0),t=s.popDuration,a=`<span class=&quot;orange&quot;>${new Date(1e3*s.pop).toLocaleTimeString(Ga.getLang(),{hour:"2-digit",minute:"2-digit"})}</span>`);var n=0<e;let i=100;n&&(i=100*(t-e)/t);const r=un(`
+    `));if(u.after(s),u=s,r<o){Hero.c||(Hero.c={});o=Object.values(HHTimers.timers).find(e=>e.type===a);let t;const d=`.energy_counter[type="${a}"]`,p=e=>{t=e.onDestroy,e.onDestroy=()=>{},e.destroy()};o?p(o):setTimeout(()=>{var e=Object.values(HHTimers.timers).find(({type:e,$elm:t})=>e===a&&t.selector!==d);e&&(p(e),t&&(Hero.c[a].onDestroy=t))},10),Hero.c[a]=HHTimers.initEnergyTimer(un(d)),t&&(Hero.c[a].onDestroy=t),"challenge"!==a||T.isCurrentPage("tower-of-fame")||(window.hasMultipleLeagueBattles=!1)}})}addPoPTimer(){if(pn.pop){var s=T.lsGet(f.TRACKED_TIMES);let e=0,t=1,a;s&&s.pop&&(e=Math.max(s.pop-server_now_ts,0),t=s.popDuration,a=`<span class=&quot;orange&quot;>${new Date(1e3*s.pop).toLocaleTimeString(Ga.getLang(),{hour:"2-digit",minute:"2-digit"})}</span>`);var n=0<e;let i=100;n&&(i=100*(t-e)/t);const r=un(`
             <a class="script-pop-timer" href="/activities.html?tab=pop">
                 <div class="hh_bar finish_in_bar" ${n?`generic-tooltip="${this.label("readyAt",{time:a})}"`:""}>
                     <div class="backbar borderbar">
