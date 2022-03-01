@@ -104,16 +104,14 @@ class HideClaimedRewardsModule extends CoreModule {
     }
 
     season () {
-        const $tiers = $('.rewards_pair')
         let hidden = false
 
         const fixWidth = () => {
-            const $visibleTiers = $tiers.filter(':visible')
-            const totalWidth = SEASON_TIER_WIDTH * $visibleTiers.length
             const $row = $('.rewards_seasons_row')
-            $row.css('width', `${totalWidth}px`)
+            $row.css('width', 'max-content')
         }
         const assertHidden = (shouldScroll) => {
+            const $tiers = $('.rewards_pair')
             const {season_tiers, season_has_pass, season_tier} = window
 
             let unclaimedCount = 0
