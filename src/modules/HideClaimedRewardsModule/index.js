@@ -52,6 +52,8 @@ class HideClaimedRewardsModule extends CoreModule {
         const heightPattern = /height: ?(?<existingLength>[0-9.a-z%]+);?/
         let existingLengthStr
         let newLength
+        const $progressBar = $('.pov-progress-bar .pov-progress-bar-current')
+        const styleAttr = $progressBar.attr('style')
 
         const assertHidden = () => {
             if (claimedCount === 0) {
@@ -61,16 +63,18 @@ class HideClaimedRewardsModule extends CoreModule {
 
             $groupsToHide.addClass('script-hide-claimed')
             hidden = true
-            $progressBar.attr('style', styleAttr.replace(heightPattern, `height:${newLength};`))
+            if (styleAttr) {
+                $progressBar.attr('style', styleAttr.replace(heightPattern, `height:${newLength};`))
+            }
         }
         const assertShown = () => {
             $('.script-hide-claimed').removeClass('script-hide-claimed')
             hidden = false
-            $progressBar.attr('style', styleAttr.replace(heightPattern, `height:${existingLengthStr};`))
+            if (styleAttr) {
+                $progressBar.attr('style', styleAttr.replace(heightPattern, `height:${existingLengthStr};`))
+            }
         }
 
-        const $progressBar = $('.pov-progress-bar .pov-progress-bar-current')
-        const styleAttr = $progressBar.attr('style')
         if (styleAttr) {
             const matches = styleAttr.match(heightPattern)
             if (matches && matches.groups) {

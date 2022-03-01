@@ -1,3 +1,4 @@
+1.6.9: Fixing broken reward toggling on PoV.
 1.6.8: Improving fixed width of season rewards when hidden.
 1.6.7: Making hidden claimed rewards togglable on PoV and Season like they are on PoA
 1.6.6: Using a more appropriate API for the girl quota tooltip in the market
