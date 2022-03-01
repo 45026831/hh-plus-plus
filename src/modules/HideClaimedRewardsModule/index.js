@@ -44,29 +44,40 @@ class HideClaimedRewardsModule extends CoreModule {
     }
 
     pov () {
+        let hidden = false
         const $groupsToHide = $('.pov-tier:not(.unclaimed):has(.claimed-slot)')
         const $groupsRemaining = $('.pov-tier.unclaimed')
         const claimedCount = $groupsToHide.length
         const unclaimedCount = $groupsRemaining.length
+        const heightPattern = /height: ?(?<existingLength>[0-9.a-z%]+);?/
+        let existingLengthStr
+        let newLength
 
-        if (claimedCount === 0) {
-            // nothing to do
-            return
+        const assertHidden = () => {
+            if (claimedCount === 0) {
+                // nothing to do
+                return
+            }
+
+            $groupsToHide.addClass('script-hide-claimed')
+            hidden = true
+            $progressBar.attr('style', styleAttr.replace(heightPattern, `height:${newLength};`))
         }
-
-        $groupsToHide.addClass('script-hide-claimed')
+        const assertShown = () => {
+            $('.script-hide-claimed').removeClass('script-hide-claimed')
+            hidden = false
+            $progressBar.attr('style', styleAttr.replace(heightPattern, `height:${existingLengthStr};`))
+        }
 
         const $progressBar = $('.pov-progress-bar .pov-progress-bar-current')
         const styleAttr = $progressBar.attr('style')
         if (styleAttr) {
-            const heightPattern = /height: ?(?<existingLength>[0-9.a-z]+);?/
             const matches = styleAttr.match(heightPattern)
-            let existingLengthStr
             if (matches && matches.groups) {
                 existingLengthStr = matches.groups.existingLength
             }
             if (existingLengthStr) {
-                let newLength = existingLengthStr
+                newLength = existingLengthStr
                 if (existingLengthStr.endsWith('px')) {
                     const existingLength = parseInt(existingLengthStr)
                     newLength = Math.round(existingLength - (claimedCount * POV_PX_PER_GROUP)) + 'px'
@@ -74,45 +85,68 @@ class HideClaimedRewardsModule extends CoreModule {
                     const existingLength = parseFloat(existingLengthStr)
                     newLength = existingLength - (claimedCount * POV_REM_PER_GROUP) + 'rem'
                 }
-
-                $progressBar.attr('style', styleAttr.replace(heightPattern, `height:${newLength};`))
             }
         }
-
+        assertHidden()
         $('.pov-progress-bar-section').stop(true).animate({
             scrollTop: Math.max(0, (unclaimedCount * POV_PX_PER_GROUP) - 150)
         }, 100)
+
+        const toggle = () => {
+            if (hidden) {
+                assertShown()
+            } else {
+                assertHidden()
+            }
+        }
+
+        $('.girl-preview').click(toggle)
     }
 
     season () {
+        const $tiers = $('.rewards_pair')
+        let hidden = false
+
+        const fixWidth = () => {
+            const $visibleTiers = $tiers.filter(':visible')
+            const totalWidth = SEASON_TIER_WIDTH * $visibleTiers.length
+            const $row = $('.rewards_seasons_row')
+            $row.css('width', `${totalWidth}px`)
+        }
         const assertHidden = (shouldScroll) => {
-            const $tiers = $('.rewards_pair')
             const {season_tiers, season_has_pass, season_tier} = window
 
             let unclaimedCount = 0
+            let rewardsHidden = false
 
             $tiers.each((i, el) => {
                 const {free_reward_picked, pass_reward_picked, tier} = season_tiers[i]
                 if (free_reward_picked === '1' && (!season_has_pass || pass_reward_picked === '1')) {
                     $(el).addClass('script-hide-claimed')
+                    rewardsHidden = true
                 } else if (parseInt(tier) <= season_tier) {
                     unclaimedCount++
                 }
             })
 
-            const $visibleTiers = $tiers.filter(':visible')
-            const tierWidth = SEASON_TIER_WIDTH
-            const totalWith = tierWidth * $visibleTiers.length
+            hidden = rewardsHidden
 
-            const $row = $('.rewards_seasons_row')
+            fixWidth()
+
             const $rowScroll = $('.rewards_container_seasons')
-            $row.css('width', `${totalWith}px`)
             $rowScroll.getNiceScroll().resize()
 
             if (shouldScroll) {
-                const left = tierWidth * unclaimedCount
+                const left = SEASON_TIER_WIDTH * unclaimedCount
                 $rowScroll.getNiceScroll(0).doScrollLeft(Math.max(0, left - 600), 200)
             }
+        }
+        const assertShown = () => {
+            $('.script-hide-claimed').removeClass('script-hide-claimed')
+            hidden = false
+            fixWidth()
+            const $rowScroll = $('.rewards_container_seasons')
+            $rowScroll.getNiceScroll().resize()
         }
 
         const $rowScroll = $('.rewards_container_seasons')
@@ -152,8 +186,18 @@ class HideClaimedRewardsModule extends CoreModule {
                 tierToUpdate[`${type}_reward_picked`] = '1'
             }
 
-            assertHidden(false)
+            if (hidden) {
+                assertHidden(false)
+            }
         })
+        const toggle = () => {
+            if (hidden) {
+                assertShown()
+            } else {
+                assertHidden(false)
+            }
+        }
+        $('#girls_holder').click(toggle)
     }
 
     poa () {
