@@ -232,6 +232,7 @@ class ResourceBarsModule extends CoreModule {
                     Hero.c = {}
                 }
 
+                let newTimer
                 const existingTimer = Object.values(HHTimers.timers).find(timer => timer.type === type)
                 let existingOnDestroy
                 const selector = `.energy_counter[type="${type}"]`
@@ -241,7 +242,8 @@ class ResourceBarsModule extends CoreModule {
                     existingTimer.destroy()
                 }
                 const addTimer = () => {
-                    Hero.c[type] = HHTimers.initEnergyTimer($(selector))
+                    newTimer = HHTimers.initEnergyTimer($(selector))
+                    Hero.c[type] = newTimer
                     if (existingOnDestroy) {
                         Hero.c[type].onDestroy = existingOnDestroy
                     }
@@ -255,7 +257,8 @@ class ResourceBarsModule extends CoreModule {
                         if (duplicateTimer) {
                             destroyExistingTimer(duplicateTimer)
                             if (existingOnDestroy) {
-                                Hero.c[type].onDestroy = existingOnDestroy
+                                newTimer.onDestroy = existingOnDestroy
+                                Hero.c[type] = newTimer
                             }
                         }
                     }, 10)
