@@ -38,6 +38,7 @@ export const config = {
     disableDragDrop: 'Отключить перетаскивание на Рынке',
     autoRefresh: 'Обновлять окно игры каждые 10 минут',
     villainBreadcrumbs: 'Показывать цепочку навигации на экранах злодеев',
+    blessingSpreadsheetLink: 'Добавить ссылку на таблицу благословений во всплывающее окно благословений'
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',
@@ -251,4 +252,8 @@ export const villainBreadcrumbs = {
     stairway: 'Небесная лестница',
     training: 'Training Dimension',
     weresquidisland: 'WereSquid Island',
+}
+
+export const blessingSpreadsheetLink = {
+    name: `Открыть таблицу благословений от ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
 }

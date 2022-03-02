@@ -38,6 +38,7 @@ export const config = {
     disableDragDrop: 'Desactivar la opción de Drag-and-Drop en el mercado',
     autoRefresh: 'Refresca el juego automáticamente cada 10 minutos',
     villainBreadcrumbs: 'Agregar ruta de navegación a las páginas de villanos',
+    blessingSpreadsheetLink: 'Agregue un enlace a la hoja de cálculo de datos de bendiciones en la ventana emergente de bendiciones',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',
@@ -240,4 +241,8 @@ export const villainBreadcrumbs = {
     stairway: 'Escalera al cielo',
     training: 'Training Dimension',
     weresquidisland: 'Isla WereSquid',
+}
+
+export const blessingSpreadsheetLink = {
+    name: `Abra la hoja de cálculo de datos de bendición de ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
 }

@@ -37,6 +37,7 @@ export const config = {
     disableDragDrop: 'Drag-and-Drop im Markt deaktivieren',
     autoRefresh: 'Automatisches Aktualisieren des Spiels alle 10 Minuten',
     villainBreadcrumbs: 'Ergänze Breadcrumbs für die Schurken-Seite',
+    blessingSpreadsheetLink: 'Ergänze Verknüpfung zu der Datentabelle für Segnungen auf dem Segnungen Pop-Up'
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
@@ -236,4 +237,8 @@ export const villainBreadcrumbs = {
     stairway: 'Himmelstreppe',
     training: 'Trainingsdimension',
     weresquidisland: 'Wer-Tintenfisch-Insel',
+}
+
+export const blessingSpreadsheetLink = {
+    name: `Öffne die Datentabelle für Segnungen von ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
 }

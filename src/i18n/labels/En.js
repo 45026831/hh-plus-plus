@@ -59,6 +59,7 @@ export const config = {
     disableDragDrop: 'Disable Drag-and-Drop in the Market',
     autoRefresh: 'Auto-refresh the game every 10 minutes',
     villainBreadcrumbs: 'Add breadcrumbs to villain pages',
+    blessingSpreadsheetLink: 'Add link to the blessing data spreadsheet on the blessings popup'
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
@@ -290,4 +291,8 @@ export const villainBreadcrumbs = {
     ontheprowl: 'On the Prowl',
     bushexplorations: 'Bush Explorations',
     thespy: 'The Spy Who Came Inside Me',
+}
+
+export const blessingSpreadsheetLink = {
+    name: `Open ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}'s blessing data spreadsheet`
 }

@@ -16,6 +16,7 @@ import {
     AutoRefreshModule,
     BattleEndstateModule,
     BattleSimulatorModule,
+    BlessingSpreadsheetLinkModule,
     ChampionsModule,
     ContestRewardsModule,
     DisableDragDropModule,
@@ -99,6 +100,7 @@ const runScript = () => {
     config.registerModule(new DisableDragDropModule())
     config.registerModule(new AutoRefreshModule())
     config.registerModule(new VillainBreadcrumbsModule())
+    config.registerModule(new BlessingSpreadsheetLinkModule())
 
     // style tweaks
     config.registerGroup({
