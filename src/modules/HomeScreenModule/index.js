@@ -107,7 +107,7 @@ class HomeScreenModule extends CoreModule {
         const shortcutHtml = (className, href, title, iconClass) => `<a class="round_blue_button script-home-shortcut script-home-shortcut-${className}" href="${href}" hh_title="${title}"><div class="${iconClass}"></div></a>`
 
         // Club champ
-        if (window.Chat_vars && window.Chat_vars.CLUB_ID) {
+        if (window.Chat_vars && (window.Chat_vars.CLUB_ID || (window.Chat_vars.CLUB_INFO && window.Chat_vars.CLUB_INFO.id_club))) {
             // is in club
             const $clubShortcuts = $('<div class="script-home-shortcut-container"></div>')
             $('a[rel=clubs] .position').prepend($clubShortcuts)

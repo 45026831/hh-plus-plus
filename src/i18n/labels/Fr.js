@@ -38,6 +38,7 @@ export const config = {
     disableDragDrop: 'Désactiver la fonction glisser-déposer dans le marché',
     autoRefresh: 'Actualise automatiquement le jeu toutes les 10 minutes',
     villainBreadcrumbs: 'Ajouter une chaîne de navigation aux pages des boss du mode aventure',
+    blessingSpreadsheetLink: 'Ajouter un lien vers la feuille de données des bénédictions à l\'infobulle des bénédictions',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
@@ -245,4 +246,8 @@ export const villainBreadcrumbs = {
     ontheprowl: 'À l\'affût',
     bushexplorations: 'Explorations de la brousse',
     thespy: 'L’espion qui venait en moi',
+}
+
+export const blessingSpreadsheetLink = {
+    name: `Ouvrir la feuille de données des bénédictions de ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
 }

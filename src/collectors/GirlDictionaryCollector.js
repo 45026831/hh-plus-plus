@@ -127,7 +127,7 @@ class GirlDictionaryCollector {
     }
 
     static collectFromBattleResult () {
-        Helpers.onAjaxResponse(/action=do_(league|season|troll)_battles/i, collectFromAjaxResponseSingular)
+        Helpers.onAjaxResponse(/action=do_battles_(leagues|seasons|troll)/i, collectFromAjaxResponseSingular)
     }
 
     static collectFromPachinkoRewards () {

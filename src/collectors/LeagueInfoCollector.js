@@ -75,7 +75,7 @@ class LeagueInfoCollector {
     }
 
     static collectLeagueBattlePoints() {
-        Helpers.onAjaxResponse(/action=do_league_battles/i, (response, opt) => {
+        Helpers.onAjaxResponse(/action=do_battles_leagues/i, (response, opt) => {
             const searchParams = new URLSearchParams(opt.data)
             const player = searchParams.get('id_opponent')
             const number_of_battles = searchParams.get('number_of_battles')

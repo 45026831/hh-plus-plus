@@ -36,7 +36,7 @@ class SeasonStatsCollector {
     }
 
     static collectFromBattle () {
-        Helpers.onAjaxResponse(/action=do_season_battles/i, (response) => {
+        Helpers.onAjaxResponse(/action=do_battles_seasons/i, (response) => {
             const {rewards} = response
             if (rewards && rewards.data && rewards.data.rewards) {
                 const mojoReward = rewards.data.rewards.find(({type}) => type === 'victory_points')
