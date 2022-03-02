@@ -321,6 +321,7 @@ class LeagueInfoModule extends CoreModule {
                 displayFoughtOpponents()
                 setButtonHide()
             }
+            $('.leagues_table .lead_table_view').getNiceScroll().resize()
             hidden = !hidden
             Helpers.lsSet(lsKeys.FOUGHT_OPPONENTS_HIDDEN, hidden)
         })
