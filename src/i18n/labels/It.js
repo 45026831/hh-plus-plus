@@ -22,6 +22,7 @@ export const config = {
     simFight_highPrecisionMode: 'Modalità ad alta precisione (attenzione: lento!)',
     teamsFilter: 'Filtro delle squadre',
     champions: 'Informazioni sui Campioni',
+    champions_fixPower: `Includi il potere dell'eroe nella mostra del potere ${Helpers.isGH() ? 'delli ragazzi' : 'delle ragazze'}`,
     homeScreen: 'Scorciatoie e timer della schermata principale',
     resourceBars: 'Barre di risorse / Monitoraggio dei booster',
     popSort: 'LdP ordinamento e navigazione rapida',
@@ -36,6 +37,8 @@ export const config = {
     hideClaimedRewards: 'Nascondi le ricompense già rivendicate per la stagione/PoA/PoV',
     disableDragDrop: 'Disabilitare il drag-and-drop nel mercato',
     autoRefresh: 'Aggiorna il gioco automaticamente ogni 10 minuti',
+    villainBreadcrumbs: 'Aggiungi briciole di pane alle pagine dei troll',
+    blessingSpreadsheetLink: 'Aggiungi il link della tabella dei dati delle benedizioni sul popup delle benedizioni',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
@@ -239,4 +242,8 @@ export const villainBreadcrumbs = {
     stairway: 'Scalinata verso il Cielo',
     training: 'Dimensione d\'Allenamento',
     weresquidisland: 'Isola dei Calamari Mannari',
+}
+
+export const blessingSpreadsheetLink = {
+    name: `Apri il foglio della tabella dei dati delle benedizioni di ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
 }
