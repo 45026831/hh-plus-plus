@@ -97,7 +97,7 @@ class BoosterStatusCollector {
                 }
             })
 
-            if (sandalwood && action === 'do_troll_battles') {
+            if (sandalwood && action === 'do_battles_trolls') {
                 const isMultibattle = parseInt(number_of_battles) > 1
                 const {rewards} = response
                 if (rewards && rewards.data && rewards.data.shards) {
@@ -115,11 +115,11 @@ class BoosterStatusCollector {
                 }
             }
 
-            if (allMastery && (action === 'do_league_battles' || action === 'do_season_battles')) {
+            if (allMastery && (action === 'do_battles_leagues' || action === 'do_battles_seasons')) {
                 allMastery.usages_remaining -= parseInt(number_of_battles)
             }
 
-            if (headband && (action === 'do_pantheon_battles' || action === 'do_troll_battles')) {
+            if (headband && (action === 'do_battles_pantheon' || action === 'do_battles_trolls')) {
                 headband.usages_remaining -= parseInt(number_of_battles)
             }
 
@@ -127,7 +127,7 @@ class BoosterStatusCollector {
                 watch.usages_remaining -= parseInt(battles_amount)
             }
 
-            if (cinnamon && action === 'do_season_battles') {
+            if (cinnamon && action === 'do_battles_seasons') {
                 cinnamon.usages_remaining -= parseInt(number_of_battles)
             }
 
