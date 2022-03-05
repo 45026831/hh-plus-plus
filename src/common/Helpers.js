@@ -118,8 +118,8 @@ class Helpers {
 
     static onAjaxResponse (pattern, callback) {
         $(document).ajaxComplete((evt, xhr, opt) => {
-            if(~opt.data.search(pattern)) {
-                if(!xhr.responseText.length) {
+            if(opt && opt.data && opt.data.search && ~opt.data.search(pattern)) {
+                if(!xhr || !xhr.responseText || !xhr.responseText.length) {
                     return
                 }
                 const responseData = JSON.parse(xhr.responseText)
