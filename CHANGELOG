@@ -1,3 +1,4 @@
+1.7.7: Adding endurance and harmony options to the equip filter
 1.7.6: Coding Helpers.onAjaxResponse more defensively, so as to not throw exceptions when other scripts are making their own AJAX calls. (#58)
 1.7.5: Fixing hide fought opponents to adjust the scrollbar automatically
 1.7.4: Adding missing IT translations

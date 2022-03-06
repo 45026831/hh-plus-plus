@@ -49,7 +49,9 @@ const FILTER_OPTIONS = new (class {
         {value: 'rainbow', icon: 'pictures/misc/items_icons/16.svg'},
         {value: 'hc', icon: 'pictures/misc/items_icons/1.png'},
         {value: 'ch', icon: 'pictures/misc/items_icons/2.png'},
-        {value: 'kh', icon: 'pictures/misc/items_icons/3.png'}
+        {value: 'kh', icon: 'pictures/misc/items_icons/3.png'},
+        {value: 'end', icon: 'pictures/misc/items_icons/4.png'},
+        {value: 'har', icon: 'pictures/misc/items_icons/5.png'},
     ]}
     get favorites () {return [
         {value: true, icon: 'design/ic_star_orange.svg'},
@@ -59,7 +61,7 @@ const FILTER_OPTIONS = new (class {
 const FILTER_OPTIONS_GRIDS = {
     subtype: {
         flow: 'column',
-        cols: '40px 40px',
+        cols: '1fr 1fr',
         rows: '1fr 1fr 1fr'
     },
     rarity: {
@@ -70,7 +72,7 @@ const FILTER_OPTIONS_GRIDS = {
     stats: {
         flow: 'row',
         cols: '1fr 1fr',
-        rows: '1fr 1fr'
+        rows: '1fr 1fr 1fr',
     },
     favorites: {
         flow: 'row',
@@ -82,7 +84,9 @@ const STATS_MAP = {
     rainbow: ['16'],
     hc:['1', '6', '7', '8', '9'],
     ch: ['2', '6', '10', '11', '12'],
-    kh: ['3', '7', '10', '13', '14']
+    kh: ['3', '7', '10', '13', '14'],
+    end: ['4', '8', '11', '13', '15'],
+    har: ['5', '9', '12', '14', '15'],
 }
 
 const createGridSelectorItem = ({id, value, icon, bgColor, bgImage}) => `
