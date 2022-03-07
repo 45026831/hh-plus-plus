@@ -123,7 +123,7 @@ class League {
 
         $('.matchRating').remove()
 
-        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" generic-tooltip="${probabilityTooltip}">E[X]:<br/>${I18n.nRounding(expectedValue, this.highPrecisionMode ? 2: 1, 0)}</div>`)
+        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" generic-tooltip="${probabilityTooltip}">E[X]:<br/>${I18n.nRounding(expectedValue, this.highPrecisionMode ? 2: 1, 0)}<br/>${(100*win).toFixed(0)}%</div>`)
         $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating)
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating)
     }
