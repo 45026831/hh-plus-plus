@@ -70,7 +70,9 @@ class Season {
         }
 
         $gridWrapper.find('.matchRating').remove()
-        $gridWrapper.append(`<span class="matchRating ${result.scoreClass}">${I18n.nRounding(100*result.win, 2, -1)}%</span>`)
+        let points = parseInt($opponentData.find('.slot_victory_points :nth-child(1)').text().replace(/[^0-9]/gi, ''))
+        let expected = result.win*points-(1-result.win)*(40-points)
+        $gridWrapper.append(`<span class="matchRating ${result.scoreClass}">${I18n.nRounding(100*result.win, 2, -1)}%<br/>E[X]=${I18n.nRounding(expected, 1, -1)}</span>`)
     }
 }
 
