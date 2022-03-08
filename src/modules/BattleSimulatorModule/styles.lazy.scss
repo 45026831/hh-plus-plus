@@ -9,19 +9,37 @@ $minus-bg: #ff2f2f28;
 #leagues {
     .matchRating {
         text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
-        font-size: 18px;
+
+        &-win-chance {
+            margin-top: 5px;
+        }
 
         @media #{$mediaDesktop} {
             text-align: center;
-            line-height: 25px;
+            margin-top: -5px;
+            font-size: 12px;
+            line-height: 12px;
+
+            &-value {
+                font-size: 16px;
+                line-height: 16px;
+            }
+
+            &-key,
+            &-value {
+                display: block;
+            }
         }
 
         @media #{$mediaMobile} {
             margin-left: 75px;
-            line-height: 0px;
+            margin-top: -31px;
+            margin-bottom: -8px;
+            font-size: 16px;
+            line-height: 16px;
 
-            br {
-                display: none;
+            &-value {
+                margin-left: 5px;
             }
         }
     }

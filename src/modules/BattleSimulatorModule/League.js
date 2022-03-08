@@ -123,7 +123,24 @@ class League {
 
         $('.matchRating').remove()
 
-        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" generic-tooltip="${probabilityTooltip}">E[X]:<br/>${I18n.nRounding(expectedValue, this.highPrecisionMode ? 2: 1, 0)}<br/>${(100*win).toFixed(0)}%</div>`)
+        const matchRatingParts = {
+            expected: {
+                label: 'E[X]',
+                value: I18n.nRounding(expectedValue, this.highPrecisionMode ? 2: 1, 0),
+            },
+            'win-chance': {
+                label: `P[${GT.design.leagues_won_letter}]`,
+                value: `${I18n.nRounding(100*win, 0, -1)}%`,
+            }
+        }
+
+        const matchRatingHtml = Object
+            .entries(matchRatingParts)
+            .map(([key, {label, value}]) =>
+                `<div class="matchRating-${key}"><span class="matchRating-label">${label}:</span><span class="matchRating-value">${value}</span></div>`
+            ).join('')
+
+        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" generic-tooltip="${probabilityTooltip}">${matchRatingHtml}</div>`)
         $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating)
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating)
     }

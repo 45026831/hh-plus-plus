@@ -1,3 +1,4 @@
+1.7.8: Adding win chance to the player block in the league sim (merging PR from sbanac)
 1.7.7: Adding endurance and harmony options to the equip filter
 1.7.6: Coding Helpers.onAjaxResponse more defensively, so as to not throw exceptions when other scripts are making their own AJAX calls. (#58)
 1.7.5: Fixing hide fought opponents to adjust the scrollbar automatically
