@@ -1,5 +1,6 @@
 import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
+import Sheet from '../../common/Sheet'
 import I18n from '../../i18n'
 
 import styles from './styles.lazy.scss'
@@ -48,6 +49,7 @@ class BattleSimulatorModule extends CoreModule {
         styles.use()
 
         Helpers.defer(() => {
+            this.injectCSSVars()
             if (Helpers.isCurrentPage('tower-of-fame')) {
                 this.simManagers = [new League({highPrecisionMode})]
             } else if (Helpers.isCurrentPage('season-arena')) {
@@ -69,6 +71,10 @@ class BattleSimulatorModule extends CoreModule {
         })
 
         this.hasRun = true
+    }
+
+    injectCSSVars () {
+        Sheet.registerVar('mojo-icon-s', `url(${Helpers.getCDNHost()}/pictures/design/ic_mojo_white.svg)`)
     }
 
     async runManagedSim () {

@@ -94,10 +94,19 @@ $minus-bg: #ff2f2f28;
 #season-arena {
     .matchRating {
         text-align: center;
-        margin-left: 10px;
         text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
-        line-height: 28px;
+        line-height: 21px;
         font-size: 16px;
+        margin-top: -10px;
+
+        [cur="victory_points"]::before {
+            background-image: var(--mojo-icon-s);
+            width: 14px;
+            height: 14px;
+            position: relative;
+            top: -4px;
+            filter: drop-shadow(0px 0px 1px #000);
+        }
     }
 
     .plus {
