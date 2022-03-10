@@ -74,7 +74,8 @@ class Season {
         const pointsReward = rewards.find(({type})=>type==='victory_points')
         const points = parseInt($(pointsReward.value).text())
         const expected = result.win*points-(1-result.win)*(40-points)
-        $gridWrapper.append(`<span class="matchRating ${result.scoreClass}">${I18n.nRounding(100*result.win, 2, -1)}%<br/>E[<span cur="victory_points"></span>]=${I18n.nRounding(expected, 1, -1)}</span>`)
+        const pointClass = expected>15?'plus':expected<0?'minus':'close'
+        $gridWrapper.append(`<span class="matchRating"><span class="${result.scoreClass}">${I18n.nRounding(100*result.win, 2, -1)}%</span><br/><span class="${pointClass}">E[<span cur="victory_points"></span>]=${I18n.nRounding(expected, 1, -1)}</span></span>`)
     }
 }
 

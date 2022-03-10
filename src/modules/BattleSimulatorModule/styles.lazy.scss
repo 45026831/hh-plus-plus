@@ -12,6 +12,16 @@ $minus-bg: #ff2f2f28;
 
         &-win-chance {
             margin-top: 5px;
+
+            &.plus {
+                color: $plus;
+            }
+            &.minus {
+                color: $minus;
+            }
+            &.close {
+                color: $close;
+            }
         }
 
         @media #{$mediaDesktop} {

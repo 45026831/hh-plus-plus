@@ -92,14 +92,16 @@ class League {
             hp: playerEgo,
             dmg: playerAtk - opponentDef,
             critchance: SimHelpers.calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
-            bonuses: playerBonuses
+            bonuses: {...playerBonuses, dominance: dominanceBonuses.player},
+            theme: playerElements,
         }
         const opponent = {
             hp: opponentEgo,
             dmg: opponentAtk - playerDef,
             critchance: SimHelpers.calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
             name,
-            bonuses: opponentBonuses
+            bonuses: {...opponentBonuses, dominance: dominanceBonuses.opponent},
+            theme: opponentElements,
         }
 
         return {player, opponent}
@@ -127,17 +129,19 @@ class League {
             expected: {
                 label: 'E[X]',
                 value: I18n.nRounding(expectedValue, this.highPrecisionMode ? 2: 1, 0),
+                className: '',
             },
             'win-chance': {
                 label: `P[${GT.design.leagues_won_letter}]`,
                 value: `${I18n.nRounding(100*win, 0, -1)}%`,
+                className: scoreClass,
             }
         }
 
         const matchRatingHtml = Object
             .entries(matchRatingParts)
-            .map(([key, {label, value}]) =>
-                `<div class="matchRating-${key}"><span class="matchRating-label">${label}:</span><span class="matchRating-value">${value}</span></div>`
+            .map(([key, {label, value, className}]) =>
+                `<div class="matchRating-${key} ${className}"><span class="matchRating-label">${label}:</span><span class="matchRating-value">${value}</span></div>`
             ).join('')
 
         const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" generic-tooltip="${probabilityTooltip}">${matchRatingHtml}</div>`)
