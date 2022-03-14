@@ -1,3 +1,4 @@
+1.7.11: Updating League sim extract to handle latest change on test server.
 1.7.10: Separating colouring on expected mojo/points and win chance. Exposing dominance bonuses and theme in extracted player and opponent data in league (#63).
 1.7.9: Adding expected mojo to the sim display on season (merging PR from sbanac)
 1.7.8: Adding win chance to the player block in the league sim (merging PR from sbanac)

@@ -13,8 +13,10 @@ class League {
             chance: playerCrit,
             damage: playerAtk,
             defense: playerDef,
-            remaining_ego: playerEgo,
+            remaining_ego: playerRemainingEgo,
+            total_ego: playerTotalEgo,
         } = caracs_per_opponent[opponentId]
+        const playerEgo = playerRemainingEgo || playerTotalEgo
         const {
             team: playerTeam
         } = heroLeaguesData
