@@ -2,6 +2,10 @@ import I18n from '../../i18n'
 import SimHelpers from './SimHelpers'
 
 class BDSMPvE {
+    constructor({label}) {
+        this.label = label
+    }
+
     extract () {
         const playerStats = $('#pre-battle #player-panel .stat')
         const playerAtk = I18n.parseLocaleRoundedInt(playerStats[0].innerText)
@@ -53,9 +57,16 @@ class BDSMPvE {
     }
 
     display (result) {
+        const $matchRating = $(`<div class="matchRating ${result.scoreClass}">${I18n.nRounding(100*result.win, 2, -1)}%</div>`)
+        if (result.impossible) {
+            $matchRating.append(`<span class="short-circuit xUncheck_mix_icn" generic-tooltip="${this.label('impossible')}"></span>`)
+        }
+        if (result.guaranteed) {
+            $matchRating.append(`<span class="short-circuit vCheck_mix_icn" generic-tooltip="${this.label('guaranteed')}"></span>`)
+        }
         $('#opponent-panel .average-lvl')
             .wrap('<div class="gridWrapper"></div>')
-            .after(`<div class="matchRating ${result.scoreClass}">${I18n.nRounding(100*result.win, 2, -1)}%</div>`)
+            .after($matchRating)
     }
 }
 

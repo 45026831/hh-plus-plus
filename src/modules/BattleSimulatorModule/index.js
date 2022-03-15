@@ -53,13 +53,15 @@ class BattleSimulatorModule extends CoreModule {
             if (Helpers.isCurrentPage('tower-of-fame')) {
                 this.simManagers = [new League({highPrecisionMode})]
             } else if (Helpers.isCurrentPage('season-arena')) {
+                this.preSim = true
                 this.simManagers = [
                     new Season(1),
                     new Season(2),
                     new Season(3),
                 ]
             } else if (Helpers.isCurrentPage('pre-battle')) {
-                this.simManagers = [new BDSMPvE()]
+                this.preSim = true
+                this.simManagers = [new BDSMPvE({label: this.label})]
             }
 
             this.runManagedSim()
@@ -80,9 +82,9 @@ class BattleSimulatorModule extends CoreModule {
     async runManagedSim () {
         await Promise.all(this.simManagers.map(async simManager => {
             const {player, opponent} = simManager.extract()
-            const {logging, highPrecisionMode} = this
+            const {logging, highPrecisionMode, preSim} = this
 
-            const simulator = new Simulator({player, opponent, highPrecisionMode, logging})
+            const simulator = new Simulator({player, opponent, highPrecisionMode, logging, preSim})
             const result = await simulator.run()
 
             simManager.display(result)

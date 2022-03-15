@@ -2,11 +2,12 @@ const STANDARD_SIM_RUNS = 10000
 const HIGH_PRECISION_SIM_RUNS = 50000
 
 class Simulator {
-    constructor({player, opponent, highPrecisionMode, logging}) {
+    constructor({player, opponent, highPrecisionMode, logging, preSim}) {
         this.player = player
         this.opponent = opponent
         this.simRuns = highPrecisionMode ? HIGH_PRECISION_SIM_RUNS : STANDARD_SIM_RUNS
         this.logging = logging
+        this.preSim = preSim
     }
 
     async run () {
@@ -20,6 +21,23 @@ class Simulator {
 
         this.player.critMultiplier = 2 + this.player.bonuses.critDamage
         this.opponent.critMultiplier = 2 + this.opponent.bonuses.critDamage
+
+        if (this.preSim) {
+            const impossibilityCheck = await this.simulateBattle({...this.player, critchance: 1}, {...this.opponent, critchance: 0})
+            if (impossibilityCheck.points < 15) {
+                ret.loss = 1
+                ret.scoreClass = 'minus'
+                ret.impossible = true
+                return ret
+            }
+            const guaranteeCheck = await this.simulateBattle({...this.player, critchance: 0}, {...this.opponent, critchance: 1})
+            if (guaranteeCheck.points >= 15) {
+                ret.win = 1
+                ret.scoreClass = 'plus'
+                ret.guaranteed = true
+                return ret
+            }
+        }
 
         let runs = 0
         let wins = 0

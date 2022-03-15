@@ -204,6 +204,11 @@ export const league = {
     avg: 'Average',
 }
 
+export const simFight = {
+    guaranteed: 'Guaranteed',
+    impossible: 'Impossible',
+}
+
 export const teamsFilter = {
     searchedName: 'Search',
     girlName: `${gameConfig.Girl} name`,

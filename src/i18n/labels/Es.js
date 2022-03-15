@@ -161,6 +161,11 @@ export const league = {
     avg: 'Media',
 }
 
+export const simFight = {
+    guaranteed: 'Garantizado',
+    impossible: 'Imposible',
+}
+
 export const teamsFilter = {
     searchedName: 'Nombre',
     girlName: `Nombre ${Helpers.isGH() ? 'del chico' : 'de la chica'}`,

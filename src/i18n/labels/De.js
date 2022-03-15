@@ -158,6 +158,11 @@ export const league = {
     avg: 'Mittelwert',
 }
 
+export const simFight = {
+    guaranteed: 'Garantiert',
+    impossible: 'Unmöglich',
+}
+
 export const teamsFilter = {
     searchedName: 'Suche',
     girlName: 'Name',

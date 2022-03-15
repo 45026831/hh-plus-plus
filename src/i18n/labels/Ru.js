@@ -144,6 +144,11 @@ export const harem = {
     marketRestock: 'Рынок обновится в {{time}} или на {{level}} уровне',
 }
 
+export const simFight = {
+    guaranteed: 'Гарантированно',
+    impossible: 'Невозможно',
+}
+
 export const league = {
     stayInTop: 'Чтобы <em><u>остаться в топ {{top}}</u></em>, требуется минимум <em>{{points}}</em> очков',
     notInTop: 'Чтобы <em><u>оказаться в топ {{top}}</u></em>, требуется минимум <em>{{points}}</em> очков',
