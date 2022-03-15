@@ -77,16 +77,16 @@ class BattleSimulatorModule extends CoreModule {
         Sheet.registerVar('mojo-icon-s', `url(${Helpers.getCDNHost()}/pictures/design/ic_mojo_white.svg)`)
     }
 
-    async runManagedSim () {
-        await Promise.all(this.simManagers.map(async simManager => {
+    runManagedSim () {
+        for (let simManager of this.simManagers) {
             const {player, opponent} = simManager.extract()
             const {logging, highPrecisionMode} = this
 
             const simulator = new Simulator({player, opponent, highPrecisionMode, logging})
-            const result = await simulator.run()
+            const result = simulator.run()
 
             simManager.display(result)
-        }))
+        }
     }
 }
 
