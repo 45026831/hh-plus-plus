@@ -13,6 +13,12 @@ let lang
 let locale
 let localeDecimalSep
 
+const ORDERS = {
+    K: 1e3,
+    M: 1e6,
+    G: 1e9,
+}
+
 class I18n {
     static getLang() {
         if (!lang) {
@@ -52,14 +58,22 @@ class I18n {
     }
 
     static parseLocaleRoundedInt (numStr) {
+        const orderSchema = Object.entries(ORDERS).find(([letter]) => numStr.includes(letter))
+
         // 12.3K
         if (numStr.includes(I18n.getLocaleDecimalSeperator())) {
-            return parseInt(numStr.replace('K', '00').replace(/[^0-9]/gi, ''), 10)
+            const scalar = I18n.parseLocaleFloat(numStr)
+            const order = (orderSchema && orderSchema[1]) || 1
+
+            return Math.round(scalar * order)
         }
 
         // 123K
-        if (numStr.includes('K')) {
-            return parseInt(numStr.replace('K', '000').replace(/[^0-9]/gi, ''), 10)
+        if (orderSchema) {
+            const scalar = parseInt(numStr.replace(/[^0-9]/gi, ''), 10)
+            const order = (orderSchema && orderSchema[1]) || 1
+
+            return scalar * order
         }
 
         // 1,234

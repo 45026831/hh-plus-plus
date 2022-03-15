@@ -1,3 +1,4 @@
+1.7.13: Fixing parseLocaleRoundedInt to handle more orders of magnitude
 1.7.12: Adding short-circuiting for the sims of Season and PvE in the case of impossible to win or lose battles
 1.7.11: Updating League sim extract to handle latest change on test server.
 1.7.10: Separating colouring on expected mojo/points and win chance. Exposing dominance bonuses and theme in extracted player and opponent data in league (#63).
