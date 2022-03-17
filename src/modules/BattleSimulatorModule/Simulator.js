@@ -2,11 +2,12 @@ const STANDARD_SIM_RUNS = 10000
 const HIGH_PRECISION_SIM_RUNS = 50000
 
 class Simulator {
-    constructor({player, opponent, highPrecisionMode, logging}) {
+    constructor({player, opponent, highPrecisionMode, logging, preSim}) {
         this.player = player
         this.opponent = opponent
         this.simRuns = highPrecisionMode ? HIGH_PRECISION_SIM_RUNS : STANDARD_SIM_RUNS
         this.logging = logging
+        this.preSim = preSim
     }
 
     run () {
@@ -40,6 +41,11 @@ class Simulator {
         ret.scoreClass = ret.win>0.9?'plus':ret.win<0.5?'minus':'close'
 
         if (this.logging) {console.log(`Ran ${this.runs} simulations against ${this.opponent.name}, won ${ret.win * 100}% of simulated fights, average turns: ${ret.avgTurns}`)}
+
+        if (this.preSim) {
+            if (ret.win <= 0) ret.impossible = true
+            if (ret.loss <= 0) ret.guaranteed = true
+        }
 
         return ret
     }
