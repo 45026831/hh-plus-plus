@@ -13,14 +13,15 @@ class Simulator {
     run () {
         const setup = x => {
             x.critMultiplier = 2 + x.bonuses.critDamage
+            x.dmg = Math.max(0, x.dmg)
             x.baseAttack = {
                 probability: 1 - x.critchance,
-                damageAmount: Math.max(0, Math.round(x.dmg)),
+                damageAmount: Math.round(x.dmg),
                 healAmount: Math.round(x.dmg * x.bonuses.healOnHit)
             }
             x.critAttack = {
                 probability: x.critchance,
-                damageAmount: Math.max(0, Math.round(x.dmg * x.critMultiplier)),
+                damageAmount: Math.round(x.dmg * x.critMultiplier),
                 healAmount: Math.round(x.dmg * x.critMultiplier * x.bonuses.healOnHit)
             }
             x.hp = Math.round(x.hp)
@@ -101,7 +102,7 @@ class Simulator {
         if (opponentHP <= 0) {
             let point = 15 + Math.ceil(10 * playerHP / this.player.hp)
             this.runs++
-            return { points: { [point]: 1 }, win: 1, loss: 0, avgTurns: 1 }
+            return { points: { [point]: 1 }, win: 1, loss: 0, avgTurns: 0 }
         }
 
         // next turn
@@ -130,7 +131,7 @@ class Simulator {
         if (playerHP <= 0) {
             let point = 3 + Math.ceil(10 * (this.opponent.hp - opponentHP) / this.opponent.hp)
             this.runs++
-            return { points: { [point]: 1 }, win: 0, loss: 1, avgTurns: 1 }
+            return { points: { [point]: 1 }, win: 0, loss: 1, avgTurns: 0 }
         }
 
         // next turn
