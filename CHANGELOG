@@ -1,3 +1,4 @@
+1.7.14: Pre-empting changes to home screen shortcuts and timers for the new home screen layout
 1.7.13: Fixing parseLocaleRoundedInt to handle more orders of magnitude
 1.7.12: Adding short-circuiting for the sims of Season and PvE in the case of impossible to win or lose battles
 1.7.11: Updating League sim extract to handle latest change on test server.

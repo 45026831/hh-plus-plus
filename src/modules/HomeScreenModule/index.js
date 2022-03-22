@@ -34,6 +34,8 @@ class HomeScreenModule extends CoreModule {
         styles.use()
 
         Helpers.defer(() => {
+            this.checkHomeScreenType()
+
             this.injectCSSVars()
             this.addTimers()
             this.addShortcuts()
@@ -44,9 +46,22 @@ class HomeScreenModule extends CoreModule {
         this.hasRun = true
     }
 
+    checkHomeScreenType () {
+        this.newHomeScreen = !!$('.main-container').length
+    }
+
     injectCSSVars () {
         Sheet.registerVar('pantheon-icon', `url("${pantheonIcon}")`)
         Sheet.registerVar('champions-icon', `url("${Helpers.getCDNHost()}/design/menu/ic_champions.svg")`)
+    }
+
+    setNotification(type, notification) {
+        if (this.newHomeScreen) {
+            window.notificationData[type] = notification
+        } else {
+            window.notificationData[type].push(notification)
+        }
+        window.displayNotifications()
     }
 
     addTimers () {
@@ -55,13 +70,7 @@ class HomeScreenModule extends CoreModule {
         if (marketInfo) {
             const {refreshTime} = marketInfo
             if (refreshTime > server_now_ts) {
-                const onComplete = () => {
-                    window.notificationData.shop.push('action')
-                    window.displayNotifications()
-                }
-                const $elm = $('<div class="script-home-timer"></div>')
-                $('[rel=shop] > .position > span').append($elm)
-                HHTimers.initDecTimer($elm, refreshTime - server_now_ts, onComplete)
+                this.attachTimer('shop', refreshTime)
             }
         }
 
@@ -71,36 +80,39 @@ class HomeScreenModule extends CoreModule {
         }
         // Pachinko
         if (trackedTimes.gp && trackedTimes.gp > server_now_ts) {
-            const onComplete = () => {
-                window.notificationData.pachinko.push('action')
-                window.displayNotifications()
-            }
-            const $elm = $('<div class="script-home-timer"></div>')
-            $('[rel=pachinko] > .position > span').append($elm)
-            HHTimers.initDecTimer($elm, trackedTimes.gp - server_now_ts, onComplete)
+            this.attachTimer('pachinko', trackedTimes.gp)
         }
 
         // Champions
         if (trackedTimes.champ && trackedTimes.champ > server_now_ts) {
-            const onComplete = () => {
-                window.notificationData['sex-god-path'].push('action')
-                window.displayNotifications()
-            }
-            const $elm = $('<div class="script-home-timer"></div>')
-            $('[rel=sex-god-path] > .position > span').append($elm)
-            HHTimers.initDecTimer($elm, trackedTimes.champ - server_now_ts, onComplete)
+            this.attachTimer('sex-god-path', trackedTimes.champ)
         }
 
         // Club Champ
         if (trackedTimes.clubChamp && trackedTimes.clubChamp > server_now_ts) {
-            const onComplete = () => {
-                window.notificationData.clubs.push('action')
-                window.displayNotifications()
-            }
-            const $elm = $('<div class="script-home-timer"></div>')
-            $('[rel=clubs] > .position > span').append($elm)
-            HHTimers.initDecTimer($elm, trackedTimes.clubChamp - server_now_ts, onComplete)
+            this.attachTimer('clubs', trackedTimes.clubChamp)
         }
+    }
+
+    makeLinkSelector(rel) {
+        if (this.newHomeScreen) {
+            return `[rel=${rel}] > .notif-position > span`
+        }
+        return `[rel=${rel}] > .position > span`
+    }
+
+    attachTimer (rel, endAt) {
+        const selector = this.makeLinkSelector(rel)
+        const onComplete = () => {
+            this.setNotification(rel, 'action')
+        }
+        const $container = $('<div class="script-timer-container"></div>')
+        const $elm = $('<div class="script-home-timer"></div>')
+        $container.append('<span class="timerClock_icn"></span>')
+        $container.append($elm)
+
+        $(selector).append($container)
+        HHTimers.initDecTimer($elm, endAt - server_now_ts, onComplete)
     }
 
     addShortcuts () {
@@ -110,15 +122,20 @@ class HomeScreenModule extends CoreModule {
         if (window.Chat_vars && (window.Chat_vars.CLUB_ID || (window.Chat_vars.CLUB_INFO && window.Chat_vars.CLUB_INFO.id_club))) {
             // is in club
             const $clubShortcuts = $('<div class="script-home-shortcut-container"></div>')
-            $('a[rel=clubs] .position').prepend($clubShortcuts)
             $clubShortcuts.append(shortcutHtml('club-champ', '/club-champion.html', this.label('clubChamp'), 'clubChampions_flat_icn'))
+
+            if (this.newHomeScreen) {
+                const $wrapper = $('<div class="quest-container"></div>')
+                $('a[rel="clubs"]').wrap($wrapper).after($clubShortcuts)
+            } else {
+                $('a[rel="clubs"] .position').prepend($clubShortcuts)
+            }
         }
 
         const {champs, pantheon} = AvailableFeatures
 
         if (champs || pantheon) {
             const $godShortcuts = $('<div class="script-home-shortcut-container"></div>')
-            $('a[rel="sex-god-path"] .position').prepend($godShortcuts)
             // Champs
             if (champs) {
                 $godShortcuts.append(shortcutHtml('champs', '/champions-map.html', GT.design.Champions, 'champions_flat_icn'))
@@ -128,10 +145,21 @@ class HomeScreenModule extends CoreModule {
             if (pantheon) {
                 $godShortcuts.append(shortcutHtml('pantheon', '/pantheon.html', GT.design.pantheon, 'pantheon_flat_icn'))
             }
+
+            if (this.newHomeScreen) {
+                const $wrapper = $('<div class="quest-container"></div>')
+                $('a[rel="sex-god-path"]').wrap($wrapper).after($godShortcuts)
+            } else {
+                $('a[rel="sex-god-path"] .position').prepend($godShortcuts)
+            }
         }
     }
 
     fixMissionsTimer () {
+        if (this.newHomeScreen) {
+            return
+        }
+
         const {missions_datas} = window
         if (!missions_datas) {return}
 

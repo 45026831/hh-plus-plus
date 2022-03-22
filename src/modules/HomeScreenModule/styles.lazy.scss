@@ -68,6 +68,59 @@
             top: 84px;
         }
     }
+
+    .main-container .left-side-container {
+        a[rel="clubs"],
+        a[rel="sex-god-path"],
+        a[rel="pachinko"],
+        a[rel="shop"] {
+            span {
+                display: flex;
+                flex-direction: column;
+
+                p {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+
+                .script-timer-container {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    margin-top: -5px;
+
+                    .timerClock_icn {
+                        width: 50px;
+                        background-size: 28px;
+                    }
+                }
+
+                .script-home-timer {
+                    color: #fff;
+                    text-decoration: none;
+                    width: 140px;
+                    font-size: 13px;
+                }
+            }
+        }
+
+        .script-home-shortcut-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            width: 5.875rem;
+            padding-left: 8px;
+            height: auto;
+            margin-top: auto;
+            margin-bottom: auto;
+
+            a {
+                z-index: 6;
+            }
+        }
+    }
 }
 
 .champions_flat_icn {
