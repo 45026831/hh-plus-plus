@@ -26,6 +26,7 @@ import {
     HaremInfoModule,
     HideClaimedRewardsModule,
     HideRotateDeviceStyleTweak,
+    HomeScreenIconsModule,
     HomeScreenModule,
     LeaderboardFixModule,
     LeagueInfoModule,
@@ -42,6 +43,7 @@ import {
     PachinkoNamesModule,
     PopNavSortModule,
     PoseAspectRatioStyleTweak,
+    ReduceHomeScreenBlurStyleTweak,
     ResourceBarsModule,
     RewardShardsModule,
     SeasonStatsModule,
@@ -101,6 +103,7 @@ const runScript = () => {
     config.registerModule(new AutoRefreshModule())
     config.registerModule(new VillainBreadcrumbsModule())
     config.registerModule(new BlessingSpreadsheetLinkModule())
+    config.registerModule(new HomeScreenIconsModule())
 
     // style tweaks
     config.registerGroup({
@@ -118,6 +121,7 @@ const runScript = () => {
     }
     config.registerModule(new MoveSkipButtonStyleTweak())
     config.registerModule(new PoseAspectRatioStyleTweak())
+    config.registerModule(new ReduceHomeScreenBlurStyleTweak())
 
     config.loadConfig()
 

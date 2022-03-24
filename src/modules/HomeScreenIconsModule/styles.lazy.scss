@@ -1,0 +1,24 @@
+.script-home-icon {
+    position: absolute;
+    height: 54px;
+    opacity: 0.4;
+    z-index: 0;
+
+    .left-side-container > *:nth-child(odd) & {
+        left: 0px;
+    }
+    .left-side-container > *:nth-child(even) & {
+        right: 0px;
+    }
+}
+
+#homepage .main-container .left-side-container .quest-container > a > .notif-position > span > p,
+#homepage .main-container .left-side-container > a > .notif-position > span > p {
+    z-index: 0;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}
+
+.left-side-container .script-timer-container {
+    z-index: 0;
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+}

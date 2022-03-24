@@ -25,6 +25,7 @@ export {default as DisableDragDropModule} from './DisableDragDropModule'
 export {default as AutoRefreshModule} from './AutoRefreshModule'
 export {default as VillainBreadcrumbsModule} from './VillainBreadcrumbsModule'
 export {default as BlessingSpreadsheetLinkModule} from './BlessingSpreadsheetLinkModule'
+export {default as HomeScreenIconsModule} from './HomeScreenIconsModule'
 
 export {default as MissionsBackgroundStyleTweak} from './MissionsBackgroundStyleTweak'
 export {default as MoneyAnimationStyleTweak} from './MoneyAnimationStyleTweak'
@@ -34,3 +35,4 @@ export {default as HideRotateDeviceStyleTweak} from './HideRotateDeviceStyleTwea
 export {default as GirlSalaryTimersStyleTweak} from './GirlSalaryTimersStyleTweak'
 export {default as MoveSkipButtonStyleTweak} from './MoveSkipButtonStyleTweak'
 export {default as PoseAspectRatioStyleTweak} from './PoseAspectRatioStyleTweak'
+export {default as ReduceHomeScreenBlurStyleTweak} from './ReduceHomeScreenBlurStyleTweak'

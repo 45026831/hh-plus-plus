@@ -37,7 +37,8 @@ export const config = {
     disableDragDrop: 'Drag-and-Drop im Markt deaktivieren',
     autoRefresh: 'Automatisches Aktualisieren des Spiels alle 10 Minuten',
     villainBreadcrumbs: 'Ergänze Breadcrumbs für die Schurken-Seite',
-    blessingSpreadsheetLink: 'Ergänze Verknüpfung zu der Datentabelle für Segnungen auf dem Segnungen Pop-Up'
+    blessingSpreadsheetLink: 'Ergänze Verknüpfung zu der Datentabelle für Segnungen auf dem Segnungen Pop-Up',
+    homeScreenIcons: 'Füge Feature-Symbole zu den Links auf dem Startbildschirm hinzu',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
@@ -48,6 +49,7 @@ export const stConfig = {
     salaryTimers: `Lesbarer Lohntimer der ${Helpers.isGH() ? 'Jungs' : 'Mädchen'}`,
     moveSkipButton: 'Verschiebe die Kampf überspringen Taste nach unten',
     poseAspectRatio: `${Helpers.isGH() ? 'Kerle' : 'Mädchen'} Posen-Seitenverhältnisse im Kampf korrigieren`,
+    reduceBlur: 'Reduziere Tiefenschärfe-Effekt auf dem Startbildschirm',
 }
 
 export const villain = {

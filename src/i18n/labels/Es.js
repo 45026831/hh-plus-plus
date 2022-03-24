@@ -39,6 +39,7 @@ export const config = {
     autoRefresh: 'Refresca el juego automáticamente cada 10 minutos',
     villainBreadcrumbs: 'Agregar ruta de navegación a las páginas de villanos',
     blessingSpreadsheetLink: 'Agregue un enlace a la hoja de cálculo de datos de bendiciones en la ventana emergente de bendiciones',
+    homeScreenIcons: 'Agregar íconos de funciones a los enlaces de la pantalla de inicio',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',
@@ -49,6 +50,7 @@ export const stConfig = {
     salaryTimers: `Timers legibles de salarios de ${Helpers.isGH() ? 'chicos' : 'chicas'}`,
     moveSkipButton: 'Mueve el botón de saltar batalla abajo',
     poseAspectRatio: `Arreglar la relación de aspecto de la pose ${Helpers.isGH() ? 'del chico' : 'de la chica'} en la batalla`,
+    reduceBlur: 'Reducir el efecto de profundidad de campo en la pantalla de inicio',
 }
 
 export const villain = {

@@ -59,7 +59,8 @@ export const config = {
     disableDragDrop: 'Disable Drag-and-Drop in the Market',
     autoRefresh: 'Auto-refresh the game every 10 minutes',
     villainBreadcrumbs: 'Add breadcrumbs to villain pages',
-    blessingSpreadsheetLink: 'Add link to the blessing data spreadsheet on the blessings popup'
+    blessingSpreadsheetLink: 'Add link to the blessing data spreadsheet on the blessings popup',
+    homeScreenIcons: 'Add feature icons to home screen links',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
@@ -70,6 +71,7 @@ export const stConfig = {
     salaryTimers: `Readable ${gameConfig.girl} salary timers`,
     moveSkipButton: 'Move the battle skip button down',
     poseAspectRatio: `Fix ${gameConfig.girl} pose aspect ratio in battle`,
+    reduceBlur: 'Reduce depth-of-field effect on home screen',
 }
 
 export const villain = {
