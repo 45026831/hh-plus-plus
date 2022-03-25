@@ -28,6 +28,7 @@ import {
     HideRotateDeviceStyleTweak,
     HomeScreenIconsModule,
     HomeScreenModule,
+    HomeScreenOrderModule,
     LeaderboardFixModule,
     LeagueInfoModule,
     MarketEquipsFilterModule,
@@ -104,6 +105,7 @@ const runScript = () => {
     config.registerModule(new VillainBreadcrumbsModule())
     config.registerModule(new BlessingSpreadsheetLinkModule())
     config.registerModule(new HomeScreenIconsModule())
+    config.registerModule(new HomeScreenOrderModule())
 
     // style tweaks
     config.registerGroup({

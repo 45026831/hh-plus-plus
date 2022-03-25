@@ -40,6 +40,7 @@ export const config = {
     villainBreadcrumbs: 'Agregar ruta de navegación a las páginas de villanos',
     blessingSpreadsheetLink: 'Agregue un enlace a la hoja de cálculo de datos de bendiciones en la ventana emergente de bendiciones',
     homeScreenIcons: 'Agregar íconos de funciones a los enlaces de la pantalla de inicio',
+    homeScreenOrder: 'Orden alternativo de los enlaces de la pantalla de inicio',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',

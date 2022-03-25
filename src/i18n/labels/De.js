@@ -39,6 +39,7 @@ export const config = {
     villainBreadcrumbs: 'Ergänze Breadcrumbs für die Schurken-Seite',
     blessingSpreadsheetLink: 'Ergänze Verknüpfung zu der Datentabelle für Segnungen auf dem Segnungen Pop-Up',
     homeScreenIcons: 'Füge Feature-Symbole zu den Links auf dem Startbildschirm hinzu',
+    homeScreenOrder: 'Alternative Anordnung der Links auf dem Startbildschirm',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

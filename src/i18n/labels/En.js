@@ -61,6 +61,7 @@ export const config = {
     villainBreadcrumbs: 'Add breadcrumbs to villain pages',
     blessingSpreadsheetLink: 'Add link to the blessing data spreadsheet on the blessings popup',
     homeScreenIcons: 'Add feature icons to home screen links',
+    homeScreenOrder: 'Alternative order of home screen links',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
