@@ -39,6 +39,7 @@ export const config = {
     autoRefresh: 'Actualise automatiquement le jeu toutes les 10 minutes',
     villainBreadcrumbs: 'Ajouter une chaîne de navigation aux pages des boss du mode aventure',
     blessingSpreadsheetLink: 'Ajouter un lien vers la feuille de données des bénédictions à l\'infobulle des bénédictions',
+    homeScreenIcons: 'Ajouter des icônes aux menus de l\'écran principal',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
@@ -49,6 +50,7 @@ export const stConfig = {
     salaryTimers: `Timers des salaires des ${Helpers.isGH() ? 'mecs' : 'filles'} visibles`,
     moveSkipButton: 'Mettre le bouton pour passer les combats en-bas',
     poseAspectRatio: `Corriger les proportions de la pose ${Helpers.isGH() ? 'du mec' : 'de la fille'} en combat`,
+    reduceBlur: 'Réduire l\'effet de flou sur l\'écran principal',
 }
 
 export const villain = {

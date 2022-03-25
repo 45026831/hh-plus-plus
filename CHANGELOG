@@ -1,3 +1,4 @@
+1.8.1: Adding FR and RU translations for home screen icons and reduced blur settings
 1.8.0: Starting to deal with the new home screen more comprehensively: adding a tweak to reduce the blur, and adding feature icons to the links
 1.7.14: Pre-empting changes to home screen shortcuts and timers for the new home screen layout
 1.7.13: Fixing parseLocaleRoundedInt to handle more orders of magnitude

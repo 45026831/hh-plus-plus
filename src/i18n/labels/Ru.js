@@ -38,7 +38,8 @@ export const config = {
     disableDragDrop: 'Отключить перетаскивание на Рынке',
     autoRefresh: 'Обновлять окно игры каждые 10 минут',
     villainBreadcrumbs: 'Показывать цепочку навигации на экранах злодеев',
-    blessingSpreadsheetLink: 'Добавить ссылку на таблицу благословений во всплывающее окно благословений'
+    blessingSpreadsheetLink: 'Добавить ссылку на таблицу благословений во всплывающее окно благословений',
+    homeScreenIcons: 'Добавить иконки к ссылкам на главном экране',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',
@@ -49,6 +50,7 @@ export const stConfig = {
     salaryTimers: `Читаемые таймеры заработка ${Helpers.isGH() ? 'парней' : 'девушек'}`,
     moveSkipButton: 'Переместить кнопку пропуска битв вниз',
     poseAspectRatio: `Исправить соотношение сторон у поз ${Helpers.isGH() ? 'парней' : 'девушек'} в битвах`,
+    reduceBlur: 'Уменьшить размывание на главном экране',
 }
 
 export const villain = {
