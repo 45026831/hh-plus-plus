@@ -41,6 +41,7 @@ class HomeScreenModule extends CoreModule {
             this.addShortcuts()
             this.fixMissionsTimer()
             this.forceActivitiesTab()
+            this.manageSalaryTimers()
         })
 
         this.hasRun = true
@@ -237,6 +238,68 @@ class HomeScreenModule extends CoreModule {
 
     forceActivitiesTab () {
         $('a[rel=activities]').attr('href', '/activities.html?tab=missions')
+    }
+
+    aggregateSalaries () {
+        const {GirlSalaryManager, GT, format_time_short} = window
+        const {girlsMap} = GirlSalaryManager
+
+        const aggregated = {}
+        let collectableNow = 0
+
+        Object.values(girlsMap).forEach(({readyForCollect, gData}) => {
+            const {salary, pay_in} = gData
+            if (readyForCollect) {
+                collectableNow += salary
+            } else {
+                if (!aggregated[pay_in]) {
+                    aggregated[pay_in] = 0
+                }
+                aggregated[pay_in] += salary
+            }
+        })
+
+        const payTimes = Object.keys(aggregated)
+
+        if (!payTimes.length) {return}
+
+        const sortedPayTimes = payTimes.sort((a,b) => a-b)
+
+        const text = `${payTimes.length > 10 ? '…' : ''}<table><tbody>${sortedPayTimes.slice(0,10).sort((a,b) => b-a).map(time => `<tr><td>${GT.design.more_in.replace('+1', `+${I18n.nThousand(aggregated[time])} <span cur="soft_currency"></span>`)} </td><td>${format_time_short(time)}</td></tr>`).join('')}</tbody></table>`
+
+        return {aggregated, collectableNow, text}
+    }
+
+    manageSalaryTimers () {
+        const {GirlSalaryManager, is_mobile, is_tablet, TooltipManager, Tooltip} = window
+        const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
+
+        const handleTooltip = (target) => {
+            const {text} = this.aggregateSalaries()
+
+            const wrappedText = `<div class="script-salary-summary">${text}</div>`
+
+            let newTooltip = new Tooltip($(target),'',wrappedText)
+            TooltipManager.initNewTooltip(target, newTooltip)
+
+            if (!this.salaryTimerHacked && GirlSalaryManager.updateHomepageTimer) {
+                const existingUpdate = GirlSalaryManager.updateHomepageTimer.bind(GirlSalaryManager)
+                GirlSalaryManager.updateHomepageTimer = () => {
+                    const $container = $('.script-salary-summary')
+                    if ($container.length) {
+                        const {text} = this.aggregateSalaries()
+                        $container.html(text)
+                    }
+                    return existingUpdate()
+                }
+
+                this.salaryTimerHacked = true
+            }
+        }
+
+        $('#collect_all').append('<span class="script-event-handler-hack"></span>')
+
+        TooltipManager.initTooltipType(isMobile, '#collect_all, #collect_all .script-event-handler-hack', false, handleTooltip)
     }
 }
 

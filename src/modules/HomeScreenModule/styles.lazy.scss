@@ -191,3 +191,45 @@
         width: 150px;
     }
 }
+
+.script-salary-summary {
+    width: 11rem;
+    font-size: 12px;
+
+    table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    td:first-child {
+        text-align: right;
+    }
+    td:last-child {
+        text-align: left;
+        width: 3.5rem;
+    }
+
+    [cur="soft_currency"]::before {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+#collect_all {
+    position: relative;
+    z-index: 1;
+
+    .script-event-handler-hack {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+    }
+
+    &[disabled] .script-event-handler-hack {
+        display: block;
+    }
+}
