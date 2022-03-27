@@ -233,3 +233,25 @@
         display: block;
     }
 }
+
+// TODO Remove when KK fix this bug. Fixes the position of the reward notification icon on seasons and pov buttons
+#homepage
+    .main-container
+    .middle-container
+    .waifu-and-right-side-container
+    .right-side-container
+    .event-container
+    .season-pov-container
+    .pov-button
+    > a,
+#homepage
+    .main-container
+    .middle-container
+    .waifu-and-right-side-container
+    .right-side-container
+    .event-container
+    .season-pov-container
+    .season-button
+    > a {
+    display: block;
+}
