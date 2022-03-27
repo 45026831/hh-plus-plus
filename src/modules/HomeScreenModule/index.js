@@ -271,11 +271,13 @@ class HomeScreenModule extends CoreModule {
     }
 
     manageSalaryTimers () {
-        const {GirlSalaryManager, is_mobile, is_tablet, TooltipManager, Tooltip} = window
+        const {GirlSalaryManager, is_mobile, is_tablet, TooltipManager, Tooltip, GT} = window
         const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
 
         const handleTooltip = (target) => {
-            const {text} = this.aggregateSalaries()
+            const aggregateSalaries = this.aggregateSalaries()
+            if (!aggregateSalaries) {return}
+            const {text} = aggregateSalaries
 
             const wrappedText = `<div class="script-salary-summary">${text}</div>`
 
@@ -287,8 +289,13 @@ class HomeScreenModule extends CoreModule {
                 GirlSalaryManager.updateHomepageTimer = () => {
                     const $container = $('.script-salary-summary')
                     if ($container.length) {
-                        const {text} = this.aggregateSalaries()
-                        $container.html(text)
+                        const aggregateSalaries = this.aggregateSalaries()
+                        if (aggregateSalaries) {
+                            const {text} = aggregateSalaries
+                            $container.html(text)
+                        } else {
+                            $container.html(GT.design.full)
+                        }
                     }
                     return existingUpdate()
                 }
