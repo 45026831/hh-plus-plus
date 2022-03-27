@@ -39,6 +39,8 @@ export const config = {
     autoRefresh: 'Aggiorna il gioco automaticamente ogni 10 minuti',
     villainBreadcrumbs: 'Aggiungi briciole di pane alle pagine dei troll',
     blessingSpreadsheetLink: 'Aggiungi il link della tabella dei dati delle benedizioni sul popup delle benedizioni',
+    homeScreenIcons: 'Aggiungi le icone delle funzioni ai link della schermata iniziale',
+    homeScreenOrder: 'Disposizione alternativa dei link nella schermata iniziale',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
@@ -49,6 +51,7 @@ export const stConfig = {
     salaryTimers: 'Leggibile timer di salario',
     moveSkipButton: 'Sposta il bottone salta battaglia in basso',
     poseAspectRatio: `Correggi le proporzioni delle pose ${Helpers.isGH() ? 'delli ragazzi' : 'delle ragazze'} in combattimento`,
+    reduceBlur: 'Riduci l\'effetto di profondità di campo sulla schermata iniziale',
 }
 
 export const villain = {

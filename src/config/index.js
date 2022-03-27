@@ -76,6 +76,10 @@ class Config {
             throw new Error('cannot register invalid group, need both "key" and "name"', group)
         }
 
+        if (this.groups.find(group => group.key === key)) {
+            console.warn('hh++ config: merging duplicate group', key)
+            return
+        }
         this.groups.push(group)
     }
 

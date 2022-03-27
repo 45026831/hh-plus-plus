@@ -40,6 +40,7 @@ export const config = {
     villainBreadcrumbs: 'Показывать цепочку навигации на экранах злодеев',
     blessingSpreadsheetLink: 'Добавить ссылку на таблицу благословений во всплывающее окно благословений',
     homeScreenIcons: 'Добавить иконки к ссылкам на главном экране',
+    homeScreenOrder: 'Альтернативный порядок ссылок на главном экране',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',

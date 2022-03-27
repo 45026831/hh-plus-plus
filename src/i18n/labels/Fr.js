@@ -40,6 +40,7 @@ export const config = {
     villainBreadcrumbs: 'Ajouter une chaîne de navigation aux pages des boss du mode aventure',
     blessingSpreadsheetLink: 'Ajouter un lien vers la feuille de données des bénédictions à l\'infobulle des bénédictions',
     homeScreenIcons: 'Ajouter des icônes aux menus de l\'écran principal',
+    homeScreenOrder: 'Ordre alternatif des menus de l\'écran principal',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
