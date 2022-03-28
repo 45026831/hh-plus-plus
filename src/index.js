@@ -29,6 +29,7 @@ import {
     HomeScreenIconsModule,
     HomeScreenModule,
     HomeScreenOrderModule,
+    HomeScreenRightSideRearrangeStyleTweak,
     LeaderboardFixModule,
     LeagueInfoModule,
     MarketEquipsFilterModule,
@@ -124,6 +125,7 @@ const runScript = () => {
     config.registerModule(new MoveSkipButtonStyleTweak())
     config.registerModule(new PoseAspectRatioStyleTweak())
     config.registerModule(new ReduceHomeScreenBlurStyleTweak())
+    config.registerModule(new HomeScreenRightSideRearrangeStyleTweak())
 
     config.loadConfig()
 

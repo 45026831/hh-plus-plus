@@ -37,3 +37,4 @@ export {default as GirlSalaryTimersStyleTweak} from './GirlSalaryTimersStyleTwea
 export {default as MoveSkipButtonStyleTweak} from './MoveSkipButtonStyleTweak'
 export {default as PoseAspectRatioStyleTweak} from './PoseAspectRatioStyleTweak'
 export {default as ReduceHomeScreenBlurStyleTweak} from './ReduceHomeScreenBlurStyleTweak'
+export {default as HomeScreenRightSideRearrangeStyleTweak} from './HomeScreenRightSideRearrangeStyleTweak'

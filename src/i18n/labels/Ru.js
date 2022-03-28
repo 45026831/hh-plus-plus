@@ -52,6 +52,7 @@ export const stConfig = {
     moveSkipButton: 'Переместить кнопку пропуска битв вниз',
     poseAspectRatio: `Исправить соотношение сторон у поз ${Helpers.isGH() ? 'парней' : 'девушек'} в битвах`,
     reduceBlur: 'Уменьшить размывание на главном экране',
+    homeScreenRightSideRearrange: 'Изменить положение элементов в правой части главного экрана',
 }
 
 export const villain = {

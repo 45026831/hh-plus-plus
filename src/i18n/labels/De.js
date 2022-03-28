@@ -51,6 +51,7 @@ export const stConfig = {
     moveSkipButton: 'Verschiebe die Kampf überspringen Taste nach unten',
     poseAspectRatio: `${Helpers.isGH() ? 'Kerle' : 'Mädchen'} Posen-Seitenverhältnisse im Kampf korrigieren`,
     reduceBlur: 'Reduziere Tiefenschärfe-Effekt auf dem Startbildschirm',
+    homeScreenRightSideRearrange: 'Ordne die Elemente auf der rechten Seite des Startbildschirms neu an',
 }
 
 export const villain = {

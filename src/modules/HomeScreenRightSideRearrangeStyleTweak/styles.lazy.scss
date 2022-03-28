@@ -1,0 +1,79 @@
+@import "../../common/constants.scss";
+
+#homepage {
+    .main-container .middle-container {
+        .bottom-container .box-container {
+            .info-container {
+                margin-right: 86px;
+            }
+            .waifu-buttons-container {
+                right: 390px;
+            }
+        }
+
+        .waifu-and-right-side-container .right-side-container .event-container {
+            flex-direction: row-reverse;
+            .event-widget-container .bundles {
+                background-color: transparent;
+                border: none;
+                display: inline;
+                height: auto;
+                box-shadow: none;
+
+                .chest-container {
+                    position: absolute;
+                    bottom: 0;
+                    right: -8px;
+
+                    @media #{$mediaMobile} {
+                        right: -14px;
+                    }
+
+                    .chest-img-container .chest_icn {
+                        width: 100px;
+                        height: 90px;
+                        background-size: 90px;
+                    }
+                    .timer-container {
+                        margin-top: -40px;
+                    }
+                }
+            }
+            .collect-button {
+                height: 4rem;
+                #collect_all_container #collect_all {
+                    height: 4rem;
+                }
+            }
+            .season-pov-container .pov-button,
+            .season-pov-container .season-button,
+            .collect-button {
+                margin-right: 0;
+                margin-left: 8px;
+            }
+        }
+    }
+
+    .social_links {
+        margin-left: 550px;
+        flex-direction: column;
+
+        @media #{$mediaDesktop} {
+            margin-top: -12px;
+        }
+        @media #{$mediaMobile} {
+            margin-left: 570px;
+        }
+
+        .redirect {
+            &.comix,
+            &.gay,
+            &.hentai {
+                margin-top: 10px;
+                @media #{$mediaMobile} {
+                    margin-left: 0;
+                }
+            }
+        }
+    }
+}
