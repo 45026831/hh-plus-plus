@@ -62,6 +62,7 @@ export const config = {
     blessingSpreadsheetLink: 'Add link to the blessing data spreadsheet on the blessings popup',
     homeScreenIcons: 'Add feature icons to home screen links',
     homeScreenOrder: 'Alternative order of home screen links',
+    homeScreenOldish: 'Legacy layout of home screen',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

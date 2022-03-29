@@ -28,6 +28,7 @@ import {
     HideRotateDeviceStyleTweak,
     HomeScreenIconsModule,
     HomeScreenModule,
+    HomeScreenOldishModule,
     HomeScreenOrderModule,
     HomeScreenRightSideRearrangeStyleTweak,
     LeaderboardFixModule,
@@ -107,6 +108,7 @@ const runScript = () => {
     config.registerModule(new BlessingSpreadsheetLinkModule())
     config.registerModule(new HomeScreenIconsModule())
     config.registerModule(new HomeScreenOrderModule())
+    config.registerModule(new HomeScreenOldishModule())
 
     // style tweaks
     config.registerGroup({

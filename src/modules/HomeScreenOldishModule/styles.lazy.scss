@@ -1,0 +1,177 @@
+@import "../../common/constants.scss";
+
+#homepage .main-container {
+    .left-side-container {
+        .position-quest {
+            position: absolute;
+            left: 412px;
+            top: 32px;
+            flex-direction: column-reverse;
+            width: 8.125rem;
+            align-items: center;
+
+            .continue-quest-container {
+                padding-left: 0;
+                padding-bottom: 8px;
+            }
+        }
+
+        [rel="leaderboard"] {
+            position: absolute;
+            width: 8.125rem;
+            top: 86px;
+            left: 253px;
+        }
+        [rel="activities"] {
+            position: absolute;
+            width: 8.125rem;
+            top: 366px;
+            left: 602px;
+        }
+        [rel="shop"] {
+            position: absolute;
+            width: 8.125rem;
+            top: 257px;
+            left: 649px;
+        }
+        [rel="harem"] {
+            position: absolute;
+            width: 8.125rem;
+            bottom: 81px;
+            right: 31px;
+        }
+        [rel="pachinko"] {
+            position: absolute;
+            width: 8.125rem;
+            top: 67px;
+            left: 58px;
+        }
+
+        .position-sex-god-path {
+            position: absolute;
+            left: 612px;
+            top: 56px;
+            flex-direction: column-reverse;
+            width: 8.125rem;
+            align-items: center;
+
+            .script-home-shortcut-container {
+                padding-left: 0;
+                padding-bottom: 8px;
+            }
+        }
+
+        .position-clubs {
+            position: absolute;
+            left: 176px;
+            top: 165px;
+            flex-direction: column-reverse;
+            width: 8.125rem;
+            align-items: center;
+
+            .script-home-shortcut-container {
+                padding-left: 0;
+                padding-bottom: 8px;
+            }
+        }
+    }
+
+    .middle-container {
+        .waifu-and-right-side-container {
+            .waifu-container img {
+                height: 600px;
+                width: 240px;
+                margin-left: 169px;
+                margin-top: 125px;
+            }
+
+            .right-side-container .event-container {
+                .season-pov-container {
+                    .season-button {
+                        position: absolute;
+                        left: 66px;
+                        top: 279px;
+                    }
+                    .pov-button {
+                        position: absolute;
+                        left: 66px;
+                        top: 339px;
+                    }
+                    .collect-button {
+                        position: absolute;
+                        right: 0px;
+                        bottom: 0px;
+                        width: 11rem;
+                        height: 4rem;
+                        #collect_all_container #collect_all {
+                            height: 4rem;
+                        }
+
+                        @media #{$mediaMobile} {
+                            right: 15px;
+                        }
+                    }
+                }
+
+                .event-widget-container {
+                    .bundles {
+                        background-color: transparent;
+                        border: none;
+                        display: inline;
+                        height: auto;
+                        box-shadow: none;
+                        .chest-container {
+                            position: absolute;
+                            bottom: 0;
+                            left: 0;
+                            .chest-img-container .chest_icn {
+                                width: 100px;
+                                height: 90px;
+                                background-size: 90px;
+                            }
+                            .timer-container {
+                                margin-top: -40px;
+                            }
+                        }
+                    }
+
+                    .event-widget {
+                        position: absolute;
+                        right: 0;
+                        top: 32px;
+                        @media #{$mediaMobile} {
+                            top: 86px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .bottom-container {
+            justify-content: flex-start;
+            position: absolute;
+            bottom: -12px;
+            left: 90px;
+            width: 34rem;
+
+            .box-container .waifu-buttons-container {
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
+        }
+    }
+}
+
+#homepage .social_links {
+    margin-top: -24px;
+
+    @media #{$mediaMobile} {
+        margin-left: 15px;
+        margin-top: 0;
+    }
+}
+
+#bg_all.blur-effect {
+    filter: none !important;
+}

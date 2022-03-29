@@ -57,6 +57,7 @@ class Config {
                 const $subSettings = $setting.find('.sub-settings input')
                 if (value) {
                     this.runModule(module)
+                    Helpers.runDeferred()
                     $setting.addClass('enabled')
                     $subSettings.prop('disabled', false)
                 } else {

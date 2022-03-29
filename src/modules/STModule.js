@@ -18,6 +18,8 @@ class STModule extends HHModule {
 
     tearDown () {
         this.styles.unuse()
+
+        this.hasRun = false
     }
 }
 

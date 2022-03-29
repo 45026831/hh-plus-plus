@@ -27,6 +27,7 @@ export {default as VillainBreadcrumbsModule} from './VillainBreadcrumbsModule'
 export {default as BlessingSpreadsheetLinkModule} from './BlessingSpreadsheetLinkModule'
 export {default as HomeScreenIconsModule} from './HomeScreenIconsModule'
 export {default as HomeScreenOrderModule} from './HomeScreenOrderModule'
+export {default as HomeScreenOldishModule} from './HomeScreenOldishModule'
 
 export {default as MissionsBackgroundStyleTweak} from './MissionsBackgroundStyleTweak'
 export {default as MoneyAnimationStyleTweak} from './MoneyAnimationStyleTweak'

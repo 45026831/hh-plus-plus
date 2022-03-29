@@ -52,6 +52,7 @@ export const stConfig = {
     moveSkipButton: 'Sposta il bottone salta battaglia in basso',
     poseAspectRatio: `Correggi le proporzioni delle pose ${Helpers.isGH() ? 'delli ragazzi' : 'delle ragazze'} in combattimento`,
     reduceBlur: 'Riduci l\'effetto di profondità di campo sulla schermata iniziale',
+    homeScreenRightSideRearrange: 'Riorganizza gli elementi sul lato destro della schermata iniziale',
 }
 
 export const villain = {
