@@ -78,11 +78,20 @@
 
     .middle-container {
         .waifu-and-right-side-container {
-            .waifu-container img {
-                height: 600px;
-                width: 240px;
-                margin-left: 169px;
-                margin-top: 125px;
+            .waifu-container {
+                img {
+                    height: 600px;
+                    width: 240px;
+                    margin-left: 169px;
+                    margin-top: 125px;
+                }
+
+                canvas.animated-girl-display {
+                    top: 21.5rem;
+                    left: 10rem;
+                    -webkit-transform: translate3d(0, 0, 0) scale(0.6);
+                    transform: translate3d(0, 0, 0) scale(0.6);
+                }
             }
 
             .right-side-container .event-container {

@@ -40,7 +40,7 @@ export const config = {
     blessingSpreadsheetLink: 'Ergänze Verknüpfung zu der Datentabelle für Segnungen auf dem Segnungen Pop-Up',
     homeScreenIcons: 'Füge Feature-Symbole zu den Links auf dem Startbildschirm hinzu',
     homeScreenOrder: 'Alternative Anordnung der Links auf dem Startbildschirm',
-    homeScreenOldish: 'Layout des früheren Startbildschirms (Nicht kompatibel mit rechtseitiger reorganisierter Stil-Optimierung)',
+    homeScreenOldish: 'Altes Startbildschirm-Layout (Nicht kompatibel mit rechtsseitiger reorganisierter Stil-Optimierung)',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

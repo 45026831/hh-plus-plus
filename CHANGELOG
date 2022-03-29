@@ -1,3 +1,4 @@
+1.11.2: Fixing bug in how animated poses are shown on the legacy layout
 1.11.1: Adding a compatibility warning to the legacy layout option, adding DE and RU translations for legacy layout
 1.11.0: Adding a module to re-layout the home screen in a similar manner to how it was before the Waifu update
 1.10.0: Adding a style tweak to rearrange the items on the right side of the home screen
