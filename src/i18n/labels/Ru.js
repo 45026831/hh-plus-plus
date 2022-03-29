@@ -41,6 +41,7 @@ export const config = {
     blessingSpreadsheetLink: 'Добавить ссылку на таблицу благословений во всплывающее окно благословений',
     homeScreenIcons: 'Добавить иконки к ссылкам на главном экране',
     homeScreenOrder: 'Альтернативный порядок ссылок на главном экране',
+    homeScreenOldish: 'Вид главного экрана подобный старому (Несовместимо с изменением положения элементов правой части от Style Tweak)',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',
