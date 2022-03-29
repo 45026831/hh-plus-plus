@@ -41,6 +41,7 @@ export const config = {
     blessingSpreadsheetLink: 'Ajouter un lien vers la feuille de données des bénédictions à l\'infobulle des bénédictions',
     homeScreenIcons: 'Ajouter des icônes aux menus de l\'écran principal',
     homeScreenOrder: 'Ordre alternatif des menus de l\'écran principal',
+    homeScreenOldish: 'Mise en page d\'origine de l\'écran principal (incompatible avec la réorganisation des éléments à droite)',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
@@ -52,6 +53,7 @@ export const stConfig = {
     moveSkipButton: 'Mettre le bouton pour passer les combats en-bas',
     poseAspectRatio: `Corriger les proportions de la pose ${Helpers.isGH() ? 'du mec' : 'de la fille'} en combat`,
     reduceBlur: 'Réduire l\'effet de flou sur l\'écran principal',
+    homeScreenRightSideRearrange: 'Réorganiser les éléments sur le côté droit de l\'écran principal',
 }
 
 export const villain = {

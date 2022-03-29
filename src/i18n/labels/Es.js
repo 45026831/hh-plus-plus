@@ -41,6 +41,7 @@ export const config = {
     blessingSpreadsheetLink: 'Agregue un enlace a la hoja de cálculo de datos de bendiciones en la ventana emergente de bendiciones',
     homeScreenIcons: 'Agregar íconos de funciones a los enlaces de la pantalla de inicio',
     homeScreenOrder: 'Orden alternativo de los enlaces de la pantalla de inicio',
+    homeScreenOldish: 'Diseño viejo de la pantalla de inicio (No es compatible con la optimización del estilo reorganizado en el lado derecho)',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',

@@ -41,6 +41,7 @@ export const config = {
     blessingSpreadsheetLink: 'Aggiungi il link della tabella dei dati delle benedizioni sul popup delle benedizioni',
     homeScreenIcons: 'Aggiungi le icone delle funzioni ai link della schermata iniziale',
     homeScreenOrder: 'Disposizione alternativa dei link nella schermata iniziale',
+    homeScreenOldish: 'Vecchia schermata iniziale (Non compatibile con l\'ottimizzazione dello stile riorganizzato sul lato destro)',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
