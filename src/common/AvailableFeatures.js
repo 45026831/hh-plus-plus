@@ -40,7 +40,7 @@ class AvailableFeatures {
 
     get pop () {
         const {Hero: {infos: {questing: {id_world}}}} = window
-        return !Helpers.isCxH() && id_world >= 3
+        return Helpers.isCxH() ? id_world >= 2 : id_world >= 3
     }
 
     get champs () {
