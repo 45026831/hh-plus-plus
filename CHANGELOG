@@ -1,3 +1,4 @@
+1.11.4: Showing champion level on champion pages, reducing the negative impact of having the right-side rearrange style tweak on at the same time as legacy layout
 1.11.3: Pre-empting new link order on test server. Adding ES, IT and FR translations
 1.11.2: Fixing bug in how animated poses are shown on the legacy layout
 1.11.1: Adding a compatibility warning to the legacy layout option, adding DE and RU translations for legacy layout

@@ -133,6 +133,8 @@
                             position: absolute;
                             bottom: 0;
                             left: 0;
+                            right: auto !important;
+
                             .chest-img-container .chest_icn {
                                 width: 100px;
                                 height: 90px;
@@ -166,7 +168,7 @@
             .box-container .waifu-buttons-container {
                 position: absolute;
                 bottom: 0;
-                right: 0;
+                right: 0 !important;
             }
         }
     }

@@ -103,6 +103,7 @@ class ChampionsModule extends CoreModule {
                 this.poseMatching({fixPower})
                 this.showTicketsWhileResting()
                 this.fasterSkipButton()
+                this.showChampionLevel()
             }
         })
 
@@ -330,6 +331,17 @@ class ChampionsModule extends CoreModule {
             })
             observer.observe($('#contains_all > section')[0], {childList: true})
         })
+    }
+
+    showChampionLevel () {
+        const {championData, GT} = window
+        if (!championData) {return}
+        const {champion} = championData
+        if (!champion) {return}
+        const {level} = champion
+        if (!level) {return}
+
+        $('.champions-top__title').append(`<span class="script-champ-level">(${GT.design.Lvl} ${level})</span>`)
     }
 }
 
