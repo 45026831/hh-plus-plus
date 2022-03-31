@@ -1,9 +1,9 @@
 import I18n from '../i18n'
 
 class Snippets {
-    static selectInput ({id, label, options, value}) {
+    static selectInput ({id, label, options, value, className}) {
         return `
-            <div class="form-control">
+            <div class="form-control ${className}">
                 <div class="select-group">
                     <label class="head-group" for="${id}">${label}</label>
                     <select name="${id}" id="${id}" icon="down-arrow">

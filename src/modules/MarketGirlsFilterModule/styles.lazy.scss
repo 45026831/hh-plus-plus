@@ -1,28 +1,5 @@
 @import "../../common/constants.scss";
 
-#arena_filter_box label.head-group {
-    display: block;
-    position: relative;
-    left: -5px;
-    z-index: 15;
-    margin-bottom: -8px;
-    margin-top: -3px !important;
-    padding-left: 7px;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.22px;
-    text-align: left !important;
-    color: #ffb827;
-    background: transparent;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,
-        -2px -2px 5px rgba(255, 159, 0, 0.4), 2px -2px 5px rgba(255, 159, 0, 0.4), -2px 2px 5px rgba(255, 159, 0, 0.4),
-        2px 2px 5px rgba(255, 159, 0, 0.4), 0 0 10px rgba(255, 159, 0, 0.4);
-}
-
-#shops #girls_list .g1 > div > .number {
-    left: 0 !important;
-}
-
 #shops label.girl_filter {
     background: transparent;
     input {
@@ -45,41 +22,10 @@
     }
 }
 
-#arena_filter_box .button-group {
-    display: flex;
-}
-
-#shops label.clear_girl_filter {
-    background: transparent;
-    input {
-        height: 36px;
-        width: 36px;
-        display: block;
-        padding: 0px;
-    }
-    &::before {
-        content: " ";
-        display: block;
-        position: absolute;
-        height: 36px;
-        width: 36px;
-        background-color: #fff;
-        -webkit-mask-position: center;
-        mask-position: center;
-        -webkit-mask-size: 24px;
-        mask-size: 24px;
-        -webkit-mask-repeat: no-repeat;
-        mask-repeat: no-repeat;
-        -webkit-mask-image: var(--cross-icon);
-        mask-image: var(--cross-icon);
-        pointer-events: none;
-    }
-}
-
 #arena_filter_box {
     position: absolute;
-    left: -215px;
-    width: 200px;
+    left: 146px;
+    width: 400px;
     height: -moz-fit-content;
     height: fit-content;
     z-index: 3;
@@ -88,12 +34,81 @@
     box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
     padding: 5px;
     border: 1px solid rgb(255, 162, 62);
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+
+    .button-group {
+        display: flex;
+    }
+
+    label.clear_girl_filter {
+        background: transparent;
+        input {
+            height: 36px;
+            width: 36px;
+            display: block;
+            padding: 0px;
+        }
+        &::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            height: 36px;
+            width: 36px;
+            background-color: #fff;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-size: 24px;
+            mask-size: 24px;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-image: var(--cross-icon);
+            mask-image: var(--cross-icon);
+            pointer-events: none;
+        }
+    }
+
+    &.form-wrapper > .form-control {
+        & > .select-group .selectric-items {
+            height: auto;
+
+            li {
+                height: auto;
+                padding-top: 0;
+                padding-bottom: 0;
+
+                & > span {
+                    height: auto;
+                    width: auto;
+                    &[carac] {
+                        padding-right: 10px;
+                    }
+                }
+                .element-icon {
+                    height: 30px;
+                    width: 30px;
+                    background-size: contain;
+                    background-position: center;
+                    margin-right: 10px;
+                }
+                &:first-of-type {
+                    padding-left: 5px;
+                }
+            }
+        }
+        &.script-filter-element > .select-group .selectric-items {
+            li {
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+        }
+    }
 }
 
 .team-selection {
     position: absolute;
-    left: 0px;
-    bottom: -208px;
+    left: 146px;
+    top: 186px;
     width: 400px;
     height: fit-content;
     border-radius: 8px 10px 10px 8px;
@@ -150,7 +165,7 @@
         top: -12px;
     }
     #arena_filter_box {
-        top: -230px;
+        top: 82px;
     }
 }
 
@@ -161,6 +176,6 @@
         top: 0px;
     }
     #arena_filter_box {
-        top: -218px;
+        top: 98px;
     }
 }

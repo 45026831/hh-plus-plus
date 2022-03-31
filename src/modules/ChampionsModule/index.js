@@ -341,7 +341,20 @@ class ChampionsModule extends CoreModule {
         const {level} = champion
         if (!level) {return}
 
-        $('.champions-top__title').append(`<span class="script-champ-level">(${GT.design.Lvl} ${level})</span>`)
+        const annotate = () => {
+            $('.champions-top__title').append(`<span class="script-champ-level">(${GT.design.Lvl} ${level})</span>`)
+        }
+        if ($('.champions-top__title').length) {
+            annotate()
+        } else {
+            const observer = new MutationObserver(() => {
+                if ($('.champions-top__title').length) {
+                    annotate()
+                    observer.disconnect()
+                }
+            })
+            observer.observe($('#contains_all > section')[0], {childList: true})
+        }
     }
 }
 
