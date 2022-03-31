@@ -6,6 +6,7 @@ import filterIcon from '../../assets/filter.svg'
 
 import styles from './styles.lazy.scss'
 import Sheet from '../../common/Sheet'
+import Snippets from '../../common/Snippets'
 
 const MODULE_KEY = 'teamsFilter'
 
@@ -34,6 +35,27 @@ class TeamsFilterModule extends CoreModule {
             this.updateFilterGirlData()
             $('h3.panel-title').before('<button id="arena_filter" class="blue_button_L"><span class="filter_mix_icn"></span></button>')
             $('h3.panel-title').after(this.createFilterBox())
+
+            $('#filter_element').selectric({
+                optionsItemBuilder: (itemData) => {
+                    const {element, text} = itemData
+                    return element.val().length && element.val() !== 'all' ? `<span class="element-icon ${element.val()}_element_icn"></span>${text}` : text
+                }
+            })
+            $('#filter_class').selectric({
+                optionsItemBuilder: (itemData) => {
+                    const {element, text} = itemData
+                    return element.val().length && element.val() !== 'all' ? `<span carac="${element.val()}"></span>${text}` : text
+                }
+            })
+            $('#filter_rarity').selectric({
+                optionsItemBuilder: (itemData) => {
+                    const {element, text} = itemData
+                    return element.val().length && element.val() !== 'all' ? `<span class="${element.val()}-text">${text}</span>` : text
+                }
+            })
+            const otherFields = ['aff_category', 'aff_lvl', 'blessed_attributes']
+            otherFields.forEach(field => $(`#filter_${field}`).selectric())
             this.createFilterEvents()
         })
 
@@ -57,7 +79,7 @@ class TeamsFilterModule extends CoreModule {
         $('#arena_filter').on('click', () => {
             if (typeof this.arenaGirls === 'undefined' || typeof this.girlsData === 'undefined') return
             let currentBoxDisplay = $('#arena_filter_box').css('display')
-            $('#arena_filter_box').css('display', currentBoxDisplay === 'none' ? 'block' : 'none')
+            $('#arena_filter_box').css('display', currentBoxDisplay === 'none' ? 'grid' : 'none')
         })
 
         const doFilter = () => {
@@ -73,7 +95,7 @@ class TeamsFilterModule extends CoreModule {
     }
 
     filterGirls() {
-        let filterClass = $('#filter_class').get(0).selectedIndex
+        let filterClass = $('#filter_class').get(0).value
         let filterElement = $('#filter_element').get(0).value
         let filterRarity = $('#filter_rarity').get(0).value
         let filterName = $('#filter_name').get(0).value
@@ -83,12 +105,12 @@ class TeamsFilterModule extends CoreModule {
         let filterAffLvl = $('#filter_aff_lvl').get(0).value
 
         let girlsFiltered = $.map(this.girlsData, (girl, index) => {
-            let matchesClass = (girl.class === `${filterClass}`) || (filterClass === 0)
-            const {elementData, element_data} = girl
-            let matchesElement = ((elementData || element_data).type === filterElement) || filterElement === 'all'
+            let matchesClass = (girl.class === filterClass) || (filterClass === 'all')
+            const {element_data} = girl
+            let matchesElement = (element_data.type === filterElement) || filterElement === 'all'
             let matchesRarity = (girl.rarity === filterRarity) || (filterRarity === 'all')
-            const {Name, name} = girl
-            let matchesName = ((Name || name).search(nameRegex) > -1)
+            const {name} = girl
+            let matchesName = (name.search(nameRegex) > -1)
             let matchesBlessedAttributes
             switch (filterBlessedAttributes) {
             case 'blessed_attributes':
@@ -116,56 +138,20 @@ class TeamsFilterModule extends CoreModule {
         })
 
         //update scroll display
-        // $('.harem-panel-girls').css('overflow', '')
-        // $('.harem-panel-girls').css('overflow', 'hidden')
         $('.panel-body').getNiceScroll().resize()
     }
 
     createFilterBox() {
         let totalHTML = '<div id="arena_filter_box" class="form-wrapper" style="display: none;">'
+        const affectionGradeOption = grade => ({ label: this.label(`grade${grade}`), value: grade })
 
-        totalHTML += '<div class="form-control"><div class="input-group">'
-            + '<label class="head-group" for="filter_name">' + this.label('searchedName') + '</label>'
-            + '<input type="text" autocomplete="off" id="filter_name" placeholder="' + this.label('girlName') + '" icon="search">'
-            + '</div></div>'
-
-        totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="filter_class">' +  this.label('searchedClass') + '</label>'
-            + '<select name="filter_class" id="filter_class" icon="down-arrow">'
-            + '<option value="all" selected="selected">' + this.all + '</option><option value="hardcore">' + GT.caracs[1] + '</option><option value="charm">' + GT.caracs[2] + '</option><option value="knowhow">' + GT.caracs[3] + '</option>'
-            + '</select></div></div>'
-
-        totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="filter_element">' + this.label('searchedElement') + '</label>'
-            + '<select name="filter_element" id="filter_element" icon="down-arrow">'
-            + '<option value="all" selected="selected">' + this.all + '</option>'
-            + ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => `<option value="${option}">${GT.design[`${option}_flavor_element`]}</option>`).join('')
-            + '</select></div></div>'
-
-        totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="filter_rarity">' +  this.label('searchedRarity') + '</label>'
-            + '<select name="filter_rarity" id="filter_rarity" icon="down-arrow">'
-            + '<option value="all" selected="selected">' + this.all + '</option>'
-            + ['starting','common','rare','epic','legendary','mythic'].map(option => `<option value="${option}">${GT.design[`girls_rarity_${option}`]}</option>`).join('')
-            + '</select></div></div>'
-
-        totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="filter_aff_category">' +  this.label('searchedAffCategory') + '</label>'
-            + '<select name="filter_aff_category" id="filter_aff_category" icon="down-arrow">'
-            + '<option value="all" selected="selected">' + this.all + '</option><option value="1">' +  this.label('grade1') + '</option><option value="3">' +  this.label('grade3') + '</option><option value="5">' +  this.label('grade5') + '</option><option value="6">' +  this.label('grade6') + '</option>'
-            + '</select></div></div>'
-
-        totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="filter_aff_lvl">' +  this.label('searchedAffLevel') + '</label>'
-            + '<select name="filter_aff_lvl" id="filter_aff_lvl" icon="down-arrow">'
-            + '<option value="all" selected="selected">' + this.all + '</option><option value="0">' +  this.label('grade0') + '</option><option value="1">' +  this.label('grade1') + '</option><option value="2">' +  this.label('grade2') + '</option><option value="3">' +  this.label('grade3') + '</option><option value="4">' +  this.label('grade4') + '</option><option value="5">' +  this.label('grade5') + '</option><option value="6">' +  this.label('grade6') + '</option>'
-            + '</select></div></div>'
-
-        totalHTML += '<div class="form-control"><div class="select-group">'
-            + '<label class="head-group" for="filter_blessed_attributes">' +  this.label('searchedBlessedAttributes') + '</label>'
-            + '<select name="filter_blessed_attributes" id="filter_blessed_attributes" icon="down-arrow">'
-            + '<option value="all" selected="selected">' + this.all + '</option><option value="blessed_attributes">' +  this.label('blessedAttributes') + '</option><option value="non_blessed_attributes">' +  this.label('nonBlessedAttributes') + '</option>'
-            + '</select></div></div>'
+        totalHTML += Snippets.textInput({id: 'filter_name', label: this.label('searchedName'), placeholder: this.label('girlName'), value: ''})
+        totalHTML += Snippets.selectInput({id: 'filter_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option})), className: 'script-filter-carac'})
+        totalHTML += Snippets.selectInput({id: 'filter_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option})), className: 'script-filter-element'})
+        totalHTML += Snippets.selectInput({id: 'filter_rarity', label: this.label('searchedRarity'), options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: GT.design[`girls_rarity_${option}`], value: option})), className: 'script-filter-rarity rarity-styling'})
+        totalHTML += Snippets.selectInput({id: 'filter_aff_category', label: this.label('searchedAffCategory'), options: ['1','3','5','6'].map(affectionGradeOption), className: 'script-filter-aff-category'})
+        totalHTML += Snippets.selectInput({id: 'filter_aff_lvl', label: this.label('searchedAffLevel'), options: ['0','1','2','3','4','5','6'].map(affectionGradeOption), className: 'script-filter-aff-level'})
+        totalHTML += Snippets.selectInput({id: 'filter_blessed_attributes', label: this.label('searchedBlessedAttributes'), options: [{value: 'blessed_attributes', label: this.label('blessedAttributes')}, {value: 'non_blessed_attributes', label: this.label('nonBlessedAttributes')}], className: 'script-filter-blessing'})
 
         totalHTML += '</div>'
 
