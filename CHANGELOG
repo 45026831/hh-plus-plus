@@ -1,3 +1,4 @@
+1.11.7: Adding ES and IT translations for the market level cap filter
 1.11.6: Adding level cap filter and icons to the market girls filter. Fixing bug in champion level where the script runs before the page has finished loading
 1.11.5: Enabling PoP-related features on CxH
 1.11.4: Showing champion level on champion pages, reducing the negative impact of having the right-side rearrange style tweak on at the same time as legacy layout
