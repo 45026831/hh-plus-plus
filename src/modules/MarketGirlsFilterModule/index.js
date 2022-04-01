@@ -311,7 +311,8 @@ class MarketGirlsFilterModule extends CoreModule {
                         optionsItemBuilder: (itemData) => {
                             const {element, text} = itemData
                             return element.val().length && element.val() !== 'all' ? `<span class="element-icon ${element.val()}_element_icn"></span>${text}` : text
-                        }
+                        },
+                        maxHeight: 320
                     })
                     $('#sort_class').selectric({
                         optionsItemBuilder: (itemData) => {
