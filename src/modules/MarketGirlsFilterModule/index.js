@@ -189,6 +189,7 @@ class MarketGirlsFilterModule extends CoreModule {
                     return $(`
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
+                            <span class="close-filter" />
                             ${Snippets.textInput({id: 'sort_name', label: this.label('searchedName'), placeholder: this.label('girlName'), value: name})}
                             ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option})), value: carac, className: 'script-filter-carac'})}
                             ${Snippets.selectInput({id: 'sort_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option})), value: element, className: 'script-filter-element'})}
@@ -337,14 +338,14 @@ class MarketGirlsFilterModule extends CoreModule {
                     }
                     const populateFields = () => {
                         const {carac, rarity, element, name, range, affCategory, affLvl, levelCap} = loadFilter()
-                        filterBox.find('#sort_class').val(carac)
-                        filterBox.find('#sort_rarity').val(rarity)
-                        filterBox.find('#sort_element').val(element)
-                        filterBox.find('#sort_aff_category').val(affCategory)
-                        filterBox.find('#sort_aff_lvl').val(affLvl)
+                        filterBox.find('#sort_class').val(carac).selectric('refresh')
+                        filterBox.find('#sort_rarity').val(rarity).selectric('refresh')
+                        filterBox.find('#sort_element').val(element).selectric('refresh')
+                        filterBox.find('#sort_aff_category').val(affCategory).selectric('refresh')
+                        filterBox.find('#sort_aff_lvl').val(affLvl).selectric('refresh')
                         filterBox.find('#sort_name').val(name)
                         filterBox.find('#sort_level').val(range)
-                        filterBox.find('#sort_level_cap').val(levelCap)
+                        filterBox.find('#sort_level_cap').val(levelCap).selectric('refresh')
                     }
                     const filterGirlsWithTeam = (team) => {
                         saveTeamFilter(team)
@@ -365,6 +366,7 @@ class MarketGirlsFilterModule extends CoreModule {
                     })
                     filterBox.find('[rel=select-team]').click(() => $('.team-selection').css('display', $('.team-selection').css('display')==='block'?'none':'block'))
                     filterBox.find('[rel=clear-filter]').click(clearFilterAndForm)
+                    filterBox.find('.close-filter').click(() => $('#arena_filter_box').css('display', 'none'))
                     teamsBox.find('.team-slot-container').click(function () {
                         filterGirlsWithTeam($(this).data('girl-ids'))
                         $('.team-selection').css('display', 'none')
