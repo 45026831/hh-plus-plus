@@ -16,15 +16,15 @@ class Simulator {
             x.dmg = Math.max(0, x.dmg)
             x.baseAttack = {
                 probability: 1 - x.critchance,
-                damageAmount: Math.round(x.dmg),
-                healAmount: Math.round(x.dmg * x.bonuses.healOnHit)
+                damageAmount: Math.ceil(x.dmg),
+                healAmount: Math.ceil(x.dmg * x.bonuses.healOnHit)
             }
             x.critAttack = {
                 probability: x.critchance,
-                damageAmount: Math.round(x.dmg * x.critMultiplier),
-                healAmount: Math.round(x.dmg * x.critMultiplier * x.bonuses.healOnHit)
+                damageAmount: Math.ceil(x.dmg * x.critMultiplier),
+                healAmount: Math.ceil(x.dmg * x.critMultiplier * x.bonuses.healOnHit)
             }
-            x.hp = Math.round(x.hp)
+            x.hp = Math.ceil(x.hp)
         }
 
         setup(this.player)
