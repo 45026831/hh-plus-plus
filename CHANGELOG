@@ -1,3 +1,4 @@
+1.11.10: Fixing a bug in how market filter handles loading active filter with missing keys
 1.11.9: Fixing bug in market filter where fields weren't visually cleared, adding a close button on the filter to avoid softlocking the market page
 1.11.8: Adding icons to the teams filter
 1.11.7: Adding ES and IT translations for the market level cap filter

@@ -72,7 +72,7 @@ class MarketGirlsFilterModule extends CoreModule {
                 saveFilter(filter)
             }
             const loadFilter = () => {
-                return Helpers.lsGet(lsKeys.MARKET_GIRLS_FILTER) || DEFAULT_FILTER
+                return Object.assign({}, DEFAULT_FILTER, Helpers.lsGet(lsKeys.MARKET_GIRLS_FILTER))
             }
 
             let container = $('.g1>div')
