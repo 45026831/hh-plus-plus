@@ -80,7 +80,7 @@ class BattleSimulatorModule extends CoreModule {
     }
 
     runManagedSim () {
-        for (let simManager of this.simManagers) {
+        this.simManagers.forEach(simManager => {
             const {player, opponent} = simManager.extract()
             const {logging, highPrecisionMode, preSim} = this
 
@@ -88,7 +88,7 @@ class BattleSimulatorModule extends CoreModule {
             const result = simulator.run()
 
             simManager.display(result)
-        }
+        })
     }
 }
 

@@ -30,13 +30,13 @@ class Simulator {
         setup(this.player)
         setup(this.opponent)
 
-        this.cache = { }
+        this.cache = {}
         this.runs = 0
 
         // start simulation from player's turn
-        let ret = this.playerTurn(this.player.hp, this.opponent.hp)
+        const ret = this.playerTurn(this.player.hp, this.opponent.hp)
 
-        let sum = ret.win + ret.loss
+        const sum = ret.win + ret.loss
         ret.win /= sum
         ret.loss /= sum
         ret.scoreClass = ret.win>0.9?'plus':ret.win<0.5?'minus':'close'
@@ -52,39 +52,38 @@ class Simulator {
     }
 
     mergeResult(x, xProbability, y, yProbability) {
-        let points = { }
-        for (let [point, probability] of Object.entries(x.points)) {
-            points[point] = (points[point] ?? 0) + probability * xProbability
-        }
-        for (let [point, probability] of Object.entries(y.points)) {
-            points[point] = (points[point] ?? 0) + probability * yProbability
-        }
+        const points = {}
+        Object.entries(x.points).map(([point, probability]) => [point, probability * xProbability])
+            .concat(Object.entries(y.points).map(([point, probability]) => [point, probability * yProbability]))
+            .forEach(([point, probability]) => {
+                points[point] = (points[point] || 0) + probability
+            })
         const merge = (x, y) =>  x * xProbability + y * yProbability
-        let win = merge(x.win, y.win)
-        let loss = merge(x.loss, y.loss)
-        let avgTurns = merge(x.avgTurns, y.avgTurns)
+        const win = merge(x.win, y.win)
+        const loss = merge(x.loss, y.loss)
+        const avgTurns = merge(x.avgTurns, y.avgTurns)
         return { points, win, loss, avgTurns }
     }
 
     playerTurn(playerHP, opponentHP) {
         // read cache
-        let cachedResult = this.cache?.[playerHP]?.[opponentHP]
+        const cachedResult = this.cache?.[playerHP]?.[opponentHP]
         if (cachedResult) return cachedResult
 
         // simulate base attack and critical attack
-        let baseAtk = this.player.baseAttack;
-        let baseAtkResult = this.playerAttack(playerHP, opponentHP, baseAtk)
-        let critAtk = this.player.critAttack;
-        let critAtkResult = this.playerAttack(playerHP, opponentHP, critAtk)
+        const baseAtk = this.player.baseAttack
+        const baseAtkResult = this.playerAttack(playerHP, opponentHP, baseAtk)
+        const critAtk = this.player.critAttack
+        const critAtkResult = this.playerAttack(playerHP, opponentHP, critAtk)
         // merge result
-        let mergedResult = this.mergeResult(baseAtkResult, baseAtk.probability, critAtkResult, critAtk.probability)
+        const mergedResult = this.mergeResult(baseAtkResult, baseAtk.probability, critAtkResult, critAtk.probability)
 
         // count player's turn
-        mergedResult.avgTurns++
+        mergedResult.avgTurns += 1
 
         // write cache
-        if (!this.cache[playerHP]) this.cache[playerHP] = { }
-        if (!this.cache[playerHP][opponentHP]) this.cache[playerHP][opponentHP] = { }
+        if (!this.cache[playerHP]) this.cache[playerHP] = {}
+        if (!this.cache[playerHP][opponentHP]) this.cache[playerHP][opponentHP] = {}
         this.cache[playerHP][opponentHP] = mergedResult
 
         return mergedResult
@@ -100,8 +99,8 @@ class Simulator {
 
         // check win
         if (opponentHP <= 0) {
-            let point = 15 + Math.ceil(10 * playerHP / this.player.hp)
-            this.runs++
+            const point = 15 + Math.ceil(10 * playerHP / this.player.hp)
+            this.runs += 1
             return { points: { [point]: 1 }, win: 1, loss: 0, avgTurns: 0 }
         }
 
@@ -111,10 +110,10 @@ class Simulator {
 
     opponentTurn(playerHP, opponentHP) {
         // simulate base attack and critical attack
-        let baseAtk = this.opponent.baseAttack;
-        let baseAtkResult = this.opponentAttack(playerHP, opponentHP, baseAtk)
-        let critAtk = this.opponent.critAttack;
-        let critAtkResult = this.opponentAttack(playerHP, opponentHP, critAtk)
+        const baseAtk = this.opponent.baseAttack
+        const baseAtkResult = this.opponentAttack(playerHP, opponentHP, baseAtk)
+        const critAtk = this.opponent.critAttack
+        const critAtkResult = this.opponentAttack(playerHP, opponentHP, critAtk)
         // merge result
         return this.mergeResult(baseAtkResult, baseAtk.probability, critAtkResult, critAtk.probability)
     }
@@ -129,8 +128,8 @@ class Simulator {
 
         // check loss
         if (playerHP <= 0) {
-            let point = 3 + Math.ceil(10 * (this.opponent.hp - opponentHP) / this.opponent.hp)
-            this.runs++
+            const point = 3 + Math.ceil(10 * (this.opponent.hp - opponentHP) / this.opponent.hp)
+            this.runs += 1
             return { points: { [point]: 1 }, win: 0, loss: 1, avgTurns: 0 }
         }
 
