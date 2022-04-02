@@ -33,8 +33,20 @@ class Simulator {
         this.cache = {}
         this.runs = 0
 
-        // start simulation from player's turn
-        const ret = this.playerTurn(this.player.hp, this.opponent.hp)
+        let ret
+        try {
+            // start simulation from player's turn
+            ret = this.playerTurn(this.player.hp, this.opponent.hp, 0)
+        } catch (error) {
+            if (this.logging) console.log(`An error occurred during the simulation against ${this.opponent.name}`)
+            return {
+                points: [],
+                win: Number.NaN,
+                loss: Number.NaN,
+                avgTurns: Number.NaN,
+                scoreClass: 'minus'
+            }
+        }
 
         const sum = ret.win + ret.loss
         ret.win /= sum
@@ -65,16 +77,21 @@ class Simulator {
         return { points, win, loss, avgTurns }
     }
 
-    playerTurn(playerHP, opponentHP) {
+    playerTurn(playerHP, opponentHP, turns) {
+        turns += 1
+        // avoid a stack overflow
+        const maxAllowedTurns = 50
+        if (turns > maxAllowedTurns) throw new Error()
+
         // read cache
         const cachedResult = this.cache?.[playerHP]?.[opponentHP]
         if (cachedResult) return cachedResult
 
         // simulate base attack and critical attack
         const baseAtk = this.player.baseAttack
-        const baseAtkResult = this.playerAttack(playerHP, opponentHP, baseAtk)
+        const baseAtkResult = this.playerAttack(playerHP, opponentHP, baseAtk, turns)
         const critAtk = this.player.critAttack
-        const critAtkResult = this.playerAttack(playerHP, opponentHP, critAtk)
+        const critAtkResult = this.playerAttack(playerHP, opponentHP, critAtk, turns)
         // merge result
         const mergedResult = this.mergeResult(baseAtkResult, baseAtk.probability, critAtkResult, critAtk.probability)
 
@@ -89,7 +106,7 @@ class Simulator {
         return mergedResult
     }
 
-    playerAttack(playerHP, opponentHP, attack) {
+    playerAttack(playerHP, opponentHP, attack, turns) {
         // damage
         opponentHP -= attack.damageAmount
 
@@ -105,20 +122,20 @@ class Simulator {
         }
 
         // next turn
-        return this.opponentTurn(playerHP, opponentHP)
+        return this.opponentTurn(playerHP, opponentHP, turns)
     }
 
-    opponentTurn(playerHP, opponentHP) {
+    opponentTurn(playerHP, opponentHP, turns) {
         // simulate base attack and critical attack
         const baseAtk = this.opponent.baseAttack
-        const baseAtkResult = this.opponentAttack(playerHP, opponentHP, baseAtk)
+        const baseAtkResult = this.opponentAttack(playerHP, opponentHP, baseAtk, turns)
         const critAtk = this.opponent.critAttack
-        const critAtkResult = this.opponentAttack(playerHP, opponentHP, critAtk)
+        const critAtkResult = this.opponentAttack(playerHP, opponentHP, critAtk, turns)
         // merge result
         return this.mergeResult(baseAtkResult, baseAtk.probability, critAtkResult, critAtk.probability)
     }
 
-    opponentAttack(playerHP, opponentHP, attack) {
+    opponentAttack(playerHP, opponentHP, attack, turns) {
         // damage
         playerHP -= attack.damageAmount
 
@@ -134,7 +151,7 @@ class Simulator {
         }
 
         // next turn
-        return this.playerTurn(playerHP, opponentHP)
+        return this.playerTurn(playerHP, opponentHP, turns)
     }
 }
 
