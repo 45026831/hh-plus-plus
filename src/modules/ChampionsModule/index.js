@@ -76,6 +76,11 @@ class ChampionsModule extends CoreModule {
             default: true,
             subSettings: [
                 {
+                    key: 'poseMatching',
+                    label: I18n.getModuleLabel('config', `${MODULE_KEY}_poseMatching`),
+                    default: true
+                },
+                {
                     key: 'fixPower',
                     label: I18n.getModuleLabel('config', `${MODULE_KEY}_fixPower`),
                     default: true
@@ -89,7 +94,7 @@ class ChampionsModule extends CoreModule {
         return ['champions/', 'clubs', 'club-champion'].some(page => Helpers.isCurrentPage(page))
     }
 
-    run ({fixPower}) {
+    run ({poseMatching, fixPower}) {
         if (this.hasRun || !this.shouldRun()) {return}
 
         styles.use()
@@ -100,7 +105,7 @@ class ChampionsModule extends CoreModule {
                 this.fixChampRestTimer()
             }
             if (Helpers.isCurrentPage('champions/') || Helpers.isCurrentPage('club-champion')) {
-                this.poseMatching({fixPower})
+                this.poseMatching({poseMatching, fixPower})
                 this.showTicketsWhileResting()
                 this.fasterSkipButton()
                 this.showChampionLevel()
@@ -242,7 +247,7 @@ class ChampionsModule extends CoreModule {
         }
     }
 
-    poseMatching ({fixPower}) {
+    poseMatching ({poseMatching, fixPower}) {
         const {championData, Hero} = window
         const {canDraft, champion} = championData
 
@@ -257,23 +262,25 @@ class ChampionsModule extends CoreModule {
             const {team} = championData
 
             team.forEach(({id_girl, figure, damage}, i) => {
-                const rightPoseWrongPlace = figures.includes(figure)
-                const rightPoseRightPlace = figuresExtrapolated[i] === figure
-
                 const $girl = $girlSelection.find(`[id_girl=${id_girl}]`)
 
-                let $marker = $girl.find('.script-pose-match')
-                if (!$marker.length) {
-                    $marker = $('<span class="script-pose-match"></span>')
-                    $girl.append($marker)
-                }
+                if (poseMatching) {
+                    const rightPoseWrongPlace = figures.includes(figure)
+                    const rightPoseRightPlace = figuresExtrapolated[i] === figure
 
-                if (rightPoseRightPlace) {
-                    $marker.addClass('green-tick-icon')
-                    $marker.removeClass('empty')
-                } else if (rightPoseWrongPlace) {
-                    $marker.addClass('green-tick-icon')
-                    $marker.addClass('empty')
+                    let $marker = $girl.find('.script-pose-match')
+                    if (!$marker.length) {
+                        $marker = $('<span class="script-pose-match"></span>')
+                        $girl.append($marker)
+                    }
+
+                    if (rightPoseRightPlace) {
+                        $marker.addClass('green-tick-icon')
+                        $marker.removeClass('empty')
+                    } else if (rightPoseWrongPlace) {
+                        $marker.addClass('green-tick-icon')
+                        $marker.addClass('empty')
+                    }
                 }
 
                 if (fixPower) {

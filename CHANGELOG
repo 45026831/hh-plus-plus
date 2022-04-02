@@ -1,3 +1,4 @@
+1.11.11: Adding subsetting for champion pose match indicators
 1.11.10: Fixing a bug in how market filter handles loading active filter with missing keys
 1.11.9: Fixing bug in market filter where fields weren't visually cleared, adding a close button on the filter to avoid softlocking the market page
 1.11.8: Adding icons to the teams filter

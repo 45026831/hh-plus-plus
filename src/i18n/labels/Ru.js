@@ -22,6 +22,7 @@ export const config = {
     simFight_highPrecisionMode: 'Режим высокой точности (внимание: медленный!)',
     teamsFilter: 'Фильтр в Командах',
     champions: 'Индикаторы в Чемпионах',
+    champions_poseMatching: 'Добавить индикаторы совпадения позы',
     champions_fixPower: `Показывая силу ${Helpers.isGH() ? 'парней' : 'девушек'} учитывать силу героя`,
     homeScreen: 'Ссылки и таймеры на главной странице',
     resourceBars: 'Полоски ресурсов / Таймеры бустеров',

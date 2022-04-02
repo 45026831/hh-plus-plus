@@ -22,6 +22,7 @@ export const config = {
     simFight_highPrecisionMode: 'Mode haute précision (attention: lent!)',
     teamsFilter: 'Filtre d\'équipes',
     champions: 'Infos champions',
+    champions_poseMatching: 'Ajouter des indicateurs de correspondance de pose',
     champions_fixPower: `Inclure la puissance du héros à l'affichage de la puissance ${Helpers.isGH() ? 'du mec' : 'de la fille'}`,
     homeScreen: 'Raccourcis & timers de l\'écran principal',
     resourceBars: 'Barres de ressorces / Indicateurs de boosters',

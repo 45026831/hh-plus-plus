@@ -43,6 +43,7 @@ export const config = {
     simFight_highPrecisionMode: 'High precision mode (warning: slow!)',
     teamsFilter: 'Teams filter',
     champions: 'Champions information',
+    champions_poseMatching: 'Add pose match indicators',
     champions_fixPower: `Include Hero power in ${gameConfig.girl} power display`,
     homeScreen: 'Home Screen Shortcuts & Timers',
     resourceBars: 'Resource bars / Booster tracking',
