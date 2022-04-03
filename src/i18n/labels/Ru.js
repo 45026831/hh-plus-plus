@@ -19,7 +19,6 @@ export const config = {
     league_promo: 'Показывать инфо о повышении',
     simFight: 'Симуляция Лиги / Сезона / Злодеев',
     simFight_logging : 'Подробный лог в консоли браузера',
-    simFight_highPrecisionMode: 'Режим высокой точности (внимание: медленный!)',
     teamsFilter: 'Фильтр в Командах',
     champions: 'Индикаторы в Чемпионах',
     champions_poseMatching: 'Добавить индикаторы совпадения позы',

@@ -40,7 +40,6 @@ export const config = {
     league_promo: 'Show promotion information',
     simFight : 'League / Season / Villains sim',
     simFight_logging : 'Detailed logging in the browser console',
-    simFight_highPrecisionMode: 'High precision mode (warning: slow!)',
     teamsFilter: 'Teams filter',
     champions: 'Champions information',
     champions_poseMatching: 'Add pose match indicators',

@@ -1,11 +1,7 @@
-const STANDARD_SIM_RUNS = 10000
-const HIGH_PRECISION_SIM_RUNS = 50000
-
 class Simulator {
-    constructor({player, opponent, highPrecisionMode, logging, preSim}) {
+    constructor({player, opponent, logging, preSim}) {
         this.player = player
         this.opponent = opponent
-        this.simRuns = highPrecisionMode ? HIGH_PRECISION_SIM_RUNS : STANDARD_SIM_RUNS
         this.logging = logging
         this.preSim = preSim
     }

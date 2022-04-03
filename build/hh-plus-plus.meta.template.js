@@ -31,6 +31,7 @@
  * - Orange
  * - zoopokemon
  * - Ia1nn
+ * - rena-jp
  * - and many more over the years!
  *
  * Translations

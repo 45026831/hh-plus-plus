@@ -18,7 +18,6 @@ export const config = {
     league_promo: 'Werbeinformationen anzeigen',
     simFight: 'Liga/Saison/Schurken-Simulation',
     simFight_logging: 'Detaillierte Protokollierung in der Browserkonsole',
-    simFight_highPrecisionMode: 'Hochpräzisionsmodus (Warnung: langsam!)',
     teamsFilter: 'Teamfilter',
     champions: 'Champion-Informationen',
     champions_poseMatching: 'Aktiviere Erkennung für passende Champion-Position',

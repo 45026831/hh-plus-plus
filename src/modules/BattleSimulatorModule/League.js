@@ -2,10 +2,6 @@ import I18n from '../../i18n'
 import SimHelpers from './SimHelpers'
 
 class League {
-    constructor ({highPrecisionMode}) {
-        this.highPrecisionMode = highPrecisionMode
-    }
-
     extract () {
         const {playerLeaguesData, heroLeaguesData, caracs_per_opponent} = window
         const opponentId = playerLeaguesData.id_fighter
@@ -118,11 +114,11 @@ class League {
         for (let i=25; i>=3; i--) {
             if (calc[i]) {
                 const isW = i>=15
-                probabilityTooltip += `<tr style='color:${isW?pointGrade[25]:pointGrade[3]};' data-tint='${isW?'w':'l'}'><td>${i}</td><td>${(100*calc[i]).toFixed(2)}%</td></tr>`
+                probabilityTooltip += `<tr style='color:${isW?pointGrade[25]:pointGrade[3]};' data-tint='${isW?'w':'l'}'><td>${i}</td><td>${I18n.nRounding(100*calc[i], 2, 0)}%</td></tr>`
                 expectedValue += i*calc[i]
             }
         }
-        probabilityTooltip += `<tr class='${scoreClass}'><td>${GT.design.leagues_won_letter}</td><td>${(100*win).toFixed(2)}%</td></tr>`
+        probabilityTooltip += `<tr class='${scoreClass}'><td>${GT.design.leagues_won_letter}</td><td>${I18n.nRounding(100*win, 2, -1)}%</td></tr>`
         probabilityTooltip += '</table>'
 
         $('.matchRating').remove()
@@ -130,7 +126,7 @@ class League {
         const matchRatingParts = {
             expected: {
                 label: 'E[X]',
-                value: I18n.nRounding(expectedValue, this.highPrecisionMode ? 2: 1, 0),
+                value: I18n.nRounding(expectedValue, 2, 0),
                 className: '',
             },
             'win-chance': {

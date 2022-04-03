@@ -19,7 +19,6 @@ export const config = {
     league_promo: 'Mostra informazioni sulla promozione',
     simFight: 'Simulazione Leghe / Stagione / Troll',
     simFight_logging: 'Accesso dettagliato nella console del browser',
-    simFight_highPrecisionMode: 'Modalità ad alta precisione (attenzione: lento!)',
     teamsFilter: 'Filtro delle squadre',
     champions: 'Informazioni sui Campioni',
     champions_poseMatching: 'Aggiungi indicatori di corrispondenza delle pose',
