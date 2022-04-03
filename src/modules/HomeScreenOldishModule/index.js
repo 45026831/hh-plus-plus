@@ -46,6 +46,12 @@ class HomeScreenOldishModule extends CoreModule {
             $clubs = $('[rel=clubs]')
         }
         $clubs.addClass('position-clubs')
+
+        let $leaderboard = $('.quest-container:has([rel=leaderboard])')
+        if (!$leaderboard.length) {
+            $leaderboard = $('[rel=leaderboard]')
+        }
+        $leaderboard.addClass('position-leaderboard')
     }
 }
 

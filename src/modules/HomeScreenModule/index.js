@@ -19,7 +19,14 @@ class HomeScreenModule extends CoreModule {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
-            default: true
+            default: true,
+            subSettings: [
+                {
+                    key: 'leaguePos',
+                    label: I18n.getModuleLabel('config', `${MODULE_KEY}_leaguePos`),
+                    default: false
+                }
+            ]
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
@@ -28,7 +35,7 @@ class HomeScreenModule extends CoreModule {
         return Helpers.isCurrentPage('home')
     }
 
-    run () {
+    run ({leaguePos}) {
         if (this.hasRun || !this.shouldRun()) {return}
 
         styles.use()
@@ -42,6 +49,10 @@ class HomeScreenModule extends CoreModule {
             this.fixMissionsTimer()
             this.forceActivitiesTab()
             this.manageSalaryTimers()
+
+            if (leaguePos) {
+                this.addLeaguePos()
+            }
         })
 
         this.hasRun = true
@@ -307,6 +318,46 @@ class HomeScreenModule extends CoreModule {
         $('#collect_all').append('<span class="script-event-handler-hack"></span>')
 
         TooltipManager.initTooltipType(isMobile, '#collect_all, #collect_all .script-event-handler-hack', false, handleTooltip)
+    }
+
+    addLeaguePos () {
+        const $leaguePos = $('<div class="script-league-pos"></div>')
+        $('[rel=leaderboard]').wrap('<div class="quest-container"></div>').after($leaguePos)
+
+        window.$.ajax({
+            url: '/tower-of-fame.html',
+            success: (data) => {
+                let leaguesListItem
+                let leagueTag
+
+                const playerID = window.Hero.infos.id
+
+                const leaguesListPattern = new RegExp(`leagues_list.push\\( ?(?<leaguesListItem>{"id_player":"${playerID}".*}) ?\\);`)
+                const leagueTagPattern = /league_tag = (?<leagueTag>[1-9]);/
+
+                new DOMParser().parseFromString(data, 'text/html').querySelectorAll('script[type="text/javascript"]').forEach(element => {
+                    const {textContent} = element
+                    if (!textContent) {return}
+                    if (textContent.includes('leagues_list')) {
+                        const matches = textContent.match(leaguesListPattern)
+                        if (matches && matches.groups) {
+                            leaguesListItem = JSON.parse(matches.groups.leaguesListItem)
+                        }
+                    }
+                    if (textContent.includes('league_tag')) {
+                        const matches = textContent.match(leagueTagPattern)
+                        if (matches && matches.groups) {
+                            leagueTag = matches.groups.leagueTag
+                        }
+                    }
+                })
+
+                if (!leaguesListItem || !leagueTag) {return}
+                const {place} = leaguesListItem
+
+                $leaguePos.append(`<div class="script-league-icon script-league-rank script-league-rank-digits-${`${place}`.length}" style="background-image: url(${Helpers.getCDNHost()}/leagues/${leagueTag}.png);">${place}</div>`)
+            }
+        })
     }
 }
 

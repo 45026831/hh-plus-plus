@@ -106,7 +106,8 @@
             }
         }
 
-        .script-home-shortcut-container {
+        .script-home-shortcut-container,
+        .script-league-pos {
             display: flex;
             flex-direction: row;
             justify-content: space-evenly;
@@ -115,9 +116,32 @@
             height: auto;
             margin-top: auto;
             margin-bottom: auto;
+            align-items: center;
 
             a {
                 z-index: 6;
+            }
+        }
+
+        .script-league-pos {
+            .script-league-icon {
+                height: 50px;
+                width: 50px;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .script-league-rank {
+                text-shadow: 1px 1px 1px #000, -1px 1px 1px #000, -1px -1px 1px #000, 1px -1px 1px #000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 24px;
+                z-index: 1;
+
+                &-digits-3 {
+                    font-size: 16px;
+                }
             }
         }
     }

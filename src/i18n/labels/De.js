@@ -24,6 +24,7 @@ export const config = {
     champions_poseMatching: 'Aktiviere Erkennung für passende Champion-Position',
     champions_fixPower: `Heldenstärke in Stärkeanzeige der ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} einbeziehen`,
     homeScreen: 'Homepage Verknüpfungen & Timer',
+    homeScreen_leaguePos:  'Aktuellen Rang in der Liga anzeigen (erstellt zusätzlichen Netzaufruf)',
     resourceBars: 'Ressourcen-Leisten / Booster Tracking',
     popSort: 'PoP-Sortierung und schnelle Navigation',
     seasonStats: 'Saison-Werte',

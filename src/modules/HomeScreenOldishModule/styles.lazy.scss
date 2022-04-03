@@ -16,11 +16,22 @@
             }
         }
 
-        [rel="leaderboard"] {
+        .position-leaderboard {
             position: absolute;
             width: 8.125rem;
             top: 86px;
             left: 253px;
+            flex-direction: column-reverse;
+            width: 8.125rem;
+            align-items: center;
+            &.quest-container {
+                top: 28px;
+            }
+            .script-league-pos {
+                padding-left: 0;
+                padding-bottom: 8px;
+                height: 50px;
+            }
         }
         [rel="activities"] {
             position: absolute;

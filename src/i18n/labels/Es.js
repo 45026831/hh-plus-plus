@@ -25,6 +25,7 @@ export const config = {
     champions_poseMatching: 'Agregar indicadores de coincidencia de pose',
     champions_fixPower: `Incluya poder del héroe en la exhibición del poder ${Helpers.isGH() ? 'del chico' : 'de la chica'}`,
     homeScreen: 'Accesos directos y timers de la pantalla de inicio',
+    homeScreen_leaguePos: 'Mostrar rango de liga actual (hace una llamada de red adicional)',
     resourceBars: 'Barra de recursos / Rastreador de boosters',
     popSort: 'Clasificación de LdP y navegación rápida', //'LdP' being short for 'Lugares de Poder'
     seasonStats: 'Estadísticas de la temporada',

@@ -46,6 +46,7 @@ export const config = {
     champions_poseMatching: 'Add pose match indicators',
     champions_fixPower: `Include Hero power in ${gameConfig.girl} power display`,
     homeScreen: 'Home Screen Shortcuts & Timers',
+    homeScreen_leaguePos: 'Show current league rank (makes extra network call)',
     resourceBars: 'Resource bars / Booster tracking',
     popSort: 'PoP sorting and quick navigation',
     seasonStats: 'Season stats',

@@ -25,6 +25,7 @@ export const config = {
     champions_poseMatching: 'Aggiungi indicatori di corrispondenza delle pose',
     champions_fixPower: `Includi il potere dell'eroe nella mostra del potere ${Helpers.isGH() ? 'delli ragazzi' : 'delle ragazze'}`,
     homeScreen: 'Scorciatoie e timer della schermata principale',
+    homeScreen_leaguePos: 'Mostra la posizione attuale nella lega (crea una chiamata di rete addizionale)',
     resourceBars: 'Barre di risorse / Monitoraggio dei booster',
     popSort: 'LdP ordinamento e navigazione rapida',
     seasonStats: 'Statistiche di stagione',
