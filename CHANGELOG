@@ -1,3 +1,4 @@
+1.12.1: Hiding unnecessary scrollbar in market filter and team filter Element selection (merging PR by rena-jp)
 1.12.0: Replacing stochastic sim with exhaustive recursive sim (merging PR by rena-jp)
 1.11.12: Adding current league position on home screen (off by default)
 1.11.11: Adding subsetting for champion pose match indicators
