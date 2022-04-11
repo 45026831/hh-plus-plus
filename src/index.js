@@ -50,6 +50,7 @@ import {
     ResourceBarsModule,
     RewardShardsModule,
     SeasonStatsModule,
+    SelectableIDStyleTweak,
     StaticBackgroundModule,
     TeamsFilterModule,
     VillainBreadcrumbsModule
@@ -126,6 +127,7 @@ const runScript = () => {
     config.registerModule(new PoseAspectRatioStyleTweak())
     config.registerModule(new ReduceHomeScreenBlurStyleTweak())
     config.registerModule(new HomeScreenRightSideRearrangeStyleTweak())
+    config.registerModule(new SelectableIDStyleTweak())
 
     config.loadConfig()
 
@@ -149,6 +151,8 @@ if (!$) {
 } else if (location.pathname === '/integrations/' && location.hostname.includes('nutaku')) {
     // nutaku post-login home screen, redirect.
     location.replace(`${location.origin}/home.html`)
+} else if (document.getElementById('loading-overlay')) {
+    // loading page, do nothing.
 } else {
     runScript()
 }

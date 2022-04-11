@@ -55,6 +55,7 @@ export const stConfig = {
     poseAspectRatio: `Исправить соотношение сторон у поз ${Helpers.isGH() ? 'парней' : 'девушек'} в битвах`,
     reduceBlur: 'Уменьшить размывание на главном экране',
     homeScreenRightSideRearrange: 'Изменить положение элементов в правой части главного экрана',
+    selectableId: 'В профиле позволить выбирать ID игрока мышкой',
 }
 
 export const villain = {

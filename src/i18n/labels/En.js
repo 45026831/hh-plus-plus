@@ -76,6 +76,7 @@ export const stConfig = {
     poseAspectRatio: `Fix ${gameConfig.girl} pose aspect ratio in battle`,
     reduceBlur: 'Reduce depth-of-field effect on home screen',
     homeScreenRightSideRearrange: 'Rearrange the items on the right side of the home screen',
+    selectableId: 'Make profile user IDs selectable',
 }
 
 export const villain = {

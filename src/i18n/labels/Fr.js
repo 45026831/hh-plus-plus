@@ -55,6 +55,7 @@ export const stConfig = {
     poseAspectRatio: `Corriger les proportions de la pose ${Helpers.isGH() ? 'du mec' : 'de la fille'} en combat`,
     reduceBlur: 'Réduire l\'effet de flou sur l\'écran principal',
     homeScreenRightSideRearrange: 'Réorganiser les éléments sur le côté droit de l\'écran principal',
+    selectableId: 'Rendre l\'ID sélectionnable dans le profil utilisateur',
 }
 
 export const villain = {

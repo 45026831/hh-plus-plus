@@ -54,6 +54,7 @@ export const stConfig = {
     poseAspectRatio: `${Helpers.isGH() ? 'Kerle' : 'Mädchen'} Posen-Seitenverhältnisse im Kampf korrigieren`,
     reduceBlur: 'Reduziere Tiefenschärfe-Effekt auf dem Startbildschirm',
     homeScreenRightSideRearrange: 'Ordne die Elemente auf der rechten Seite des Startbildschirms neu an',
+    selectableId: 'Mache User-ID auswählbar',
 }
 
 export const villain = {

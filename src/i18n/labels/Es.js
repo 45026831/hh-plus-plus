@@ -55,6 +55,7 @@ export const stConfig = {
     poseAspectRatio: `Arreglar la relación de aspecto de la pose ${Helpers.isGH() ? 'del chico' : 'de la chica'} en la batalla`,
     reduceBlur: 'Reducir el efecto de profundidad de campo en la pantalla de inicio',
     homeScreenRightSideRearrange: 'Reorganizar los elementos en el lado derecho de la pantalla de inicio',
+    selectableId: 'Hacer seleccionable el ID de usuario del perfil',
 }
 
 export const villain = {

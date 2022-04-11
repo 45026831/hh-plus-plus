@@ -4,14 +4,18 @@ import Helpers from '../common/Helpers'
 let girlDictionary
 let updated
 
+const upsert = (id, data) => {
+    const existingEntry = girlDictionary.get(id)
+    const upsert = Object.assign({}, existingEntry, data)
+    girlDictionary.set(id, upsert)
+}
+
 const collectFromRewards = (rewards) => {
     if (rewards && rewards.data && rewards.data.shards) {
         girlDictionary = Helpers.getGirlDictionary()
         rewards.data.shards.forEach(({id_girl, value}) => {
             const girlId = `${id_girl}`
-            const girl = girlDictionary.get(girlId) || {}
-            girl.shards = Math.min(value, 100)
-            girlDictionary.set(girlId, girl)
+            upsert(girlId, {shards: Math.min(value, 100)})
         })
         Helpers.setGirlDictionary(girlDictionary)
     }
@@ -91,7 +95,7 @@ class GirlDictionaryCollector {
                 grade,
             }
             if (name) {
-                girlDictionary.set(girlId, girlData)
+                upsert(girlId, girlData)
                 updated = true
             }
         })
@@ -103,7 +107,7 @@ class GirlDictionaryCollector {
                 shards = 100
             }
             if (name) {
-                girlDictionary.set(id, {name, shards, class: parseInt(girlClass, 10), rarity})
+                upsert(id, {name, shards, class: parseInt(girlClass, 10), rarity})
                 updated = true
             }
         })
@@ -122,7 +126,7 @@ class GirlDictionaryCollector {
 
         const {id_girl, name, previous_value: shards, girl_class, rarity} = rewardShards[0]
 
-        girlDictionary.set(id_girl, {name, shards, class: parseInt(girl_class, 10), rarity})
+        upsert(id_girl, {name, shards, class: parseInt(girl_class, 10), rarity})
         updated = true
     }
 
