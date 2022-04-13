@@ -48,6 +48,7 @@ class HaremInfoModule extends CoreModule {
             scCollectAll: 0,
             unlockedScenes: 0,
             totalScenes: 0,
+            levelSum: 0,
             rarities: RARITIES.reduce((acc, rarity) => {acc[rarity] = 0; return acc}, {}),
             caracs: {1: 0, 2: 0, 3: 0},
             elements: ELEMENTS.reduce((acc, element) => {acc[element] = 0; return acc}, {}),
@@ -65,10 +66,10 @@ class HaremInfoModule extends CoreModule {
     }
 
     aggregateStats () {
-        Object.entries(girlsDataList).forEach(([, girl]) => {
+        Object.values(girlsDataList).forEach((girl) => {
             if (!girl.own) {return}
 
-            const {salary, salary_per_hour, rarity, class: carac, element, graded, nb_grades: maxGradeStr, level_cap, awakening_level: awakeningLevelStr} = girl
+            const {salary, salary_per_hour, rarity, class: carac, element, graded, nb_grades: maxGradeStr, level, level_cap, awakening_level: awakeningLevelStr} = girl
             const maxGrade = parseInt(maxGradeStr, 10)
             const awakeningLevel = parseInt(awakeningLevelStr, 10)
 
@@ -80,6 +81,7 @@ class HaremInfoModule extends CoreModule {
             this.aggregates.scPerHour += Math.round(salary_per_hour)
             this.aggregates.unlockedScenes += graded
             this.aggregates.totalScenes += maxGrade
+            this.aggregates.levelSum += parseInt(level)
             if (graded < maxGrade) {
                 this.aggregates.aff += Math.max(Affection[rarity].totalAff(maxGrade) - girl.Affection.cur, 0)
                 let currentGradeSC = 0,
@@ -128,7 +130,7 @@ class HaremInfoModule extends CoreModule {
                     <li>
                         <span hh_title="${this.label('haremLevel')}">
                             <span class="xp-aff-label">${GT.design.Lvl}</span>
-                            <span>${I18n.nThousand(Hero.infos.harem_level)}<br>/ ${I18n.nThousand(GIRL_MAX_LEVEL * this.aggregates.girls)}</span>
+                            <span>${I18n.nThousand(this.aggregates.levelSum)}<br>/ ${I18n.nThousand(GIRL_MAX_LEVEL * this.aggregates.girls)}</span>
                         </span>
                     </li>
                     <li>
