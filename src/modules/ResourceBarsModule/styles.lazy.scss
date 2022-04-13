@@ -137,6 +137,10 @@ body > div > header {
         margin-top: 9px;
         margin-left: 6px;
 
+        .slot.legendary {
+            border: none;
+        }
+
         .circular-progress {
             position: relative;
             height: 24px;
