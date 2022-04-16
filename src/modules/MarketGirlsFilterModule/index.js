@@ -191,7 +191,7 @@ class MarketGirlsFilterModule extends CoreModule {
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
                             <span class="close-filter" />
                             ${Snippets.textInput({id: 'sort_name', label: this.label('searchedName'), placeholder: this.label('girlName'), value: name})}
-                            ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: [1,2,3].map(option => ({label: GT.caracs[option], value: option})), value: carac, className: 'script-filter-carac'})}
+                            ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: ['1','2','3'].map(option => ({label: GT.caracs[option], value: option})), value: carac, className: 'script-filter-carac'})}
                             ${Snippets.selectInput({id: 'sort_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option})), value: element, className: 'script-filter-element'})}
                             ${Snippets.selectInput({id: 'sort_rarity', label: this.label('searchedRarity'), options: ['starting', 'common', 'rare', 'epic', 'legendary', 'mythic'].map(option => ({label: GT.design[`girls_rarity_${option}`], value: option})), value: rarity, className: 'script-filter-rarity rarity-styling'})}
                             ${Snippets.textInput({id: 'sort_level', label: this.label('levelRange'), placeholder: `1-${currentThreshold}`, value: range})}

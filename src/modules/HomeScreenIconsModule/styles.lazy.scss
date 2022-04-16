@@ -3,6 +3,7 @@
     height: 54px;
     opacity: 0.4;
     z-index: 0;
+    pointer-events: none;
 
     .left-side-container > *:nth-child(odd) & {
         left: 0px;
