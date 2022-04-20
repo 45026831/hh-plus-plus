@@ -6,6 +6,7 @@
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
 // @match           https://*.comixharem.com/*
+// @match           https://*.hornyheroes.com/*
 // @run-at          document-body
 // @namespace       https://github.com/45026831/hh-plus-plus
 // @updateURL       https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.meta.js

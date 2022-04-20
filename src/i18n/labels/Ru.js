@@ -56,6 +56,7 @@ export const stConfig = {
     reduceBlur: 'Уменьшить размывание на главном экране',
     homeScreenRightSideRearrange: 'Изменить положение элементов в правой части главного экрана',
     selectableId: 'В профиле позволить выбирать ID игрока мышкой',
+    messengerDarkMode: 'Темная тема для Мессенджера',
 }
 
 export const villain = {

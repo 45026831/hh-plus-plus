@@ -55,6 +55,7 @@ export const stConfig = {
     reduceBlur: 'Reduziere Tiefenschärfe-Effekt auf dem Startbildschirm',
     homeScreenRightSideRearrange: 'Ordne die Elemente auf der rechten Seite des Startbildschirms neu an',
     selectableId: 'Mache User-ID auswählbar',
+    messengerDarkMode: 'Dunkler Modus für den Messenger',
 }
 
 export const villain = {

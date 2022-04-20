@@ -54,7 +54,7 @@ class ResourceBarsModule extends CoreModule {
     }
 
     shouldRun () {
-        return true
+        return !Helpers.isCurrentPage('messenger')
     }
 
     run () {

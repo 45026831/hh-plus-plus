@@ -1,0 +1,79 @@
+$light-bg: #4e4e4e;
+$main-bg: #272727;
+$main-text: #b4b4b4;
+$dark-text: #6b6b6b;
+$gradient-bg: linear-gradient(to right, #686868 0, #4e4e4e 100%);
+$choice-gradient: linear-gradient(to top, $main-bg 0, $main-bg 10%, #f13a94 80%, #f13a94 100%);
+
+.page-messenger {
+    background: $light-bg;
+
+    .left-side-background {
+        background-image: $gradient-bg;
+    }
+
+    #messenger {
+        .sidebar {
+            background-image: none;
+
+            .sidebar-search-container input {
+                background-color: $light-bg;
+            }
+
+            .girl-conversations-container .girl-conversation {
+                .selected-background {
+                    background-color: $main-bg;
+                }
+                .girl-name {
+                    color: $main-text;
+                }
+                .conversation-progress-bar {
+                    background-color: $light-bg;
+                }
+            }
+        }
+
+        .inbox {
+            background: $main-bg;
+            .inbox-header {
+                .inbox-tabs {
+                    .album-tab,
+                    .messages-tab {
+                        background-color: $main-bg;
+                        h4,
+                        & > div > h4 {
+                            color: $main-text;
+
+                            &.tab-title {
+                                color: $main-text;
+                            }
+                        }
+                    }
+                }
+                .top-right-section {
+                    .frame-currency-section,
+                    .reply-currency-section,
+                    .more-info-button,
+                    .close-button {
+                        background-color: $light-bg;
+                    }
+                }
+            }
+
+            .inbox-body {
+                &#messenger-messages {
+                    .chat-title h4 {
+                        background-color: $main-bg;
+                    }
+
+                    .message-container.player-choice {
+                        background-image: $choice-gradient;
+                    }
+                }
+                &#messenger-album > h4 {
+                    color: $main-text;
+                }
+            }
+        }
+    }
+}

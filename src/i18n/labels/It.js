@@ -56,6 +56,7 @@ export const stConfig = {
     reduceBlur: 'Riduci l\'effetto di profondità di campo sulla schermata iniziale',
     homeScreenRightSideRearrange: 'Riorganizza gli elementi sul lato destro della schermata iniziale',
     selectableId: 'Rendi selezionabile l\'ID utente',
+    messengerDarkMode: 'Modo scuro per il messaggero',
 }
 
 export const villain = {

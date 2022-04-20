@@ -77,6 +77,7 @@ export const stConfig = {
     reduceBlur: 'Reduce depth-of-field effect on home screen',
     homeScreenRightSideRearrange: 'Rearrange the items on the right side of the home screen',
     selectableId: 'Make profile user IDs selectable',
+    messengerDarkMode: 'Messenger dark mode',
 }
 
 export const villain = {

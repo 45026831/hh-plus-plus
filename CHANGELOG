@@ -1,3 +1,4 @@
+1.14.0: Adding a tweak to add dark mode to the new messenger feature, enabling the script to run on HoH (will add PH as well when it leaves closed beta)
 1.13.3: Fixing visual bug in population of market girl class filter (#70). Disabling pointer events on home screen icons to prevent blocking of the tooltips
 1.13.2: Fixing harem info panel after harem_level was removed from the Hero global. More style fixes.
 1.13.1: Various style fixes following the latest game update

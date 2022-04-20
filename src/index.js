@@ -38,6 +38,7 @@ import {
     MarketHideSellButtonModule,
     MarketInfoModule,
     MarketXPAffModule,
+    MessengerDarkModeStyleTweak,
     MissionsBackgroundStyleTweak,
     MobileBattleStyleTweak,
     MobileLeagueDarkBackgroundStyleTweak,
@@ -128,6 +129,7 @@ const runScript = () => {
     config.registerModule(new ReduceHomeScreenBlurStyleTweak())
     config.registerModule(new HomeScreenRightSideRearrangeStyleTweak())
     config.registerModule(new SelectableIDStyleTweak())
+    config.registerModule(new MessengerDarkModeStyleTweak())
 
     config.loadConfig()
 
