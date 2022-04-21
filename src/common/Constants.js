@@ -19,7 +19,21 @@ export const colors = {
         panelBorderGradient: 'linear-gradient(180deg, #33a7ff, #33a7ff)',
         panelBackground: 'linear-gradient(180deg,#0f0b1d 0,#0d5c9d 90%,#0d5c9d 100%)',
         panelInset: 'inset 0 0 40px 15px none'
-    }
+    },
+    PSH: {
+        homeDark: 'rgba(32,3,7,.9)',
+        homeBorder: '#ffb827',
+        panelBorderGradient: 'linear-gradient(180deg, #ffa23e, #c41b53)',
+        panelBackground: 'linear-gradient(to top,#572332 0,#572332 1%,#2c1e1c 100%)',
+        panelInset: 'inset 0 0 40px 15px #662034'
+    },
+    HoH: {
+        homeDark: 'rgba(32,3,7,.9)',
+        homeBorder: '#ffb827',
+        panelBorderGradient: 'linear-gradient(180deg, #ffa23e, #c41b53)',
+        panelBackground: 'linear-gradient(to top,#572332 0,#572332 1%,#2c1e1c 100%)',
+        panelInset: 'inset 0 0 40px 15px #662034'
+    },
 }
 
 const lsBaseKey = 'HHPlusPlus'

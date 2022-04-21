@@ -89,10 +89,10 @@ const runScript = () => {
     config.registerModule(new LeagueInfoModule())
     config.registerModule(new BattleSimulatorModule())
     config.registerModule(new TeamsFilterModule())
-    config.registerModule(new ChampionsModule())
+    if (!Helpers.isPSH() && !Helpers.isHoH()) {config.registerModule(new ChampionsModule())}
     config.registerModule(new ResourceBarsModule())
     config.registerModule(new HomeScreenModule())
-    config.registerModule(new PopNavSortModule())
+    if (!Helpers.isPSH() && !Helpers.isHoH()) {config.registerModule(new PopNavSortModule())}
     config.registerModule(new SeasonStatsModule())
     config.registerModule(new PachinkoNamesModule())
     config.registerModule(new ContestRewardsModule())
@@ -105,10 +105,10 @@ const runScript = () => {
     config.registerModule(new DisableDragDropModule())
     config.registerModule(new AutoRefreshModule())
     config.registerModule(new VillainBreadcrumbsModule())
-    config.registerModule(new BlessingSpreadsheetLinkModule())
+    if (!Helpers.isPSH() && !Helpers.isHoH()) {config.registerModule(new BlessingSpreadsheetLinkModule())}
     config.registerModule(new HomeScreenIconsModule())
     config.registerModule(new HomeScreenOrderModule())
-    config.registerModule(new HomeScreenOldishModule())
+    if (!Helpers.isPSH()) {config.registerModule(new HomeScreenOldishModule())}
 
     // style tweaks
     config.registerGroup({

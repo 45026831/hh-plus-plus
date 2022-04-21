@@ -325,6 +325,10 @@ class HaremInfoModule extends CoreModule {
             // CxH doesn't have a wiki, will include link to the spreadsheet elsewhere
             return
         }
+        if (Helpers.isPSH()) {
+            // No wiki or spreadsheet for PH yet
+            return
+        }
 
         const girl = girlsDataList[girlId]
         const wikiLink = Helpers.getWikiLink(girl.name, I18n.getLang())

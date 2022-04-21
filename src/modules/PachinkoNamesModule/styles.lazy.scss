@@ -14,6 +14,10 @@ a.availableGirl {
     height: 82px;
     padding-left: 20px;
     padding-right: 20px;
+
+    .nicescroll-rails {
+        top: 0 !important;
+    }
 }
 
 #playzone-replace-info {

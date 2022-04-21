@@ -17,7 +17,19 @@ const gameConfigs = {
         Girl: 'Girl',
         haremettes: 'haremettes',
         flower: 'jewel'
-    }
+    },
+    PSH: {
+        girl: 'girl',
+        Girl: 'Girl',
+        haremettes: 'haremettes',
+        flower: 'beer'
+    },
+    HoH: {
+        girl: 'girl',
+        Girl: 'Girl',
+        haremettes: 'haremettes',
+        flower: 'flower'
+    },
 }
 const gameConfig = gameConfigs[Helpers.getGameKey()]
 
@@ -104,6 +116,7 @@ export const villain = {
     nymph: 'The Nymph',
     athicus: 'Athicus Ho’ole',
     jockstrap: 'The Mimic',
+    asaakira: 'Headmistress Asa Akira',
     fallback: 'World {{world}} villain',
     event: 'Event',
 }
@@ -301,12 +314,15 @@ export const villainBreadcrumbs = {
     stairway: 'Stairway to heaven',
     training: 'Training Dimension',
     weresquidisland: 'WereSquid Island',
+
     begincitycxh: 'Begin City',
     heroacademy: 'Hero Academy',
     newcenabum: 'New Cenabum',
     ontheprowl: 'On the Prowl',
     bushexplorations: 'Bush Explorations',
     thespy: 'The Spy Who Came Inside Me',
+
+    fukwell: 'Fukwell University',
 }
 
 export const blessingSpreadsheetLink = {

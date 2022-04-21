@@ -4,6 +4,8 @@ import { lsKeys } from './Constants'
 let isHH
 let isGH
 let isCxH
+let isPSH
+let isHoH
 let isNutakuKobans
 let cdnHost
 let girlDictionary
@@ -33,7 +35,7 @@ class Helpers {
 
     static isHH() {
         if (isHH === undefined) {
-            isHH = !(Helpers.isGH() || Helpers.isCxH())
+            isHH = !(Helpers.isGH() || Helpers.isCxH() || Helpers.isPSH() || Helpers.isHoH())
         }
         return isHH
     }
@@ -57,6 +59,23 @@ class Helpers {
         }
         return isCxH
     }
+    static isPSH() {
+        if (isPSH === undefined) {
+            isPSH = [
+                'www.pornstarharem.com',
+                'nutaku.pornstarharem.com'
+            ].includes(Helpers.getHost())
+        }
+        return isPSH
+    }
+    static isHoH() {
+        if (isHoH === undefined) {
+            isHoH = [
+                'www.hornyheroes.com'
+            ].includes(Helpers.getHost())
+        }
+        return isHoH
+    }
     static getGameKey () {
         if (Helpers.isHH()) {
             return 'HH'
@@ -66,6 +85,12 @@ class Helpers {
         }
         if (Helpers.isCxH()) {
             return 'CxH'
+        }
+        if (Helpers.isPSH()) {
+            return 'PSH'
+        }
+        if (Helpers.isHoH()) {
+            return 'HoH'
         }
     }
 

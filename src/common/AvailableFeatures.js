@@ -26,7 +26,7 @@ const countGirls = () => {
 
 class AvailableFeatures {
     get pantheon () {
-        return !Helpers.isCxH() && window.Hero.infos.level >= 15
+        return !Helpers.isCxH() && !Helpers.isPSH() && !Helpers.isHoH() && window.Hero.infos.level >= 15
     }
 
     get leagues () {
@@ -40,10 +40,11 @@ class AvailableFeatures {
 
     get pop () {
         const {Hero: {infos: {questing: {id_world}}}} = window
-        return Helpers.isCxH() ? id_world >= 2 : id_world >= 3
+        return !Helpers.isPSH() && !Helpers.isHoH() && (Helpers.isCxH() ? id_world >= 2 : id_world >= 3)
     }
 
     get champs () {
+        if (Helpers.isPSH() || Helpers.isHoH()) {return false}
         const {Hero: {infos: {questing: {id_quest}}}} = window
         if ((Helpers.isCxH() && id_quest < 3060) || (!Helpers.isCxH() && id_quest < 320)) {
             return false
@@ -53,7 +54,7 @@ class AvailableFeatures {
     }
 
     get clubs () {
-        if (Helpers.isCxH()) {
+        if (Helpers.isCxH() || Helpers.isPSH()|| Helpers.isHoH()) {
             return false
         }
         return countGirls() >= 15

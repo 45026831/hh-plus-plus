@@ -477,5 +477,95 @@ export default {
                 amount: 20,
             }]
         },
+    ],
+    PSH: [
+        {
+            key: 'asaakira',
+            world: 2,
+            girls: {
+                1: ['973280579', '795788039', '261345306'],
+                2: [],
+                3: []
+            },
+            gems: [
+                {
+                    element: 'fire',
+                    amount: 15
+                },
+                {
+                    element: 'sun',
+                    amount: 15
+                }
+            ]
+        },
+    ],
+    HoH: [
+        {
+            key: 'darklord',
+            world: 2,
+            girls: {
+                1: ['8', '9', '10'],
+                2: [],
+                3: []
+            },
+            gems: [
+                {
+                    element: 'fire',
+                    amount: 15
+                },
+                {
+                    element: 'sun',
+                    amount: 15
+                }
+            ]
+        },
+        {
+            key: 'ninjaspy',
+            world: 3,
+            girls: {
+                1: ['14', '13', '12'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'darkness',
+                amount: 15,
+            }, {
+                element: 'light',
+                amount: 15,
+            }]
+        },
+        {
+            key: 'gruntt',
+            world: 4,
+            girls: {
+                1: ['19', '16', '18'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'psychic',
+                amount: 15,
+            }, {
+                element: 'water',
+                amount: 15,
+            }]
+        },
+        {
+            key: 'edwarda',
+            world: 5,
+            girls: {
+                1: ['29', '28', '26'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'nature',
+                amount: 15,
+            }, {
+                element: 'stone',
+                amount: 15,
+            }]
+        },
     ]
 }

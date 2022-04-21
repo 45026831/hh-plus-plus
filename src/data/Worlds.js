@@ -19,6 +19,7 @@ export const HH = [
 ]
 
 export const GH = HH
+export const HoH = HH
 
 export const CxH = [
     '',
@@ -28,4 +29,10 @@ export const CxH = [
     'ontheprowl',
     'bushexplorations',
     'thespy',
+]
+
+export const PSH = [
+    '',
+    'begincity',
+    'fukwell',
 ]
