@@ -28,6 +28,7 @@ export {default as BlessingSpreadsheetLinkModule} from './BlessingSpreadsheetLin
 export {default as HomeScreenIconsModule} from './HomeScreenIconsModule'
 export {default as HomeScreenOrderModule} from './HomeScreenOrderModule'
 export {default as HomeScreenOldishModule} from './HomeScreenOldishModule'
+export {default as FixFontImportModule} from './FixFontImportModule'
 
 export {default as MissionsBackgroundStyleTweak} from './MissionsBackgroundStyleTweak'
 export {default as MoneyAnimationStyleTweak} from './MoneyAnimationStyleTweak'

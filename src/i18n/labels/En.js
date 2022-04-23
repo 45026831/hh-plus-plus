@@ -76,6 +76,7 @@ export const config = {
     homeScreenIcons: 'Add feature icons to home screen links',
     homeScreenOrder: 'Alternative order of home screen links',
     homeScreenOldish: 'Legacy layout of home screen (Not compatible with right-side rearrange Style Tweak)',
+    fixFontImport: 'Fix font import & text stroke'
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

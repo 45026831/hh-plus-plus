@@ -21,6 +21,7 @@ import {
     ContestRewardsModule,
     DisableDragDropModule,
     FightAVillainModule,
+    FixFontImportModule,
     GemStockModule,
     GirlSalaryTimersStyleTweak,
     HaremInfoModule,
@@ -109,6 +110,7 @@ const runScript = () => {
     config.registerModule(new HomeScreenIconsModule())
     config.registerModule(new HomeScreenOrderModule())
     if (!Helpers.isPSH()) {config.registerModule(new HomeScreenOldishModule())}
+    if (Helpers.isPSH()) {config.registerModule(new FixFontImportModule())}
 
     // style tweaks
     config.registerGroup({
