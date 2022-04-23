@@ -109,7 +109,7 @@ const runScript = () => {
     if (!Helpers.isPSH() && !Helpers.isHoH()) {config.registerModule(new BlessingSpreadsheetLinkModule())}
     config.registerModule(new HomeScreenIconsModule())
     config.registerModule(new HomeScreenOrderModule())
-    if (!Helpers.isPSH()) {config.registerModule(new HomeScreenOldishModule())}
+    config.registerModule(new HomeScreenOldishModule())
     if (Helpers.isPSH()) {config.registerModule(new FixFontImportModule())}
 
     // style tweaks
