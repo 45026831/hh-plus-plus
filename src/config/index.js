@@ -186,20 +186,52 @@ class Config {
     }).join('')}
                 </div>
             </div>`
-    ).join('')}`
+    ).join('')}
+            <div class="credits-panel">${this.buildCreditsPane()}</div>`
         )
     }
 
+    buildCreditsPane () {
+        const {CHANGELOG, SPECIAL_THANKS} = window.HHPlusPlus
+        const {script: scriptInfo} = GM_info
+
+        console.log('changelog', CHANGELOG)
+        console.log('special thanks', SPECIAL_THANKS)
+        console.log('script info', scriptInfo)
+        const {CODE_CONTRIBUTIONS, TRANSLATIONS} = SPECIAL_THANKS
+        const {name, author, version} = scriptInfo
+
+        return `
+        <div class="credits-contents">
+            <span>You're running ${name} <a class="changelog" generic-tooltip="Click to open CHANGELOG" href="${CHANGELOG}" target="_blank">v${version}</a> by ${author}</span>
+            <h2>Special Thanks</h2>
+            <div class="thanks-container">
+                <div class="thanks-code">
+                <h3>Code Contributions</h3>
+                <ul>${CODE_CONTRIBUTIONS.map(credit => `<li>${credit}</li>`).join('')}</ul>
+                </div>
+                <div class="thanks-translations">
+                <h3>Translations</h3>
+                <ul>${Object.entries(TRANSLATIONS).map(([credit, langs]) => `<li>${credit} ${langs.map(lang => `<span class="country country-${lang}"></span>`).join('')}</li>`).join('')}</ul>
+            </div>
+        </div>
+        `
+    }
+
     renderConfigPane () {
+        const $creditsButton = $('<span class="blue_circular_btn toggle-credits"><span class="info_icn"></span></span>')
+        $creditsButton.click(this.toggleCredits.bind(this))
         const $closePaneButton = $('<span class="close-config-panel" />')
         $closePaneButton.click(this.closeConfigPane.bind(this))
 
         this.$configPane = $('<div class="hh-plus-plus-config-panel"></div>')
             .append(this.buildConfigPaneContent())
             .prepend($closePaneButton)
+            .prepend($creditsButton)
         $('#contains_all').append(this.$configPane)
 
         this.$configPane.find('.group-panel').niceScroll('.panel-contents', {bouncescroll: false})
+        this.$configPane.find('.credits-panel').niceScroll('.credits-contents', {bouncescroll: false})
         this.setupEvents()
         this.selectConfigTab(this.groups[0].key)
     }
@@ -225,10 +257,28 @@ class Config {
     }
 
     selectConfigTab(key) {
+        this.currentKey = key
+        $('.hh-plus-plus-config-panel .credits-panel').removeClass('shown')
         $('.hh-plus-plus-config-panel .tabs h4').removeClass('selected')
         $(`.hh-plus-plus-config-panel .tabs h4[rel=${key}]`).addClass('selected')
         $('.hh-plus-plus-config-panel .group-panel').removeClass('shown')
         $(`.hh-plus-plus-config-panel .group-panel[rel=${key}]`).addClass('shown').getNiceScroll().resize()
+        this.creditsShown = false
+    }
+
+    toggleCredits() {
+        if (this.creditsShown) {
+            const key = this.currentKey
+            $('.hh-plus-plus-config-panel .credits-panel').removeClass('shown')
+            $(`.hh-plus-plus-config-panel .tabs h4[rel=${key}]`).addClass('selected')
+            $(`.hh-plus-plus-config-panel .group-panel[rel=${key}]`).addClass('shown').getNiceScroll().resize()
+            this.creditsShown = false
+        } else {
+            $('.hh-plus-plus-config-panel .credits-panel').addClass('shown').getNiceScroll().resize()
+            $('.hh-plus-plus-config-panel .tabs h4').removeClass('selected')
+            $('.hh-plus-plus-config-panel .group-panel').removeClass('shown')
+            this.creditsShown = true
+        }
     }
 
     setupEvents () {

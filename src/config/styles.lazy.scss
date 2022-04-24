@@ -38,7 +38,8 @@
         display: block;
     }
 
-    .group-panel {
+    .group-panel,
+    .credits-panel {
         display: none;
         position: absolute;
         top: 54px;
@@ -106,6 +107,42 @@
                 -webkit-box-shadow: unset;
             }
         }
+    }
+
+    .credits-panel {
+        .credits-contents {
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        .changelog {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        h2 {
+            font-size: 24px;
+        }
+
+        h3 {
+            margin: 0;
+        }
+
+        ul {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .thanks-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .toggle-credits {
+        position: absolute;
+        top: 6px;
+        right: 56px;
     }
 
     .nicescroll-rails {
