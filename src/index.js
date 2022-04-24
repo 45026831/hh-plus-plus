@@ -123,7 +123,7 @@ const runScript = () => {
     config.registerModule(new MobileBattleStyleTweak())
     config.registerModule(new MobileLeagueDarkBackgroundStyleTweak())
     config.registerModule(new HideRotateDeviceStyleTweak())
-    if (Helpers.isCxH()) {
+    if (Helpers.isCxH() || Helpers.isPSH()) {
         config.registerModule(new GirlSalaryTimersStyleTweak())
     }
     config.registerModule(new MoveSkipButtonStyleTweak())

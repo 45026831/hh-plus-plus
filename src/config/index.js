@@ -194,10 +194,6 @@ class Config {
     buildCreditsPane () {
         const {CHANGELOG, SPECIAL_THANKS} = window.HHPlusPlus
         const {script: scriptInfo} = GM_info
-
-        console.log('changelog', CHANGELOG)
-        console.log('special thanks', SPECIAL_THANKS)
-        console.log('script info', scriptInfo)
         const {CODE_CONTRIBUTIONS, TRANSLATIONS} = SPECIAL_THANKS
         const {name, author, version} = scriptInfo
 
