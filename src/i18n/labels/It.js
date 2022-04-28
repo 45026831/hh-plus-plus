@@ -43,6 +43,7 @@ export const config = {
     homeScreenIcons: 'Aggiungi le icone delle funzioni ai link della schermata iniziale',
     homeScreenOrder: 'Disposizione alternativa dei link nella schermata iniziale',
     homeScreenOldish: 'Vecchia schermata iniziale (Non compatibile con l\'ottimizzazione dello stile riorganizzato sul lato destro)',
+    overridePachinkoConfirm: 'Disattiva i pop-up di avviso "Nessuna ragazza disponibile" in Pachinko/NC'
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',

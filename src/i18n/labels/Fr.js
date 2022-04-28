@@ -43,6 +43,7 @@ export const config = {
     homeScreenIcons: 'Ajouter des icônes aux menus de l\'écran principal',
     homeScreenOrder: 'Ordre alternatif des menus de l\'écran principal',
     homeScreenOldish: 'Mise en page d\'origine de l\'écran principal (incompatible avec la réorganisation des éléments à droite)',
+    overridePachinkoConfirm: `Désactive l'avertissement "Pas de ${Helpers.isGH() ? 'mec' : 'fille'} disponible" dans le Pachinko/NC`,
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',

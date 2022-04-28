@@ -76,7 +76,8 @@ export const config = {
     homeScreenIcons: 'Add feature icons to home screen links',
     homeScreenOrder: 'Alternative order of home screen links',
     homeScreenOldish: 'Legacy layout of home screen (Not compatible with right-side rearrange Style Tweak)',
-    fixFontImport: 'Fix font import & text stroke'
+    fixFontImport: 'Fix font import & text stroke',
+    overridePachinkoConfirm: `Disable the "No ${gameConfig.Girl}s Available" warning pop-ups in Pachinko/NC`,
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

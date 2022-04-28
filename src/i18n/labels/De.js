@@ -42,6 +42,7 @@ export const config = {
     homeScreenIcons: 'Füge Feature-Symbole zu den Links auf dem Startbildschirm hinzu',
     homeScreenOrder: 'Alternative Anordnung der Links auf dem Startbildschirm',
     homeScreenOldish: 'Altes Startbildschirm-Layout (Nicht kompatibel mit rechtsseitiger reorganisierter Stil-Optimierung)',
+    overridePachinkoConfirm: `Warn-Pop-ups "Keine ${Helpers.isGH() ? 'Jungs' : 'Mädchen'} verfügbar" in Pachinko/NC deaktivieren`,
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

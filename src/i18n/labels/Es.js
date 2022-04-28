@@ -43,6 +43,7 @@ export const config = {
     homeScreenIcons: 'Agregar íconos de funciones a los enlaces de la pantalla de inicio',
     homeScreenOrder: 'Orden alternativo de los enlaces de la pantalla de inicio',
     homeScreenOldish: 'Diseño viejo de la pantalla de inicio (No es compatible con la optimización del estilo reorganizado en el lado derecho)',
+    overridePachinkoConfirm: `Desactivar las ventanas emergentes de advertencia "No hay ${Helpers.isGH() ? 'chicos' : 'chicas'} disponibles" en Pachinko/NC`
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',

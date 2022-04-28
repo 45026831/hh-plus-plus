@@ -45,6 +45,7 @@ import {
     MobileLeagueDarkBackgroundStyleTweak,
     MoneyAnimationStyleTweak,
     MoveSkipButtonStyleTweak,
+    OverridePachinkoConfirmModule,
     PachinkoNamesModule,
     PopNavSortModule,
     PoseAspectRatioStyleTweak,
@@ -111,6 +112,7 @@ const runScript = () => {
     config.registerModule(new HomeScreenOrderModule())
     config.registerModule(new HomeScreenOldishModule())
     if (Helpers.isPSH()) {config.registerModule(new FixFontImportModule())}
+    config.registerModule(new OverridePachinkoConfirmModule())
 
     // style tweaks
     config.registerGroup({
