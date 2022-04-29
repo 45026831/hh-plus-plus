@@ -14,6 +14,23 @@ const {$} = Helpers
 
 const MODULE_KEY = 'homeScreen'
 
+const makeEnergyBarHTML = ({type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max}) => {
+    const {GT} = window
+    return `
+        <div class="energy_counter" type="${type}" id="canvas_${type}_energy">
+            <div class="energy_counter_amount_container">
+                <div class="energy_counter_icon"><span class="${iconClass}"></span></div>
+                <div class="energy_counter_amount">
+                    <span energy>${currentVal}</span>/<span rel="max">${max}</span>
+                </div>
+            </div>
+            <span rel="count_txt" timeforsinglepoint="${timeForSinglePoint}" ${currentVal >= max ? 'style="display:none;"' : `timeonload="${timeOnLoad}"`}>
+                ${GT.design.more_in} <span rel="count"></span>
+            </span>
+        </div>
+    `
+}
+
 class HomeScreenModule extends CoreModule {
     constructor () {
         super({
@@ -49,6 +66,7 @@ class HomeScreenModule extends CoreModule {
             this.fixMissionsTimer()
             this.forceActivitiesTab()
             this.manageSalaryTimers()
+            this.addReplyTimer()
 
             if (leaguePos) {
                 this.addLeaguePos()
@@ -358,6 +376,60 @@ class HomeScreenModule extends CoreModule {
                 $leaguePos.append(`<div class="script-league-icon script-league-rank script-league-rank-digits-${`${place}`.length}" style="background-image: url(${Helpers.getCDNHost()}/leagues/${leagueTag}.png);">${place}</div>`)
             }
         })
+    }
+
+    addReplyTimer () {
+        const $messenger = $('.messenger-link')
+        if (!$messenger.length) {return}
+        const {Hero} = window
+        const {energies: {reply}} = Hero
+        if (!reply) {return}
+
+        const type = 'reply'
+        const {amount, max_amount, seconds_per_point, next_refresh_ts} = reply
+
+        const $replyTimer = Helpers.$(makeEnergyBarHTML({type: 'reply', iconClass: 'messenger_reply_currency_icn', currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts}))
+
+        $messenger.append($replyTimer)
+
+        if (amount < max_amount) {
+            if (!Hero.c) {
+                Hero.c = {}
+            }
+
+            let newTimer
+            const existingTimer = Object.values(HHTimers.timers).find(timer => timer.type === type)
+            let existingOnDestroy
+            const selector = `.energy_counter[type="${type}"]`
+            const destroyExistingTimer = (existingTimer) => {
+                existingOnDestroy = existingTimer.onDestroy
+                existingTimer.onDestroy = () => {}
+                existingTimer.destroy()
+            }
+            const addTimer = () => {
+                newTimer = HHTimers.initEnergyTimer($(selector))
+                Hero.c[type] = newTimer
+                if (existingOnDestroy) {
+                    Hero.c[type].onDestroy = existingOnDestroy
+                }
+            }
+            if (existingTimer) {
+                destroyExistingTimer(existingTimer)
+            } else {
+                setTimeout(()=> {
+                    // Try and catch where the game tries to add another timer after we've already added ours.
+                    const duplicateTimer = Object.values(HHTimers.timers).find(({type: ttype, $elm}) => ttype === type && $elm.selector !== selector)
+                    if (duplicateTimer) {
+                        destroyExistingTimer(duplicateTimer)
+                        if (existingOnDestroy) {
+                            newTimer.onDestroy = existingOnDestroy
+                            Hero.c[type] = newTimer
+                        }
+                    }
+                }, 10)
+            }
+            addTimer()
+        }
     }
 }
 

@@ -279,3 +279,35 @@
     > a {
     display: block;
 }
+
+$messenger-primary: #fff;
+$messenger-secondary: #000;
+
+.messenger-link .energy_counter {
+    position: absolute;
+    color: $messenger-primary;
+    text-shadow: 1px 1px 0px $messenger-secondary, -1px 1px 0px $messenger-secondary, -1px -1px 0px $messenger-secondary,
+        1px -1px 0px $messenger-secondary;
+    text-align: center;
+
+    .energy_counter_amount_container {
+        display: flex;
+        align-items: center;
+
+        .energy_counter_amount {
+            display: flex;
+            align-items: baseline;
+            font-size: 12px;
+            [energy] {
+                font-size: 20px;
+            }
+        }
+    }
+    [rel="count_txt"] {
+        font-size: 14px;
+        line-height: 16px;
+        [rel="count"] {
+            display: block;
+        }
+    }
+}
