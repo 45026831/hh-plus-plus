@@ -192,7 +192,7 @@ class Config {
     }
 
     buildCreditsPane () {
-        const {CHANGELOG, SPECIAL_THANKS} = window.HHPlusPlus
+        const {CHANGELOG, SPECIAL_THANKS, BMAC} = window.HHPlusPlus
         const {script: scriptInfo} = GM_info
         const {CODE_CONTRIBUTIONS, TRANSLATIONS} = SPECIAL_THANKS
         const {name, author, version} = scriptInfo
@@ -203,13 +203,15 @@ class Config {
             <h2>Special Thanks</h2>
             <div class="thanks-container">
                 <div class="thanks-code">
-                <h3>Code Contributions</h3>
-                <ul>${CODE_CONTRIBUTIONS.map(credit => `<li>${credit}</li>`).join('')}</ul>
+                    <h3>Code Contributions</h3>
+                    <ul>${CODE_CONTRIBUTIONS.map(credit => `<li>${credit}</li>`).join('')}</ul>
                 </div>
                 <div class="thanks-translations">
-                <h3>Translations</h3>
-                <ul>${Object.entries(TRANSLATIONS).map(([credit, langs]) => `<li>${credit} ${langs.map(lang => `<span class="country country-${lang}"></span>`).join('')}</li>`).join('')}</ul>
+                    <h3>Translations</h3>
+                    <ul>${Object.entries(TRANSLATIONS).map(([credit, langs]) => `<li>${credit} ${langs.map(lang => `<span class="country country-${lang}"></span>`).join('')}</li>`).join('')}</ul>
+                </div>
             </div>
+            <span>Enjoying the script? Want to throw money at me for some reason? You can <a href="${BMAC}" target="_blank">Buy Me A Coffee</a> if you like.</span>
         </div>
         `
     }

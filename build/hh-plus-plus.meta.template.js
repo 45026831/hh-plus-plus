@@ -50,7 +50,8 @@ window.HHPlusPlus={
             'Uxio': ['fr'],
             'Vampi': ['es'],
         }
-    }
+    },
+    BMAC: 'https://www.buymeacoffee.com/45026831'
 };
 
 // WARNING: This file has been generated, DO NOT EDIT.

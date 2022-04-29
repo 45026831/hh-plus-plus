@@ -137,6 +137,10 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
         }
+
+        a {
+            color: inherit;
+        }
     }
 
     .toggle-credits {
