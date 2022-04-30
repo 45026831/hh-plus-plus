@@ -1,3 +1,4 @@
+1.15.4: Adjusting the sidequest status collector to rely on the game putting the current active sidequest at the top (#71)
 1.15.3: Adding BMAC link to credits page
 1.15.2: Adding reply energy timer to the home screen timers module
 1.15.1: Adjusting position of profile promo text to avoid it overlapping breadcrumbs. Adding more translations for the pachinko popup override

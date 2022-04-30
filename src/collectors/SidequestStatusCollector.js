@@ -37,7 +37,7 @@ class SidequestStatusCollector {
                 if (xpReward) {
                     energySpendAvailable = true
                     continueLink = $el.find('a.Continue, a.Begin').attr('href')
-                    // return false
+                    return false
                 }
             }
         })
