@@ -44,9 +44,9 @@ class AvailableFeatures {
     }
 
     get champs () {
-        if (Helpers.isPSH() || Helpers.isHoH()) {return false}
+        if (Helpers.isHoH()) {return false}
         const {Hero: {infos: {questing: {id_quest}}}} = window
-        if ((Helpers.isCxH() && id_quest < 3060) || (!Helpers.isCxH() && id_quest < 320)) {
+        if ((Helpers.isCxH() && id_quest < 3060) || (Helpers.isPSH() && id_quest < 2040) || (!Helpers.isCxH() && id_quest < 320)) {
             return false
         }
 
