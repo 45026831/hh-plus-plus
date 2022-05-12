@@ -329,9 +329,12 @@ class ChampionsModule extends CoreModule {
     }
 
     fasterSkipButton () {
-        Helpers.onAjaxResponse(/class=TeamBattle/i, () => {
+        Helpers.onAjaxResponse(/class=TeamBattle/i, (response) => {
             const observer = new MutationObserver(() => {
                 if ($('button.skip-button').length) {
+                    $('button.skip-button').click(() => {
+                        $('.rounds-info__counter .placeholder-num').text(response.battle.length)
+                    })
                     $('button.skip-button').show()
                     observer.disconnect()
                 }
