@@ -60,9 +60,7 @@ class LeagueInfoCollector {
             // rollover
             Helpers.lsSet(lsKeys.LEAGUE_TIME, leagueEndTime)
 
-            setTimeout(() => {
-                $(document).trigger('league:rollover')
-            }, 100)
+            $(document).trigger('league:rollover')
         }
     }
 

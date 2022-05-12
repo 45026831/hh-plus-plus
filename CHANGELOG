@@ -1,3 +1,4 @@
+1.15.8: Reversing the rollover event fire delay from 1.15.5 as that only made it worse
 1.15.7: Showing ending champ round when skipping
 1.15.6: Adding back champs support for PSH
 1.15.5: Minor fix to delay the firing of the league rollover event and hide the shard rewards in the pantheon
