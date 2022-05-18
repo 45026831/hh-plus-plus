@@ -119,6 +119,7 @@ export const villain = {
     athicus: 'Athicus Ho’ole',
     jockstrap: 'The Mimic',
     asaakira: 'Headmistress Asa Akira',
+    sammyjayne: 'Sammy Jayne',
     fallback: 'World {{world}} villain',
     event: 'Event',
 }
@@ -325,6 +326,7 @@ export const villainBreadcrumbs = {
     thespy: 'The Spy Who Came Inside Me',
 
     fukwell: 'Fukwell University',
+    eurodick: 'Eurodick',
 }
 
 export const blessingSpreadsheetLink = {

@@ -21,7 +21,6 @@ import {
     ContestRewardsModule,
     DisableDragDropModule,
     FightAVillainModule,
-    FixFontImportModule,
     GemStockModule,
     GirlSalaryTimersStyleTweak,
     HaremInfoModule,
@@ -111,7 +110,6 @@ const runScript = () => {
     config.registerModule(new HomeScreenIconsModule())
     config.registerModule(new HomeScreenOrderModule())
     config.registerModule(new HomeScreenOldishModule())
-    if (Helpers.isPSH()) {config.registerModule(new FixFontImportModule())}
     config.registerModule(new OverridePachinkoConfirmModule())
 
     // style tweaks
@@ -125,7 +123,7 @@ const runScript = () => {
     config.registerModule(new MobileBattleStyleTweak())
     config.registerModule(new MobileLeagueDarkBackgroundStyleTweak())
     config.registerModule(new HideRotateDeviceStyleTweak())
-    if (Helpers.isCxH() || Helpers.isPSH()) {
+    if (Helpers.isCxH()) {
         config.registerModule(new GirlSalaryTimersStyleTweak())
     }
     config.registerModule(new MoveSkipButtonStyleTweak())

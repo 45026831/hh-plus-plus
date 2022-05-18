@@ -498,6 +498,43 @@ export default {
                 }
             ]
         },
+        {
+            key: 'sammyjayne',
+            world: 3,
+            girls: {
+                1: ['833308213', '658322339', '482529771'],
+                2: [],
+                3: []
+            },
+            gems: [
+                {
+                    element: 'darkness',
+                    amount: 15
+                },
+                {
+                    element: 'light',
+                    amount: 15
+                }
+            ]
+        },
+        {
+            world: 4,
+            girls: {
+                1: [],
+                2: [],
+                3: []
+            },
+            gems: [
+                {
+                    element: 'psychic',
+                    amount: 15
+                },
+                {
+                    element: 'water',
+                    amount: 15
+                }
+            ]
+        },
     ],
     HoH: [
         {

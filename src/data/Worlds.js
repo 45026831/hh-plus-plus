@@ -35,4 +35,5 @@ export const PSH = [
     '',
     'begincity',
     'fukwell',
+    'eurodick',
 ]
