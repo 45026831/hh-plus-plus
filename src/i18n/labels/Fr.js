@@ -231,6 +231,7 @@ export const seasonStats = {
 
 export const pachinkoNames = {
     availableGirls: `${Helpers.isGH() ? 'Mecs' : 'Filles'} disponibles: `,
+    poolGirls: 'Pool actuel: ',
 }
 
 export const contestSummary = {

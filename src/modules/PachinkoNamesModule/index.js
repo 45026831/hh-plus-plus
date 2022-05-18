@@ -31,8 +31,10 @@ class PachinkoNamesModule extends CoreModule {
 
             pachinkoDef.forEach(({type, content}) => {
                 const rewardGirls = (content && content.rewards && content.rewards.girl_shards && content.rewards.girl_shards.plain_data) || []
+                const poolGirls = (content && content.girls_pool && content.girls_pool.girl_shards && content.girls_pool.girl_shards.plain_data) || []
                 const girlList = rewardGirls.map(({id_girl}) => girlDictionary.get(id_girl))
-                this.girlLists[type] = girlList
+                const girlPool = poolGirls.map(({id_girl}) => ({...girlDictionary.get(id_girl), id_girl}))
+                this.girlLists[type] = {girlList, girlPool}
             })
 
             const deferredAttachment = () => {
@@ -60,14 +62,21 @@ class PachinkoNamesModule extends CoreModule {
 
     applyPanel () {
         const type = $('.playing-zone').attr('type-panel')
-        const girlList = this.girlLists[type]
+        const {girlList, girlPool} = this.girlLists[type]
 
         const isCxH = Helpers.isCxH()
+        const isPSH = Helpers.isPSH()
         const $panelHtml = Helpers.$(`
             <div class="availableGirls rarity-styling">
                 <div class="scrollArea">
-                    ${girlList.length ? this.label('availableGirls') : ''}
-                    ${girlList.map(girl => girl ? `<${isCxH ? 'span' : `a href="${Helpers.getWikiLink(girl.name)}" target="_blank"`} class="availableGirl ${girl.rarity}-text">${girl.name.replace(' ', ' ')}</${isCxH ? 'span': 'a'}>` : '<span class="unknownGirl">Unknown</a>').join(', ')}
+                    <div class="availableOnly">
+                        ${girlList.length ? this.label('availableGirls') : ''}
+                        ${girlList.map(girl => girl ? `<${isCxH || isPSH ? 'span' : `a href="${Helpers.getWikiLink(girl.name)}" target="_blank"`} class="availableGirl ${girl.rarity}-text">${girl.name.replace(' ', ' ')}</${isCxH || isPSH ? 'span': 'a'}>` : '<span class="unknownGirl">Unknown</span>').join(', ')}
+                    </div>
+                    <div class="fullPool">
+                        ${girlPool.length ? this.label('poolGirls') : ''}
+                        ${girlPool.map(girl => girl ? `<a href="/harem/${girl.id_girl}" class="availableGirl ${girl.rarity}-text">${girl.name.replace(' ', ' ')}</a>` : '<span class="unknownGirl">Unknown</span>').join(', ')}
+                    </div>
                 </div>
             </div>
         `)

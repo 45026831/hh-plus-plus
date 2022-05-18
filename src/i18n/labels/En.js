@@ -290,7 +290,8 @@ export const seasonStats = {
 }
 
 export const pachinkoNames = {
-    availableGirls: `Available ${gameConfig.girl}s: `
+    availableGirls: `Available ${gameConfig.girl}s: `,
+    poolGirls: 'Current pool: ',
 }
 
 export const contestSummary = {
