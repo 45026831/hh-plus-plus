@@ -243,6 +243,7 @@ export const seasonStats = {
 
 export const pachinkoNames = {
     availableGirls: `Доступные ${Helpers.isGH() ? 'парни' : 'девушки'}: `,
+    poolGirls: 'Текущий выбор: ',
 }
 
 export const contestSummary = {
