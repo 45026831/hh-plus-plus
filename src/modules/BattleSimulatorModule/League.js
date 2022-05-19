@@ -45,9 +45,11 @@ class League {
             chance: opponentCrit,
             damage: opponentAtk,
             defense: opponentDef,
-            total_ego: opponentEgo,
+            remaining_ego: opponentRemainingEgo,
+            total_ego: opponentTotalEgo,
             nickname: name
         } = playerLeaguesData
+        const opponentEgo = opponentRemainingEgo || opponentTotalEgo
         const {
             team: opponentTeam
         } = playerLeaguesData
