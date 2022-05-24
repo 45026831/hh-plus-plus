@@ -189,7 +189,7 @@ class MarketGirlsFilterModule extends CoreModule {
                     return $(`
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
-                            <span class="close-filter" />
+                            <span class="close-filter"></span>
                             ${Snippets.textInput({id: 'sort_name', label: this.label('searchedName'), placeholder: this.label('girlName'), value: name})}
                             ${Snippets.selectInput({id: 'sort_class', label: this.label('searchedClass'), options: ['1','2','3'].map(option => ({label: GT.caracs[option], value: option})), value: carac, className: 'script-filter-carac'})}
                             ${Snippets.selectInput({id: 'sort_element', label: this.label('searchedElement'), options: ['fire', 'nature', 'stone', 'sun', 'water', 'darkness', 'light', 'psychic'].map(option => ({label: GT.design[`${option}_flavor_element`], value: option})), value: element, className: 'script-filter-element'})}
@@ -212,7 +212,7 @@ class MarketGirlsFilterModule extends CoreModule {
                         return $(`
                     <div style="position:relative">
                         <div class="team-selection" style="display: none;">
-                            <span class="close-team-selection" />
+                            <span class="close-team-selection"></span>
                             ${this.label('visitTeams')}
                         </div>
                     </div>`)
@@ -221,7 +221,7 @@ class MarketGirlsFilterModule extends CoreModule {
                     return $(`
                 <div style="position:relative">
                     <div class="team-selection" style="display: none;">
-                        <span class="close-team-selection" />
+                        <span class="close-team-selection"></span>
                         <div class="teams-grid-container rarity-background">
                             ${teamIds.map(teamId => teamsDict[teamId]).map(team => `
                                 <div class="team-slot-container ${team.iconRarity}" data-id-team="${team.teamId}" data-girl-ids='${JSON.stringify(team.girls)}'>

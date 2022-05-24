@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.15.14
+// @version         1.15.15
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -142,7 +142,7 @@ window.HHPlusPlus={CHANGELOG:"https://raw.githubusercontent.com/45026831/hh-plus
         `}},_i="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDI0IDI0IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIGZpbGw9IiNGRkZGRkYiPjxnPjxwYXRoIGQ9Ik0wLDBoMjQgTTI0LDI0SDAiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNNyw2aDEwbC01LjAxLDYuM0w3LDZ6IE00LjI1LDUuNjFDNi4yNyw4LjIsMTAsMTMsMTAsMTN2NmMwLDAuNTUsMC40NSwxLDEsMWgyYzAuNTUsMCwxLTAuNDUsMS0xdi02IGMwLDAsMy43Mi00LjgsNS43NC03LjM5QzIwLjI1LDQuOTUsMTkuNzgsNCwxOC45NSw0SDUuMDRDNC4yMSw0LDMuNzQsNC45NSw0LjI1LDUuNjF6Ii8+PHBhdGggZD0iTTAsMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+PC9nPjwvc3ZnPg==",xi=["fire","nature","stone","sun","water","darkness","light","psychic"],wi={fire:"Eccentric",nature:"Exhibitionist",stone:"Physical",sun:"Playful",water:"Sensual",darkness:"Dominatrix",light:"Submissive",psychic:"Voyeurs"};var ki=jc(546),Si={};ki.Z&&ki.Z.locals&&(Si.locals=ki.Z.locals);var $i,Ti=0,Ci={};Ci.styleTagTransform=xe(),Ci.setAttributes=l(),Ci.insert=we().bind(null,"head"),Ci.domAPI=_e(),Ci.insertStyleElement=be(),Si.use=function(e){return Ci.options=e||{},Ti++||($i=ve()(ki.Z,Ci)),Si},Si.unuse=function(){0<Ti&&!--Ti&&($i(),$i=null)};const Li=Si,Mi=M["$"],Ii="marketGirlsFilter",Ai={carac:"all",rarity:"all",element:"all",affCategory:"all",affLvl:"all",name:"",range:"",team:null,levelCap:"all"};const Ei=class extends U{constructor(){super({baseKey:Ii,label:Ja.getModuleLabel("config",Ii),default:!0}),this.label=Ja.getModuleLabel.bind(this,Ii)}shouldRun(){return M.isCurrentPage("shop")}run(){if(!this.hasRun&&this.shouldRun()){Li.use();const t=()=>{this.injectCSSVars();const p=e=>{M.lsSet(f.MARKET_GIRLS_FILTER,e)},x=()=>Object.assign({},Ai,M.lsGet(f.MARKET_GIRLS_FILTER));let w=Mi(".g1>div");const k=w.find(".number.selected, .nav_placement");let n=parseInt(k.text().split("/")[0]);k.empty().text("/"),w.find(".number:not(.selected)").remove();let S=Array.from(w.find(".girl-ico").toArray(),e=>Mi(e)),$=w.children(".girl-ico").length,T=Mi(`<span>${$}</span>`);k.append(T);let s=Mi(`<span contenteditable>${n}</span>`);function r(e=n){return(e-1+1)%$+1}function o(e=n){return(e-1+$-1)%$+1}function l(e=n){return w.children(".girl-ico").eq(e-1)}function C(){let e=l();e.addClass("not-selected"),l(o()).css("left","-145px"),e.css("left","-145px"),l(r()).css("left","-145px")}function L(e,t=!0,a=!0){a&&C();let i=l(e);i.removeClass("not-selected"),l(o(e)).css("left","0px"),l(r(e)).css("left","290px"),i.css("left","145px"),window.$girl=i,t&&s.text(e),n=e,function(){const e=window["$girl"];{var t,a,i,n;e.attr("class").includes("girl")&&({level:t,name:a,element_data:i,class:n}=e.data("g"),Mi("#girls_list>.level_target_squared>div>div").attr("chars",t.length),Mi("#girls_list>.level_target_squared>div>div").text(t),Mi("#girls_list>h3").text(a),i?Mi("#girls_list>.icon").attr("src",`${M.getCDNHost()}/pictures/girls_elements/${wi[i.type]}.png`):Mi("#girls_list>.icon").attr("carac",n))}}(),Mi(document).trigger("market:selected-girl-changed")}k.prepend(s),s.on("input",()=>{var e=parseInt(s.text());e<=0||e>$||!Number.isFinite(e)||L(e,!1)});let e=w.parent().find('span[nav="left"]');e.off("click"),e.on("click",()=>{L(o())});let t=w.parent().find('span[nav="right"]');t.off("click"),t.on("click",()=>{L(r())});(()=>{const o=()=>{var e=e=>({label:this.label(`grade${e}`),value:e}),{carac:t,rarity:a,element:i,name:n,range:s,affCategory:r,affLvl:o,levelCap:l}=x(),c=M.getAwakeningThreshold(),c=c?c.currentThreshold:GIRL_MAX_LEVEL;return Mi(`
                     <div style="position:relative">
                         <div id="arena_filter_box" class="form-wrapper" style="display: none;">
-                            <span class="close-filter" />
+                            <span class="close-filter"></span>
                             ${yi.textInput({id:"sort_name",label:this.label("searchedName"),placeholder:this.label("girlName"),value:n})}
                             ${yi.selectInput({id:"sort_class",label:this.label("searchedClass"),options:["1","2","3"].map(e=>({label:GT.caracs[e],value:e})),value:t,className:"script-filter-carac"})}
                             ${yi.selectInput({id:"sort_element",label:this.label("searchedElement"),options:["fire","nature","stone","sun","water","darkness","light","psychic"].map(e=>({label:GT.design[`${e}_flavor_element`],value:e})),value:i,className:"script-filter-element"})}
@@ -159,13 +159,13 @@ window.HHPlusPlus={CHANGELOG:"https://raw.githubusercontent.com/45026831/hh-plus
                     </div>`)},c=()=>{var e=M.lsGet(f.TEAMS_DICTIONARY);if(!e)return Mi(`
                     <div style="position:relative">
                         <div class="team-selection" style="display: none;">
-                            <span class="close-team-selection" />
+                            <span class="close-team-selection"></span>
                             ${this.label("visitTeams")}
                         </div>
                     </div>`);const{teamIds:t,teamsDict:a}=e;return Mi(`
                 <div style="position:relative">
                     <div class="team-selection" style="display: none;">
-                        <span class="close-team-selection" />
+                        <span class="close-team-selection"></span>
                         <div class="teams-grid-container rarity-background">
                             ${t.map(e=>a[e]).map(e=>`
                                 <div class="team-slot-container ${e.iconRarity}" data-id-team="${e.teamId}" data-girl-ids='${JSON.stringify(e.girls)}'>
