@@ -27,6 +27,7 @@ class HomeScreenOldishModule extends CoreModule {
 
         Helpers.defer(() => {
             this.prepClasses()
+            this.wrapPotionPathButtons()
         })
 
         this.hasRun = true
@@ -52,6 +53,13 @@ class HomeScreenOldishModule extends CoreModule {
             $leaderboard = $('[rel=leaderboard]')
         }
         $leaderboard.addClass('position-leaderboard')
+    }
+
+    wrapPotionPathButtons () {
+        const $buttons = $('.season-pov-container .pov-button')
+        const $wrapper = $('<div class="potions-paths-buttons"></div>')
+        $('.season-pov-container').append($wrapper)
+        $wrapper.append($buttons)
     }
 }
 

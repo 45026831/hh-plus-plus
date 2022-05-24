@@ -109,13 +109,54 @@
                 .season-pov-container {
                     .season-button {
                         position: absolute;
-                        left: 66px;
+                        left: 38px;
                         top: 279px;
+
+                        & > a > .button-notification-icon {
+                            right: -6px;
+                            left: auto;
+                        }
+
+                        .seasons_button {
+                            width: 288px !important;
+                        }
                     }
-                    .pov-button {
+                    .potions-paths-buttons {
                         position: absolute;
-                        left: 66px;
+                        left: 38px;
                         top: 339px;
+                        display: flex;
+                        flex-direction: row;
+
+                        .pov-button {
+                            & > a[rel="path-of-glory"],
+                            & > a[rel="path-of-valor"] {
+                                & > .notif-position .pov-widget {
+                                    width: 140px !important;
+
+                                    .h_container .pov-title {
+                                        text-align: left;
+                                        font-size: 14px;
+
+                                        [lang^="de"] & {
+                                            font-size: 12px;
+                                            white-space: break-spaces;
+                                            line-height: 10px;
+                                            margin-bottom: -2px;
+                                        }
+                                        [lang^="es"] &,
+                                        [lang^="it"] & {
+                                            font-size: 12px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            & > a > .button-notification-icon {
+                                right: -6px;
+                                left: auto;
+                            }
+                        }
                     }
                     .collect-button {
                         position: absolute;
