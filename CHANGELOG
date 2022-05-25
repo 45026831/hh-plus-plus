@@ -1,3 +1,4 @@
+1.15.18: Adding a bit more resilience to the pachinko override module
 1.15.17: Fixing broken resource bar timers after jquery update
 1.15.16: Fixing malformed HTML in the league tops. Fixing PoG/PoV claimed rewards hiding after update broke it. Fixing the teams collector.
 1.15.15: Fixing malformed HTML in the market girls filter
