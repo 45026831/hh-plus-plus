@@ -191,7 +191,7 @@ class LeagueInfoModule extends CoreModule {
                 const scoreDisplayData = getScoreDisplayDataForTop(playerRank, playerScore, top, tops[top], tops[top+1])
                 const {diff, score, symbol, labelKey} = scoreDisplayData
 
-                return `<span class="minTop${top}" hh_title="${this.label(labelKey, {points: I18n.nThousand(score), top})}"><span class="scriptLeagueInfoIcon top${top}" />${symbol}${I18n.nThousand(diff)}</span>`
+                return `<span class="minTop${top}" hh_title="${this.label(labelKey, {points: I18n.nThousand(score), top})}"><span class="scriptLeagueInfoIcon top${top}"></span>${symbol}${I18n.nThousand(diff)}</span>`
             }).join('')
         }
         if (promo) {

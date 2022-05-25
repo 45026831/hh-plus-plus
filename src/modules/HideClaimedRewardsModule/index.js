@@ -22,7 +22,7 @@ class HideClaimedRewardsModule extends CoreModule {
     }
 
     shouldRun () {
-        return ['path-of-valor', 'season.html', 'event.html'].some(page => Helpers.isCurrentPage(page))
+        return ['path-of-valor', 'path-of-glory', 'season.html', 'event.html'].some(page => Helpers.isCurrentPage(page))
     }
 
     run () {
@@ -31,7 +31,7 @@ class HideClaimedRewardsModule extends CoreModule {
         styles.use()
 
         Helpers.defer(() => {
-            if (Helpers.isCurrentPage('path-of-valor')) {
+            if (['path-of-valor', 'path-of-glory'].some(page => Helpers.isCurrentPage(page))) {
                 this.pov()
             } else if (Helpers.isCurrentPage('season.html')) {
                 this.season()
@@ -45,14 +45,14 @@ class HideClaimedRewardsModule extends CoreModule {
 
     pov () {
         let hidden = false
-        const $groupsToHide = $('.pov-tier:not(.unclaimed):has(.claimed-slot)')
-        const $groupsRemaining = $('.pov-tier.unclaimed')
+        const $groupsToHide = $('.potions-paths-tier:not(.unclaimed):has(.claimed-slot)')
+        const $groupsRemaining = $('.potions-paths-tier.unclaimed')
         const claimedCount = $groupsToHide.length
         const unclaimedCount = $groupsRemaining.length
         const heightPattern = /height: ?(?<existingLength>[0-9.a-z%]+);?/
         let existingLengthStr
         let newLength
-        const $progressBar = $('.pov-progress-bar .pov-progress-bar-current')
+        const $progressBar = $('.potions-paths-progress-bar .potions-paths-progress-bar-current')
         const styleAttr = $progressBar.attr('style')
 
         const assertHidden = () => {
@@ -92,7 +92,7 @@ class HideClaimedRewardsModule extends CoreModule {
             }
         }
         assertHidden()
-        $('.pov-progress-bar-section').stop(true).animate({
+        $('.potions-paths-progress-bar-section').stop(true).animate({
             scrollTop: Math.max(0, (unclaimedCount * POV_PX_PER_GROUP) - 150)
         }, 100)
 

@@ -29,7 +29,7 @@ class TeamsCollector {
                 const teamsDict = {}
                 const teamIds = []
 
-                $('.team-slot-container[data-is-empty=]').each((i, slot) => {
+                $('.team-slot-container[data-is-empty!="1"]').each((i, slot) => {
                     const teamId = $(slot).data('id-team')
                     const icon = $(slot).find('img').attr('girl-ico-src')
                     const {id: iconId, level: iconLevel} = extractIdFromUrl(icon)
