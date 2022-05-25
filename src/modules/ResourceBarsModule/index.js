@@ -243,6 +243,10 @@ class ResourceBarsModule extends CoreModule {
                 }
                 const addTimer = () => {
                     newTimer = HHTimers.initEnergyTimer($(selector))
+
+                    // nasty hack now that this is gone from jquery
+                    newTimer.$elm.selector = selector
+
                     Hero.c[type] = newTimer
                     if (existingOnDestroy) {
                         Hero.c[type].onDestroy = existingOnDestroy
