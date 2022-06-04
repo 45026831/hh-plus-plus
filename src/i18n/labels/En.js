@@ -78,6 +78,7 @@ export const config = {
     homeScreenOldish: 'Legacy layout of home screen (Not compatible with right-side rearrange Style Tweak)',
     fixFontImport: 'Fix font import & text stroke',
     overridePachinkoConfirm: `Disable the "No ${gameConfig.Girl}s Available" warning pop-ups in Pachinko/NC`,
+    fixClubPageScrollbars: 'Fix club page scrollbars',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
