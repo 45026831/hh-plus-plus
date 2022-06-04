@@ -220,15 +220,15 @@ class ChampionsModule extends CoreModule {
 
     fixChampRestTimer () {
         const {clubChampionsData, server_now_ts, HHTimers} = window
-        if (!clubChampionsData || clubChampionsData.fight.active) {return}
+        if (!clubChampionsData || !clubChampionsData.fight.active) {return}
         const {timers} = clubChampionsData
 
         // Fix champ rest timer
-        if (timers.championRest) {
-            const getTeamRestTimer = () => Object.values(HHTimers.timers).find(({$elm}) => $elm && $elm.selector === '.champion_rest_timer')
+        if (timers.teamRest) {
+            const getTeamRestTimer = () => Object.values(HHTimers.timers).find(({$elm}) => $elm && $elm.hasClass && $elm.hasClass('team_rest_timer'))
             let championRestTimer = getTeamRestTimer()
             const fixTimer = () => {
-                championRestTimer.remainingTime = parseInt(timers.championRest) - server_now_ts
+                championRestTimer.remainingTime = parseInt(timers.teamRest) - server_now_ts
                 championRestTimer.update()
             }
             if (championRestTimer) {
@@ -242,7 +242,7 @@ class ChampionsModule extends CoreModule {
                     }
                 })
 
-                observer.observe($('.champion_rest_timer .text > span')[0], {childList: true})
+                observer.observe($('.team_rest_timer .text > span')[0], {childList: true})
             }
         }
     }
