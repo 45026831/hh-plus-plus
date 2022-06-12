@@ -1,3 +1,4 @@
+1.16.1: Making teams filter available on Boss Bang team selection page. Improving cleanup of the booster tracker when boosters expire. Fixing race condition in market equips filter. Adjusting "hide fought league opponents" mechanism to improve compatability with striped table row style tweak.
 1.16.0: Adding a (hopefully) temporary module to fix the scrollbars on the club page when changing tabs
 1.15.19: Re-fixing the club champ rest timer
 1.15.18: Adding a bit more resilience to the pachinko override module

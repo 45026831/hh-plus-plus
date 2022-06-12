@@ -258,38 +258,35 @@ class LeagueInfoModule extends CoreModule {
     }
 
     manageHideFoughtOpponents () {
+        let rowCache = []
+
         function removeFoughtOpponents() {
             let board = document.getElementsByClassName('leadTable')[0]
             if(!board)
                 return
-            let opponents = board.getElementsByTagName('tr')
-            for (let i=0; i<opponents.length; i++) {
+            rowCache = []
+            const $opponents = $(board).find('tr')
+            $opponents.each((i, el) => {
                 try {
-                    const playerId = $(opponents[i]).attr('sorting_id')
+                    const $opponent = $(el)
+                    rowCache.push($opponent)
+                    const playerId = $opponent.attr('sorting_id')
                     if(leagues_list.find(({id_player}) => id_player === playerId).nb_challenges_played === '3'){
-                        opponents[i].style.display='none'
+                        $opponent.detach()
                     }
                 } catch(e) {
                     // Ignore
                 }
-            }
+            })
         }
 
         function displayFoughtOpponents() {
             const board = document.getElementsByClassName('leadTable')[0]
-            if(!board)
+            if(!board || !rowCache.length)
                 return
-            const opponents = board.getElementsByTagName('tr')
-            for (let i=0; i<opponents.length; i++) {
-                try {
-                    const playerId = $(opponents[i]).attr('sorting_id')
-                    if(leagues_list.find(({id_player}) => id_player === playerId).nb_challenges_played === '3'){
-                        opponents[i].style.display=''
-                    }
-                } catch(e) {
-                    // Ignore
-                }
-            }
+            rowCache.forEach($opponent => {
+                $(board).append($opponent)
+            })
         }
 
         let hidden = Helpers.lsGet(lsKeys.FOUGHT_OPPONENTS_HIDDEN)

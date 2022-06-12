@@ -407,7 +407,12 @@ class ResourceBarsModule extends CoreModule {
             if (useTimer) {
                 let timerId
                 const onComplete = () => {
-                    $wrapper.find('.slot').attr('class', 'slot empty').empty().attr('data-d', '').attr('tooltip-id', '').attr('id_item', '')
+                    $wrapper.find('.slot')
+                        .attr('class', 'slot empty')
+                        .empty()
+                        .attr('data-d', '').removeAttr('data-d')
+                        .attr('tooltip-id', '').removeAttr('tooltip-id')
+                        .attr('id_item', '').removeAttr('id_item')
                     $wrapper.find('.progress').css('transform', 'rotate(0deg)')
                 }
                 const onUpdate = () => {

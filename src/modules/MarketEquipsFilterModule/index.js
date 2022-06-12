@@ -206,7 +206,9 @@ class MarketEquipsFilterModule extends CoreModule {
         if ($selected.length){
             if ($selected.is(':visible')) {
                 // check for favourite
-                const isFavorite = JSON.parse($selected.find('.favorite-toggle').attr('data-is-favorite'))
+                const $favoriteToggle = $selected.find('.favorite-toggle')
+                if (!$favoriteToggle.length) {return}
+                const isFavorite = JSON.parse($favoriteToggle.attr('data-is-favorite'))
                 if (isFavorite) {
                     $('#shops #inventory button[rel=sell]').prop('disabled', true)
                 }
@@ -249,6 +251,7 @@ class MarketEquipsFilterModule extends CoreModule {
 
         $(document).on('market:equips-updated', () => {
             this.applyFilter()
+            this.checkSelection()
         })
 
 

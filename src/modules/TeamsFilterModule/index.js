@@ -22,7 +22,7 @@ class TeamsFilterModule extends CoreModule {
     }
 
     shouldRun () {
-        return Helpers.isCurrentPage('edit-team')
+        return ['edit-team', 'add-boss-bang-team'].some(page => Helpers.isCurrentPage(page))
     }
 
     run () {
