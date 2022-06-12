@@ -98,8 +98,8 @@ class LeagueInfoModule extends CoreModule {
             this.injectCSSVars()
             this.aggregateData()
             this.displaySummary({board, promo})
-            this.manageHideFoughtOpponents()
             this.manageTableAnnotations()
+            this.manageHideFoughtOpponents()
         })
 
         this.hasRun = true
@@ -366,8 +366,8 @@ class LeagueInfoModule extends CoreModule {
             const data = Helpers.lsGet(lsKeys.LEAGUE_RESULTS) || {}
             const pointHistory = Helpers.lsGet(lsKeys.LEAGUE_POINT_HISTORY) || {}
             let pointHistoryChanged = false
-            for(let i=0; i<this.aggregates.playersTotal; i++) {
-                let playerData = $('.leagues_table .lead_table_view tbody.leadTable tr:nth-child(' + (i+1) + ')')
+            $('.leagues_table .lead_table_view tbody.leadTable tr').each((i, el) => {
+                let playerData = $(el)
                 let playerId = playerData.attr('sorting_id')
                 let player = data[playerId]
                 if (player) {
@@ -411,7 +411,7 @@ class LeagueInfoModule extends CoreModule {
                         playerData[0].children[3].innerText=pointsText
                     }
                 }
-            }
+            })
             if (pointHistoryChanged) {
                 Helpers.lsSet(lsKeys.LEAGUE_POINT_HISTORY, pointHistory)
             }
@@ -419,8 +419,7 @@ class LeagueInfoModule extends CoreModule {
 
         const calculateVictories = () => {
             let data = Helpers.lsGet(lsKeys.LEAGUE_RESULTS) || {}
-            let players = $('#leagues_middle .leadTable tr')
-            let nb_players = players.length
+            let nb_players = this.aggregates.playersTotal
             let nb_opponents = nb_players-1
             Helpers.lsSet(lsKeys.LEAGUE_PLAYERS, nb_opponents)
 
