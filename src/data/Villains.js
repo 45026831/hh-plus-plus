@@ -518,9 +518,10 @@ export default {
             ]
         },
         {
+            key: 'ivywinters',
             world: 4,
             girls: {
-                1: [],
+                1: ['160370794', '306287449', '828011942'],
                 2: [],
                 3: []
             },
@@ -534,6 +535,21 @@ export default {
                     amount: 15
                 }
             ]
+        },
+        {
+            world: 5,
+            girls: {
+                1: [],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'nature',
+                amount: 15,
+            }, {
+                element: 'stone',
+                amount: 15,
+            }]
         },
     ],
     HoH: [
