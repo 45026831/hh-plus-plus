@@ -264,6 +264,7 @@ export const villainBreadcrumbs = {
     ontheprowl: 'À l\'affût',
     bushexplorations: 'Explorations de la brousse',
     thespy: 'L’espion qui venait en moi',
+    hornyknight: 'Le chevalier corné',
 }
 
 export const blessingSpreadsheetLink = {

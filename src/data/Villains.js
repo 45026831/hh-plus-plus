@@ -466,14 +466,27 @@ export default {
             }]
         },
         {
+            key: 'cockatrice',
             world: 7,
+            girls: {
+                1: ['921365371', '942523553', '973271744'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'light',
+                amount: 20,
+            }]
+        },
+        {
+            world: 8,
             girls: {
                 1: [],
                 2: [],
                 3: []
             },
             gems: [{
-                element: 'light',
+                element: 'psychic',
                 amount: 20,
             }]
         },

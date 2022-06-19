@@ -119,6 +119,7 @@ export const villain = {
     nymph: 'The Nymph',
     athicus: 'Athicus Ho’ole',
     jockstrap: 'The Mimic',
+    cockatrice: 'Cockatrice',
     asaakira: 'Headmistress Asa Akira',
     sammyjayne: 'Sammy Jayne',
     ivywinters: 'Ivy Winters',
@@ -327,6 +328,7 @@ export const villainBreadcrumbs = {
     ontheprowl: 'On the Prowl',
     bushexplorations: 'Bush Explorations',
     thespy: 'The Spy Who Came Inside Me',
+    hornyknight: 'The Horny Knight',
 
     fukwell: 'Fukwell University',
     eurodick: 'Eurodick',
