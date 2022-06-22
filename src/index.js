@@ -22,6 +22,7 @@ import {
     DisableDragDropModule,
     FightAVillainModule,
     FixClubPageScrollbarsModule,
+    FixPopupModule,
     GemStockModule,
     GirlSalaryTimersStyleTweak,
     HaremInfoModule,
@@ -113,6 +114,7 @@ const runScript = () => {
     config.registerModule(new HomeScreenOldishModule())
     config.registerModule(new OverridePachinkoConfirmModule())
     if (Helpers.isHH() || Helpers.isGH()) {config.registerModule(new FixClubPageScrollbarsModule())}
+    config.registerModule(new FixPopupModule())
 
     // style tweaks
     config.registerGroup({
