@@ -119,7 +119,7 @@ class HomeScreenModule extends CoreModule {
         }
 
         // Club Champ
-        if (trackedTimes.clubChamp && trackedTimes.clubChamp > server_now_ts) {
+        if (window.Chat_vars && (window.Chat_vars.CLUB_ID || (window.Chat_vars.CLUB_INFO && window.Chat_vars.CLUB_INFO.id_club)) && trackedTimes.clubChamp && trackedTimes.clubChamp > server_now_ts) {
             this.attachTimer('clubs', trackedTimes.clubChamp)
         }
     }
