@@ -11,7 +11,8 @@ class GirlSalaryTimersStyleTweak extends STModule {
         const configSchema = ({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('stConfig', MODULE_KEY),
-            default: true
+            default: true,
+            restriction: {whitelist: ['CxH']}
         })
         super({
             configSchema,

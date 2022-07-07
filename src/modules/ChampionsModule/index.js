@@ -74,6 +74,7 @@ class ChampionsModule extends CoreModule {
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true,
+            restriction: {blacklist: ['HoH']},
             subSettings: [
                 {
                     key: 'poseMatching',

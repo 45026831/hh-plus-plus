@@ -1,0 +1,23 @@
+#popups,
+#sliding-popups {
+    #objective_popup {
+        left: unset;
+
+        .noti_box {
+            left: 0px;
+            right: unset;
+            border-radius: 0 0.5rem 0.5rem 0;
+            padding: 0.25rem 0.5rem 0.25rem 1rem;
+
+            &:before {
+                background: transparent linear-gradient(90deg, rgba(255, 162, 62, 0) 0, #ffa23e 100%) 0 0 no-repeat
+                    padding-box;
+                border-radius: 0 0.5rem 0.5rem 0;
+            }
+            &:after {
+                border-radius: 0 0.25rem 0.25rem 0;
+                background: transparent linear-gradient(90deg, #200307 0, #410009 100%) 0 0 no-repeat padding-box;
+            }
+        }
+    }
+}

@@ -1,0 +1,114 @@
+.blue_text_button {
+    padding: 10px 20px;
+    color: #fff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    -webkit-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #6df0ff;
+    -moz-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #6df0ff;
+    box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #6df0ff;
+    border: 1px solid #000;
+    background-image: linear-gradient(to top, var(--button-colors-blue-start) 0, var(--button-colors-blue-end) 100%);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition: box-shadow 90ms ease-in-out;
+    -moz-transition: box-shadow 90ms ease-in-out;
+    -o-transition: box-shadow 90ms ease-in-out;
+    transition: box-shadow 90ms ease-in-out;
+}
+
+.blue_text_button[disabled],
+.orange_text_button[disabled] {
+    -webkit-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #b6a6ab !important;
+    -moz-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #b6a6ab !important;
+    box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #b6a6ab !important;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    color: #fff;
+    border: 1px solid #000 !important;
+    background-color: #960530 !important;
+    background-image: linear-gradient(to top, #9f9296 0, #847c85 100%) !important;
+}
+
+.orange_text_button {
+    padding: 10px 20px;
+    color: #fff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    -webkit-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #ffde00, 0 0 20px rgba(255, 142, 0, 0.45);
+    -moz-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #ffde00, 0 0 20px rgba(255, 142, 0, 0.45);
+    box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #ffde00, 0 0 20px rgba(255, 142, 0, 0.45);
+    border: 1px solid #000;
+    background-image: linear-gradient(
+        to top,
+        var(--button-colors-orange-start) 0,
+        var(--button-colors-orange-end) 100%
+    );
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition: box-shadow 90ms ease-in-out;
+    -moz-transition: box-shadow 90ms ease-in-out;
+    -o-transition: box-shadow 90ms ease-in-out;
+    transition: box-shadow 90ms ease-in-out;
+}
+
+.green_text_button {
+    padding: 10px 20px;
+    color: #fff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    -webkit-box-shadow: 0 3px 0 rgba(23, 33, 7, 0.6), inset 0 3px 0 #95ed3f;
+    -moz-box-shadow: 0 3px 0 rgba(23, 33, 7, 0.6), inset 0 3px 0 #95ed3f;
+    box-shadow: 0 3px 0 rgba(23, 33, 7, 0.6), inset 0 3px 0 #95ed3f;
+    border: 1px solid #000;
+    background-image: linear-gradient(to top, #619f00 0, #570 100%);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition: box-shadow 90ms ease-in-out;
+    -moz-transition: box-shadow 90ms ease-in-out;
+    -o-transition: box-shadow 90ms ease-in-out;
+    transition: box-shadow 90ms ease-in-out;
+}
+
+.green_text_button[disabled] {
+    -webkit-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #b6a6ab !important;
+    -moz-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #b6a6ab !important;
+    box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 #b6a6ab !important;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    color: #fff;
+    border: 1px solid #000 !important;
+    background-color: #960530 !important;
+    background-image: linear-gradient(to top, #9f9296 0, #847c85 100%) !important;
+}
+
+.purple_text_button {
+    padding: 10px 20px;
+    color: #fff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    -webkit-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 var(--button-colors-purple-shadow);
+    -moz-box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 var(--button-colors-purple-shadow);
+    box-shadow: 0 3px 0 rgba(13, 22, 25, 0.6), inset 0 3px 0 var(--button-colors-purple-shadow);
+    border: 1px solid #000;
+    background-image: linear-gradient(
+        to top,
+        var(--button-colors-purple-start) 0,
+        var(--button-colors-purple-end) 100%
+    );
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition: box-shadow 90ms ease-in-out;
+    -moz-transition: box-shadow 90ms ease-in-out;
+    -o-transition: box-shadow 90ms ease-in-out;
+    transition: box-shadow 90ms ease-in-out;
+}

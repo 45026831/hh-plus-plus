@@ -1,0 +1,56 @@
+.green_text_button {
+    padding: 10px 20px;
+    color: #fff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    -webkit-box-shadow: 0 3px 0 rgba(23, 33, 7, 0.6), inset 0 3px 0 #95ed3f;
+    -moz-box-shadow: 0 3px 0 rgba(23, 33, 7, 0.6), inset 0 3px 0 #95ed3f;
+    box-shadow: 0 3px 0 rgba(23, 33, 7, 0.6), inset 0 3px 0 #95ed3f;
+    border: 1px solid #000;
+    background-image: linear-gradient(to top, #619f00 0, #570 100%);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition: box-shadow 90ms ease-in-out;
+    -moz-transition: box-shadow 90ms ease-in-out;
+    -o-transition: box-shadow 90ms ease-in-out;
+    transition: box-shadow 90ms ease-in-out;
+}
+
+.green_text_button[disabled] {
+    -webkit-box-shadow: 0 3px 0 #012a4a, inset 0 3px 0 #b6a6ab !important;
+    -moz-box-shadow: 0 3px 0 #012a4a, inset 0 3px 0 #b6a6ab !important;
+    box-shadow: 0 3px 0 #012a4a, inset 0 3px 0 #b6a6ab !important;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    color: #fff;
+    border: 1px solid #000 !important;
+    background-color: #960530 !important;
+    background-image: linear-gradient(to top, #9f9296 0, #847c85 100%) !important;
+}
+
+.purple_text_button {
+    padding: 10px 20px;
+    color: #fff;
+    -webkit-border-radius: 7px;
+    -moz-border-radius: 7px;
+    border-radius: 7px;
+    -webkit-box-shadow: 0 3px 0 #012a4a, inset 0 3px 0 #ffb8ff;
+    -moz-box-shadow: 0 3px 0 #012a4a, inset 0 3px 0 #ffb8ff;
+    box-shadow: 0 3px 0 #012a4a, inset 0 3px 0 #ffb8ff;
+    border: 1px solid #000;
+    background-image: linear-gradient(to bottom, #ff5fff 0, #c91be0 100%);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    -webkit-transition: box-shadow 90ms ease-in-out;
+    -moz-transition: box-shadow 90ms ease-in-out;
+    -o-transition: box-shadow 90ms ease-in-out;
+    transition: box-shadow 90ms ease-in-out;
+    font-size: 12px;
+    text-transform: uppercase;
+    box-shadow: 0 3px #150017;
+    border: 1px solid #30001f;
+}

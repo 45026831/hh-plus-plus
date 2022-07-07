@@ -1,0 +1,20 @@
+#popups #no_HC .monthly_card {
+    .product-info {
+        line-height: 19px;
+
+        [cur="hard_currency"]::before {
+            max-width: 5%;
+        }
+        [cur="energy_kiss"]::before {
+            max-width: 6%;
+            height: 19px;
+        }
+        [cur="g_a"]::before {
+            max-width: 6%;
+            height: 19px;
+        }
+    }
+    .product-normal-price {
+        bottom: 78px;
+    }
+}

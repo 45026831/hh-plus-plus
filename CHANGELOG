@@ -1,3 +1,4 @@
+1.18.0: Merging Style Tweaks into HH++ proper. Removing defunct temporary fix popups module
 1.17.2: Fixing home screen timers to not display club champ cooldown timer if the player has left the club
 1.17.1: Fixing PSH world 4 data
 1.17.0: Adding a temporary module to fix popup CORS issues (all sites except for .com)

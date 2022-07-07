@@ -12,53 +12,7 @@ import {
 } from './collectors'
 import Helpers from './common/Helpers'
 import Config from './config'
-import {
-    AutoRefreshModule,
-    BattleEndstateModule,
-    BattleSimulatorModule,
-    BlessingSpreadsheetLinkModule,
-    ChampionsModule,
-    ContestRewardsModule,
-    DisableDragDropModule,
-    FightAVillainModule,
-    FixClubPageScrollbarsModule,
-    FixPopupModule,
-    GemStockModule,
-    GirlSalaryTimersStyleTweak,
-    HaremInfoModule,
-    HideClaimedRewardsModule,
-    HideRotateDeviceStyleTweak,
-    HomeScreenIconsModule,
-    HomeScreenModule,
-    HomeScreenOldishModule,
-    HomeScreenOrderModule,
-    HomeScreenRightSideRearrangeStyleTweak,
-    LeaderboardFixModule,
-    LeagueInfoModule,
-    MarketEquipsFilterModule,
-    MarketGirlsFilterModule,
-    MarketHideSellButtonModule,
-    MarketInfoModule,
-    MarketXPAffModule,
-    MessengerDarkModeStyleTweak,
-    MissionsBackgroundStyleTweak,
-    MobileBattleStyleTweak,
-    MobileLeagueDarkBackgroundStyleTweak,
-    MoneyAnimationStyleTweak,
-    MoveSkipButtonStyleTweak,
-    OverridePachinkoConfirmModule,
-    PachinkoNamesModule,
-    PopNavSortModule,
-    PoseAspectRatioStyleTweak,
-    ReduceHomeScreenBlurStyleTweak,
-    ResourceBarsModule,
-    RewardShardsModule,
-    SeasonStatsModule,
-    SelectableIDStyleTweak,
-    StaticBackgroundModule,
-    TeamsFilterModule,
-    VillainBreadcrumbsModule
-} from './modules'
+import * as modules from './modules'
 
 const runScript = () => {
     const config = new Config()
@@ -82,39 +36,6 @@ const runScript = () => {
         key: 'core',
         name: `${Helpers.getGameKey()}++ Core`
     })
-    config.registerModule(new FightAVillainModule())
-    config.registerModule(new MarketInfoModule())
-    config.registerModule(new MarketGirlsFilterModule())
-    config.registerModule(new MarketEquipsFilterModule())
-    config.registerModule(new MarketXPAffModule())
-    config.registerModule(new MarketHideSellButtonModule())
-    config.registerModule(new HaremInfoModule())
-    config.registerModule(new LeagueInfoModule())
-    config.registerModule(new BattleSimulatorModule())
-    config.registerModule(new TeamsFilterModule())
-    if (!Helpers.isHoH()) {config.registerModule(new ChampionsModule())}
-    config.registerModule(new ResourceBarsModule())
-    config.registerModule(new HomeScreenModule())
-    if (!Helpers.isPSH() && !Helpers.isHoH()) {config.registerModule(new PopNavSortModule())}
-    config.registerModule(new SeasonStatsModule())
-    config.registerModule(new PachinkoNamesModule())
-    config.registerModule(new ContestRewardsModule())
-    config.registerModule(new BattleEndstateModule())
-    config.registerModule(new GemStockModule())
-    config.registerModule(new StaticBackgroundModule())
-    config.registerModule(new RewardShardsModule())
-    config.registerModule(new LeaderboardFixModule())
-    config.registerModule(new HideClaimedRewardsModule())
-    config.registerModule(new DisableDragDropModule())
-    config.registerModule(new AutoRefreshModule())
-    config.registerModule(new VillainBreadcrumbsModule())
-    if (!Helpers.isPSH() && !Helpers.isHoH()) {config.registerModule(new BlessingSpreadsheetLinkModule())}
-    config.registerModule(new HomeScreenIconsModule())
-    config.registerModule(new HomeScreenOrderModule())
-    config.registerModule(new HomeScreenOldishModule())
-    config.registerModule(new OverridePachinkoConfirmModule())
-    if (Helpers.isHH() || Helpers.isGH()) {config.registerModule(new FixClubPageScrollbarsModule())}
-    config.registerModule(new FixPopupModule())
 
     // style tweaks
     config.registerGroup({
@@ -122,20 +43,10 @@ const runScript = () => {
         name: 'Style Tweaks',
         iconEl: '<div></div>'
     })
-    config.registerModule(new MissionsBackgroundStyleTweak())
-    config.registerModule(new MoneyAnimationStyleTweak())
-    config.registerModule(new MobileBattleStyleTweak())
-    config.registerModule(new MobileLeagueDarkBackgroundStyleTweak())
-    config.registerModule(new HideRotateDeviceStyleTweak())
-    if (Helpers.isCxH()) {
-        config.registerModule(new GirlSalaryTimersStyleTweak())
-    }
-    config.registerModule(new MoveSkipButtonStyleTweak())
-    config.registerModule(new PoseAspectRatioStyleTweak())
-    config.registerModule(new ReduceHomeScreenBlurStyleTweak())
-    config.registerModule(new HomeScreenRightSideRearrangeStyleTweak())
-    config.registerModule(new SelectableIDStyleTweak())
-    config.registerModule(new MessengerDarkModeStyleTweak())
+
+    Object.values(modules).forEach(module => {
+        config.registerModule(new module())
+    })
 
     config.loadConfig()
 

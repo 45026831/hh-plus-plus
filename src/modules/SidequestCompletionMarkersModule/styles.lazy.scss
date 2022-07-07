@@ -1,0 +1,23 @@
+.complete .side-quest-image {
+    border-color: #75b400;
+}
+
+.complete .side-quest-image::after {
+    content: "";
+    background-image: var(--sidequest-tick-icon);
+    background-position: center;
+    background-repeat: no-repeat;
+    display: block;
+    position: relative;
+    width: 30px;
+    height: 30px;
+    background-size: 30px;
+    margin: -15px;
+    padding: 0;
+    bottom: 2px;
+    left: 132px;
+}
+
+.complete .side-quest-progress {
+    color: #75b400;
+}

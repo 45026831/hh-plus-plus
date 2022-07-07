@@ -1,0 +1,42 @@
+.potions-paths-background-panel {
+    .potions-paths-second-row .potions-paths-central-section {
+        .potions-paths-objective {
+            height: 3.8rem;
+        }
+        .potions-paths-objective p .potions-paths_potion_icn {
+            width: 20px;
+            height: 20px;
+            background-size: 19px;
+        }
+        .potions-paths-next-milestone-panel {
+            margin-top: 2.3rem;
+        }
+        .potions-paths-tiers-section .potions-paths-progress-bar-section {
+            margin-top: -3.4rem;
+            height: 20rem;
+            overflow-x: hidden;
+            scrollbar-width: none;
+        }
+
+        &.no-milestone-left .potions-paths-tiers-section > .potions-paths-progress-bar-section {
+            height: 24rem;
+        }
+    }
+
+    .potions-paths-first-row {
+        .potions-paths-title-panel {
+            width: 14rem;
+            height: 6.3rem;
+            margin-top: -1.2rem;
+        }
+        .potions-paths-title-panel {
+            h1 {
+                margin-top: 0.6rem;
+                font-size: 0.8rem;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+        }
+    }
+}

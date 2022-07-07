@@ -1,0 +1,9 @@
+#contests > div > div.right_part > .ranking table tbody tr td {
+    &:nth-child(2) {
+        width: 230px;
+    }
+
+    &:nth-child(3) {
+        width: 125px;
+    }
+}

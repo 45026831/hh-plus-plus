@@ -1,0 +1,64 @@
+@import "../../common/constants.scss";
+
+@media #{$mediaDesktop} {
+    .lead_table table {
+        .square-avatar-wrapper {
+            height: 21px;
+            width: 21px;
+
+            img {
+                height: 15px;
+                width: 15px;
+            }
+
+            // Numbers' HH++ script version
+            div.classLeague {
+                left: -22px !important;
+                top: 2px !important;
+
+                img.theme-icon {
+                    height: 15px !important;
+                    width: 15px !important;
+                }
+            }
+
+            // Tom208's HH++ script version
+            img.classLeague {
+                height: 15px !important;
+                width: 15px !important;
+                top: -4px;
+                left: -22px !important;
+            }
+        }
+
+        .country {
+            transform: scale(0.5);
+            margin: 0px !important;
+        }
+
+        tbody tr {
+            height: 21px !important;
+            line-height: 21px !important;
+
+            & > td {
+                font-size: 13px;
+
+                .nickname {
+                    width: 242px;
+                }
+
+                &:first-child .promotion {
+                    margin-right: 26px;
+                    height: 16px;
+                }
+            }
+        }
+    }
+
+    #leagues_middle .lead_table table tbody tr td:nth-child(4),
+    #leagues_middle .lead_table table thead th:nth-child(4),
+    #leagues_middle .use-lead-table table tbody tr td:nth-child(4),
+    #leagues_middle .use-lead-table table thead th:nth-child(4) {
+        width: 75px;
+    }
+}

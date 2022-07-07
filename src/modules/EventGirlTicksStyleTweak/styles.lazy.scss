@@ -1,0 +1,12 @@
+.event-widget .widget .rewards-block-tape {
+    .girl_reward[reward_was_won],
+    .set_items_box[reward_was_won] {
+        &:after {
+            background-image: var(--girl-tick-icon);
+        }
+    }
+}
+
+#events .nc-event-list-reward.already-owned:after {
+    width: 26px;
+}

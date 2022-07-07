@@ -1,0 +1,141 @@
+#daily_goals .daily-goals-row {
+    .daily-goals-left-part {
+        width: 62.5rem;
+
+        .daily-goals-objectives-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 1rem;
+            font-size: 0.75rem;
+            margin-top: 0;
+            height: 78%;
+
+            .daily-goals-objective {
+                width: auto;
+                margin-bottom: 0;
+                margin-left: 0;
+
+                .daily-goals-objective-status {
+                    flex: 1;
+                    margin-left: 0.9rem;
+
+                    .objective-progress-bar {
+                        width: 100%;
+                        height: 1.1rem;
+                        & > p {
+                            font-size: 0.6rem;
+                            width: 100%;
+                            left: 0;
+                            text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+                        }
+                    }
+                }
+
+                .daily-goals-objective-action {
+                    width: 2.5rem;
+
+                    [lang="fr"] & {
+                        width: 5.5rem;
+                    }
+
+                    [lang^="es"] & {
+                        width: 4rem;
+                    }
+
+                    p {
+                        display: none;
+                    }
+
+                    .blue_button_L {
+                        padding: 0.3rem 0.75rem;
+                    }
+                }
+
+                .daily-goals-objective-reward {
+                    width: 3.5rem;
+                    height: 2.2rem;
+                    flex-direction: row;
+
+                    & > p {
+                        text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+                        margin-top: 0;
+                        font-size: 0.95rem;
+                    }
+
+                    .daily_goals_potion_icn {
+                        width: 28px;
+                        height: 28px;
+                        background-size: contain;
+                    }
+                }
+            }
+
+            .nicescroll-rails {
+                left: 984px !important;
+            }
+        }
+        .progress-section {
+            margin-bottom: 1.4rem;
+
+            .progress-bar-rewards-container {
+                width: 28.8rem;
+                left: 8.1rem;
+
+                .progress-bar-reward {
+                    margin-top: -1rem;
+                }
+            }
+        }
+
+        .top-section .check-pog {
+            position: absolute;
+            right: 3.2rem;
+            top: 0.1rem;
+        }
+    }
+
+    .daily-goals-right-part {
+        width: 23rem;
+        height: 11rem;
+        position: absolute;
+        right: 0;
+        overflow: hidden;
+        pointer-events: none;
+
+        // PSH
+        & > img {
+            position: absolute;
+            top: 0.5rem;
+            right: 12rem;
+            height: 24.5rem;
+            width: auto;
+        }
+
+        // Everything else
+        .timer-girl-container {
+            position: absolute;
+            top: 0.5rem;
+            right: 12rem;
+            width: 10rem;
+
+            & > img {
+                height: 24.5rem;
+                width: auto;
+            }
+        }
+
+        .side-girl-hider {
+            display: none;
+        }
+
+        .daily-goals-timer {
+            position: absolute;
+            top: 5rem;
+            right: 1rem;
+
+            [lang="fr"] & {
+                padding: 0 0.8rem;
+            }
+        }
+    }
+}

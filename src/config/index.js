@@ -91,6 +91,20 @@ class Config {
             throw new Error(`cannot register module with unknown group ${group}`)
         }
 
+        if (configSchema && configSchema.restriction) {
+            const {restriction: {whitelist, blacklist}} = configSchema
+            const gameKey = Helpers.getGameKey()
+            if (blacklist) {
+                if (blacklist.includes(gameKey)) {
+                    return
+                }
+            } else if (whitelist) {
+                if (!whitelist.includes(gameKey)) {
+                    return
+                }
+            }
+        }
+
         this.modules.push(module)
 
         this.config[this.getConfigKey(group, configSchema.baseKey)] = configSchema.default

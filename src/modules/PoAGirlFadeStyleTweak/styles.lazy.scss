@@ -1,0 +1,9 @@
+#events .nc-panel-body #poa-content .girls .girls-container {
+    -webkit-mask-image: linear-gradient(to top, transparent 30%, rgba(0, 0, 0, 0.1) 40%, #000 60%);
+    mask-image: linear-gradient(to top, transparent 30%, rgba(0, 0, 0, 0.1) 40%, #000 60%);
+
+    .girl-avatar {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+}

@@ -23,7 +23,8 @@ class PopNavSortModule extends CoreModule {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
-            default: true
+            default: true,
+            restriction: {blacklist: ['PSH', 'HoH']}
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
 
