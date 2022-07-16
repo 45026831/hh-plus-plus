@@ -116,7 +116,7 @@ const createGridSelector = ({id, options, gridConfig}) => `
 
 const createFilterBox = () => {
     return $(`
-            <div style="position:relative">
+            <div>
                 <div class="equip_filter_box form-wrapper" style="display: none;">
                     ${['subtype', 'rarity', 'stats', 'favorites'].map(key => createGridSelector({id: key, options: FILTER_OPTIONS[key], gridConfig: FILTER_OPTIONS_GRIDS[key]})).join('')}
                 </div>

@@ -1,5 +1,39 @@
 import Helpers from '../../common/Helpers'
 
+const gameConfigs = {
+    HH: {
+        chica: 'chica',
+        delachica: 'de la chica',
+        lachica: 'la chica',
+        flower: 'flores',
+    },
+    GH: {
+        chica: 'chico',
+        delachica: 'del chico',
+        lachica: 'el chico',
+        flower: 'piruletas',
+    },
+    CxH: {
+        chica: 'chica',
+        delachica: 'de la chica',
+        lachica: 'la chica',
+        flower: 'joyas',
+    },
+    PSH: {
+        chica: 'chica',
+        delachica: 'de la chica',
+        lachica: 'la chica',
+        flower: 'cervezas',
+    },
+    HoH: {
+        chica: 'chica',
+        delachica: 'de la chica',
+        lachica: 'la chica',
+        flower: 'flores',
+    },
+}
+const gameConfig = gameConfigs[Helpers.getGameKey()]
+
 export const common = {
     all: 'Todo',
 }
@@ -44,6 +78,7 @@ export const config = {
     homeScreenOrder: 'Orden alternativo de los enlaces de la pantalla de inicio',
     homeScreenOldish: 'Diseño viejo de la pantalla de inicio (No es compatible con la optimización del estilo reorganizado en el lado derecho)',
     overridePachinkoConfirm: `Desactivar las ventanas emergentes de advertencia "No hay ${Helpers.isGH() ? 'chicos' : 'chicas'} disponibles" en Pachinko/NC`,
+    sidequestCompletionMarkers: 'Marcadores de finalización de misiones secundarias',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',
@@ -58,6 +93,31 @@ export const stConfig = {
     homeScreenRightSideRearrange: 'Reorganizar los elementos en el lado derecho de la pantalla de inicio',
     selectableId: 'Hacer seleccionable el ID de usuario del perfil',
     messengerDarkMode: 'Modo oscuro para el Messenger',
+    leagueTableCompressed: 'Tabla compacta de la liga',
+    leagueTableRowStripes: 'Filas de la tabla de la liga a rayas',
+    leagueTableShadow: 'Eliminar la sombra de la tabla de la liga',
+    clubTableShadow: 'Eliminar la sombra de la tabla del club',
+    removeParticleEffects: 'Eliminar los efectos de partículas de la pantalla de inicio',
+    eventGirlTicks: `Marcas de ${gameConfig.chica} de evento mejoradas`,
+    eventGirlBorders: `Bordes verdes en ${gameConfig.chica}s de eventos obtenidos`,
+    compactNav: 'Usar menú principal compacto',
+    poaBorders: 'Bordes verdes en las recompensas obtenidas de CdA',
+    champGirlPower: `Arreglar el desbordamiento de poder ${gameConfig.delachica} del campeón`,
+    champGirlOverlap: `Arreglar ${gameConfig.lachica} del campeón superponiéndosea a la selección de ${gameConfig.chica}s`,
+    hideGameLinks: 'Ocultar enlaces de juegos',
+    poaTicks: 'Corrija las posiciones de marca en la pantalla de CdA',
+    poaGirlFade: `Arreglar la transparencia de la pose ${gameConfig.delachica} en el CdA`,
+    newButtons: 'Reemplace los botones de estilo antiguo restantes',
+    bonusFlowersOverflow: `Evite que aparezcan ${gameConfig.flores} adicionales fuera de la pantalla`,
+    popButtons: 'Ocultar los botones Auto-asignar y Auto-reclamar LdP',
+    contestNotifs: 'Mover notificaciones de concurso',
+    contestPointsWidth: 'Evitar el desbordamiento de puntos de la tabla del concurso',
+    leagueChangeTeamButton: 'Arreglar el posicionamiento de los botones en el bloque izquierdo en la liga',
+    compactPops: 'LdP compacto',
+    monthlyCardText: 'Corregir el texto de la tarjeta mensual',
+    povUnclutter: 'Claridad de la página de CdV/CdG',
+    dailyGoals: 'Remodelación de objetivos diarios',
+    bbProgress: 'Mejor barra de progreso de recompensas de Boss Bang',
 }
 
 export const villain = {

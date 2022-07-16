@@ -1,5 +1,34 @@
 import Helpers from '../../common/Helpers'
 
+const gameConfigs = {
+    HH: {
+        девушках: 'девушках',
+        девушек: 'девушек',
+        цветов: 'цветов',
+    },
+    GH: {
+        девушках: 'парнях',
+        девушек: 'парней',
+        цветов: 'сосалок'
+    },
+    CxH: {
+        девушках: 'девушках',
+        девушек: 'девушек',
+        цветов: 'драгоценностей'
+    },
+    PSH: {
+        девушках: 'девушках',
+        девушек: 'девушек',
+        цветов: 'напитков'
+    },
+    HoH: {
+        девушках: 'девушках',
+        девушек: 'девушек',
+        цветов: 'цветов'
+    },
+}
+const gameConfig = gameConfigs[Helpers.getGameKey()]
+
 export const common = {
     all: 'Все',//TODO Check if word form is correct for all places where it's used
 }
@@ -44,6 +73,7 @@ export const config = {
     homeScreenOrder: 'Альтернативный порядок ссылок на главном экране',
     homeScreenOldish: 'Вид главного экрана подобный старому (Несовместимо с изменением положения элементов правой части от Style Tweak)',
     overridePachinkoConfirm: `Отключить предупреждение "Нет ${Helpers.isGH() ? 'Парней' : 'Девушек'}" в Пачинко/Ночном-клубе`,
+    sidequestCompletionMarkers: 'Метки прогресса побочных историй',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',
@@ -58,6 +88,31 @@ export const stConfig = {
     homeScreenRightSideRearrange: 'Изменить положение элементов в правой части главного экрана',
     selectableId: 'В профиле позволить выбирать ID игрока мышкой',
     messengerDarkMode: 'Темная тема для Мессенджера',
+    leagueTableCompressed: 'Компактный вид списка лиги',
+    leagueTableRowStripes: 'Чередование расцветки строк лиги',
+    leagueTableShadow: 'Убрать затенение списка лиги',
+    clubTableShadow: 'Убрать затенение списка клуба',
+    removeParticleEffects: 'Убрать эффекты частиц на главном экране',
+    eventGirlTicks: `Улучшенные галочки на ${gameConfig.девушках} игровых событий`,
+    eventGirlBorders: `Зеленая рамка вокруг полученных ${gameConfig.девушек} на экране событий`,
+    compactNav: 'Компактное главное меню',
+    poaBorders: 'Зеленая рамка вокруг полученных наград Пути Притяжения',
+    champGirlPower: `Исправить переполнение по ширине для силы ${gameConfig.девушек} на экране Чемпионов`,
+    champGirlOverlap: `Исправить наложение ${gameConfig.девушек} чемпионов поверх выбора девушек`,
+    hideGameLinks: 'Скрыть ссылки на другие игры',
+    poaTicks: 'Исправить положение галочек на экране Пути Притяжения',
+    poaGirlFade: `Исправить затенение поз ${gameConfig.девушек} на экране Пути Притяжения`,
+    newButtons: 'Заменить оставшиеся кнопки старого стиля',
+    bonusFlowersOverflow: `Предотвращать получение бонусных ${gameConfig.цветов} вне экрана`,
+    popButtons: 'Скрыть кнопки автосбора и автоназначения на экране PoP',
+    contestNotifs: 'Переместить уведомления состязаний',
+    contestPointsWidth: 'Предотвращать переполнение по ширине для очков состязаний',
+    leagueChangeTeamButton: 'Исправить позиционирование кнопок левой стороны в лиге',
+    compactPops: 'Компактные PoP',
+    monthlyCardText: 'Исправить текст месячной карты',
+    povUnclutter: 'Более свободный экран PoV/PoG',
+    dailyGoals: 'Переделанная экран Daily Goals',
+    bbProgress: 'Улучшенная полоса прогресса Boss Bang',
 }
 
 export const villain = {

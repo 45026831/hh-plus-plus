@@ -1,5 +1,24 @@
 import Helpers from '../../common/Helpers'
 
+const gameConfigs = {
+    HH: {
+        Blumen: 'Blumen',
+    },
+    GH: {
+        Blumen: 'Lollis',
+    },
+    CxH: {
+        Blumen: 'Juwelen',
+    },
+    PSH: {
+        Blumen: 'Biere',
+    },
+    HoH: {
+        Blumen: 'Blumen',
+    },
+}
+const gameConfig = gameConfigs[Helpers.getGameKey()]
+
 export const common = {
     all: 'Alle',
 }
@@ -43,6 +62,7 @@ export const config = {
     homeScreenOrder: 'Alternative Anordnung der Links auf dem Startbildschirm',
     homeScreenOldish: 'Altes Startbildschirm-Layout (Nicht kompatibel mit rechtsseitiger reorganisierter Stil-Optimierung)',
     overridePachinkoConfirm: `Warn-Pop-ups "Keine ${Helpers.isGH() ? 'Jungs' : 'Mädchen'} verfügbar" in Pachinko/NC deaktivieren`,
+    sidequestCompletionMarkers: 'Markierung für abgeschlossene Nebenquests',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
@@ -57,6 +77,31 @@ export const stConfig = {
     homeScreenRightSideRearrange: 'Ordne die Elemente auf der rechten Seite des Startbildschirms neu an',
     selectableId: 'Mache User-ID auswählbar',
     messengerDarkMode: 'Dunkler Modus für den Messenger',
+    leagueTableCompressed: 'Kompakte Ligatabelle',
+    leagueTableRowStripes: 'Gestreifte Ligatabellen-Zeilen',
+    leagueTableShadow: 'Entferne Schatten der Ligatabelle',
+    clubTableShadow: 'Entferne Schatten der Clubtabelle',
+    removeParticleEffects: 'Entferne die Partikeleffekte des Startbildschirms',
+    eventGirlTicks: `Verbesserte Häkchen für Event${Helpers.isGH() ? 'kerle' : 'mädels'}`,
+    eventGirlBorders: `Grüne Umrandung um erworbene Event${Helpers.isGH() ? 'kerle' : 'mädchen'}`,
+    compactNav: 'Kompaktes Hauptmenü',
+    poaBorders: 'Grüne Umrandung um erworbene PoA-Belohnungen',
+    champGirlPower: `Überlauf von ${Helpers.isGH() ? 'Jungs' : 'Mädchen'}kraft bei Champions beheben`,
+    champGirlOverlap: `Behebe Überlappen von ${Helpers.isGH() ? 'Jungs' : 'Mädchen'} mit ${Helpers.isGH() ? 'Jungs' : 'Mädchen'}auswahl bei Champions`,
+    hideGameLinks: 'Spiellinks verbergen',
+    poaTicks: 'Behebe Häkchenposition im PoA',
+    poaGirlFade: `Behebe verblassen der ${Helpers.isGH() ? 'Jungs' : 'Mädchen'}pose im PoA`,
+    newButtons: 'Tausche verbleibende alte Schaltflächen aus',
+    bonusFlowersOverflow: `Verhindere, dass ${gameConfig.Blumen} in die nächste Zeile rutschen`,
+    popButtons: 'Verberge die Schalflächen für automatisches Zuweisen und Einsammeln in PoP',
+    contestNotifs: 'Verschiebe die Wettbewerbs-meldungen',
+    contestPointsWidth: 'Verhindere überlauf von Wettbewerbspunkten',
+    leagueChangeTeamButton: 'Behebe die Positionen der Schaltflächen auf der rechten Seite in der Liga',
+    compactPops: 'Kompakte PoPs',
+    monthlyCardText: 'Behebe den Text der Monatskarten',
+    povUnclutter: 'PoV/PoG Seiten-übersichtlichkeit',
+    dailyGoals: 'Restyle der Täglichen Ziele',
+    bbProgress: 'Bessere Belohungsfort-schrittsleiste in Boss Bums',
 }
 
 export const villain = {

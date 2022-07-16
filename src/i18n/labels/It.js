@@ -1,5 +1,49 @@
 import Helpers from '../../common/Helpers'
 
+const gameConfigs = {
+    HH: {
+        ragazze: 'ragazze',
+        leragazze: 'le ragazze',
+        alleragazze: 'alle ragazze',
+        delleragazze: 'delle ragazze',
+        dellaragazza: 'della ragazza',
+        fiori: 'ai fiori',
+    },
+    GH: {
+        ragazze: 'ragazzi',
+        leragazze: 'i ragazzi',
+        alleragazze: 'ai ragazzi',
+        delleragazze: 'dei ragazzi',
+        dellaragazza: 'del ragazzo',
+        fiori: 'lecca-lecca',
+    },
+    CxH: {
+        ragazze: 'ragazze',
+        leragazze: 'le ragazze',
+        alleragazze: 'alle ragazze',
+        delleragazze: 'delle ragazze',
+        dellaragazza: 'della ragazza',
+        fiori: 'ai gioelli',
+    },
+    PSH: {
+        ragazze: 'ragazze',
+        leragazze: 'le ragazze',
+        alleragazze: 'alle ragazze',
+        delleragazze: 'delle ragazze',
+        dellaragazza: 'della ragazza',
+        fiori: 'la birra',
+    },
+    HoH: {
+        ragazze: 'ragazze',
+        leragazze: 'le ragazze',
+        alleragazze: 'alle ragazze',
+        delleragazze: 'delle ragazze',
+        dellaragazza: 'della ragazza',
+        fiori: 'ai fiori',
+    },
+}
+const gameConfig = gameConfigs[Helpers.getGameKey()]
+
 export const common = {
     all: 'Tutti',
 }
@@ -44,6 +88,7 @@ export const config = {
     homeScreenOrder: 'Disposizione alternativa dei link nella schermata iniziale',
     homeScreenOldish: 'Vecchia schermata iniziale (Non compatibile con l\'ottimizzazione dello stile riorganizzato sul lato destro)',
     overridePachinkoConfirm: `Disattiva i pop-up di avviso "${Helpers.isGH() ? 'Nessun ragazzo' : 'Nessuna ragazza'} disponibile" in Pachinko/NC`,
+    sidequestCompletionMarkers: 'Marcatore per le missioni secondarie completate',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
@@ -58,6 +103,31 @@ export const stConfig = {
     homeScreenRightSideRearrange: 'Riorganizza gli elementi sul lato destro della schermata iniziale',
     selectableId: 'Rendi selezionabile l\'ID utente',
     messengerDarkMode: 'Modo scuro per il messaggero',
+    leagueTableCompressed: 'Classifica compatta',
+    leagueTableRowStripes: 'Righe della classifica di campionato',
+    leagueTableShadow: 'Rimuovi l\'ombra della classifica',
+    clubTableShadow: 'Rimuovi l\'ombra del tavolo del club',
+    removeParticleEffects: 'Rimuove gli effetti particellari della schermata iniziale',
+    eventGirlTicks: `Ticchettii migliorati per ${gameConfig.leragazze} dell'evento`,
+    eventGirlBorders: `Bordi verdi intorno ${gameConfig.alleragazze} degli eventi acquisiti`,
+    compactNav: 'Menu principale compatto',
+    poaBorders: 'Bordo verde intorno ai premi PoA acquisiti',
+    champGirlPower: `Correggere l'overflow della potenza ${gameConfig.delleragazze} nei campioni`,
+    champGirlOverlap: `Correggere la sovrapposizione ${gameConfig.delleragazze} con la selezione ${gameConfig.delleragazze} in champions`,
+    hideGameLinks: 'Nascondi i riferimenti del gioco',
+    poaTicks: 'Fissa la posizione dei tick in PoA',
+    poaGirlFade: `Correggi la posa ${gameConfig.delleragazze} in PoA`,
+    newButtons: 'Sostituisce i vecchi pulsanti rimanenti',
+    bonusFlowersOverflow: `Impedisci ${gameConfig.fiori} di scorrere alla riga successiva`,
+    popButtons: 'Nascondi i pulsanti per l\'assegnazione e la raccolta automatica in PoP',
+    contestNotifs: 'Sposta le voci del concorso',
+    contestPointsWidth: 'Impedisce l\'overflow dei punti del concorso',
+    leagueChangeTeamButton: 'Fissa la posizione dei pulsanti sul lato destro nel campionato',
+    compactPops: 'PoPs compatti',
+    monthlyCardText: 'Fissa il testo delle carte mensili',
+    povUnclutter: 'Chiarezza della pagina PoV/PoG',
+    dailyGoals: 'Restyle degli obiettivi quotidiani',
+    bbProgress: 'Migliore barra di avanzamento della ricompensa nella Scopata Boss',
 }
 
 export const villain = {

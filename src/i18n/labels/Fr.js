@@ -1,5 +1,34 @@
 import Helpers from '../../common/Helpers'
 
+const gameConfigs = {
+    HH: {
+        fille: 'fille',
+        delafille: 'de la fille',
+        fleurs: 'fleurs'
+    },
+    GH: {
+        fille: 'mec',
+        delafille: 'du mec',
+        fleurs: 'sucettes'
+    },
+    CxH: {
+        fille: 'fille',
+        delafille: 'de la fille',
+        fleurs: 'bijoux'
+    },
+    PSH: {
+        fille: 'fille',
+        delafille: 'de la fille',
+        fleurs: 'bières'
+    },
+    HoH: {
+        fille: 'fille',
+        delafille: 'de la fille',
+        fleurs: 'fleurs'
+    },
+}
+const gameConfig = gameConfigs[Helpers.getGameKey()]
+
 export const common = {
     all: 'Toutes',
 }
@@ -7,9 +36,9 @@ export const common = {
 export const config = {
     refresh: 'Rafraîchir page d\'accueil',
     villain: 'Menu des combats des trolls',
-    villain_tiers: `Montrer les paliers/${Helpers.isGH() ? 'mecs' : 'filles'}`,
+    villain_tiers: `Montrer les paliers/${gameConfig.fille}s`,
     market: 'Infos marché',
-    marketGirlsFilter: `Filtre des ${Helpers.isGH() ? 'mecs' : 'filles'} au marché`,
+    marketGirlsFilter: `Filtre des ${gameConfig.fille}s au marché`,
     marketEquipsFilter: 'Filtre d\'équipements au marché',
     marketXPAff: 'XP et affection au marché',
     marketHideSellButton: 'Bouton de vente activable',
@@ -22,7 +51,7 @@ export const config = {
     teamsFilter: 'Filtre d\'équipes',
     champions: 'Infos champions',
     champions_poseMatching: 'Ajouter des indicateurs de correspondance de pose',
-    champions_fixPower: `Inclure la puissance du héros à l'affichage de la puissance ${Helpers.isGH() ? 'du mec' : 'de la fille'}`,
+    champions_fixPower: `Inclure la puissance du héros à l'affichage de la puissance ${gameConfig.delafille}`,
     homeScreen: 'Raccourcis & timers de l\'écran principal',
     homeScreen_leaguePos: 'Afficher le rang de Ligue actuel (ajoute de la charge réseau supplémentaire)',
     resourceBars: 'Barres de ressorces / Indicateurs de boosters',
@@ -33,7 +62,7 @@ export const config = {
     battleEndstate: 'Afficher le détail quand tu passes le combat',
     gemStock: 'Stock de gemmes au marché/harem',
     staticBackground: 'Empêche les changements de décor durant les Jours d\'Orgie',
-    rewardShards: `Affiche le nombre de Fragments d'Affection actuels sur les ${Helpers.isGH() ? 'mecs' : 'filles'} en récompense`,
+    rewardShards: `Affiche le nombre de Fragments d'Affection actuels sur les ${gameConfig.fille}s en récompense`,
     leaderboardFix: 'Corrige les classements de Saisons et Voie de la Valeur',
     hideClaimedRewards: 'Masquer les récompenses de Saison/CdA/VdV',
     disableDragDrop: 'Désactiver la fonction glisser-déposer dans le marché',
@@ -43,7 +72,8 @@ export const config = {
     homeScreenIcons: 'Ajouter des icônes aux menus de l\'écran principal',
     homeScreenOrder: 'Ordre alternatif des menus de l\'écran principal',
     homeScreenOldish: 'Mise en page d\'origine de l\'écran principal (incompatible avec la réorganisation des éléments à droite)',
-    overridePachinkoConfirm: `Désactive l'avertissement "Pas de ${Helpers.isGH() ? 'mec' : 'fille'} disponible" dans le Pachinko/NC`,
+    overridePachinkoConfirm: `Désactive l'avertissement "Pas de ${gameConfig.fille} disponible" dans le Pachinko/NC`,
+    sidequestCompletionMarkers: 'Marqueurs de complétion pour les quêtes secondaires',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
@@ -51,13 +81,38 @@ export const stConfig = {
     mobileBattle: 'Corrige l\'écran de bataille sur mobile',
     darkMobileLeague: 'Fond sombre en Ligue sur mobile',
     hideRotateDevice: 'Masque le message de rotation de l\'écran sur mobile',
-    salaryTimers: `Timers des salaires des ${Helpers.isGH() ? 'mecs' : 'filles'} visibles`,
+    salaryTimers: `Timers des salaires des ${gameConfig.fille}s visibles`,
     moveSkipButton: 'Mettre le bouton pour passer les combats en-bas',
-    poseAspectRatio: `Corriger les proportions de la pose ${Helpers.isGH() ? 'du mec' : 'de la fille'} en combat`,
+    poseAspectRatio: `Corriger les proportions de la pose ${gameConfig.delafille} en combat`,
     reduceBlur: 'Réduire l\'effet de flou sur l\'écran principal',
     homeScreenRightSideRearrange: 'Réorganiser les éléments sur le côté droit de l\'écran principal',
     selectableId: 'Rendre l\'ID sélectionnable dans le profil utilisateur',
     messengerDarkMode: 'Mode nuit pour la messagerie',
+    leagueTableCompressed: 'Tableau de Ligue compact',
+    leagueTableRowStripes: 'Lignes rayées dans le tableau de Ligue',
+    leagueTableShadow: 'Enlever l\'ombre dans le tableau de Ligue',
+    clubTableShadow: 'Enlever l\'ombre dans le tableau de Club',
+    removeParticleEffects: 'Enlever les effets de particules de la page d\'accueil',
+    eventGirlTicks: `Coches améliorées pour les ${gameConfig.fille}s d'événement`,
+    eventGirlBorders: `Bordures vertes pour les ${gameConfig.fille}s d'événement obtenues`,
+    compactNav: 'Menu principal compact',
+    poaBorders: 'Bordures vertes pour les récompenses du CdlA',
+    champGirlPower: `Corriger le débordement des points de puissance ${gameConfig.delafille} de Champion`,
+    champGirlOverlap: `Corriger la superposition ${gameConfig.delafille} de Champion lors de la sélection des ${gameConfig.fille}s`,
+    hideGameLinks: 'Masquer les liens vers les autres jeux',
+    poaTicks: 'Corriger la position des coches dans l\'écran du CdlA',
+    poaGirlFade: `Corriger l'estompement de la pose des ${gameConfig.fille}s dans le CdlA`,
+    newButtons: 'Remplacer les anciens boutons de menu restants',
+    bonusFlowersOverflow: `Empêcher les ${gameConfig.fleurs} bonus d'apparaître hors écran`,
+    popButtons: 'Masquer les boutons d\'auto-assignement et d\'auto-récupération dans les LdP',
+    contestNotifs: 'Déplacer les notifications de compet\'',
+    contestPointsWidth: 'Empêcher le débordement des points dans le tableau de compet\'',
+    leagueChangeTeamButton: 'Corriger le positionnement des boutons de gauche dans la Ligue',
+    compactPops: 'LdP compacts',
+    monthlyCardText: 'Corriger le texte de la carte memsuelle',
+    povUnclutter: 'Meilleure clarté de page pour VdlV/VdlG',
+    dailyGoals: 'Redesign de la page des Objectifs Journaliers',
+    bbProgress: 'Meilleure barre de progrès des récompenses de Boss Bang',
 }
 
 export const villain = {
