@@ -102,6 +102,7 @@ export const stConfig = {
     povUnclutter: 'PoV/PoG Seiten-übersichtlichkeit',
     dailyGoals: 'Restyle der Täglichen Ziele',
     bbProgress: 'Bessere Belohungsfort-schrittsleiste in Boss Bums',
+    compactLossScreen: 'Kompakte Niederlage-Anzeige',
 }
 
 export const villain = {

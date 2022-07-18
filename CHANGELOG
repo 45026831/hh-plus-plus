@@ -1,3 +1,4 @@
+1.19.0: Adding style tweak to shrink the loss screen items so that the OK button is the same place as the skip button
 1.18.2: Adding translations for grade cap. Adding real-time resource bar updates for league, season and pantheon battles
 1.18.1: Adding translations for Style Tweaks. Fixing #74. Adding grade cap option to the market girls filter (#56).
 1.18.0: Merging Style Tweaks into HH++ proper. Removing defunct temporary fix popups module

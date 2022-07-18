@@ -113,6 +113,7 @@ export const stConfig = {
     povUnclutter: 'Более свободный экран PoV/PoG',
     dailyGoals: 'Переделанная экран Daily Goals',
     bbProgress: 'Улучшенная полоса прогресса Boss Bang',
+    compactLossScreen: 'Компактный экран поражения',
 }
 
 export const villain = {

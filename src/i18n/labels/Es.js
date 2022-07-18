@@ -118,6 +118,7 @@ export const stConfig = {
     povUnclutter: 'Claridad de la página de CdV/CdG',
     dailyGoals: 'Remodelación de objetivos diarios',
     bbProgress: 'Mejor barra de progreso de recompensas de Boss Bang',
+    compactLossScreen: 'Pantalla de derrota compacta',
 }
 
 export const villain = {
