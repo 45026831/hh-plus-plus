@@ -174,6 +174,7 @@ export const marketGirlsFilter = {
     grade4: '4 звезды',
     grade5: '5 звезд',
     grade6: '6 звезд',
+    gradeCap: 'Предел влечения',
     team: 'Команда',
     visitTeams: 'Сначала посетите <a href="../teams.html">Команды</a>.',
 }

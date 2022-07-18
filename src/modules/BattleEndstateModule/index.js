@@ -24,10 +24,22 @@ class BattleEndstateModule extends CoreModule {
 
         Helpers.onAjaxResponse(/action=do_battles_(leagues|seasons|troll|pantheon|boss_bang)/i, (respBattleData) => {
             //We already spent some combativity, let's show this to the player:
-            if(Helpers.isCurrentPage('troll-battle') && ~location.search.search(/number_of_battles=\d+/i)) {
+            if(~location.search.search(/number_of_battles=\d+/i)) {
                 const nBattlesCount = parseInt(location.search.match(/number_of_battles=(\d+)/i)[1], 10)
-                if($.isNumeric(nBattlesCount))
-                    Hero.update('energy_fight', -1 * nBattlesCount, true)
+                if($.isNumeric(nBattlesCount)) {
+                    if (Helpers.isCurrentPage('troll-battle')) {
+                        Hero.update('energy_fight', -1 * nBattlesCount, true)
+                    }
+                    if (Helpers.isCurrentPage('season-battle')) {
+                        Hero.update('energy_kiss', -1 * nBattlesCount, true)
+                    }
+                    if (Helpers.isCurrentPage('league-battle')) {
+                        Hero.update('energy_challenge', -1 * nBattlesCount, true)
+                    }
+                    if (Helpers.isCurrentPage('pantheon-battle')) {
+                        Hero.update('energy_worship', -1 * nBattlesCount, true)
+                    }
+                }
             }
 
             const arrRounds = respBattleData.rounds

@@ -151,6 +151,7 @@ export const marketGirlsFilter = {
     grade4: '4 Sterne',
     grade5: '5 Sterne',
     grade6: '6 Sterne',
+    gradeCap: 'Zuneigungsgrenze',
     team: 'Team',
     visitTeams: 'Besuche zuerst die <a href="../teams.html">Teams</a>.',
 }

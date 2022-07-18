@@ -179,6 +179,7 @@ export const marketGirlsFilter = {
     grade4: '4 stelle',
     grade5: '5 stelle',
     grade6: '6 stelle',
+    gradeCap: 'Massima affezione',
     team: 'Squadra',
     visitTeams: 'Visita le <a href="../teams.html">Squadre</a> prima.'
 }
