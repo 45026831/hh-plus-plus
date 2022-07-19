@@ -133,7 +133,7 @@ class TeamsFilterModule extends CoreModule {
             const affectionLvl = `${$grade.filter('g:not(.grey):not(.green)').length}`
             let matchesAffCategory = (affectionCategory === filterAffCategory) || (filterAffCategory === 'all')
             let matchesAffLvl = (affectionLvl === filterAffLvl) || (filterAffLvl === 'all')
-            let matchesLevelCap = (filterLevelCap === 'all') || (haremGirls[index].Xp.maxed === (filterLevelCap === 'capped'))
+            let matchesLevelCap = (filterLevelCap === 'all') || (filterLevelCap === 'capped' && haremGirls[index].Xp.maxed) || (filterLevelCap === 'uncapped' && !haremGirls[index].Xp.maxed)
 
             return (matchesClass && matchesElement && matchesRarity && matchesName && matchesBlessedAttributes && matchesAffCategory && matchesAffLvl && matchesLevelCap) ? index : null
         })
