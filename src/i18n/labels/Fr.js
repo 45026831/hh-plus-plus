@@ -113,6 +113,7 @@ export const stConfig = {
     povUnclutter: 'Meilleure clarté de page pour VdlV/VdlG',
     dailyGoals: 'Redesign de la page des Objectifs Journaliers',
     bbProgress: 'Meilleure barre de progrès des récompenses de Boss Bang',
+    compactLossScreen: 'Ecran de défaite compact',
 }
 
 export const villain = {

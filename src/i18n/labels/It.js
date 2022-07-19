@@ -128,6 +128,7 @@ export const stConfig = {
     povUnclutter: 'Chiarezza della pagina PoV/PoG',
     dailyGoals: 'Restyle degli obiettivi quotidiani',
     bbProgress: 'Migliore barra di avanzamento della ricompensa nella Scopata Boss',
+    compactLossScreen: 'Pantalla de pérdida compacta',
 }
 
 export const villain = {
