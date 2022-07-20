@@ -1,3 +1,4 @@
+1.20.0: Adding a style tweak for compacting the Seasonal Event rewards view. Fixing how Seasonal Event button appears on home screen modules. Adding seasonal event to claimed reward hiding.
 1.19.1: Adding missing translations for compact loss screen
 1.19.0: Adding style tweak to shrink the loss screen items so that the OK button is the same place as the skip button
 1.18.2: Adding translations for grade cap. Adding real-time resource bar updates for league, season and pantheon battles

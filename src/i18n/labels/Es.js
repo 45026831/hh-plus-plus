@@ -119,6 +119,7 @@ export const stConfig = {
     dailyGoals: 'Remodelación de objetivos diarios',
     bbProgress: 'Mejor barra de progreso de recompensas de Boss Bang',
     compactLossScreen: 'Pantalla de derrota compacta',
+    seasonalEventTweaks: 'Optimierungen für Saisonales Event',
 }
 
 export const villain = {

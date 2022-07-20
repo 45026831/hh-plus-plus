@@ -22,7 +22,7 @@ class HideClaimedRewardsModule extends CoreModule {
     }
 
     shouldRun () {
-        return ['path-of-valor', 'path-of-glory', 'season.html', 'event.html'].some(page => Helpers.isCurrentPage(page))
+        return ['path-of-valor', 'path-of-glory', 'season.html', 'event.html', 'seasonal'].some(page => Helpers.isCurrentPage(page))
     }
 
     run () {
@@ -37,6 +37,8 @@ class HideClaimedRewardsModule extends CoreModule {
                 this.season()
             } else if (Helpers.isCurrentPage('event.html')) {
                 this.poa()
+            } else if (Helpers.isCurrentPage('seasonal')) {
+                this.seasonalEvent()
             }
         })
 
@@ -233,6 +235,62 @@ class HideClaimedRewardsModule extends CoreModule {
             fixScroll()
         }
         $('#poa-content .girls').click(()=>{toggle()})
+    }
+
+    seasonalEvent () {
+        let hidden = false
+        const $groupsToHide = $('.seasonal-tier:not(.unclaimed):has(.claimed-slot)')
+        const $groupsRemaining = $('.seasonal-tier.unclaimed')
+        const claimedCount = $groupsToHide.length
+        const widthPattern = /width: ?(?<existingLength>[0-9.a-z%]+);?/
+        let existingLengthStr
+        let newLength
+        const $progressBar = $('.seasonal-progress-bar .seasonal-progress-bar-current')
+        const styleAttr = $progressBar.attr('style')
+
+        const assertHidden = () => {
+            if (claimedCount === 0) {
+                // nothing to do
+                return
+            }
+
+            $groupsToHide.addClass('script-hide-claimed')
+            hidden = true
+            if (styleAttr) {
+                setTimeout(() => {
+                    newLength = $groupsRemaining.last().find('.tier-level')[0].offsetLeft
+                    $progressBar.attr('style', styleAttr.replace(widthPattern, `width:${newLength}px;`))
+                }, 1)
+            }
+        }
+        const assertShown = () => {
+            $('.script-hide-claimed').removeClass('script-hide-claimed')
+            hidden = false
+            if (styleAttr) {
+                $progressBar.attr('style', styleAttr.replace(widthPattern, `width:${existingLengthStr};`))
+            }
+        }
+
+        if (styleAttr) {
+            const matches = styleAttr.match(widthPattern)
+            if (matches && matches.groups) {
+                existingLengthStr = matches.groups.existingLength
+            }
+        }
+        assertHidden()
+        $('.seasonal-progress-bar-section').stop(true).animate({
+            scrollLeft: Math.max(0, newLength - 150)
+        }, 100)
+
+        const toggle = () => {
+            if (hidden) {
+                assertShown()
+            } else {
+                assertHidden()
+            }
+        }
+
+        $('.girls-reward-container').click(toggle)
     }
 }
 

@@ -4,4 +4,18 @@
     #events .nc-panel-body & {
         display: none;
     }
+
+    .seasonal-event-panel
+        .seasonal-event-container
+        .tabs-section
+        #home_tab_container
+        .bottom-container
+        .right-part-container
+        .seasonal-tiers-section
+        .seasonal-progress-bar-section
+        .seasonal-progress-bar-tiers
+        .seasonal-tier-container
+        &.seasonal-tier {
+        display: none;
+    }
 }
