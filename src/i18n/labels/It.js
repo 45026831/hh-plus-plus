@@ -129,6 +129,7 @@ export const stConfig = {
     dailyGoals: 'Restyle degli obiettivi quotidiani',
     bbProgress: 'Migliore barra di avanzamento della ricompensa nella Scopata Boss',
     compactLossScreen: 'Pantalla de pérdida compacta',
+    seasonalEventTweaks: 'Ottimizzazioni per l\'evento stagionale',
 }
 
 export const villain = {

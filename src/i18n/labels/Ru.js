@@ -114,6 +114,7 @@ export const stConfig = {
     dailyGoals: 'Переделанная экран Daily Goals',
     bbProgress: 'Улучшенная полоса прогресса Boss Bang',
     compactLossScreen: 'Компактный экран поражения',
+    seasonalEventTweaks: 'Поправки для Сезонных Событий',
 }
 
 export const villain = {
