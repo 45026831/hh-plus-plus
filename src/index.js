@@ -63,7 +63,7 @@ const runScript = () => {
     }
 }
 
-if (!$) {
+if (!window.$) {
     console.log('HH++ WARNING: No jQuery found. Probably an error page. Ending the script here')
 } else if (location.pathname === '/' && (location.hostname.includes('www') || location.hostname.includes('test'))) {
     // iframe container, do nothing.
