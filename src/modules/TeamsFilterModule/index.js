@@ -55,7 +55,7 @@ class TeamsFilterModule extends CoreModule {
                     return element.val().length && element.val() !== 'all' ? `<span class="${element.val()}-text">${text}</span>` : text
                 }
             })
-            const otherFields = ['aff_category', 'aff_lvl', 'blessed_attributes']
+            const otherFields = ['aff_category', 'aff_lvl', 'blessed_attributes', 'level_cap']
             otherFields.forEach(field => $(`#filter_${field}`).selectric())
             this.createFilterEvents()
         })
@@ -93,6 +93,7 @@ class TeamsFilterModule extends CoreModule {
         $('#filter_blessed_attributes').on('change', doFilter)
         $('#filter_aff_category').on('change', doFilter)
         $('#filter_aff_lvl').on('change', doFilter)
+        $('#filter_level_cap').on('change', doFilter)
     }
 
     filterGirls() {
@@ -104,6 +105,8 @@ class TeamsFilterModule extends CoreModule {
         let filterBlessedAttributes = $('#filter_blessed_attributes').get(0).value
         let filterAffCategory = $('#filter_aff_category').get(0).value
         let filterAffLvl = $('#filter_aff_lvl').get(0).value
+        let filterLevelCap = $('#filter_level_cap').get(0).value
+        const haremGirls = window.haremGirls
 
         let girlsFiltered = $.map(this.girlsData, (girl, index) => {
             let matchesClass = (girl.class === filterClass) || (filterClass === 'all')
@@ -130,8 +133,9 @@ class TeamsFilterModule extends CoreModule {
             const affectionLvl = `${$grade.filter('g:not(.grey):not(.green)').length}`
             let matchesAffCategory = (affectionCategory === filterAffCategory) || (filterAffCategory === 'all')
             let matchesAffLvl = (affectionLvl === filterAffLvl) || (filterAffLvl === 'all')
+            let matchesLevelCap = (filterLevelCap === 'all') || (filterLevelCap === 'capped' && haremGirls[index].Xp.maxed) || (filterLevelCap === 'uncapped' && !haremGirls[index].Xp.maxed)
 
-            return (matchesClass && matchesElement && matchesRarity && matchesName && matchesBlessedAttributes && matchesAffCategory && matchesAffLvl) ? index : null
+            return (matchesClass && matchesElement && matchesRarity && matchesName && matchesBlessedAttributes && matchesAffCategory && matchesAffLvl && matchesLevelCap) ? index : null
         })
 
         $.each(this.arenaGirls, function(index, girlElem) {
@@ -153,6 +157,7 @@ class TeamsFilterModule extends CoreModule {
         totalHTML += Snippets.selectInput({id: 'filter_aff_category', label: this.label('searchedAffCategory'), options: ['1','3','5','6'].map(affectionGradeOption), className: 'script-filter-aff-category'})
         totalHTML += Snippets.selectInput({id: 'filter_aff_lvl', label: this.label('searchedAffLevel'), options: ['0','1','2','3','4','5','6'].map(affectionGradeOption), className: 'script-filter-aff-level'})
         totalHTML += Snippets.selectInput({id: 'filter_blessed_attributes', label: this.label('searchedBlessedAttributes'), options: [{value: 'blessed_attributes', label: this.label('blessedAttributes')}, {value: 'non_blessed_attributes', label: this.label('nonBlessedAttributes')}], className: 'script-filter-blessing'})
+        totalHTML += Snippets.selectInput({id: 'filter_level_cap', label: this.label('levelCap'), options: ['capped', 'uncapped'].map(option => ({label: this.label(`levelCap_${option}`), value: option})), className: 'script-filter-level-cap'})
 
         totalHTML += '</div>'
 
