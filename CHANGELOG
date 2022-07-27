@@ -1,3 +1,4 @@
+1.20.3: Removing tweak to fix French formatting of Seasonal Event cards.
 1.20.2: Merging #77 to add level cap filter to teams filter (#72)
 1.20.1: Adding missing translations for Seasonal Event tweaks. Improving text display for seasonal event cards in French.
 1.20.0: Adding a style tweak for compacting the Seasonal Event rewards view. Fixing how Seasonal Event button appears on home screen modules. Adding seasonal event to claimed reward hiding.
