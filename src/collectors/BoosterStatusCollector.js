@@ -154,7 +154,7 @@ class BoosterStatusCollector {
                     const {cur: oldValue, level} = window.Hero.infos.Xp
 
                     let atmBonus = 0.05
-                    if (level <= 300) {
+                    if (level < 300) {
                         atmBonus = 0.2
                     }
                     const clubBonus = getClubXPBonus()

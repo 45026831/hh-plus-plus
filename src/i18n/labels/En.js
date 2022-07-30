@@ -152,6 +152,7 @@ export const villain = {
     asaakira: 'Headmistress Asa Akira',
     sammyjayne: 'Sammy Jayne',
     ivywinters: 'Ivy Winters',
+    lilycade: 'Lily Cade',
     fallback: 'World {{world}} villain',
     event: 'Event',
 }
@@ -366,6 +367,7 @@ export const villainBreadcrumbs = {
     fukwell: 'Fukwell University',
     eurodick: 'Eurodick',
     homecumming: 'Homecumming',
+    biggerintexas: 'Bigger in Texas',
 }
 
 export const blessingSpreadsheetLink = {

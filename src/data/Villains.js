@@ -550,9 +550,10 @@ export default {
             ]
         },
         {
+            key: 'lilycade',
             world: 5,
             girls: {
-                1: [],
+                1: ['564593641', '719705773', '934421949'],
                 2: [],
                 3: []
             },
@@ -562,6 +563,18 @@ export default {
             }, {
                 element: 'stone',
                 amount: 15,
+            }]
+        },
+        {
+            world: 6,
+            girls: {
+                1: [],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'darkness',
+                amount: 20,
             }]
         },
     ],

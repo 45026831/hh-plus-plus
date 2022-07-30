@@ -122,6 +122,7 @@ export const villain = {
     jacksoncrew: 'Éq. de Jackson',
     pandorawitch: 'Sorcière Pandora',
     werebunnypolice: 'Police des Lapines-Garous',
+    asaakira: 'Directrice Asa Akira',
     fallback: 'Monde {{world}} troll',
 }
 
@@ -319,6 +320,7 @@ export const villainBreadcrumbs = {
     stairway: 'La Montée aux Cieux',
     training: 'La dimension d\'entraînement',
     weresquidisland: 'L\'île des Poulpes Garous',
+
     begincitycxh: 'Préludeville',
     heroacademy: 'Académie des Héros',
     newcenabum: 'Nouveau Cénabum',
@@ -326,6 +328,11 @@ export const villainBreadcrumbs = {
     bushexplorations: 'Explorations de la brousse',
     thespy: 'L’espion qui venait en moi',
     hornyknight: 'Le chevalier corné',
+
+    fukwell: 'Université de Belbaise',
+    eurodick: 'Eurobite',
+    homecumming: 'Retrouvailles',
+    biggerintexas: 'Plus GROS au Texas',
 }
 
 export const blessingSpreadsheetLink = {
