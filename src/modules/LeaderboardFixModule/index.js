@@ -17,7 +17,7 @@ class LeaderboardFixModule extends CoreModule {
     }
 
     shouldRun () {
-        return ['season.html', 'path-of-valor'].some(page => Helpers.isCurrentPage(page))
+        return ['season.html', 'path-of-valor', 'path-of-glory', 'pantheon.html'].some(page => Helpers.isCurrentPage(page))
     }
 
     run () {
@@ -26,39 +26,70 @@ class LeaderboardFixModule extends CoreModule {
         styles.use()
 
         Helpers.defer(() => {
-            if (Helpers.isCurrentPage('season.html')) {
-                this.fixSeasonLeaderboard()
-            } else if (Helpers.isCurrentPage('path-of-valor')) {
-                this.fixPoVLeaderboard()
-            }
+            this.fixLeaderboards()
         })
 
         this.hasRun = true
     }
 
-    fixSeasonLeaderboard () {
+    fixLeaderboards () {
+        // do not use $('#leaderboard_list') because jQuery cannot select multiple elements with the same id
+        document.querySelectorAll('#leaderboard_list')
+            .forEach(leaderboardList => this.fixLeaderboard(leaderboardList))
+    }
+
+    fixLeaderboard (leaderboardList) {
+        const $leaderboardList = $(leaderboardList)
+        const numRows = $leaderboardList.find('.leaderboard_row').length
+
+        if (numRows === 0) {
+            // not loaded yet
+            const observer = new MutationObserver(() => {
+                observer.disconnect()
+                this.fixLeaderboard(leaderboardList)
+            })
+            observer.observe(leaderboardList, {childList: true})
+            return
+        }
+
+        const inTheTop1000 = numRows <= 1000
+        if (!inTheTop1000) return
+
+        if (Helpers.isCurrentPage('season.html')) {
+            this.fixSeasonLeaderboard($leaderboardList)
+        } else if (['path-of-valor', 'path-of-glory'].some(page => Helpers.isCurrentPage(page))) {
+            this.fixPathLeaderboard($leaderboardList)
+        } else if (Helpers.isCurrentPage('pantheon.html')) {
+            this.fixPantheonLeaderboard($leaderboardList)
+        }
+    }
+
+    fixSeasonLeaderboard ($leaderboardList) {
         const {leaderboard_data} = window
         const ownRowData = leaderboard_data.find(({is_hero})=>is_hero)
         if (!ownRowData) {return}
 
-        const $ownRow = $('#leaderboard_list .leaderboard_row').eq(ownRowData.index).clone()
-        $ownRow.addClass('script-player-row')
-        const $ownRowContainer = $('<div class="script-player-row-container"></div>')
-        $ownRowContainer.append($ownRow)
-        $('#leaderboard_holder').append($ownRowContainer)
+        const $ownRow = $leaderboardList.find('.leaderboard_row')
+            .eq(ownRowData.index)
+            .clone()
+            .addClass('script-season-leaderboard-fix')
+        $leaderboardList.append($ownRow)
     }
 
-    fixPoVLeaderboard () {
-        const observer = new MutationObserver(() => {
-            observer.disconnect()
+    fixPathLeaderboard ($leaderboardList) {
+        const $ownRow = $leaderboardList.find('.leaderboard_row.hero-row')
+            .clone()
+            .addClass('build-at-bottom')
+        $leaderboardList.append($ownRow)
+    }
 
-            const $ownRow = $('#leaderboard_list .leaderboard_row.hero-row').clone()
-            $ownRow.addClass('script-player-row')
-            const $ownRowContainer = $('<div class="script-player-row-container"></div>')
-            $ownRowContainer.append($ownRow)
-            $('#leaderboard_holder').append($ownRowContainer)
-        })
-        observer.observe(document.getElementById('leaderboard_list'), {childList: true})
+    fixPantheonLeaderboard ($leaderboardList) {
+        const $ownRow = $leaderboardList.find('.leaderboard_row.player-row')
+            .addClass('script-pantheon-leaderboard-fix')
+            .clone()
+            .removeClass('script-pantheon-leaderboard-fix')
+        $leaderboardList.append($ownRow)
+        $leaderboardList.getNiceScroll().resize()
     }
 }
 

@@ -1,10 +1,11 @@
-.script-player-row-container {
-    font-size: 14px;
-    width: 90%;
-    margin: auto;
-    padding-right: 10px;
+.script-season-leaderboard-fix {
+    position: fixed;
+    bottom: 30px;
+    width: 904px;
 }
 
-.leaderboard_row_active {
-    padding: 1px;
+.pantheon-container #leaderboard_tab_container .leaderboard_list .player-row.script-pantheon-leaderboard-fix {
+    position: static;
+    bottom: auto;
+    width: 100%;
 }

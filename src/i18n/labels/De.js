@@ -52,7 +52,7 @@ export const config = {
     gemStock: 'Juwelen-Vorrat im Markt/Harem',
     staticBackground: 'Verhindere Hintergrundveränderung währden Orgien Tagen',
     rewardShards: `Aktuelle Splitteranzahl für ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} anzeigen`,
-    leaderboardFix: 'Fix für Ranglisten von Saison und PoV',
+    leaderboardFix: 'Fix für Ranglisten von Saison, PoV, PoG und Pantheon',
     hideClaimedRewards: 'Bereits beanspruchte Saison/PoA/PoV Belohungen ausblenden',
     disableDragDrop: 'Drag-and-Drop im Markt deaktivieren',
     autoRefresh: 'Automatisches Aktualisieren des Spiels alle 10 Minuten',

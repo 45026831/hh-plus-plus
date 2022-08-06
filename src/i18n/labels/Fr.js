@@ -63,7 +63,7 @@ export const config = {
     gemStock: 'Stock de gemmes au marché/harem',
     staticBackground: 'Empêche les changements de décor durant les Jours d\'Orgie',
     rewardShards: `Affiche le nombre de Fragments d'Affection actuels sur les ${gameConfig.fille}s en récompense`,
-    leaderboardFix: 'Corrige les classements de Saisons et Voie de la Valeur',
+    leaderboardFix: 'Corrige les classements de Saison, VdV, VdlG et Panthéon',
     hideClaimedRewards: 'Masquer les récompenses de Saison/CdA/VdV',
     disableDragDrop: 'Désactiver la fonction glisser-déposer dans le marché',
     autoRefresh: 'Actualise automatiquement le jeu toutes les 10 minutes',
