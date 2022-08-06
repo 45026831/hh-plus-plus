@@ -1,3 +1,4 @@
+1.20.6: Merging #81 from rena-jp to improve leaderboard fixes (#79), fixes issues with PoV/PoG leader boards conflicting and fixes Pantheon leaderboard in reverse.
 1.20.5: Enabling PoP modules on PSH
 1.20.4: Adding world 5 data for PSH, adding French world and villain translations for PSH, correcting ATM tracking to move the threshold to 300 instead of 301
 1.20.3: Removing tweak to fix French formatting of Seasonal Event cards.
