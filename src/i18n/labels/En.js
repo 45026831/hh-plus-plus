@@ -80,6 +80,7 @@ export const config = {
     overridePachinkoConfirm: `Disable the "No ${gameConfig.Girl}s Available" warning pop-ups in Pachinko/NC`,
     fixClubPageScrollbars: 'Fix club page scrollbars (temporary module)',
     sidequestCompletionMarkers: 'Sidequest completion markers',
+    censorMode: 'Censor all NSFW imagery',
     fixPopup: 'Fix popups (temporary module)',
 }
 export const stConfig = {
