@@ -74,6 +74,7 @@ export const config = {
     homeScreenOldish: 'Вид главного экрана подобный старому (Несовместимо с изменением положения элементов правой части от Style Tweak)',
     overridePachinkoConfirm: `Отключить предупреждение "Нет ${Helpers.isGH() ? 'Парней' : 'Девушек'}" в Пачинко/Ночном-клубе`,
     sidequestCompletionMarkers: 'Метки прогресса побочных историй',
+    censorMode: 'Цензурировать все NSFW изображения',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',

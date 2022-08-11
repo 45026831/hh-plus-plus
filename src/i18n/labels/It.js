@@ -89,6 +89,7 @@ export const config = {
     homeScreenOldish: 'Vecchia schermata iniziale (Non compatibile con l\'ottimizzazione dello stile riorganizzato sul lato destro)',
     overridePachinkoConfirm: `Disattiva i pop-up di avviso "${Helpers.isGH() ? 'Nessun ragazzo' : 'Nessuna ragazza'} disponibile" in Pachinko/NC`,
     sidequestCompletionMarkers: 'Marcatore per le missioni secondarie completate',
+    censorMode: 'Censura di tutte le immagini NSFW',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',

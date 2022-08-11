@@ -31,6 +31,7 @@ export {default as HomeScreenOldishModule} from './HomeScreenOldishModule'
 export {default as OverridePachinkoConfirmModule} from './OverridePachinkoConfirmModule'
 export {default as SidequestCompletionMarkersModule} from './SidequestCompletionMarkersModule'
 export {default as CensorModeModule} from './CensorModeModule'
+export {default as FixProfilePopupModule} from './FixProfilePopupModule'
 
 // temp modules
 export {default as FixClubPageScrollbarsModule} from './FixClubPageScrollbarsModule'

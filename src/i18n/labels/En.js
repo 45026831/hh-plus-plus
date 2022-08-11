@@ -81,7 +81,7 @@ export const config = {
     fixClubPageScrollbars: 'Fix club page scrollbars (temporary module)',
     sidequestCompletionMarkers: 'Sidequest completion markers',
     censorMode: 'Censor all NSFW imagery',
-    fixPopup: 'Fix popups (temporary module)',
+    fixProfilePopup: 'Fix player profile popups',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

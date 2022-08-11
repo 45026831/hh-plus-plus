@@ -1,3 +1,4 @@
+1.22.0: Adding module to fix player profile popups to default to the profile tab instead of harem tab. Adding back profile popup for clicking on contest participants. Adding translations for censor mode.
 1.21.0: Adding module (off by default) that censors all NSFW content in the game
 1.20.6: Merging #81 from rena-jp to improve leaderboard fixes (#79), fixes issues with PoV/PoG leader boards conflicting and fixes Pantheon leaderboard in reverse.
 1.20.5: Enabling PoP modules on PSH

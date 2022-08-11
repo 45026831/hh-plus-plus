@@ -63,6 +63,7 @@ export const config = {
     homeScreenOldish: 'Altes Startbildschirm-Layout (Nicht kompatibel mit rechtsseitiger reorganisierter Stil-Optimierung)',
     overridePachinkoConfirm: `Warn-Pop-ups "Keine ${Helpers.isGH() ? 'Jungs' : 'Mädchen'} verfügbar" in Pachinko/NC deaktivieren`,
     sidequestCompletionMarkers: 'Markierung für abgeschlossene Nebenquests',
+    censorMode: 'Zensur aller NSFW-Bilder',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
