@@ -80,6 +80,7 @@ export const config = {
     overridePachinkoConfirm: `Desactivar las ventanas emergentes de advertencia "No hay ${Helpers.isGH() ? 'chicos' : 'chicas'} disponibles" en Pachinko/NC`,
     sidequestCompletionMarkers: 'Marcadores de finalización de misiones secundarias',
     censorMode: 'Censurar todas las imágenes NSFW',
+    fixProfilePopup: 'Reparar ventanas emergentes de perfil de jugador',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',

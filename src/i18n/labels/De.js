@@ -64,6 +64,7 @@ export const config = {
     overridePachinkoConfirm: `Warn-Pop-ups "Keine ${Helpers.isGH() ? 'Jungs' : 'Mädchen'} verfügbar" in Pachinko/NC deaktivieren`,
     sidequestCompletionMarkers: 'Markierung für abgeschlossene Nebenquests',
     censorMode: 'Zensur aller NSFW-Bilder',
+    fixProfilePopup: 'Fix für Spielerprofil-Popups',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

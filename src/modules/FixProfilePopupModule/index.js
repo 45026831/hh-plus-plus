@@ -21,12 +21,11 @@ class FixProfilePopupModule extends CoreModule {
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
 
-        if (Helpers.isCurrentPage('activities')) {
-            this.fixContestProfilePopup()
-        }
-
         Helpers.defer(() => {
             this.overrideAPI()
+            if (Helpers.isCurrentPage('activities')) {
+                this.fixContestProfilePopup()
+            }
         })
 
         this.hasRun = true
