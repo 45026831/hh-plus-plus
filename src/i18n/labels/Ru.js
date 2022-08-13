@@ -75,6 +75,7 @@ export const config = {
     overridePachinkoConfirm: `Отключить предупреждение "Нет ${Helpers.isGH() ? 'Парней' : 'Девушек'}" в Пачинко/Ночном-клубе`,
     sidequestCompletionMarkers: 'Метки прогресса побочных историй',
     censorMode: 'Цензурировать все NSFW изображения',
+    fixProfilePopup: 'Исправить всплывающие сообщения профиля',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',
