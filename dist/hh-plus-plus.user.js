@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.22.2
+// @version         1.22.3
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -431,7 +431,7 @@ window.HHPlusPlus={CHANGELOG:"https://raw.githubusercontent.com/45026831/hh-plus
         </div>
     `));if(u.after(n),u=n,r<o){Hero.c||(Hero.c={});let t;o=Object.values(HHTimers.timers).find(e=>e.type===i);let a;const p=`.energy_counter[type="${i}"]`,d=e=>{a=e.onDestroy,e.onDestroy=()=>{},e.destroy()};o?d(o):setTimeout(()=>{var e=Object.values(HHTimers.timers).find(({type:e,$elm:t})=>e===i&&t.selector!==p);e&&(d(e),a&&(t.onDestroy=a,Hero.c[i]=t))},10),t=HHTimers.initEnergyTimer(Ts(p)),t.$elm.selector=p,Hero.c[i]=t,a&&(Hero.c[i].onDestroy=a),"challenge"!==i||M.isCurrentPage("tower-of-fame")||(window.hasMultipleLeagueBattles=!1)}})}addPoPTimer(){if(Cs.pop){var n=M.lsGet(b.TRACKED_TIMES);let e=0,t=1,a;n&&n.pop&&(e=Math.max(n.pop-server_now_ts,0),t=n.popDuration,a=`<span class=&quot;orange&quot;>${new Date(1e3*n.pop).toLocaleTimeString(Qa.getLang(),{hour:"2-digit",minute:"2-digit"})}</span>`);var s=0<e;let i=100;s&&(i=100*(t-e)/t);const r=Ts(`
             <a class="script-pop-timer" href="/activities.html?tab=pop">
-                <div class="hh_bar finish_in_bar" ${s?`generic-tooltip="${this.label("readyAt",{time:a})}"`:""}>
+                <div class="hh_bar" ${s?`generic-tooltip="${this.label("readyAt",{time:a})}"`:""}>
                     <div class="backbar borderbar">
                         <div class="frontbar ${s?"pinkbar":"bluebar"}" style="width: ${i}%"></div>
                     </div>
