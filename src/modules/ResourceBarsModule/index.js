@@ -304,7 +304,7 @@ class ResourceBarsModule extends CoreModule {
 
         const $barHTML = $(`
             <a class="script-pop-timer" href="/activities.html?tab=pop">
-                <div class="hh_bar finish_in_bar" ${inProgress ? `generic-tooltip="${this.label('readyAt', {time: formattedDate})}"` : ''}>
+                <div class="hh_bar" ${inProgress ? `generic-tooltip="${this.label('readyAt', {time: formattedDate})}"` : ''}>
                     <div class="backbar borderbar">
                         <div class="frontbar ${inProgress ? 'pinkbar' : 'bluebar'}" style="width: ${barWidth}%"></div>
                     </div>
