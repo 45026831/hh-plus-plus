@@ -82,6 +82,7 @@ export const config = {
     sidequestCompletionMarkers: 'Sidequest completion markers',
     censorMode: 'Censor all NSFW imagery',
     fixProfilePopup: 'Fix player profile popups',
+    eventEndIndicators: 'Event ending indicators on home screen',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

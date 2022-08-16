@@ -72,4 +72,6 @@ export const lsKeys = {
     CLUB_STATUS:                lsKey('ClubStatus'),
     AVAILABLE_FEATURES:         lsKey('AvailableFeatures'),
     SIDEQUEST_STATUS:           lsKey('SidequestStatus'),
+    PATH_TIME_POV:              lsKey('PathTimePoV'),
+    PATH_TIME_POG:              lsKey('PathTimePoG'),
 }

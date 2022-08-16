@@ -5,6 +5,7 @@ import {
     GirlDictionaryCollector,
     LeagueInfoCollector,
     MarketInfoCollector,
+    PathEventCollector,
     SeasonStatsCollector,
     SidequestStatusCollector,
     TeamsCollector,
@@ -28,6 +29,7 @@ const runScript = () => {
     BoosterStatusCollector.collect()
     ClubStatusCollector.collect()
     SidequestStatusCollector.collect()
+    PathEventCollector.collect()
 
     // configurable modules
 

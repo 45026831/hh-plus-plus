@@ -32,6 +32,7 @@ export {default as OverridePachinkoConfirmModule} from './OverridePachinkoConfir
 export {default as SidequestCompletionMarkersModule} from './SidequestCompletionMarkersModule'
 export {default as CensorModeModule} from './CensorModeModule'
 export {default as FixProfilePopupModule} from './FixProfilePopupModule'
+export {default as EventEndIndicatorsModule} from './EventEndIndicatorsModule'
 
 // temp modules
 export {default as FixClubPageScrollbarsModule} from './FixClubPageScrollbarsModule'

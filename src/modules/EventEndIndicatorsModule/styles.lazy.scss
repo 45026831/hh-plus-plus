@@ -1,0 +1,30 @@
+.event-widget,
+.seasonal-event {
+    .timer.ongoing.script-ending-soon [rel="count"] {
+        color: #ff2f2f;
+        text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000;
+    }
+}
+
+.season-button,
+.pov-button [rel] {
+    &.script-ending-soon {
+        animation: {
+            name: pulsing-seasons-and-path;
+            duration: 4s;
+            iteration-count: infinite;
+        }
+    }
+}
+
+@keyframes pulsing-seasons-and-path {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 1;
+    }
+}

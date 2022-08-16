@@ -1,3 +1,4 @@
+
 export {default as GirlDictionaryCollector} from './GirlDictionaryCollector'
 export {default as TeamsCollector} from './TeamsCollector'
 export {default as EventVillainsCollector} from './EventVillainsCollector'
@@ -8,3 +9,4 @@ export {default as TimerCollector} from './TimerCollector'
 export {default as BoosterStatusCollector} from './BoosterStatusCollector'
 export {default as ClubStatusCollector} from './ClubStatusCollector'
 export {default as SidequestStatusCollector} from './SidequestStatusCollector'
+export {default as PathEventCollector} from './PathEventCollector'
