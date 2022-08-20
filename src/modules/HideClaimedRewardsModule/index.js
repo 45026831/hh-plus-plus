@@ -47,10 +47,10 @@ class HideClaimedRewardsModule extends CoreModule {
 
     pov () {
         let hidden = false
-        const $groupsToHide = $('.potions-paths-tier:not(.unclaimed):has(.claimed-slot)')
-        const $groupsRemaining = $('.potions-paths-tier.unclaimed')
-        const claimedCount = $groupsToHide.length
-        const unclaimedCount = $groupsRemaining.length
+        let $groupsToHide = $('.potions-paths-tier:not(.unclaimed):has(.claimed-slot)')
+        let $groupsRemaining = $('.potions-paths-tier.unclaimed')
+        let claimedCount = $groupsToHide.length
+        let unclaimedCount = $groupsRemaining.length
         const heightPattern = /height: ?(?<existingLength>[0-9.a-z%]+);?/
         let existingLengthStr
         let newLength
@@ -58,6 +58,10 @@ class HideClaimedRewardsModule extends CoreModule {
         const styleAttr = $progressBar.attr('style')
 
         const assertHidden = () => {
+            $groupsToHide = $('.potions-paths-tier:not(.unclaimed):has(.claimed-slot)')
+            $groupsRemaining = $('.potions-paths-tier.unclaimed')
+            claimedCount = $groupsToHide.length
+            unclaimedCount = $groupsRemaining.length
             if (claimedCount === 0) {
                 // nothing to do
                 return
@@ -105,6 +109,24 @@ class HideClaimedRewardsModule extends CoreModule {
                 assertHidden()
             }
         }
+
+        const observer = new MutationObserver((mutations) => {
+            if (!hidden) {return}
+            let shouldUpdate = false
+            mutations.forEach(mutation => {
+                if (mutation.type === 'attributes') {
+                    const {attributeName, target} = mutation
+                    if (attributeName === 'class' && !$(target).hasClass('unclaimed')&& !$groupsToHide.toArray().includes(target)) {
+                        shouldUpdate = true
+                    }
+                }
+            })
+
+            if (shouldUpdate) {
+                assertHidden()
+            }
+        })
+        observer.observe($('.potions-paths-progress-bar-tiers')[0], {attributes: true, attributeFilter: ['class'], subtree: true})
 
         $('.girl-preview').click(toggle)
     }
@@ -239,9 +261,9 @@ class HideClaimedRewardsModule extends CoreModule {
 
     seasonalEvent () {
         let hidden = false
-        const $groupsToHide = $('.seasonal-tier:not(.unclaimed):has(.claimed-slot)')
-        const $groupsRemaining = $('.seasonal-tier.unclaimed')
-        const claimedCount = $groupsToHide.length
+        let $groupsToHide = $('.seasonal-tier:not(.unclaimed):has(.claimed-slot)')
+        let $groupsRemaining = $('.seasonal-tier.unclaimed')
+        let claimedCount = $groupsToHide.length
         const widthPattern = /width: ?(?<existingLength>[0-9.a-z%]+);?/
         let existingLengthStr
         let newLength
@@ -249,6 +271,9 @@ class HideClaimedRewardsModule extends CoreModule {
         const styleAttr = $progressBar.attr('style')
 
         const assertHidden = () => {
+            $groupsToHide = $('.seasonal-tier:not(.unclaimed):has(.claimed-slot)')
+            $groupsRemaining = $('.seasonal-tier.unclaimed')
+            claimedCount = $groupsToHide.length
             if (claimedCount === 0) {
                 // nothing to do
                 return
@@ -262,6 +287,9 @@ class HideClaimedRewardsModule extends CoreModule {
                     $progressBar.attr('style', styleAttr.replace(widthPattern, `width:${newLength}px;`))
                 }, 1)
             }
+            setTimeout(() => {
+                $('.seasonal-progress-bar-section').getNiceScroll().resize()
+            }, 1200)
         }
         const assertShown = () => {
             $('.script-hide-claimed').removeClass('script-hide-claimed')
@@ -269,6 +297,9 @@ class HideClaimedRewardsModule extends CoreModule {
             if (styleAttr) {
                 $progressBar.attr('style', styleAttr.replace(widthPattern, `width:${existingLengthStr};`))
             }
+            setTimeout(() => {
+                $('.seasonal-progress-bar-section').getNiceScroll().resize()
+            }, 1200)
         }
 
         if (styleAttr) {
@@ -289,6 +320,24 @@ class HideClaimedRewardsModule extends CoreModule {
                 assertHidden()
             }
         }
+
+        const observer = new MutationObserver((mutations) => {
+            if (!hidden) {return}
+            let shouldUpdate = false
+            mutations.forEach(mutation => {
+                if (mutation.type === 'attributes') {
+                    const {attributeName, target} = mutation
+                    if (attributeName === 'class' && !$(target).hasClass('unclaimed')&& !$groupsToHide.toArray().includes(target)) {
+                        shouldUpdate = true
+                    }
+                }
+            })
+
+            if (shouldUpdate) {
+                assertHidden()
+            }
+        })
+        observer.observe($('.seasonal-progress-bar-tiers')[0], {attributes: true, attributeFilter: ['class'], subtree: true})
 
         $('.girls-reward-container').click(toggle)
     }

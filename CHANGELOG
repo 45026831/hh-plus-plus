@@ -1,3 +1,4 @@
+1.23.1: Adding translations for event end indicators. Fixing Hide Claimed Rewards for Seasonal and Potions Paths now that they don't refresh the page on claim. Enabling temporary club scrollbar fix on PSH
 1.23.0: Adding module to show indications of events ending in the next 12 hours
 1.22.3: Merging #83 from rena-jp to fix conflict between the PoP timer and the club champion timer
 1.22.2: More translations for player profile popup fix.

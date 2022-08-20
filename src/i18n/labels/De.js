@@ -65,6 +65,7 @@ export const config = {
     sidequestCompletionMarkers: 'Markierung für abgeschlossene Nebenquests',
     censorMode: 'Zensur aller NSFW-Bilder',
     fixProfilePopup: 'Fix für Spielerprofil-Popups',
+    eventEndIndicators: 'Anzeige für Eventende auf dem Startbildschirm',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

@@ -91,6 +91,7 @@ export const config = {
     sidequestCompletionMarkers: 'Marcatore per le missioni secondarie completate',
     censorMode: 'Censura di tutte le immagini NSFW',
     fixProfilePopup: 'Correzione dei popup del profilo del giocatore',
+    eventEndIndicators: 'Mostra per la fine dell\'evento nella schermata iniziale',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',

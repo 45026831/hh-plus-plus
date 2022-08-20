@@ -54,7 +54,7 @@ class AvailableFeatures {
     }
 
     get clubs () {
-        if (Helpers.isCxH() || Helpers.isPSH()|| Helpers.isHoH()) {
+        if (Helpers.isCxH() || Helpers.isHoH()) {
             return false
         }
         return countGirls() >= 15

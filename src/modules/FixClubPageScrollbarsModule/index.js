@@ -10,7 +10,7 @@ class FixClubPageScrollbarsModule extends CoreModule {
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
             default: true,
-            restriction: {whitelist: ['HH', 'GH']}
+            restriction: {whitelist: ['HH', 'GH', 'PSH']}
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
