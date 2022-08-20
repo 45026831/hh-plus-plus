@@ -283,7 +283,11 @@ class HideClaimedRewardsModule extends CoreModule {
             hidden = true
             if (styleAttr) {
                 setTimeout(() => {
-                    newLength = $groupsRemaining.last().find('.tier-level')[0].offsetLeft
+                    if ($groupsRemaining.length) {
+                        newLength = $groupsRemaining.last().find('.tier-level')[0].offsetLeft
+                    } else {
+                        newLength = 0
+                    }
                     $progressBar.attr('style', styleAttr.replace(widthPattern, `width:${newLength}px;`))
                 }, 1)
             }
