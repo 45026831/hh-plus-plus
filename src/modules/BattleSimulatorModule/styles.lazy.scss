@@ -138,6 +138,7 @@ $minus-bg: #ff2f2f28;
         grid-template-columns: 1fr 1fr;
         grid-gap: 24px;
         z-index: 0;
+        pointer-events: none;
     }
 
     .average-lvl {
