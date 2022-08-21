@@ -8,7 +8,7 @@ const getClubXPBonus = () => {
 
     if (clubStatus) {
         return clubStatus.upgrades.experience_gain.bonus
-    } else if (window.Chat_vars && window.Chat_vars.CLUB_ID) {
+    } else if (Helpers.isInClub()) {
         return 0.1
     } else {
         return 0

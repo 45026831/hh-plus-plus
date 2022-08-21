@@ -101,7 +101,7 @@ class MarketInfoModule extends CoreModule {
             const boosterStat = boosterAdd + Math.ceil((baseStat + boughtStat + equipStat + boosterAdd) * boosterMultiply)
 
             let clubStat = 0
-            if (Helpers.isHH() || Helpers.isGH()) {
+            if (Helpers.isInClub()) {
                 clubStat = totalStat - baseStat - boughtStat - equipStat - boosterStat
             }
 

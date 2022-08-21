@@ -119,7 +119,7 @@ class HomeScreenModule extends CoreModule {
         }
 
         // Club Champ
-        if (window.Chat_vars && (window.Chat_vars.CLUB_ID || (window.Chat_vars.CLUB_INFO && window.Chat_vars.CLUB_INFO.id_club)) && trackedTimes.clubChamp && trackedTimes.clubChamp > server_now_ts) {
+        if (Helpers.isInClub() && trackedTimes.clubChamp && trackedTimes.clubChamp > server_now_ts) {
             this.attachTimer('clubs', trackedTimes.clubChamp)
         }
     }
@@ -149,7 +149,7 @@ class HomeScreenModule extends CoreModule {
         const shortcutHtml = (className, href, title, iconClass) => `<a class="round_blue_button script-home-shortcut script-home-shortcut-${className}" href="${href}" hh_title="${title}"><div class="${iconClass}"></div></a>`
 
         // Club champ
-        if (window.Chat_vars && (window.Chat_vars.CLUB_ID || (window.Chat_vars.CLUB_INFO && window.Chat_vars.CLUB_INFO.id_club))) {
+        if (Helpers.isInClub()) {
             // is in club
             const $clubShortcuts = $('<div class="script-home-shortcut-container"></div>')
             $clubShortcuts.append(shortcutHtml('club-champ', '/club-champion.html', this.label('clubChamp'), 'clubChampions_flat_icn'))

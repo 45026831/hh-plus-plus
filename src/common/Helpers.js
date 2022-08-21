@@ -245,6 +245,10 @@ class Helpers {
             deferred.splice(0, deferred.length)
         })
     }
+
+    static isInClub () {
+        return window.Chat_vars && (window.Chat_vars.CLUB_ID || (window.Chat_vars.CLUB_INFO && window.Chat_vars.CLUB_INFO.id_club))
+    }
 }
 
 export default Helpers

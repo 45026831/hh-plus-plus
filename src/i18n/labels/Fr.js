@@ -74,6 +74,9 @@ export const config = {
     homeScreenOldish: 'Mise en page d\'origine de l\'écran principal (incompatible avec la réorganisation des éléments à droite)',
     overridePachinkoConfirm: `Désactive l'avertissement "Pas de ${gameConfig.fille} disponible" dans le Pachinko/NC`,
     sidequestCompletionMarkers: 'Marqueurs de complétion pour les quêtes secondaires',
+    censorMode: 'Censurer le contenu NSFW',
+    fixProfilePopup: 'Corriger les popups du profil joueur',
+    eventEndIndicators: 'Indicateurs de fin d\'évènement sur la page d\'accueil',
 }
 export const stConfig = {
     missionsBackground: 'Change l\'arrière-plan des missions',
