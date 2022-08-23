@@ -295,11 +295,13 @@ class ChampionsModule extends CoreModule {
 
         new MutationObserver(attachMatches).observe($('#contains_all>section')[0], {childList: true})
 
-        Helpers.onAjaxResponse(/action=team_draft/, (response) => {
+        const onDraft = (response) => {
             const {teamArray} = response
             window.championData.team = teamArray
-        })
-        Helpers.onAjaxResponse(/action=team_reorder/, (response, opt) => {
+        }
+        Helpers.onAjaxResponse(/action=team_draft/, onDraft)
+        Helpers.onAjaxResponse(/action=champion_team_draft/, onDraft)
+        const onReorder = (response, opt) => {
             if (!response.success) {return}
 
             const searchParams = new URLSearchParams(opt.data)
@@ -314,7 +316,9 @@ class ChampionsModule extends CoreModule {
 
             window.championData.team = reorderedTeam
             attachMatches()
-        })
+        }
+        Helpers.onAjaxResponse(/action=team_reorder/, onReorder)
+        Helpers.onAjaxResponse(/action=champion_team_reorder/, onReorder)
     }
 
     showTicketsWhileResting () {
