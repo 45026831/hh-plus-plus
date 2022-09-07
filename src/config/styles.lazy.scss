@@ -135,11 +135,17 @@
 
         .thanks-container {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
         }
 
         a {
             color: inherit;
+        }
+
+        .tier-icon {
+            display: inline-block;
+            margin-left: 5px;
+            height: 21px;
         }
     }
 

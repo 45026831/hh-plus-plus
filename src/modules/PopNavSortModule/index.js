@@ -68,10 +68,10 @@ class PopNavSortModule extends CoreModule {
         const sortedPopIds = sortPopIds(popIds)
         this.sortedPopIds = sortedPopIds
 
-        let $elToAfter = $('.pop_thumb_container:has([pop_id=3])')
+        let $elToAfter = $('.pop_thumb_container:has([pop_id="3"])')
 
         sortedPopIds.forEach(id => {
-            const $nextEl = $(`.pop_thumb_container:has([pop_id=${id}])`)
+            const $nextEl = $(`.pop_thumb_container:has([pop_id="${id}"])`)
             $elToAfter.after($nextEl)
             $elToAfter = $nextEl
         })

@@ -34,9 +34,6 @@ export {default as CensorModeModule} from './CensorModeModule'
 export {default as FixProfilePopupModule} from './FixProfilePopupModule'
 export {default as EventEndIndicatorsModule} from './EventEndIndicatorsModule'
 
-// temp modules
-export {default as FixClubPageScrollbarsModule} from './FixClubPageScrollbarsModule'
-
 export {default as HomeScreenRightSideRearrangeStyleTweak} from './HomeScreenRightSideRearrangeStyleTweak'
 export {default as ContestNotifsStyleTweak} from './ContestNotifsStyleTweak'
 export {default as CompactPoPsStyleTweak} from './CompactPoPsStyleTweak'

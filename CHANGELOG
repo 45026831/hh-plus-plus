@@ -1,3 +1,4 @@
+1.23.6: Adding patrons to credits. Fixing PoP sorting. Removing no-longer needed temp fixes now that the game itself is fixed.
 1.23.5: Pre-empting change to champion drafting API calls
 1.23.4: Fixing market info to count club bonus points in PSH
 1.23.3: Minor fix for season sim to allow team theme tooltips to appear

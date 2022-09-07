@@ -78,7 +78,6 @@ export const config = {
     homeScreenOldish: 'Legacy layout of home screen (Not compatible with right-side rearrange Style Tweak)',
     fixFontImport: 'Fix font import & text stroke',
     overridePachinkoConfirm: `Disable the "No ${gameConfig.Girl}s Available" warning pop-ups in Pachinko/NC`,
-    fixClubPageScrollbars: 'Fix club page scrollbars (temporary module)',
     sidequestCompletionMarkers: 'Sidequest completion markers',
     censorMode: 'Censor all NSFW imagery',
     fixProfilePopup: 'Fix player profile popups',

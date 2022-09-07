@@ -23,9 +23,6 @@ class FixProfilePopupModule extends CoreModule {
 
         Helpers.defer(() => {
             this.overrideAPI()
-            if (Helpers.isCurrentPage('activities')) {
-                this.fixContestProfilePopup()
-            }
         })
 
         this.hasRun = true
@@ -39,13 +36,6 @@ class FixProfilePopupModule extends CoreModule {
             }
             return default_hero_page_popup(info)
         }
-    }
-
-    fixContestProfilePopup() {
-        $(document.body).on('click', '#contests>div>div.right_part>.ranking table tbody tr[sorting_id]', (e) => {
-            const id = $(e.currentTarget).attr('sorting_id')
-            window.hero_page_popup({id})
-        })
     }
 }
 

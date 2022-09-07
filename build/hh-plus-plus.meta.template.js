@@ -52,7 +52,8 @@ window.HHPlusPlus={
             'Vampi': ['es'],
         }
     },
-    BMAC: 'https://www.buymeacoffee.com/45026831'
+    BMAC: 'https://www.buymeacoffee.com/45026831',
+    PATREON: 'https://www.patreon.com/n45026831',
 };
 
 // WARNING: This file has been generated, DO NOT EDIT.
