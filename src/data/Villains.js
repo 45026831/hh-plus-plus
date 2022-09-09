@@ -566,14 +566,27 @@ export default {
             }]
         },
         {
+            key: 'amiamiley',
             world: 6,
+            girls: {
+                1: ['270611414', '464811282', '781232070'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'darkness',
+                amount: 20,
+            }]
+        },
+        {
+            world: 7,
             girls: {
                 1: [],
                 2: [],
                 3: []
             },
             gems: [{
-                element: 'darkness',
+                element: 'light',
                 amount: 20,
             }]
         },

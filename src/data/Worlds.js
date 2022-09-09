@@ -39,4 +39,5 @@ export const PSH = [
     'eurodick',
     'homecumming',
     'biggerintexas',
+    'westcock',
 ]

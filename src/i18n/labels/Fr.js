@@ -336,6 +336,7 @@ export const villainBreadcrumbs = {
     eurodick: 'Eurobite',
     homecumming: 'Retrouvailles',
     biggerintexas: 'Plus GROS au Texas',
+    westcock: 'Con Ouest',
 }
 
 export const blessingSpreadsheetLink = {
