@@ -144,6 +144,7 @@ export const villain = {
     edward: 'Edward',
     edernas: 'Edernas',
     maro: 'Maro',
+    icaruswarlock: 'Icarus Warlock',
     bodyhack: 'BodyHack',
     greygolem: 'Grey Golem',
     nymph: 'The Nymph',

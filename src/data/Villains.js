@@ -385,6 +385,32 @@ export default {
             }],
             items: ['XP4']
         },
+        {
+            key: 'icaruswarlock',
+            world: 13,
+            girls: {
+                1: ['225365882', '478693885', '231765083'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'sun',
+                amount: 20
+            }],
+            items: ['K4']
+        },
+        {
+            world: 14,
+            girls: {
+                1: ['86962133', '243793871', '284483399'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'darkness',
+                amount: 25,
+            }]
+        },
     ],
     CxH: [
         {
