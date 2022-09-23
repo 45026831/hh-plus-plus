@@ -41,12 +41,12 @@ class MarketInfoCollector {
             })
 
             BUYABLE.forEach(type => {
-                new MutationObserver(() => handleBuyableItemUpdate(type)).observe($(`#shops_left .${TYPES[type]}`)[0], {childList: true})
+                new MutationObserver(() => handleBuyableItemUpdate(type)).observe($(`#shops_left .${TYPES[type]}, .merchant-inventory-container.${TYPES[type]}`)[0], {childList: true})
             })
             SELLABLE.forEach(type => {
-                new MutationObserver(() => handleSellableItemUpdate(type)).observe($(`#inventory .${TYPES[type]} .inventory_slots > div`)[0], {childList: true, subtree: true})
+                new MutationObserver(() => handleSellableItemUpdate(type)).observe($(`#inventory .${TYPES[type]} .inventory_slots > div, .right-container .player-inventory-content.${TYPES[type]} > div`)[0], {childList: true, subtree: true})
             })
-            new MutationObserver(handleEquipsInventoryUpdate).observe($('#inventory .armor .inventory_slots > div')[0], {childList: true})
+            new MutationObserver(handleEquipsInventoryUpdate).observe($('#inventory .armor .inventory_slots > div, .right-container .player-inventory-content.armor > div')[0], {childList: true})
 
             MarketInfoCollector.collectRefreshTime()
             MarketInfoCollector.collectBuyableItems()

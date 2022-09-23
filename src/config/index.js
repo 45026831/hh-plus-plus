@@ -217,14 +217,16 @@ class Config {
     }
 
     buildCreditsPane () {
-        const {CHANGELOG, SPECIAL_THANKS, BMAC, PATREON} = window.HHPlusPlus
+        const {CHANGELOG, SPECIAL_THANKS, BMAC, PATREON, DISCORD} = window.HHPlusPlus
         const {script: scriptInfo} = GM_info
         const {CODE_CONTRIBUTIONS, TRANSLATIONS} = SPECIAL_THANKS
         const {name, author, version} = scriptInfo
 
         return `
         <div class="credits-contents">
-            <span>You're running ${name} <a class="changelog" generic-tooltip="Click to open CHANGELOG" href="${CHANGELOG}" target="_blank">v${version}</a> by ${author}</span>
+            <p>You're running ${name} <a class="changelog" generic-tooltip="Click to open CHANGELOG" href="${CHANGELOG}" target="_blank">v${version}</a> by ${author}</p>
+            <p>Enjoying the script? Want to throw money at me for some reason? You can <a href="${BMAC}" target="_blank">Buy Me A Coffee</a> or <a href="${PATREON}" target="_blank">support me on Patreon</a> if you'd like.</p>
+            <p>Join us on <a href="${DISCORD}" target="_blank">Discord</a>!</p>
             <h2>Special Thanks</h2>
             <div class="thanks-container">
                 <div class="thanks-supporters">
@@ -240,7 +242,6 @@ class Config {
                     <ul>${Object.entries(TRANSLATIONS).map(([credit, langs]) => `<li>${credit} ${langs.map(lang => `<span class="country country-${lang}"></span>`).join('')}</li>`).join('')}</ul>
                 </div>
             </div>
-            <span>Enjoying the script? Want to throw money at me for some reason? You can <a href="${BMAC}" target="_blank">Buy Me A Coffee</a> or <a href="${PATREON}" target="_blank">support me on Patreon</a> if you'd like.</span>
         </div>
         `
     }

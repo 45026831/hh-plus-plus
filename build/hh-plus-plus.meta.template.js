@@ -54,6 +54,7 @@ window.HHPlusPlus={
     },
     BMAC: 'https://www.buymeacoffee.com/45026831',
     PATREON: 'https://www.patreon.com/n45026831',
+    DISCORD: 'https://discord.gg/hchsquT4Er',
 };
 
 // WARNING: This file has been generated, DO NOT EDIT.
