@@ -348,7 +348,7 @@ class ResourceBarsModule extends CoreModule {
         const $boosterStatusHTML = $('<a class="script-booster-status" href="/shop.html?type=booster"></a>')
 
         const buildNormalSlot = (data) => {
-            const {empty, id_item, identifier, rarity, endAt} = data
+            const {empty, id_item, ico, identifier, rarity, endAt} = {...data, ...data.item}
             if (empty) {
                 return '<div class="slot empty"></div>'
             }
@@ -356,7 +356,7 @@ class ResourceBarsModule extends CoreModule {
             const formattedDate = new Date(endAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'}).replace(/(\d)/g, (x)=>`${x}<i></i>`)
             return $(`
                 <div class="slot ${rarity}" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({additionalText: `<span class="script-tooltip"></span>${this.label('endAt', { time: formattedDate })}`}).replace(/"/g, '&quot;')}">
-                    <img src="${Helpers.getCDNHost()}/pictures/items/${identifier}.png"/>
+                    <img src="${ico || `${Helpers.getCDNHost()}/pictures/items/${identifier}.png`}"/>
                 </div>`)
         }
         const buildMythicSlot = (data) => {
@@ -453,7 +453,7 @@ class ResourceBarsModule extends CoreModule {
             return $wrapper
         }
         const buildSlotAndAddTooltip = (buildSlot, data, replaceEmpty) => {
-            const {empty, rarity, id_m_i: idmiList, usages, usages_remaining, duration, endAt} = data
+            const {empty, rarity, id_m_i: idmiList, usages, usages_remaining, duration, endAt} = {...data, ...data.item}
             const $slot = buildSlot(data)
             let current = 0
             let max = 1
@@ -465,8 +465,9 @@ class ResourceBarsModule extends CoreModule {
                     current = usages_remaining
                     max = usages
                 } else {
+                    let normalisedDuration = duration === '1440' ? 86400 : duration
                     current = endAt - server_now_ts
-                    max = duration
+                    max = normalisedDuration
                     useTimer = true
                 }
             }
