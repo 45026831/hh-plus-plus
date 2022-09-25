@@ -1,3 +1,4 @@
+1.23.13: Updating champions power normalisation to use new hero_damage global that includes cordyceps effect
 1.23.12: Fixing bugs in booster display on test server
 1.23.11: Updating the setting name for normalisation of girl power in champions drafting
 1.23.10: Adding discord invite to credits page, fixing market info collector for the market rework

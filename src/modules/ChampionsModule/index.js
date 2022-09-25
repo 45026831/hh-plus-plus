@@ -249,8 +249,8 @@ class ChampionsModule extends CoreModule {
     }
 
     poseMatching ({poseMatching, fixPower}) {
-        const {championData, Hero} = window
-        const {canDraft, champion} = championData
+        const {championData} = window
+        const {canDraft, champion, hero_damage} = championData
 
         if (!canDraft) {return}
 
@@ -285,7 +285,7 @@ class ChampionsModule extends CoreModule {
                 }
 
                 if (fixPower) {
-                    const actualPower = damage + Hero.infos.caracs.primary_carac_amount
+                    const actualPower = damage + hero_damage
                     const $damage = $girl.find('[carac=damage]')
                     $damage.text(I18n.nRounding(actualPower, 1, 1)).attr('hh_title', I18n.nThousand(actualPower))
                 }
