@@ -51,7 +51,7 @@ export const config = {
     teamsFilter: 'Filtre d\'équipes',
     champions: 'Infos champions',
     champions_poseMatching: 'Ajouter des indicateurs de correspondance de pose',
-    champions_fixPower: `Inclure la puissance du héros à l'affichage de la puissance ${gameConfig.delafille}`,
+    champions_fixPower: `Normaliser le pouvoir des ${gameConfig.fille}s pour comparaison`,
     homeScreen: 'Raccourcis & timers de l\'écran principal',
     homeScreen_leaguePos: 'Afficher le rang de Ligue actuel (ajoute de la charge réseau supplémentaire)',
     resourceBars: 'Barres de ressorces / Indicateurs de boosters',

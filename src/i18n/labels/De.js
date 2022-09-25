@@ -40,7 +40,7 @@ export const config = {
     teamsFilter: 'Teamfilter',
     champions: 'Champion-Informationen',
     champions_poseMatching: 'Aktiviere Erkennung für passende Champion-Position',
-    champions_fixPower: `Heldenstärke in Stärkeanzeige der ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} einbeziehen`,
+    champions_fixPower: `Kraft der ${Helpers.isGH() ? 'Kerle' : 'Mädchen'} zum Vergleich normalisieren`,
     homeScreen: 'Homepage Verknüpfungen & Timer',
     homeScreen_leaguePos:  'Aktuellen Rang in der Liga anzeigen (erstellt zusätzlichen Netzaufruf)',
     resourceBars: 'Ressourcen-Leisten / Booster Tracking',

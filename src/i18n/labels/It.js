@@ -66,7 +66,7 @@ export const config = {
     teamsFilter: 'Filtro delle squadre',
     champions: 'Informazioni sui Campioni',
     champions_poseMatching: 'Aggiungi indicatori di corrispondenza delle pose',
-    champions_fixPower: `Includi il potere dell'eroe nella mostra del potere ${Helpers.isGH() ? 'delli ragazzi' : 'delle ragazze'}`,
+    champions_fixPower: `Normalizza la potenza ${gameConfig.delleragazze} per il confronto`,
     homeScreen: 'Scorciatoie e timer della schermata principale',
     homeScreen_leaguePos: 'Mostra la posizione attuale nella lega (crea una chiamata di rete addizionale)',
     resourceBars: 'Barre di risorse / Monitoraggio dei booster',

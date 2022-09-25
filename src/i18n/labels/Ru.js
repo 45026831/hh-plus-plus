@@ -51,7 +51,7 @@ export const config = {
     teamsFilter: 'Фильтр в Командах',
     champions: 'Индикаторы в Чемпионах',
     champions_poseMatching: 'Добавить индикаторы совпадения позы',
-    champions_fixPower: `Показывая силу ${Helpers.isGH() ? 'парней' : 'девушек'} учитывать силу героя`,
+    champions_fixPower: `Нормализировать силу ${gameConfig.девушек} для сравнения`,
     homeScreen: 'Ссылки и таймеры на главной странице',
     homeScreen_leaguePos: 'Показывать текущий ранг в лиге (делает дополнительный сетевой запрос)',
     resourceBars: 'Полоски ресурсов / Таймеры бустеров',
