@@ -250,9 +250,15 @@ class MarketInfoModule extends CoreModule {
             if (!response.success) {return}
             const search = new URLSearchParams(xhr.data)
             const carac = caracKey(search.get('carac'))
-            const value = response[carac]
+            if (!window.market_inventory) {
+                const value = response[carac]
 
-            Hero.infos[carac] = value
+                Hero.infos[carac] = value
+            } else {
+                const nb = +search.get('nb')
+
+                Hero.infos[carac] += nb
+            }
         })
 
         // Observe change (after side-effects have run)
