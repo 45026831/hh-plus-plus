@@ -360,13 +360,13 @@ class ResourceBarsModule extends CoreModule {
                 </div>`)
         }
         const buildMythicSlot = (data) => {
-            const {empty, id_item, identifier} = data
+            const {empty, id_item, ico, identifier} = {...data, ...data.item}
             if (empty) {
                 return '<div class="slot mythic empty"></div>'
             }
             return $(`
                 <div class="slot mythic" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({additionalText: '<span class="script-tooltip"></span>'}).replace(/"/g, '&quot;')}">
-                    <img src="${Helpers.getCDNHost()}/pictures/items/${identifier}.png"/>
+                    <img src="${ico || `${Helpers.getCDNHost()}/pictures/items/${identifier}.png`}"/>
                 </div>
             `)
         }
@@ -453,7 +453,7 @@ class ResourceBarsModule extends CoreModule {
             return $wrapper
         }
         const buildSlotAndAddTooltip = (buildSlot, data, replaceEmpty) => {
-            const {empty, rarity, id_m_i: idmiList, usages, usages_remaining, duration, endAt} = {...data, ...data.item}
+            const {empty, rarity, id_m_i: idmiList, id_member_booster_equipped, usages, default_usages, usages_remaining, duration, endAt} = {...data, ...data.item}
             const $slot = buildSlot(data)
             let current = 0
             let max = 1
@@ -463,7 +463,7 @@ class ResourceBarsModule extends CoreModule {
             if (!empty) {
                 if (isMythic) {
                     current = usages_remaining
-                    max = usages
+                    max = usages || default_usages
                 } else {
                     let normalisedDuration = duration === '1440' ? 86400 : duration
                     current = endAt - server_now_ts
@@ -482,7 +482,7 @@ class ResourceBarsModule extends CoreModule {
             }
 
             if (!empty && isMythic) {
-                const [id_m_i] = idmiList
+                const id_m_i = id_member_booster_equipped || idmiList[0]
                 this.activeBoosters[id_m_i] = $progressWrapper
             }
         }
