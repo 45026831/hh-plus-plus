@@ -3,7 +3,7 @@ import { lsKeys } from '../../common/Constants'
 import Helpers from '../../common/Helpers'
 import Sheet from '../../common/Sheet'
 import {HC, CH, KH} from '../../data/Classes'
-import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES} from '../../data/Market'
+import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES, NEW_TYPES} from '../../data/Market'
 import I18n from '../../i18n'
 import CoreModule from '../CoreModule'
 import styles from './styles.lazy.scss'
@@ -26,6 +26,10 @@ class MarketInfoModule extends CoreModule {
             1: 0,
             2: 0,
             3: 0
+        }
+        this.toolipData = {
+            caracs: {},
+            inventory: {},
         }
     }
 
@@ -69,8 +73,9 @@ class MarketInfoModule extends CoreModule {
 
         CLASSES.forEach(carac => {
             const key = caracKey(carac)
+            const keyEquip = `${key}_equip`
             const totalStat = Hero.infos.caracs[key]
-            const equipStat = equips.map(equip => equip[key]).reduce((a,b) => a+b, 0)
+            const equipStat = equips.map(equip => equip[key] || +equip[keyEquip]).reduce((a,b) => a+b, 0)
             const {base_stat: baseStat} = heroStatsPrices[carac]
             const boughtStat = Hero.infos[key]
             const maxBoughtStat = Hero.infos.level * POINTS_PER_LEVEL
@@ -105,31 +110,69 @@ class MarketInfoModule extends CoreModule {
                 clubStat = totalStat - baseStat - boughtStat - equipStat - boosterStat
             }
 
-            if (!this.$tooltips[carac]) {
-                this.$tooltips[carac] = $(`<div class="statToolTip" rel="${key}"></div>`)
-                $(`.hero_stats [hero=${key}]`).append('<div class="marketInfoIcon statInfo" ></div>').append(this.$tooltips[carac])
+            this.toolipData.caracs[carac] = {
+                key,
+                unboughtStat,
+                unspent,
+                spent,
+                baseStat,
+                boughtStat,
+                equipStat,
+                boosterStat,
+                clubStat,
             }
 
-            this.$tooltips[carac].html(`
-                <table>
-                    <tbody>
-                        <tr><td>${this.label('pointsUnbought')} :</td><td>${I18n.nThousand(unboughtStat)}</td></tr>
-                        <tr><td>${this.label('moneyUnspent')} :</td><td>${I18n.nThousand(unspent)}</td></tr>
-                        <tr><td>${this.label('moneySpent')} :</td><td>${I18n.nThousand(spent)}</td></tr>
-                    </tbody>
-                </table>
-                <hr/>
-                <table>
-                    <tbody>
-                        <tr><td>${this.label('pointsLevel')} :</td><td>${I18n.nThousand(baseStat)}</td></tr>
-                        <tr><td>${this.label('pointsBought')} :</td><td>${I18n.nThousand(boughtStat)}</td></tr>
-                        <tr><td>${this.label('pointsEquip')} :</td><td>${I18n.nThousand(equipStat)}</td></tr>
-                        <tr><td>${this.label('pointsBooster')} :</td><td>${I18n.nThousand(boosterStat)}</td></tr>
-                        <tr><td>${this.label('pointsClub')} :</td><td>${I18n.nThousand(clubStat)}</td></tr>
-                    </tbody>
-                </table>
-            `.replace(/( {4}|\n)/g, ''))
+            if (!window.market_inventory) {
+                //old market, old tooltips
+                if (!this.$tooltips[carac]) {
+                    this.$tooltips[carac] = $(`<div class="statToolTip" rel="${key}"></div>`)
+                    $(`.hero_stats [hero=${key}]`).append('<div class="marketInfoIcon statInfo" ></div>').append(this.$tooltips[carac])
+                }
+
+                this.$tooltips[carac].html(this.buildCaracTooltipHtml(this.toolipData.caracs[carac]))
+            }
         })
+    }
+
+    buildCaracTooltipHtml(data) {
+        const {unboughtStat, unspent, spent, baseStat, boughtStat, equipStat, boosterStat, clubStat} = data
+
+        return `
+            <table class="statToolTipTable">
+                <tbody>
+                    <tr><td>${this.label('pointsUnbought')} :</td><td>${I18n.nThousand(unboughtStat)}</td></tr>
+                    <tr><td>${this.label('moneyUnspent')} :</td><td>${I18n.nThousand(unspent)}</td></tr>
+                    <tr><td>${this.label('moneySpent')} :</td><td>${I18n.nThousand(spent)}</td></tr>
+                </tbody>
+            </table>
+            <hr/>
+            <table class="statToolTipTable">
+                <tbody>
+                    <tr><td>${this.label('pointsLevel')} :</td><td>${I18n.nThousand(baseStat)}</td></tr>
+                    <tr><td>${this.label('pointsBought')} :</td><td>${I18n.nThousand(boughtStat)}</td></tr>
+                    <tr><td>${this.label('pointsEquip')} :</td><td>${I18n.nThousand(equipStat)}</td></tr>
+                    <tr><td>${this.label('pointsBooster')} :</td><td>${I18n.nThousand(boosterStat)}</td></tr>
+                    <tr><td>${this.label('pointsClub')} :</td><td>${I18n.nThousand(clubStat)}</td></tr>
+                </tbody>
+            </table>
+        `.replace(/( {4}|\n)/g, '')
+    }
+
+    buildItemTooltipHtml(type, data) {
+        const {count, cost, value} = data
+        return `<div class="itemToolTipContent">
+            ${this.label('youOwn', {count: I18n.nThousand(count), type: this.label(`${type}Item`)})}<br />
+            ${['xp', 'aff'].includes(type) ? this.label('youCanGive', {value: I18n.nThousand(value), currency: this.label(`${type}Currency`)}) + '<br />' : ''}
+            ${this.label('youCanSell', {cost: I18n.nThousand(cost)})}
+        </div>`
+    }
+
+    buildEquipsTooltipHtml(data) {
+        const {count, cost} = data
+        return `<div class="itemToolTipContent">
+            ${this.label('youOwn', {count: I18n.nThousand(count), type: this.label('equips')})}<br />
+            ${this.label('youCanSell', {cost: I18n.nThousand(cost)})}
+        </div>`
     }
 
     updateInventory () {
@@ -138,6 +181,11 @@ class MarketInfoModule extends CoreModule {
     }
 
     updateItems () {
+        if (window.market_inventory) {
+            // new market, nothing to update
+            return
+        }
+
         const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
 
         if (!marketInfo.sellableItems) {
@@ -151,17 +199,16 @@ class MarketInfoModule extends CoreModule {
                 $(`#inventory .${TYPES[type]}`).prepend($infoIcon)
                 $infoIcon.after(this.$tooltips[type])
             }
-            const {count, cost, value} = marketInfo.sellableItems[type]
 
-            this.$tooltips[type].html(`
-                ${this.label('youOwn', {count: I18n.nThousand(count), type: this.label(`${type}Item`)})}<br />
-                ${['xp', 'aff'].includes(type) ? this.label('youCanGive', {value: I18n.nThousand(value), currency: this.label(`${type}Currency`)}) + '<br />' : ''}
-                ${this.label('youCanSell', {cost: I18n.nThousand(cost)})}
-            `)
+            this.$tooltips[type].html(this.buildItemTooltipHtml(type, marketInfo.sellableItems[type]))
         })
     }
 
     updateEquips () {
+        if (window.market_inventory) {
+            // new market, nothing to update
+            return
+        }
         const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
 
         if (!marketInfo.equipsAggregate) {
@@ -175,12 +222,8 @@ class MarketInfoModule extends CoreModule {
             $('#inventory .armor').prepend($infoIcon)
             $infoIcon.after(this.$tooltips[type])
         }
-        const {count, cost} = marketInfo.equipsAggregate
 
-        this.$tooltips[type].html(`
-            ${this.label('youOwn', {count: I18n.nThousand(count), type: this.label('equips')})}<br />
-            ${this.label('youCanSell', {cost: I18n.nThousand(cost)})}
-        `)
+        this.$tooltips[type].html(this.buildEquipsTooltipHtml(marketInfo.equipsAggregate))
     }
 
     attachGirlQuota () {
@@ -223,6 +266,53 @@ class MarketInfoModule extends CoreModule {
         // Listen for updates from collector
         $(document).on('market:inventory-updated', () => this.updateItems())
         $(document).on('market:equips-updated', () => this.updateEquips())
+
+        if (window.market_inventory) {
+            // new market, new tooltips
+
+            const {is_mobile, is_tablet, TooltipManager, Tooltip} = window
+            const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
+
+            CLASSES.forEach(carac => {
+                const selector = `.my-hero-stats [hero=carac${carac}] [carac=${carac}]`
+                const title = $(selector).attr('hh_title')
+
+                TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
+                    const data = this.toolipData.caracs[carac]
+                    const html = this.buildCaracTooltipHtml(data)
+                    let newTooltip = new Tooltip($(target),title,html)
+                    TooltipManager.initNewTooltip(target, newTooltip)
+                })
+            })
+
+            SELLABLE.forEach(type => {
+                const parentSelector = `#${NEW_TYPES[type]}-tab-container #player-inventory-container`
+                const selector = `${parentSelector} .inventoryInfo`
+                const $infoIcon = $('<div class="marketInfoIcon inventoryInfo"></div>')
+                $(parentSelector).prepend($infoIcon)
+
+                TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
+                    const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
+                    const data = marketInfo.sellableItems[type]
+                    const html = this.buildItemTooltipHtml(type, data)
+                    let newTooltip = new Tooltip($(target),'',html)
+                    TooltipManager.initNewTooltip(target, newTooltip)
+                })
+            })
+
+            const equipsParentSelector = '#equipement-tab-container #player-inventory-container'
+            const equipsSelector = `${equipsParentSelector} .inventoryInfo`
+            const $infoIcon = $('<div class="marketInfoIcon inventoryInfo"></div>')
+            $(equipsParentSelector).prepend($infoIcon)
+
+            TooltipManager.initTooltipType(isMobile, equipsSelector, false, (target) => {
+                const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
+                const data = marketInfo.equipsAggregate
+                const html = this.buildEquipsTooltipHtml(data)
+                let newTooltip = new Tooltip($(target),'',html)
+                TooltipManager.initNewTooltip(target, newTooltip)
+            })
+        }
     }
 
     injectCSSVars () {

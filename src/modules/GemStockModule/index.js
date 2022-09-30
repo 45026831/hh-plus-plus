@@ -49,6 +49,7 @@ class GemStockModule extends CoreModule {
         styles.use()
 
         Helpers.defer(() => {
+            if (window.market_inventory) {return}
             this.injectCSSVars()
 
             const $gemStock = this.buildGemsStockElem()

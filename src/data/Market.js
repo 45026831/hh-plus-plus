@@ -61,5 +61,10 @@ export const TYPES = {
     aff: 'gift',
     booster: 'booster'
 }
+export const NEW_TYPES = {
+    xp: 'books',
+    aff: 'gifts',
+    booster: 'boosters'
+}
 export const BUYABLE = ['xp', 'aff']
 export const SELLABLE = ['xp', 'aff', 'booster']
