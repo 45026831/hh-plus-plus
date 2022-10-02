@@ -1,23 +1,71 @@
 [
     {
         "name": "Safi",
-        "game": "HH",
-        "platform": ".com",
-        "id": "5248781",
-        "tier": "gold"
+        "tier": "gold",
+        "flairs": [
+            {
+                "game": "HH",
+                "platform": ".com",
+                "id": "5248781"
+            }
+        ]
     },
     {
         "name": "haven4ever",
-        "game": "GH",
-        "platform": ".com",
-        "id": "26313",
-        "tier": "gold"
+        "tier": "gold",
+        "flairs": [
+            {
+                "game": "GH",
+                "platform": ".com",
+                "id": "26313"
+            }
+        ]
     },
     {
         "name": "Shado",
-        "game": "HH",
-        "platform": "nutaku",
-        "id": "1302530",
-        "tier": "silver"
+        "tier": "silver",
+        "flairs": [
+            {
+                "game": "HH",
+                "platform": "nutaku",
+                "id": "1302530"
+            }
+        ]
+    },
+    {
+        "name": "Darkyz",
+        "tier": "silver",
+        "flairs": [
+            {
+                "game": "HH",
+                "platform": ".com",
+                "id": "124704"
+            },
+            {
+                "game": "CxH",
+                "platform": ".com",
+                "id": "29164"
+            },
+            {
+                "game": "PSH",
+                "platform": ".com",
+                "id": "1851"
+            }
+        ]
+    },
+    {
+        "name": "bla",
+        "tier": "silver",
+        "flairs": [
+            {
+                "game": "HH",
+                "platform": "nutaku",
+                "id": "2269930"
+            }
+        ]
+    },
+    {
+        "name": "Z-Wave",
+        "tier": "bronze"
     }
 ]

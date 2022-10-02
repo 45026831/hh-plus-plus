@@ -14,6 +14,25 @@ const TIER_ICONS = {
     silver: tierIconSilver,
 }
 
+const supportTiers = {
+    'gold': 1,
+    'silver': 2,
+    'bronze': 3
+}
+
+const supporterToString = ({name, tier}) => `${supportTiers[tier]}_${name}`
+
+const sortSupporters = (a,b) => {
+    const aStr = supporterToString(a)
+    const bStr = supporterToString(b)
+    if (aStr < bStr) {
+        return -1
+    } else if (aStr > bStr) {
+        return 1
+    }
+    return 0
+}
+
 class Config {
     constructor() {
         this.groups = []
@@ -231,7 +250,7 @@ class Config {
             <div class="thanks-container">
                 <div class="thanks-supporters">
                     <h3>Patrons</h3>
-                    <ul class="script-supporters">${this.supporters.map(({name, tier}) => `<li class="script-supporter-${tier}">${name}${['gold', 'silver'].includes(tier) ? `<img class="tier-icon" src="${TIER_ICONS[tier]}" generic-tooltip="${tier.substring(0,1).toUpperCase()}${tier.substring(1)} Tier Supporter"/>` : '' }</li>`).join('')}</ul>
+                    <ul class="script-supporters">${this.supporters.sort(sortSupporters).map(({name, tier}) => `<li class="script-supporter-${tier}">${name}${['gold', 'silver'].includes(tier) ? `<img class="tier-icon" src="${TIER_ICONS[tier]}" generic-tooltip="${tier.substring(0,1).toUpperCase()}${tier.substring(1)} Tier Supporter"/>` : '' }</li>`).join('')}</ul>
                 </div>
                 <div class="thanks-code">
                     <h3>Code Contributions</h3>
