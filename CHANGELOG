@@ -1,3 +1,4 @@
+1.23.20: Fixing booster equip detection in the BoosterStatusCollector
 1.23.19: Making compact PoP spacing explicit instead of auto
 1.23.18: Fixing spacing in compact PoPs on the test server
 1.23.17: Updating patrons list.

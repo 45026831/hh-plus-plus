@@ -36,39 +36,43 @@ class BoosterStatusCollector {
             const searchParams = new URLSearchParams(opt.data)
             const mappedParams = ['action', 'class', 'type', 'id_m_i', 'id_item', 'number_of_battles', 'battles_amount'].map(key => ({[key]: searchParams.get(key)})).reduce((a,b)=>Object.assign(a,b),{})
             const {action, class: className, type, id_m_i, id_item, number_of_battles, battles_amount} = mappedParams
-            const {success} = response
+            const {success, equipped_booster} = response
 
             if (!success) {
                 return
             }
 
-            if (action === 'use' && className === 'Item' && type === 'booster') {
+            if (((action === 'use' && className === 'Item') || (action === 'market_equip_booster')) && type === 'booster') {
                 const idItemParsed = parseInt(id_item)
                 const isMythic = idItemParsed >= 632 && idItemParsed <= 638
 
                 let boosterData
-                $(`.booster .slot[id_item=${id_item}]`).each((i,el)=>{
-                    const data = $(el).data('d')
-                    if (!boosterData && data.id_m_i.includes(id_m_i)) {
-                        boosterData = data
-                    }
-                })
+                if (equipped_booster) {
+                    boosterData = equipped_booster
+                } else {
+                    $(`.booster .slot[id_item=${id_item}]`).each((i,el)=>{
+                        const data = $(el).data('d')
+                        if (!boosterData && data.id_m_i.includes(id_m_i)) {
+                            boosterData = data
+                        }
+                    })
+                }
 
 
                 if (boosterData) {
                     const clonedData = {...boosterData}
 
-                    if (clonedData.id_m_i.length > 1) {
+                    if (clonedData.id_m_i && clonedData.id_m_i.length > 1) {
                         clonedData.id_m_i = [id_m_i]
                     }
                     if (isMythic) {
                         boosterStatus.mythic.push({...clonedData, usages_remaining: `${clonedData.usages}`})
                     } else {
-                        boosterStatus.normal.push({...clonedData, endAt: response.lifetime})
+                        boosterStatus.normal.push({...clonedData, endAt: clonedData.lifetime})
                     }
 
                     Helpers.lsSet(lsKeys.BOOSTER_STATUS, boosterStatus)
-                    $(document).trigger('boosters:equipped', {id_item, id_m_i, isMythic})
+                    $(document).trigger('boosters:equipped', {id_item, id_m_i, isMythic, new_id: clonedData.id_member_booster_equipped})
                 }
                 return
             }

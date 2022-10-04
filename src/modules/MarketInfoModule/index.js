@@ -89,12 +89,13 @@ class MarketInfoModule extends CoreModule {
             let boosterMultiply = 0
 
             boosters.forEach((booster) => {
-                const {identifier, rarity} = booster
+                const item = booster.item || booster
+                const {identifier, rarity} = item
                 if (identifier !== 'B1') {
                     return
                 }
 
-                const amount = booster[key]
+                const amount = item[key]
 
                 if (rarity === 'legendary') {
                     boosterMultiply += amount / 100
@@ -282,6 +283,7 @@ class MarketInfoModule extends CoreModule {
             CLASSES.forEach(carac => {
                 const selector = `.my-hero-stats [hero=carac${carac}] [carac=${carac}]`
                 const title = $(selector).attr('hh_title')
+                $(selector).removeAttr('hh_title')
 
                 TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
                     const data = this.toolipData.caracs[carac]

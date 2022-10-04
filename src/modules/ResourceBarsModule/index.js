@@ -496,10 +496,10 @@ class ResourceBarsModule extends CoreModule {
 
         $('header .currency').before($boosterStatusHTML)
 
-        $(document).on('boosters:equipped', (event, {id_item, id_m_i, isMythic}) => {
+        $(document).on('boosters:equipped', (event, {id_item, id_m_i, isMythic, new_id}) => {
             const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || {normal: [], mythic: []}
 
-            const newBoosterData = boosterStatus[isMythic ? 'mythic' : 'normal'].find(data=>data.id_item===id_item&&data.id_m_i.includes(id_m_i))
+            const newBoosterData = boosterStatus[isMythic ? 'mythic' : 'normal'].find(data=>data.id_item===id_item&&((new_id && data.id_member_booster_equipped===new_id) || (id_m_i && data.id_m_i.includes(id_m_i))))
 
             if (newBoosterData) {
                 const $slotToReplace = $boosterStatusHTML.find(`.slot.empty${isMythic ? '.mythic' : ':not(.mythic)'}`)
@@ -510,7 +510,7 @@ class ResourceBarsModule extends CoreModule {
                     console.log('somehow equipped a new equip but have no empty slot????')
                 }
             } else {
-                console.log('can\'t find data in LS for new booster with idmi', id_m_i, 'and itemid', id_item)
+                console.log('can\'t find data in LS for new booster with idmi', id_m_i, ' or new_id', new_id, 'and itemid', id_item)
             }
         })
 
