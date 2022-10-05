@@ -42,7 +42,7 @@ class BoosterStatusCollector {
                 return
             }
 
-            if (((action === 'use' && className === 'Item') || (action === 'market_equip_booster')) && type === 'booster') {
+            if (action === 'market_equip_booster' && type === 'booster') {
                 const idItemParsed = parseInt(id_item)
                 const isMythic = idItemParsed >= 632 && idItemParsed <= 638
 
@@ -52,7 +52,7 @@ class BoosterStatusCollector {
                     const clonedData = {...boosterData}
 
                     if (isMythic) {
-                        boosterStatus.mythic.push({...clonedData, usages_remaining: `${clonedData.usages}`})
+                        boosterStatus.mythic.push(clonedData)
                     } else {
                         boosterStatus.normal.push({...clonedData, endAt: clonedData.lifetime})
                     }
