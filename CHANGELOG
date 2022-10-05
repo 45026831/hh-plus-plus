@@ -1,3 +1,4 @@
+1.23.21: Fixing bugs in mythic booster status updates and removing redundant modules
 1.23.20: Fixing booster equip detection in the BoosterStatusCollector
 1.23.19: Making compact PoP spacing explicit instead of auto
 1.23.18: Fixing spacing in compact PoPs on the test server

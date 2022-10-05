@@ -34,8 +34,8 @@ class BoosterStatusCollector {
             const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || DEFAULT_BOOSTERS
 
             const searchParams = new URLSearchParams(opt.data)
-            const mappedParams = ['action', 'class', 'type', 'id_m_i', 'id_item', 'number_of_battles', 'battles_amount'].map(key => ({[key]: searchParams.get(key)})).reduce((a,b)=>Object.assign(a,b),{})
-            const {action, class: className, type, id_m_i, id_item, number_of_battles, battles_amount} = mappedParams
+            const mappedParams = ['action', 'class', 'type', 'id_item', 'number_of_battles', 'battles_amount'].map(key => ({[key]: searchParams.get(key)})).reduce((a,b)=>Object.assign(a,b),{})
+            const {action, class: className, type, id_item, number_of_battles, battles_amount} = mappedParams
             const {success, equipped_booster} = response
 
             if (!success) {
@@ -46,25 +46,11 @@ class BoosterStatusCollector {
                 const idItemParsed = parseInt(id_item)
                 const isMythic = idItemParsed >= 632 && idItemParsed <= 638
 
-                let boosterData
-                if (equipped_booster) {
-                    boosterData = equipped_booster
-                } else {
-                    $(`.booster .slot[id_item=${id_item}]`).each((i,el)=>{
-                        const data = $(el).data('d')
-                        if (!boosterData && data.id_m_i.includes(id_m_i)) {
-                            boosterData = data
-                        }
-                    })
-                }
-
+                const boosterData = equipped_booster
 
                 if (boosterData) {
                     const clonedData = {...boosterData}
 
-                    if (clonedData.id_m_i && clonedData.id_m_i.length > 1) {
-                        clonedData.id_m_i = [id_m_i]
-                    }
                     if (isMythic) {
                         boosterStatus.mythic.push({...clonedData, usages_remaining: `${clonedData.usages}`})
                     } else {
@@ -72,14 +58,16 @@ class BoosterStatusCollector {
                     }
 
                     Helpers.lsSet(lsKeys.BOOSTER_STATUS, boosterStatus)
-                    $(document).trigger('boosters:equipped', {id_item, id_m_i, isMythic, new_id: clonedData.id_member_booster_equipped})
+                    $(document).trigger('boosters:equipped', {id_item, isMythic, new_id: clonedData.id_member_booster_equipped})
                 }
                 return
             }
 
+            let mythicUpdated = false
+
             let sandalwood, allMastery, headband, watch, cinnamon, perfume
             boosterStatus.mythic.forEach(booster => {
-                switch (booster.identifier){
+                switch (booster.item.identifier){
                 case 'MB1':
                     sandalwood = booster
                     break
@@ -116,33 +104,42 @@ class BoosterStatusCollector {
                         }
                     })
                     sandalwood.usages_remaining -= drops
+                    mythicUpdated = true
                 }
             }
 
             if (allMastery && (action === 'do_battles_leagues' || action === 'do_battles_seasons')) {
                 allMastery.usages_remaining -= parseInt(number_of_battles)
+                mythicUpdated = true
             }
 
             if (headband && (action === 'do_battles_pantheon' || action === 'do_battles_trolls')) {
                 headband.usages_remaining -= parseInt(number_of_battles)
+                mythicUpdated = true
             }
 
             if (watch && className === 'TeamBattle') {
                 watch.usages_remaining -= parseInt(battles_amount)
+                mythicUpdated = true
             }
 
             if (cinnamon && action === 'do_battles_seasons') {
                 cinnamon.usages_remaining -= parseInt(number_of_battles)
+                mythicUpdated = true
             }
 
             if (perfume && action === 'start' && className === 'TempPlaceOfPower') {
                 perfume.usages_remaining--
+                mythicUpdated = true
             }
 
             boosterStatus.mythic = boosterStatus.mythic.filter(({usages_remaining}) => usages_remaining > 0)
 
             Helpers.lsSet(lsKeys.BOOSTER_STATUS, boosterStatus)
-            $(document).trigger('boosters:updated-mythic')
+
+            if (mythicUpdated) {
+                $(document).trigger('boosters:updated-mythic')
+            }
         })
     }
 
