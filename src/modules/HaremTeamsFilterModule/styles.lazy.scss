@@ -1,0 +1,57 @@
+#filtering_girls > .form-wrapper .reset-filters-container {
+    justify-content: space-around;
+}
+
+.team-selection {
+    position: absolute;
+    left: 46px;
+    top: 50px;
+    width: 400px;
+    height: fit-content;
+    border-radius: 8px 10px 10px 8px;
+    background-color: #1e261e;
+    box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
+    padding: 5px;
+    border: 1px solid #ffa23e;
+    z-index: 10;
+    padding-bottom: 16px;
+}
+
+.teams-grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-row-gap: 1rem;
+    padding: 0.4rem 0.9rem 0.4rem 0.9rem;
+    margin-right: -1rem;
+    & .team-slot-container > img {
+        border-radius: 0.4rem;
+    }
+}
+
+.close-team-selection,
+.close-filter {
+    position: absolute;
+    display: block;
+    background-size: cover;
+    background-image: var(--cross-icon);
+    height: 32px;
+    width: 35px;
+    top: -16px;
+    right: -17px;
+    cursor: pointer;
+}
+
+[rel="select-team"] {
+    width: 100%;
+    height: 36px;
+    padding-top: 5px;
+}
+
+.theme-icons {
+    position: absolute;
+    bottom: -10px;
+}
+
+.theme-icon {
+    width: 26px;
+}

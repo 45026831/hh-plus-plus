@@ -53,10 +53,7 @@ export const config = {
     villain: 'Menù battaglia Troll',
     villain_tiers: `Mostra battaglie con ${Helpers.isGH() ? 'ragazzi' : 'ragazze'}`,
     market: 'Informazioni negozio',
-    marketGirlsFilter: `Filtro per ${Helpers.isGH() ? 'ragazzi' : 'ragazze'} nel mercato`,
     marketEquipsFilter: 'Filtro per ogetti nel mercato',
-    marketXPAff: 'XP e affetto nel mercato',
-    marketHideSellButton: 'Nascondi il bottone di vendita nel mercato',
     harem: 'Informazioni Harem',
     league: 'Informazioni sulle Leghe',
     league_board: 'Mostra i top della lega',
@@ -163,38 +160,6 @@ export const market = {
     youOwn: 'Possiedi <b>{{count}}</b> {{type}}.',
     youCanSell: 'Puoi vendere tutto per <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'Puoi dare un massimo di <b>{{value}}</b> {{currency}}.',
-}
-
-export const marketGirlsFilter = {
-    searchedName: 'Nome',
-    girlName: `Nome ${Helpers.isGH() ? 'del ragazzo' : 'della ragazza'}`,
-    searchedClass: 'Classe',
-    searchedElement: 'Elemento',
-    searchedRarity: 'Rarità',
-    levelRange: 'Gamma di livelli',
-    levelCap: 'Limite di livello',
-    levelCap_capped: 'Raggiunto',
-    levelCap_uncapped: 'Non raggiunto',
-    searchedAffCategory: 'Categoria di affetto',
-    searchedAffLevel: 'Livello di affetto',
-    grade0: '0 stella',
-    grade1: '1 stella',
-    grade2: '2 stelle',
-    grade3: '3 stelle',
-    grade4: '4 stelle',
-    grade5: '5 stelle',
-    grade6: '6 stelle',
-    gradeCap: 'Massima affezione',
-    team: 'Squadra',
-    visitTeams: 'Visita le <a href="../teams.html">Squadre</a> prima.'
-}
-
-export const marketXPAff = {
-    aff: 'Prossimo: {{remainNext}}',
-}
-
-export const marketHideSellButton = {
-    hide: 'Nascondi il bottone "Vendi"',
 }
 
 export const harem = {
@@ -343,4 +308,9 @@ export const villainBreadcrumbs = {
 
 export const blessingSpreadsheetLink = {
     name: `Apri il foglio della tabella dei dati delle benedizioni di ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
+}
+
+export const haremTeamsFilter = {
+    team: 'Squadra',
+    visitTeams: 'Visita le <a href="../teams.html">Squadre</a> prima.'
 }

@@ -38,10 +38,7 @@ export const config = {
     villain: 'Меню выбора злодея',
     villain_tiers: `Показывать стадии с ${Helpers.isGH() ? 'парнями' : 'девушками'}`,
     market: 'Информация о рынке',
-    marketGirlsFilter: `Фильтр ${Helpers.isGH() ? 'парней' : 'девушек'} на рынке`,
     marketEquipsFilter: 'Фильтр снаряжения на рынке',
-    marketXPAff: 'XP и влечение на рынке',
-    marketHideSellButton: 'Отключаемая кнопка "Продать"',
     harem: 'Информация о гареме',
     league: 'Информация о лиге',
     league_board: 'Показывать верхнюю строку в лиге',
@@ -158,38 +155,6 @@ export const market = {
     youOwn: 'У тебя есть <b>{{count}}</b> {{type}}.',
     youCanSell: 'Можно продать все за <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'Всего можно дать <b>{{value}}</b> {{currency}}.',
-}
-
-export const marketGirlsFilter = {
-    searchedName: 'Поиск',
-    girlName: `Имя ${Helpers.isGH() ? 'парня' : 'девушки'}`,
-    searchedClass: 'Класс',
-    searchedElement: 'Элемент',
-    searchedRarity: 'Редкость',
-    levelRange: 'Диапазон уровней',
-    levelCap: 'Предел уровня',
-    levelCap_capped: 'Достигнут',
-    levelCap_uncapped: 'Недостигнут',
-    searchedAffCategory: 'Категория по влечению',
-    searchedAffLevel: 'Уровень влечения',
-    grade0: '0 звезд',
-    grade1: '1 звезда',
-    grade2: '2 звезды',
-    grade3: '3 звезды',
-    grade4: '4 звезды',
-    grade5: '5 звезд',
-    grade6: '6 звезд',
-    gradeCap: 'Предел влечения',
-    team: 'Команда',
-    visitTeams: 'Сначала посетите <a href="../teams.html">Команды</a>.',
-}
-
-export const marketXPAff = {
-    aff: 'След.: {{remainNext}}'
-}
-
-export const marketHideSellButton = {
-    hide: 'Скрыть кнопку "Продать"',
 }
 
 export const harem = {
@@ -338,4 +303,9 @@ export const villainBreadcrumbs = {
 
 export const blessingSpreadsheetLink = {
     name: `Открыть таблицу благословений от ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
+}
+
+export const haremTeamsFilter = {
+    team: 'Команда',
+    visitTeams: 'Сначала посетите <a href="../teams.html">Команды</a>.',
 }

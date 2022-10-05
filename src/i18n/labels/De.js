@@ -27,10 +27,7 @@ export const config = {
     villain: 'Schurken-Menü',
     villain_tiers: `Stufen mit ${Helpers.isGH() ? 'Kerlen' : 'Mädels'} anzeigen`,
     market: 'Markt-Informationen',
-    marketGirlsFilter: `${Helpers.isGH() ? 'Jungs' : 'Mädchen' }filter im Markt`,
     marketEquipsFilter: 'Ausrüstungsfilter im Markt',
-    marketXPAff: 'XP und Zuneigung im Markt',
-    marketHideSellButton: 'Umschaltbarer Verkaufs-Button im Markt',
     harem: 'Harem-Informationen',
     league: 'Liga-Informationen',
     league_board: 'Die Liga-Spitzen anzeigen',
@@ -66,6 +63,7 @@ export const config = {
     censorMode: 'Zensur aller NSFW-Bilder',
     fixProfilePopup: 'Fix für Spielerprofil-Popups',
     eventEndIndicators: 'Anzeige für Eventende auf dem Startbildschirm',
+    haremTeamsFilter: 'Teamfilter für Harem',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',
@@ -136,37 +134,6 @@ export const market = {
     youOwn: 'Du besitzt <b>{{count}}</b> {{type}}.',
     youCanSell: 'Du kannst alles verkaufen für <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'Du kannst ingesamt <b>{{value}}</b> {{currency}} vergeben.',
-}
-
-export const marketGirlsFilter = {
-    searchedName: 'Name',
-    girlName: 'Name',
-    searchedClass: 'Klasse',
-    searchedRarity: 'Seltenheit',
-    levelRange: 'Level-Spanne',
-    levelCap: 'Level-Grenze',
-    levelCap_capped: 'Erreicht',
-    levelCap_uncapped: 'Nicht erreicht',
-    searchedAffCategory: 'Maximale Zuneigung',
-    searchedAffLevel: 'Aktuelle Zuneigung',
-    grade0: '0 Sterne',
-    grade1: '1 Stern',
-    grade2: '2 Sterne',
-    grade3: '3 Sterne',
-    grade4: '4 Sterne',
-    grade5: '5 Sterne',
-    grade6: '6 Sterne',
-    gradeCap: 'Zuneigungsgrenze',
-    team: 'Team',
-    visitTeams: 'Besuche zuerst die <a href="../teams.html">Teams</a>.',
-}
-
-export const marketXPAff = {
-    aff: 'Nächstes: {{remainNext}}',
-}
-
-export const marketHideSellButton = {
-    hide: 'Verkaufs-Button verbergen',
 }
 
 export const harem = {
@@ -313,4 +280,9 @@ export const villainBreadcrumbs = {
 
 export const blessingSpreadsheetLink = {
     name: `Öffne die Datentabelle für Segnungen von ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
+}
+
+export const haremTeamsFilter = {
+    team: 'Team',
+    visitTeams: 'Besuche zuerst die <a href="../teams.html">Teams</a>.',
 }

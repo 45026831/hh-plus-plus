@@ -42,10 +42,7 @@ export const config = {
     villain: 'Fight a villain menu',
     villain_tiers: `Show tiers with ${gameConfig.girl}s`,
     market: 'Market information',
-    marketGirlsFilter: `${gameConfig.Girl}s filter at the market`,
     marketEquipsFilter: 'Equips filter at the market',
-    marketXPAff: 'XP and affection at the market',
-    marketHideSellButton: 'Toggleable "Sell" button',
     harem: 'Harem information',
     league: 'League information',
     league_board: 'Show the league tops',
@@ -82,6 +79,7 @@ export const config = {
     censorMode: 'Censor all NSFW imagery',
     fixProfilePopup: 'Fix player profile popups',
     eventEndIndicators: 'Event ending indicators on home screen',
+    haremTeamsFilter: 'Harem teams filter',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
@@ -178,39 +176,6 @@ export const market = {
     youOwn: 'You own <b>{{count}}</b> {{type}}.',
     youCanSell: 'You can sell everything for <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'You can give a total of <b>{{value}}</b> {{currency}}.'
-}
-
-export const marketGirlsFilter = {
-    searchedName: 'Search',
-    girlName: `${gameConfig.Girl} name`,
-    searchedClass: 'Class',
-    searchedElement: 'Element',
-    searchedRarity: 'Rarity',
-    levelRange: 'Level range',
-    levelCap: 'Level cap',
-    levelCap_capped: 'Capped',
-    levelCap_uncapped: 'Uncapped',
-    searchedAffCategory: 'Affection category',
-    searchedAffLevel: 'Affection level',
-    grade0: '0 stars',
-    grade1: '1 star',
-    grade2: '2 stars',
-    grade3: '3 stars',
-    grade4: '4 stars',
-    grade5: '5 stars',
-    grade6: '6 stars',
-    gradeCap: 'Affection cap',
-    team: 'Team',
-    visitTeams: 'Visit <a href="../teams.html">Teams</a> first.'
-}
-
-export const marketXPAff = {
-    xp: '↑ {{remainNext}} · ⤒ {{remainMax}}',
-    aff: 'Next: {{remainNext}}'
-}
-
-export const marketHideSellButton = {
-    hide: 'Hide "Sell" button'
 }
 
 export const harem = {
@@ -376,4 +341,9 @@ export const villainBreadcrumbs = {
 
 export const blessingSpreadsheetLink = {
     name: `Open ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}'s blessing data spreadsheet`
+}
+
+export const haremTeamsFilter = {
+    team: 'Team',
+    visitTeams: 'Visit <a href="../teams.html">Teams</a> first.',
 }

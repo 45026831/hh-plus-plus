@@ -48,10 +48,7 @@ export const config = {
     villain: 'Menu Pelear contra villano',
     villain_tiers: `Mostrar Rangos con ${Helpers.isGH() ? 'Chicos' : 'Chicas'}`,
     market: 'Informacion de Mercado',
-    marketGirlsFilter: `Filtro de ${Helpers.isGH() ? 'chicos' : 'chicas'} en el mercado`,
     marketEquipsFilter: 'Filtro de equipos de mercado',
-    marketXPAff: 'El XP y el afecto en el mercado',
-    marketHideSellButton: 'Botón "Vender" conmutable',
     harem: 'Informacion de Harén',
     league: 'Informacion de Liga',
     league_board: 'Mostrar los mejores de la liga',
@@ -87,6 +84,7 @@ export const config = {
     censorMode: 'Censurar todas las imágenes NSFW',
     fixProfilePopup: 'Reparar ventanas emergentes de perfil de jugador',
     eventEndIndicators: 'Indicadores de finalización de evento en la pantalla de inicio',
+    haremTeamsFilter: 'Filtro de equipos de harén',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',
@@ -158,38 +156,6 @@ export const market = {
     youOwn: 'Tienes <b>{{count}}</b> {{type}}.',
     youCanSell: 'Puedes vender todo por <b>{{cost}}</b> <span class="hudSC_mix_icn"></span>.',
     youCanGive: 'Puedes dar un total de <b>{{value}}</b> {{currency}}.'
-}
-
-export const marketGirlsFilter = {
-    searchedName: 'Nombre',
-    girlName: `Nombre ${Helpers.isGH() ? 'del chico' : 'de la chica'}`,
-    searchedClass: 'Clase',
-    searchedElement: 'Elemento',
-    searchedRarity: 'Rareza',
-    levelRange: 'Rango de nivel',
-    levelCap: 'Límite de nivel',
-    levelCap_capped: 'Alcanzado',
-    levelCap_uncapped: 'No alcanzado',
-    searchedAffCategory: 'Categoría de afecto',
-    searchedAffLevel: 'Nivel de afecto',
-    grade0: '0 estrella',
-    grade1: '1 estrella',
-    grade2: '2 estrellas',
-    grade3: '3 estrellas',
-    grade4: '4 estrellas',
-    grade5: '5 estrellas',
-    grade6: '6 estrellas',
-    gradeCap: 'Máxima affección',
-    team: 'Equipo',
-    visitTeams: 'Visita el <a href="../teams.html">Equipos</a> primero.'
-}
-
-export const marketXPAff = {
-    aff: 'Siguiente: {{remainNext}}',
-}
-
-export const marketHideSellButton = {
-    hide: 'Ocultar botón "Vender"',
 }
 
 export const harem = {
@@ -337,4 +303,9 @@ export const villainBreadcrumbs = {
 
 export const blessingSpreadsheetLink = {
     name: `Abra la hoja de cálculo de datos de bendición de ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}`
+}
+
+export const haremTeamsFilter = {
+    team: 'Equipo',
+    visitTeams: 'Visita el <a href="../teams.html">Equipos</a> primero.'
 }
