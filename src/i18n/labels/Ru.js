@@ -74,6 +74,7 @@ export const config = {
     censorMode: 'Цензурировать все NSFW изображения',
     fixProfilePopup: 'Восстановить просмотр профилей игроков',
     eventEndIndicators: 'Индикаторы окончания событий на главном экране',
+    haremTeamsFilter: 'Фильтр команд в гареме',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',

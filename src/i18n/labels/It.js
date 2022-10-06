@@ -89,6 +89,7 @@ export const config = {
     censorMode: 'Censura di tutte le immagini NSFW',
     fixProfilePopup: 'Correzione dei popup del profilo del giocatore',
     eventEndIndicators: 'Mostra per la fine dell\'evento nella schermata iniziale',
+    haremTeamsFilter: 'Filtro squadra per harem',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
