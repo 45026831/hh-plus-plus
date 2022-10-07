@@ -149,7 +149,7 @@ class BoosterStatusCollector {
             if (field === 'xp') {
                 const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || DEFAULT_BOOSTERS
 
-                const travelMemories = boosterStatus.mythic.find(({identifier}) => identifier==='MB6')
+                const travelMemories = boosterStatus.mythic.find(({item: {identifier}}) => identifier==='MB6')
 
                 if (travelMemories) {
                     const {cur: oldValue, level} = window.Hero.infos.Xp
