@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.24.1
+// @version         1.24.2
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -398,7 +398,7 @@ window.HHPlusPlus={CHANGELOG:"https://raw.githubusercontent.com/45026831/hh-plus
                     <div class="text">${s?this.label("popsIn",{time:`<span>${window.format_time_short(e)}</span>`}):this.label("popsReady")}</div>
                 </div>
             </a>
-        `);as("header .currency").before(o),0<e&&(s={show:n=()=>{},hide:n,selector:""},n=window.is_mobile_size,window.is_mobile_size=()=>!1,HHTimers.initBarTimer(t,e,s,{barElm:o.find(".frontbar"),textElm:o.find("div.text>span")},()=>{o.find(".text").text(this.label("popsReady")),o.find(".pinkbar").addClass("bluebar").removeClass("pinkbar"),window.notificationData&&window.notificationData.activities&&(window.notificationData.activities.push("reward"),window.displayNotifications())}),window.is_mobile_size=n)}}addBoosterStatus(){const t=C.lsGet(b.BOOSTER_STATUS)||{normal:[],mythic:[]};t.normal=t.normal.filter(({endAt:e})=>e>server_now_ts),Object.keys(t).forEach(e=>{t[e].length<3&&(t[e]=[...t[e],...Array(3-t[e].length).fill({empty:!0})])});const m=as('<a class="script-booster-status" href="/shop.html?type=booster"></a>'),o=e=>{var{empty:t,id_item:a,ico:i,identifier:n,rarity:s,endAt:o}={...e,...e.item};if(t)return'<div class="slot empty"></div>';e.expiry=o-server_now_ts;o=new Date(1e3*o).toLocaleTimeString(ti.getLang(),{hour:"2-digit",minute:"2-digit"}).replace(/(\d)/g,e=>`${e}<i></i>`);return as(`
+        `);as("header .currency").before(o),0<e&&(s={show:n=()=>{},hide:n,selector:""},n=window.is_mobile_size,window.is_mobile_size=()=>!1,HHTimers.initBarTimer(t,e,s,{barElm:o.find(".frontbar"),textElm:o.find("div.text>span")},()=>{o.find(".text").text(this.label("popsReady")),o.find(".pinkbar").addClass("bluebar").removeClass("pinkbar"),window.notificationData&&window.notificationData.activities&&(window.notificationData.activities.push("reward"),window.displayNotifications())}),window.is_mobile_size=n)}}addBoosterStatus(){const t=C.lsGet(b.BOOSTER_STATUS)||{normal:[],mythic:[]};t.normal=t.normal.filter(({endAt:e})=>e>server_now_ts),Object.keys(t).forEach(e=>{t[e].length<3&&(t[e]=[...t[e],...Array(3-t[e].length).fill({empty:!0})])});const m=as('<a class="script-booster-status" href="/shop.html"></a>'),o=e=>{var{empty:t,id_item:a,ico:i,identifier:n,rarity:s,endAt:o}={...e,...e.item};if(t)return'<div class="slot empty"></div>';e.expiry=o-server_now_ts;o=new Date(1e3*o).toLocaleTimeString(ti.getLang(),{hour:"2-digit",minute:"2-digit"}).replace(/(\d)/g,e=>`${e}<i></i>`);return as(`
                 <div class="slot ${s}" id_item="${a}" data-d="${JSON.stringify(e).replace(/"/g,"&quot;")}" additional-tooltip-info="${JSON.stringify({additionalText:`<span class="script-tooltip"></span>${this.label("endAt",{time:o})}`}).replace(/"/g,"&quot;")}">
                     <img src="${i||`${C.getCDNHost()}/pictures/items/${n}.png`}"/>
                 </div>`)},r=e=>{var{empty:t,id_item:a,ico:i,identifier:n}={...e,...e.item};return t?'<div class="slot mythic empty"></div>':as(`
