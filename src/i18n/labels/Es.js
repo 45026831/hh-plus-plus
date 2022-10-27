@@ -299,6 +299,7 @@ export const villainBreadcrumbs = {
     stairway: 'Escalera al cielo',
     training: 'Training Dimension',
     weresquidisland: 'Isla WereSquid',
+    haremtournament: 'El Torneo del Harem',
 }
 
 export const blessingSpreadsheetLink = {

@@ -289,6 +289,7 @@ export const villainBreadcrumbs = {
     stairway: 'La Montée aux Cieux',
     training: 'La dimension d\'entraînement',
     weresquidisland: 'L\'île des Poulpes Garous',
+    haremtournament: 'Le Tournoi de Harem',
 
     begincitycxh: 'Préludeville',
     heroacademy: 'Académie des Héros',
@@ -303,6 +304,7 @@ export const villainBreadcrumbs = {
     homecumming: 'Retrouvailles',
     biggerintexas: 'Plus GROS au Texas',
     westcock: 'Con Ouest',
+    whenangelscum: 'Quand les anges montent au septième ciel',
 }
 
 export const blessingSpreadsheetLink = {

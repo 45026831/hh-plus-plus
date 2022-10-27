@@ -139,6 +139,7 @@ export const villain = {
     nike: 'Nike',
     sake: 'Sake',
     werebunnypolice: 'WereBunny Police',
+    auga: 'Auga',
     edward: 'Edward',
     edernas: 'Edernas',
     maro: 'Maro',
@@ -154,8 +155,46 @@ export const villain = {
     ivywinters: 'Ivy Winters',
     lilycade: 'Lily Cade',
     amiamiley: 'Amia Miley',
+    alyssareece: 'Alyssa Reece',
     fallback: 'World {{world}} villain',
     event: 'Event',
+}
+
+export const villainBreadcrumbs = {
+    town: 'Town',
+    adventure: 'Adventure',
+    begincity: 'Begin City',
+    gemskingdom: 'Gems Kingdom',
+    ninjavillage: 'Ninja Village',
+    invadedkingdom: 'Invaded Kingdom',
+    juysea: 'The Juy Sea',
+    admittance: 'Admittance of the dead',
+    magicforest: 'Magic Forest',
+    hamelintown: 'Hamelin Town',
+    plainofrituals: 'Plain of rituals',
+    heroesuniversity: 'Heroes University',
+    ninjasacredlands: 'Ninja sacred lands',
+    splatters: 'Splatters Archipelago',
+    digisekai: 'Digisekai',
+    stairway: 'Stairway to heaven',
+    training: 'Training Dimension',
+    weresquidisland: 'WereSquid Island',
+    haremtournament: 'The Harem Tournament',
+
+    begincitycxh: 'Begin City',
+    heroacademy: 'Hero Academy',
+    newcenabum: 'New Cenabum',
+    ontheprowl: 'On the Prowl',
+    bushexplorations: 'Bush Explorations',
+    thespy: 'The Spy Who Came Inside Me',
+    hornyknight: 'The Horny Knight',
+
+    fukwell: 'Fukwell University',
+    eurodick: 'Eurodick',
+    homecumming: 'Homecumming',
+    biggerintexas: 'Bigger in Texas',
+    westcock: 'West Cock',
+    whenangelscum: 'When Angels Cum',
 }
 
 export const market = {
@@ -304,40 +343,7 @@ export const contestSummary = {
     contestsWarning: 'Contests expire after 21 days!'
 }
 
-export const villainBreadcrumbs = {
-    town: 'Town',
-    adventure: 'Adventure',
-    begincity: 'Begin City',
-    gemskingdom: 'Gems Kingdom',
-    ninjavillage: 'Ninja Village',
-    invadedkingdom: 'Invaded Kingdom',
-    juysea: 'The Juy Sea',
-    admittance: 'Admittance of the dead',
-    magicforest: 'Magic Forest',
-    hamelintown: 'Hamelin Town',
-    plainofrituals: 'Plain of rituals',
-    heroesuniversity: 'Heroes University',
-    ninjasacredlands: 'Ninja sacred lands',
-    splatters: 'Splatters Archipelago',
-    digisekai: 'Digisekai',
-    stairway: 'Stairway to heaven',
-    training: 'Training Dimension',
-    weresquidisland: 'WereSquid Island',
 
-    begincitycxh: 'Begin City',
-    heroacademy: 'Hero Academy',
-    newcenabum: 'New Cenabum',
-    ontheprowl: 'On the Prowl',
-    bushexplorations: 'Bush Explorations',
-    thespy: 'The Spy Who Came Inside Me',
-    hornyknight: 'The Horny Knight',
-
-    fukwell: 'Fukwell University',
-    eurodick: 'Eurodick',
-    homecumming: 'Homecumming',
-    biggerintexas: 'Bigger in Texas',
-    westcock: 'West Cock'
-}
 
 export const blessingSpreadsheetLink = {
     name: `Open ${Helpers.isGH() ? 'Bella' : 'zoopokemon'}'s blessing data spreadsheet`

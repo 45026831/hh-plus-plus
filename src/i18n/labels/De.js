@@ -276,6 +276,7 @@ export const villainBreadcrumbs = {
     stairway: 'Himmelstreppe',
     training: 'Trainingsdimension',
     weresquidisland: 'Wer-Tintenfisch-Insel',
+    haremtournament: 'Das Haremturnier',
 }
 
 export const blessingSpreadsheetLink = {

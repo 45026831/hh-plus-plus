@@ -214,9 +214,10 @@ export default {
             }]
         },
         {
+            key: 'auga',
             world: 17,
             girls: {
-                1: [],
+                1: ['851893423', '735302216', '344730128'],
                 2: [],
                 3: []
             },
@@ -224,7 +225,19 @@ export default {
                 element: 'water',
                 amount: 25,
             }]
-        }
+        },
+        {
+            world: 18,
+            girls: {
+                1: [],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'fire',
+                amount: 25,
+            }]
+        },
     ],
     GH: [
         {
@@ -605,14 +618,27 @@ export default {
             }]
         },
         {
+            key: 'alyssareece',
             world: 7,
+            girls: {
+                1: ['219241809', '380385497', '879198752'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'light',
+                amount: 20,
+            }]
+        },
+        {
+            world: 8,
             girls: {
                 1: [],
                 2: [],
                 3: []
             },
             gems: [{
-                element: 'light',
+                element: 'psychic',
                 amount: 20,
             }]
         },

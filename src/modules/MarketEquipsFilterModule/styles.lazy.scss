@@ -1,37 +1,39 @@
-#shops label.equip_filter {
+label.equip_filter {
     background: transparent;
-}
-
-#shops #inventory label.equip_filter {
-    width: 32px;
     position: absolute;
-    top: -6px;
-}
-
-label.equip_filter input {
-    height: 32px;
     width: 32px;
-    display: block;
-    padding: 0px;
-}
 
-label.equip_filter::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    background-position: center;
-    background-size: 24px;
-    background-repeat: no-repeat;
-    background-image: var(--filter-icon);
-    pointer-events: none;
+    #my-hero-equipement-tab-container & {
+        top: 92px;
+    }
+
+    #equipement-tab-container .right-container & {
+        top: 62px;
+    }
+
+    input {
+        height: 32px;
+        width: 32px;
+        display: block;
+        padding: 0px;
+    }
+
+    &::before {
+        content: " ";
+        display: block;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-position: center;
+        background-size: 24px;
+        background-repeat: no-repeat;
+        background-image: var(--filter-icon);
+        pointer-events: none;
+    }
 }
 
 .equip_filter_box {
     position: absolute;
-    bottom: 0px;
-    left: -215px;
     width: 200px;
     height: -moz-fit-content;
     height: fit-content;
@@ -41,12 +43,32 @@ label.equip_filter::before {
     box-shadow: rgba(255, 255, 255, 0.73) 0px 0px;
     padding: 5px;
     border: 1px solid rgb(255, 162, 62);
-}
 
-#shops #inventory .equip_filter_box label {
-    background: transparent;
-    width: auto;
-    margin: 0px;
+    #my-hero-equipement-tab-container & {
+        top: 92px;
+        left: 18px;
+    }
+
+    #equipement-tab-container .right-container & {
+        top: 62px;
+        left: 380px;
+    }
+
+    label {
+        background: transparent;
+        width: auto;
+        height: 100%;
+        margin: 0px;
+        border-radius: 5px;
+        display: block;
+    }
+
+    .grid-selector input {
+        &:checked + label,
+        &:hover + label {
+            background-color: #fff8;
+        }
+    }
 }
 
 .grid-selector {
@@ -96,12 +118,7 @@ label.equip_filter::before {
     width: 36px;
 }
 
-#shops #inventory .grid-selector input:checked + label,
-#shops #inventory .grid-selector input:hover + label {
-    background-color: #fff8;
-}
-
-#inventory .armor .slot .favorite-toggle {
+.slot .favourite-toggle {
     position: absolute;
     display: none;
     height: 32px;
@@ -116,21 +133,17 @@ label.equip_filter::before {
     border-bottom-left-radius: 5px;
 }
 
-#inventory .armor .slot:hover .favorite-toggle[data-is-favorite="false"],
-#inventory .armor .slot .favorite-toggle[data-is-favorite="true"] {
+.slot:hover[data-is-favourite="false"] .favourite-toggle,
+.slot[data-is-favourite="true"] .favourite-toggle {
     display: block;
 }
 
-#inventory .armor .slot .favorite-toggle[data-is-favorite="false"] {
+.slot[data-is-favourite="false"] .favourite-toggle {
     background-image: var(--star-icon-white);
     opacity: 0.7;
 }
 
-#inventory .armor .slot .favorite-toggle[data-is-favorite="true"] {
+.slot[data-is-favourite="true"] .favourite-toggle {
     background-color: rgba(30, 38, 30, 0.7);
     background-image: var(--star-icon-orange);
-}
-
-#inventory .armor .slot.filtered_out {
-    display: none;
 }

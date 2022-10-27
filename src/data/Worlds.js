@@ -16,6 +16,7 @@ export const HH = [
     'stairway',
     'training',
     'weresquidisland',
+    'haremtournament',
 ]
 
 export const GH = HH
@@ -40,4 +41,5 @@ export const PSH = [
     'homecumming',
     'biggerintexas',
     'westcock',
+    'whenangelscum',
 ]

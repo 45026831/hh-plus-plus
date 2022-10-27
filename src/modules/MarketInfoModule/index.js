@@ -297,7 +297,7 @@ class MarketInfoModule extends CoreModule {
                 const parentSelector = `#${NEW_TYPES[type]}-tab-container #player-inventory-container`
                 const selector = `${parentSelector} .inventoryInfo`
                 const $infoIcon = $('<div class="marketInfoIcon inventoryInfo"></div>')
-                $(parentSelector).prepend($infoIcon)
+                $(parentSelector).append($infoIcon)
 
                 TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
                     const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
@@ -311,7 +311,7 @@ class MarketInfoModule extends CoreModule {
             const equipsParentSelector = '#equipement-tab-container #player-inventory-container'
             const equipsSelector = `${equipsParentSelector} .inventoryInfo`
             const $infoIcon = $('<div class="marketInfoIcon inventoryInfo"></div>')
-            $(equipsParentSelector).prepend($infoIcon)
+            $(equipsParentSelector).append($infoIcon)
 
             TooltipManager.initTooltipType(isMobile, equipsSelector, false, (target) => {
                 const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)

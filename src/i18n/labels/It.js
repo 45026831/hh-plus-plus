@@ -305,6 +305,7 @@ export const villainBreadcrumbs = {
     stairway: 'Scalinata verso il Cielo',
     training: 'Dimensione d\'Allenamento',
     weresquidisland: 'Isola dei Calamari Mannari',
+    haremtournament: 'Il Torneo dell\'Harem',
 }
 
 export const blessingSpreadsheetLink = {
