@@ -264,6 +264,7 @@ class EquipManager {
             const favouriteKey = EquipHelpers.makeFavouriteKey(data)
             $slot.attr('data-equip-key', key)
             this.favouriteKeys[key] = favouriteKey
+            this.keysForIds[data.id_member_armor] = key
             changed = true
         }
         return {
@@ -346,17 +347,13 @@ class EquipManager {
         let extraSlots = 0
         if (desiredSlots > currentSlots) {
             extraSlots = desiredSlots - currentSlots
-        } else if (currentSlots % slotsPerRow > 0) {
-            const lastRowLength = currentSlots % slotsPerRow
-            const amountNeededToCompleteRow = slotsPerRow - lastRowLength
+        } else if (desiredSlots < currentSlots && currentSlots % slotsPerRow > 0) {
             const currentEmptySlots = this.$content.find('.slot-container.empty').length
-            if (currentEmptySlots === lastRowLength) {
-                extraSlots = -currentEmptySlots
-            } else if (currentEmptySlots > slotsPerRow) {
-                extraSlots = -currentEmptySlots - (currentEmptySlots % slotsPerRow) + amountNeededToCompleteRow
-            } else {
-                extraSlots = amountNeededToCompleteRow
-            }
+            const nonEmptySlots = this.$content.find('.slot-container:not(.empty)').length
+            const lastRowLength = nonEmptySlots % slotsPerRow
+            const amountNeededToCompleteRow = slotsPerRow - lastRowLength
+
+            extraSlots = amountNeededToCompleteRow - currentEmptySlots
         }
 
         if (extraSlots > 0) {

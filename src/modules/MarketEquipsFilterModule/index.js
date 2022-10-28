@@ -24,50 +24,6 @@ class MarketEquipsFilterModule extends CoreModule {
         return Helpers.isCurrentPage('shop')
     }
 
-    checkSelection () {
-        const $selected = $('#inventory .armor .inventory_slots .selected')
-
-        if ($selected.length){
-            if ($selected.is(':visible')) {
-                // check for favourite
-                const $favoriteToggle = $selected.find('.favorite-toggle')
-                if (!$favoriteToggle.length) {return}
-                const isFavorite = JSON.parse($favoriteToggle.attr('data-is-favorite'))
-                if (isFavorite) {
-                    $('#shops #inventory button[rel=sell]').prop('disabled', true)
-                }
-            } else {
-                // change selection
-                const $container = $('#inventory .armor .inventory_slots > div:first-child()')
-                const index = $selected.index()
-                let $newSelection
-                let newSelection
-
-                // first, try after
-                $newSelection = $container.find(`.slot:gt(${index}):not(.empty):visible()`)
-                if ($newSelection.length) {
-                    newSelection = $newSelection[0]
-                }
-
-                if (!newSelection) {
-                    // try before instead
-                    $newSelection = $container.find(`.slot:lt(${index}):not(.empty):visible()`)
-
-                    if ($newSelection.length) {
-                        newSelection = $newSelection[$newSelection.length - 1]
-                    }
-                }
-
-                if (newSelection) {
-                    $(newSelection).click()
-                } else {
-                    // Nothing left visible, disable buttons
-                    $('#shops #inventory button[rel=sell], #shops #inventory button[rel=use]').prop('disabled', true)
-                }
-            }
-        }
-    }
-
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
 
