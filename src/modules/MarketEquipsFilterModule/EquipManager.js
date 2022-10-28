@@ -351,9 +351,13 @@ class EquipManager {
             const currentEmptySlots = this.$content.find('.slot-container.empty').length
             const nonEmptySlots = this.$content.find('.slot-container:not(.empty)').length
             const lastRowLength = nonEmptySlots % slotsPerRow
-            const amountNeededToCompleteRow = slotsPerRow - lastRowLength
+            const amountNeededToCompleteRow = (slotsPerRow - lastRowLength) % slotsPerRow
 
             extraSlots = amountNeededToCompleteRow - currentEmptySlots
+
+            if (currentSlots + extraSlots < desiredSlots) {
+                extraSlots += desiredSlots - (currentSlots + extraSlots)
+            }
         }
 
         if (extraSlots > 0) {

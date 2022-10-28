@@ -1,3 +1,4 @@
+1.25.2: Further fixes for padding in equips filter. Adding more items to the NSFW filter (#86)
 1.25.1: Fixing bugs with selling and slot padding in the equips filter
 1.25.0: Rewriting the equips filter completely to improve performance and handle the new market interface. Adding new world data for HH and PSH.
 1.24.3: Fixing (sort of) travel memories tracking. Script will continue to track the 5% despite the current 20% bug in-game.
