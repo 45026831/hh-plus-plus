@@ -1,0 +1,31 @@
+.girl-leveler-panel .girl-leveler-container .girl-section .girl-avatar {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
+}
+
+.script-quicknav {
+    &-prev,
+    &-next {
+        position: absolute;
+        width: 100px;
+        opacity: 0.8;
+
+        &:hover {
+            opacity: 1;
+            filter: drop-shadow(0px 0px 4px white);
+        }
+
+        img {
+            width: 100%;
+        }
+    }
+
+    &-prev {
+        left: -140px;
+    }
+    &-next {
+        right: -140px;
+    }
+}

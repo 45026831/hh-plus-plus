@@ -80,6 +80,7 @@ export const config = {
     fixProfilePopup: 'Fix player profile popups',
     eventEndIndicators: 'Event ending indicators on home screen',
     haremTeamsFilter: 'Harem teams filter',
+    upgradeQuickNav: 'Upgrade page quick navigation',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',

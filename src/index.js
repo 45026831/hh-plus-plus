@@ -3,6 +3,7 @@ import {
     ClubStatusCollector,
     EventVillainsCollector,
     GirlDictionaryCollector,
+    HaremFilterCollector,
     LeagueInfoCollector,
     MarketInfoCollector,
     PathEventCollector,
@@ -30,6 +31,7 @@ const runScript = () => {
     ClubStatusCollector.collect()
     SidequestStatusCollector.collect()
     PathEventCollector.collect()
+    HaremFilterCollector.collect()
 
     // configurable modules
 

@@ -74,4 +74,5 @@ export const lsKeys = {
     SIDEQUEST_STATUS:           lsKey('SidequestStatus'),
     PATH_TIME_POV:              lsKey('PathTimePoV'),
     PATH_TIME_POG:              lsKey('PathTimePoG'),
+    HAREM_FILTER_IDS:           lsKey('HaremFilterIDs'),
 }

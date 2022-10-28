@@ -1,3 +1,4 @@
+1.26.0: Adding module to quickly navigate between girls in the current harem filter while on the upgrade page
 1.25.2: Further fixes for padding in equips filter. Adding more items to the NSFW filter (#86)
 1.25.1: Fixing bugs with selling and slot padding in the equips filter
 1.25.0: Rewriting the equips filter completely to improve performance and handle the new market interface. Adding new world data for HH and PSH.
