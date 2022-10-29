@@ -117,6 +117,7 @@ export const stConfig = {
     bbProgress: 'Улучшенная полоса прогресса Boss Bang',
     compactLossScreen: 'Компактный экран поражения',
     seasonalEventTweaks: 'Поправки для Сезонных Событий',
+    compactHaremFilters: 'Компактные фильтры Гарема',
 }
 
 export const villain = {

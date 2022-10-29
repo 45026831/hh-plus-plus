@@ -75,3 +75,4 @@ export {default as RemoveParticleEffectsStyleTweak} from './RemoveParticleEffect
 export {default as SelectableIDStyleTweak} from './SelectableIDStyleTweak'
 export {default as CompactLossScreenStyleTweak} from './CompactLossScreenStyleTweak'
 export {default as SeasonalEventStyleTweak} from './SeasonalEventStyleTweak'
+export {default as CompactHaremFiltersStyleTweak} from './CompactHaremFiltersStyleTweak'

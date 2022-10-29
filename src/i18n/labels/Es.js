@@ -127,6 +127,7 @@ export const stConfig = {
     bbProgress: 'Mejor barra de progreso de recompensas de Boss Bang',
     compactLossScreen: 'Pantalla de derrota compacta',
     seasonalEventTweaks: 'Optimierungen für Saisonales Event',
+    compactHaremFilters: 'Filtros de harén compactos',
 }
 
 export const villain = {

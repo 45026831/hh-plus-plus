@@ -106,6 +106,7 @@ export const stConfig = {
     bbProgress: 'Bessere Belohungsfort-schrittsleiste in Boss Bums',
     compactLossScreen: 'Kompakte Niederlage-Anzeige',
     seasonalEventTweaks: 'Optimierungen für Saisonales Event',
+    compactHaremFilters: 'Kompakte Haremfilter',
 }
 
 export const villain = {
