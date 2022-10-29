@@ -64,6 +64,7 @@ export const config = {
     fixProfilePopup: 'Fix für Spielerprofil-Popups',
     eventEndIndicators: 'Anzeige für Eventende auf dem Startbildschirm',
     haremTeamsFilter: 'Teamfilter für Harem',
+    upgradeQuickNav: 'Schnellnavigation auf der Upgrade-Seite',
 }
 export const stConfig = {
     missionsBackground: 'Missionshintergrund ändern',

@@ -90,6 +90,7 @@ export const config = {
     fixProfilePopup: 'Correzione dei popup del profilo del giocatore',
     eventEndIndicators: 'Mostra per la fine dell\'evento nella schermata iniziale',
     haremTeamsFilter: 'Filtro squadra per harem',
+    upgradeQuickNav: 'Navigazione rapida sulla pagina di aggiornamento',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
