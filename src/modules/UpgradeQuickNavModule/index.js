@@ -7,6 +7,8 @@ import { lsKeys } from '../../common/Constants'
 
 const MODULE_KEY = 'upgradeQuickNav'
 
+const RESOURCE_TYPES = ['experience', 'affection']
+
 class UpgradeQuickNavModule extends CoreModule {
     constructor () {
         super({
@@ -15,6 +17,8 @@ class UpgradeQuickNavModule extends CoreModule {
             default: true
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
+
+        this.linkUrls = {prev: {}, next: {}}
     }
 
     shouldRun () {
@@ -58,20 +62,58 @@ class UpgradeQuickNavModule extends CoreModule {
 
             const $girlAvatar = $('.girl-section .girl-avatar')
 
-            $girlAvatar.prepend(this.buildAvatarHtml(previousGirlId, previousGirl, 'prev'))
-            $girlAvatar.append(this.buildAvatarHtml(nextGirlId, nextGirl, 'next'))
+            this.$prev = this.buildAvatarHtml(previousGirlId, previousGirl, 'prev')
+            this.$next = this.buildAvatarHtml(nextGirlId, nextGirl, 'next')
+
+            $girlAvatar.prepend(this.$prev)
+            $girlAvatar.append(this.$next)
 
             window.replaceImageSources()
+
         })
+
+        const initTabSystem_actual = window.initTabSystem
+        const tabSystemHook = (...args) => {
+            const ret = initTabSystem_actual(...args)
+
+            const {tab_system_instances} = window
+
+            const tabsInstance = tab_system_instances['girl-leveler-tabs']
+            const {tabs} = tabsInstance
+
+            const switchTab_actual = tabs.affection.callback
+            const hook = (tabContent) => {
+                switchTab_actual(tabContent)
+                this.$prev.attr('href', this.linkUrls.prev[tabContent])
+                this.$next.attr('href', this.linkUrls.next[tabContent])
+            }
+            tabs.affection.callback = hook
+            tabs.experience.callback = hook
+
+            return ret
+        }
+        window.initTabSystem = tabSystemHook
 
         this.hasRun = true
     }
 
     buildAvatarHtml (id, {pose}, className) {
         const ava = `${Helpers.getCDNHost()}/pictures/girls/${id}/ava${pose}.png`
-        const href = `/girl/${id}`
+        RESOURCE_TYPES.forEach(type => {
+            this.linkUrls[className][type] = `/girl/${id}?resource=${type}`
+        })
 
-        return Helpers.$(`<a class="script-quicknav-${className}" href="${href}"><img girl-ava-src="${ava}"/></a>`)
+        return Helpers.$(`<a class="script-quicknav-${className}" href="${this.linkUrls[className][this.getCurrentResource()]}"><img girl-ava-src="${ava}"/></a>`)
+    }
+
+    getCurrentResource () {
+        let resource = 'experience'
+        if (location.search && location.search.includes('resource')) {
+            const urlPattern = new RegExp('resource=(?<resource>[a-z]+)')
+            const matches = urlPattern.exec(location.search)
+            resource = matches.groups.resource
+        }
+        return resource
     }
 }
 
