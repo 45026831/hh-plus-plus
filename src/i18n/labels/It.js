@@ -132,6 +132,8 @@ export const stConfig = {
     bbProgress: 'Migliore barra di avanzamento della ricompensa nella Scopata Boss',
     compactLossScreen: 'Pantalla de pérdida compacta',
     seasonalEventTweaks: 'Ottimizzazioni per l\'evento stagionale',
+    compactHaremFilters: 'Filtri del Harem Compatti',
+    expandedMarketInventory: 'Inventario del mercato allargato',
 }
 
 export const villain = {

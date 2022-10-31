@@ -1,0 +1,97 @@
+#shops .shop-container .content-container {
+    #books-tab-container,
+    #boosters-tab-container,
+    #equipement-tab-container,
+    #gifts-tab-container {
+        .right-container {
+            #player-inventory-container .market-girl-container {
+                margin-top: -3.5rem;
+                position: absolute;
+                right: 5.5rem;
+                overflow: hidden;
+                height: 9rem;
+            }
+
+            .my-inventory-container .player-inventory-content {
+                width: 26.6rem;
+
+                .nicescroll-rails {
+                    right: 18px;
+                }
+            }
+
+            .bottom-container {
+                width: 26.6rem;
+            }
+        }
+    }
+    #my-hero-tab-container {
+        .my-hero-switch-content {
+            #my-hero-equipement-tab-container,
+            #my-hero-boosters-tab-container {
+                .my-inventory-equipement-container .my-inventory .my-inventory-container {
+                    .armor,
+                    .booster {
+                        .nicescroll-rails {
+                            right: 26rem !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        .tab-armor,
+        .tab-booster {
+            .my-inventory-equipement-container .my-inventory {
+                width: 24.5rem !important;
+
+                .my-inventory-container {
+                    width: 24rem !important;
+
+                    .armor,
+                    .booster {
+                        width: 24rem !important;
+                    }
+                }
+            }
+
+            .equiped-items {
+                width: 16rem !important;
+
+                .armor-container,
+                .booster-container {
+                    width: 15rem !important;
+
+                    .armor {
+                        display: grid;
+                        grid-template-rows: 1fr 1fr 1fr;
+                        grid-auto-flow: column;
+                        z-index: 14;
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+
+                        .slot-container {
+                            position: auto !important;
+                            margin: auto;
+                        }
+                    }
+
+                    .booster {
+                        width: 13rem !important;
+                    }
+
+                    .hero-img > .character {
+                        right: 2.5rem !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.my-inventory-container .inventoryInfo {
+    right: 18px;
+}

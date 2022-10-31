@@ -140,7 +140,9 @@ class EquipManager {
             })
             delete this.elementCache[key]
 
-            this.reconsileAfterNextDOMChange()
+            // this.reconsileAfterNextDOMChange()
+            this.doAfterNextDOMChange(() => this.padWithEmptySlots())
+
         })
         Helpers.onAjaxResponse(/action=market_buy/, (response, opt) => {
             const searchParams = new URLSearchParams(opt.data)
@@ -206,12 +208,17 @@ class EquipManager {
     }
 
     reconsileAfterNextDOMChange (extraCallback) {
+        this.doAfterNextDOMChange(extraCallback, () => this.reconcileElements())
+    }
+
+    doAfterNextDOMChange(...callbacks) {
         const observer = new MutationObserver(() => {
             if (this.$content.children('.slot-container').length) {
-                if (extraCallback && typeof extraCallback === 'function') {
-                    extraCallback()
-                }
-                this.reconcileElements()
+                callbacks.forEach(callback => {
+                    if (callback && typeof callback === 'function') {
+                        callback()
+                    }
+                })
                 observer.disconnect()
             }
         })

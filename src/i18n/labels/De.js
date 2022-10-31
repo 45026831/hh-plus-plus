@@ -107,6 +107,7 @@ export const stConfig = {
     compactLossScreen: 'Kompakte Niederlage-Anzeige',
     seasonalEventTweaks: 'Optimierungen für Saisonales Event',
     compactHaremFilters: 'Kompakte Haremfilter',
+    expandedMarketInventory: 'Erweitertes Marktinventar',
 }
 
 export const villain = {

@@ -152,12 +152,12 @@ class BoosterStatusCollector {
                 const travelMemories = boosterStatus.mythic.find(({item: {identifier}}) => identifier==='MB6')
 
                 if (travelMemories) {
-                    const {cur: oldValue, level} = window.Hero.infos.Xp
+                    const {cur: oldValue/*, level*/} = window.Hero.infos.Xp
 
                     let atmBonus = 0.05
-                    if (level < 300) {
-                        atmBonus = 0.2
-                    }
+                    // if (level < 300) {
+                    atmBonus = 0.2
+                    // }
                     const clubBonus = getClubXPBonus()
 
                     const diff = value - oldValue
