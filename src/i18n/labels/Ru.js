@@ -118,6 +118,7 @@ export const stConfig = {
     compactLossScreen: 'Компактный экран поражения',
     seasonalEventTweaks: 'Поправки для Сезонных Событий',
     compactHaremFilters: 'Компактные фильтры Гарема',
+    expandedMarketInventory: 'Расширенный список предметов Рынка',
 }
 
 export const villain = {

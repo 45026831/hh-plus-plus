@@ -28,11 +28,11 @@ class ExpandedMarketInventoryStyleTweak extends STModule {
         super.run()
 
         Helpers.defer(() =>{
-            if ($('.player-inventory-content').children('div').length) {
+            if ($('.player-inventory-content').children('.slot-container').length) {
                 this.initialPad()
             } else {
                 const observer = new MutationObserver(() => {
-                    if ($('.player-inventory-content').children('div').length) {
+                    if ($('.player-inventory-content').children('.slot-container').length) {
                         this.initialPad()
                         observer.disconnect()
                     }
