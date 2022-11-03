@@ -1,3 +1,4 @@
+1.28.2: Updating patrons list. Fixing the champion participants display in Firefox.
 1.28.1: Some quick fixes following the 02/11 game update
 1.28.0: Adding style tweak to show more of your inventory at once in the market. Improving equip sale performance in equips filter.
 1.27.1: Adding some state management to persist resource type in upgrade page quick nav

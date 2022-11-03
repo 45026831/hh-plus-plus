@@ -141,7 +141,7 @@ class ChampionsModule extends CoreModule {
         })
 
         // Show participant count
-        $('#club_champions_body_table').prepend(`<div class="script-participant-count">${this.label('participants', {participants: totalPositiveImpressionParticipants, members: membersList.length})}</div>`)
+        $('#club_champions_container').prepend(`<div class="script-participant-count">${this.label('participants', {participants: totalPositiveImpressionParticipants, members: membersList.length})}</div>`)
 
         // Mark members that haven't hit the champ
         const participatingMembers = participants.map(({id_member})=>id_member)
