@@ -36,6 +36,15 @@ class GemStockModule extends CoreModule {
                 `).join('')}
             </tody>
         </table>
+        <table class="gemStock-table">
+            <hr>
+            <tbody>
+                <tr class="sum">
+                    <td><img src="${Helpers.getCDNHost()}/pictures/design/gems/all.png"></td>
+                    <td>${I18n.nThousand(Object.values(player_gems_amount).reduce((a,g) => +g.amount+a, 0))}</td>
+                </tr>
+            </tbody>
+        </table>
     `.replace(/(\n| {4})/g, '')
     }
 

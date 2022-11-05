@@ -113,6 +113,16 @@ class HaremInfoModule extends CoreModule {
     }
 
     buildGeneralSummary () {
+        const {high_level_girl_owned, awakening_requirements} = window
+        const levelCapAggregate = high_level_girl_owned.slice(1).map((girls_owned, i)=>{
+            const {cap_level} = awakening_requirements[i]
+            const {girls_required} = awakening_requirements[i+1]
+            return {
+                girls_required,
+                girls_owned,
+                cap_level
+            }
+        })
         return `
             <div class="summary-block general-summary">
                 <h1>${this.label('haremStats')}</h1>
@@ -147,6 +157,9 @@ class HaremInfoModule extends CoreModule {
                             <span>${I18n.nThousand(this.aggregates.scPerHour)} / ${GT.time.h}<br>${I18n.nThousand(this.aggregates.scCollectAll)} / ${GT.design.harem_collect}</span>
                         </span>
                     </li>
+                </ul>
+                <ul class="summary-grid level-caps-summary">
+                    ${levelCapAggregate.map(({cap_level, girls_required, girls_owned}) => `<li><span class="level-cap">${cap_level}</span><span ${girls_owned>=girls_required ? 'class="level-cap-unlocked"':''}>${I18n.nThousand(girls_owned)}<span class="required-girls">/${girls_required}</span></span></li>`).join('')}
                 </ul>
             </div>
         `

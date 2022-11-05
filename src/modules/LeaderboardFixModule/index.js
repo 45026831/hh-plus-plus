@@ -70,7 +70,7 @@ class LeaderboardFixModule extends CoreModule {
         if (!ownRowData) {return}
 
         const $ownRow = $leaderboardList.find('.leaderboard_row')
-            .eq(ownRowData.index)
+            .eq(ownRowData.rank - 1)
             .clone()
             .addClass('script-season-leaderboard-fix')
         $leaderboardList.append($ownRow)

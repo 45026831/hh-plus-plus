@@ -23,10 +23,6 @@
     .summary-block {
         display: inline-block;
         width: 280px;
-
-        &.general-summary {
-            width: 250px;
-        }
     }
 
     &.visible {
@@ -127,6 +123,33 @@
         }
         &.elements-summary {
             grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+        &.level-caps-summary {
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+            font-size: 14px;
+            li {
+                margin-left: 0px;
+                padding-left: 7px;
+                line-height: 18px;
+                & > span {
+                    margin-left: 0px;
+                    display: inline-block;
+                }
+            }
+
+            .level-cap {
+                font-family: "Carter One", "Alegreya Sans", Montserrat;
+                line-height: 12px;
+            }
+
+            .required-girls {
+                font-size: 0.6em;
+                vertical-align: baseline;
+            }
+
+            .level-cap-unlocked {
+                color: #00ff06;
+            }
         }
         &.xp-aff-summary {
             grid-template-columns: 1fr 1fr;

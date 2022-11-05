@@ -41,7 +41,7 @@ class MarketInfoCollector {
             })
 
             BUYABLE.forEach(type => {
-                new MutationObserver(() => handleBuyableItemUpdate(type)).observe($(`#shops_left .${TYPES[type]}, .merchant-inventory-container.${TYPES[type]}`)[0], {childList: true})
+                new MutationObserver(() => handleBuyableItemUpdate(type)).observe($(`.merchant-inventory-container.${TYPES[type]} .${TYPES[type]}`)[0], {childList: true})
             })
             SELLABLE.forEach(type => {
                 new MutationObserver(() => handleSellableItemUpdate(type)).observe($(`#inventory .${TYPES[type]} .inventory_slots > div, .right-container .player-inventory-content.${TYPES[type]} > div, #${NEW_TYPES[type]}-tab-container #player-inventory`)[0], {childList: true, subtree: true})
@@ -83,13 +83,13 @@ class MarketInfoCollector {
                 value: 0,
             }
         }
-        $(`#shops_left .${TYPES[type]} .slot:not(.empty)`).each((i, slot) => {
-            const {currency, count, value, price} = $(slot).data('d')
+        window.market_inventory[TYPES[type]].forEach(slot => {
+            const {price_buy, item: {currency, value}} = slot
             const subCollector = collector[currency]
 
-            subCollector.count += count
-            subCollector.cost += castInt(price) * count
-            subCollector.value += castInt(value) * count
+            subCollector.count += 1
+            subCollector.cost += castInt(price_buy)
+            subCollector.value += castInt(value)
         })
         marketInfo.buyableItems[type] = collector
     }
