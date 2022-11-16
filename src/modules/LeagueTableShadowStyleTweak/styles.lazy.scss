@@ -1,3 +1,6 @@
-#leagues_middle .lead_table .lead_table_view::after {
-    display: none;
+#leagues_middle .lead_table .lead_table_view {
+    &::after,
+    &::before {
+        display: none;
+    }
 }

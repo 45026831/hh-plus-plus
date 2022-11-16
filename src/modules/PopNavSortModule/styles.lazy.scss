@@ -14,6 +14,10 @@
         right: 9px;
     }
 
+    #pop & .back_button {
+        margin-right: 0px;
+    }
+
     &-prev,
     &-next {
         background-size: contain;

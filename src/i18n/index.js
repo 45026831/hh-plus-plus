@@ -114,3 +114,4 @@ class I18n {
 }
 
 export default I18n
+window.HHPlusPlus.I18n = I18n
