@@ -345,7 +345,7 @@ class ResourceBarsModule extends CoreModule {
             }
         })
 
-        const $boosterStatusHTML = $('<a class="script-booster-status" href="/shop.html"></a>')
+        const $boosterStatusHTML = $('<a class="script-booster-status" href="/shop.html?type=player-stats&subtab=booster"></a>')
 
         const buildNormalSlot = (data) => {
             const {empty, id_item, ico, identifier, rarity, endAt} = {...data, ...data.item}
