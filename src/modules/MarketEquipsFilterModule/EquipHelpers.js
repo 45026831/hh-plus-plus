@@ -102,7 +102,8 @@ EquipHelpers.filterOptions = new (class {
         {value: 'common', bgColor: '#8d8e9f'},
         {value: 'rare', bgColor: '#23b56b'},
         {value: 'epic', bgColor: '#ffb244'},
-        {value: 'legendary', bgColor: '#9150bf', bgImage: `url(${Helpers.getCDNHost()}/legendary.png)`}
+        {value: 'legendary', bgColor: '#9150bf', bgImage: `url(${Helpers.getCDNHost()}/legendary.png)`},
+        {value: 'mythic', bgColor: 'transparent', bgImage: 'radial-gradient(closest-side at 50% 50%, rgb(245, 168, 102) 0px, rgb(236, 0, 57) 51%, rgb(158, 14, 39) 100%)'}
     ]}
     get stats () {return [
         {value: 'rainbow', icon: 'pictures/misc/items_icons/16.svg'},

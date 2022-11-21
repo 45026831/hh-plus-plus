@@ -6,9 +6,8 @@ const SLOT_CONTAINER_WIDTH = 106 // 90px width + 1rem right margin
 
 class EquipManager {
 
-    constructor($container, name) {
+    constructor($container, name, skipFilter) {
         this.$container = $container
-        this.$content = $container.find('.player-inventory-content')
         this.managedEquips = {}
         this.allEquipIdsInOrder = []
         this.visibleEquipIds = []
@@ -16,6 +15,7 @@ class EquipManager {
         this.elementCache = {}
         this.keysForIds = {}
         this.name = name
+        this.skipFilter = skipFilter
 
         this.activeFilter = {
             subtype: EquipHelpers.filterDefault,
@@ -25,8 +25,14 @@ class EquipManager {
         }
     }
 
+    get $content () {
+        return this.$container.find('.player-inventory-content, .items-container')
+    }
+
     init () {
-        const {player_inventory: {armor: initialArmor}} = window
+        const {materials_items, player_inventory} = window
+
+        const initialArmor = materials_items || player_inventory.armor
 
         initialArmor.forEach(armor => {
             const equipKey = EquipHelpers.makeEquipKey(armor)
@@ -70,7 +76,10 @@ class EquipManager {
         }
 
         this.setupHooks()
-        this.attachFilterButtonAndPanel()
+
+        if (!this.skipFilter) {
+            this.attachFilterButtonAndPanel()
+        }
     }
 
     setupHooks () {
@@ -99,7 +108,7 @@ class EquipManager {
 
             this.reconsileAfterNextDOMChange()
         })
-        Helpers.onAjaxResponse(/action=market_get_armor/, (response) => {
+        const collectFromLazyLoad = (response) => {
             const {items} = response
 
             if (!items || !items.length) {return}
@@ -119,7 +128,9 @@ class EquipManager {
             })
 
             this.reconsileAfterNextDOMChange()
-        })
+        }
+        Helpers.onAjaxResponse(/action=market_get_armor/, collectFromLazyLoad)
+        Helpers.onAjaxResponse(/action=mythic_armor_load_material_items/, collectFromLazyLoad)
 
         Helpers.onAjaxResponse(/action=market_sell/, (response, opt) => {
             const searchParams = new URLSearchParams(opt.data)
@@ -205,6 +216,18 @@ class EquipManager {
             this.reconcileElements()
             this.checkSelection()
         })
+
+        if (this.name === 'upgrade') {
+            const $upgradeButton = this.$container.find('button#level-up')
+            new MutationObserver(() => {
+                const disabled = $upgradeButton.prop('disabled')
+                if (disabled) {return}
+
+                if (this.$container.find('.selected [data-is-favourite=true]').length) {
+                    $upgradeButton.prop('disabled', true)
+                }
+            }).observe($upgradeButton[0], {attributes: true, attributeFilter:['disabled']})
+        }
     }
 
     reconsileAfterNextDOMChange (extraCallback) {
@@ -309,8 +332,8 @@ class EquipManager {
     }
 
     reconcileElements () {
-        const $content = this.$container.find('.player-inventory-content')
-        $content.find('.slot:not(.empty)').each((i, slot) => {
+        // const $content = this.$container.find('.player-inventory-content')
+        this.$content.find('.slot:not(.empty)').each((i, slot) => {
             const $slot = $(slot)
 
             const {key} = this.assertEquipAnnotatedWithKey($slot)
@@ -334,12 +357,12 @@ class EquipManager {
                 return
             }
 
-            $content.append($slot)
+            this.$content.append($slot)
         })
 
-        $content.append($content.find('.slot-container.empty'))
+        this.$content.append(this.$content.find('.slot-container.empty'))
         this.padWithEmptySlots()
-        $content.getNiceScroll().resize()
+        this.$content.getNiceScroll().resize()
 
         this.annotateEquipsWithFavourites()
         this.checkSelection()

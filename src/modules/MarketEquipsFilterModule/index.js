@@ -21,7 +21,7 @@ class MarketEquipsFilterModule extends CoreModule {
     }
 
     shouldRun () {
-        return Helpers.isCurrentPage('shop')
+        return Helpers.isCurrentPage('shop') || Helpers.isCurrentPage('mythic-equipment-upgrade')
     }
 
     run () {
@@ -34,24 +34,33 @@ class MarketEquipsFilterModule extends CoreModule {
         Helpers.defer(() => {
             this.injectCSSVars()
 
-            const containers = [
-                {
-                    $container: $('#my-hero-equipement-tab-container'),
-                    name: 'equippable'
-                },
-                {
-                    $container: $('#equipement-tab-container .right-container'),
-                    name: 'sellable'
-                }
-            ]
+            let containers = []
 
-            containers.forEach(({$container, name}) => {
-                const manager = new EquipManager($container, name)
+            if (Helpers.isCurrentPage('shop')) {
+                containers = [
+                    {
+                        $container: $('#my-hero-equipement-tab-container'),
+                        name: 'equippable'
+                    },
+                    {
+                        $container: $('#equipement-tab-container .right-container'),
+                        name: 'sellable'
+                    }
+                ]
+
+            } else if (Helpers.isCurrentPage('mythic-equipment-upgrade')) {
+                containers = [
+                    {
+                        $container: $('.inventory-section'),
+                        name: 'upgrade',
+                        skipFilter: true,
+                    },
+                ]
+            }
+            containers.forEach(({$container, name, skipFilter}) => {
+                const manager = new EquipManager($container, name, skipFilter)
                 manager.init()
             })
-
-            // const favouriteSafetyObserver = new MutationObserver(() => this.checkSelection())
-            // favouriteSafetyObserver.observe($('#inventory .armor .inventory_slots > div:first-child()')[0], {subtree: true, attributes: true, attributeFilter: ['class']})
         })
 
         this.hasRun = true
