@@ -25,12 +25,12 @@ class EquipManager {
         }
     }
 
-    get $content () {
+    get $content() {
         return this.$container.find('.player-inventory-content, .items-container')
     }
 
-    init () {
-        const {materials_items, player_inventory} = window
+    init() {
+        const { materials_items, player_inventory } = window
 
         const initialArmor = materials_items || player_inventory.armor
 
@@ -59,7 +59,7 @@ class EquipManager {
             this.reconcileElements()
         }
 
-        if (this.$content.children('div').length) {
+        if (this.$content.length && this.$content.children('div').length) {
             this.annotateEquipsWithKeys()
             this.annotateEquipsWithFavourites()
             this.checkSelection()
@@ -72,7 +72,7 @@ class EquipManager {
                     observer.disconnect()
                 }
             })
-            observer.observe(this.$content[0], {childList: true})
+            observer.observe(this.$container[0], { childList: true, subtree: true })
         }
 
         this.setupHooks()
@@ -82,16 +82,17 @@ class EquipManager {
         }
     }
 
-    setupHooks () {
+    setupHooks() {
         Helpers.onAjaxResponse(/action=market_equip_armor/, (response) => {
-            const {unequipped_armor} = response
+            const { unequipped_armor } = response
             const equipped_armor = this.$content.find('.slot.selected').data('d')
 
             const idToRemove = EquipHelpers.makeEquipKey(equipped_armor)
             const idToAdd = EquipHelpers.makeEquipKey(unequipped_armor)
             const favouriteKeyToAdd = EquipHelpers.makeFavouriteKey(unequipped_armor)
 
-            ;[this.allEquipIdsInOrder, this.visibleEquipIds].forEach(list => {
+            const lists = [this.allEquipIdsInOrder, this.visibleEquipIds]
+            lists.forEach(list => {
                 const indexToRemove = list.indexOf(idToRemove)
                 if (indexToRemove > -1) {
                     list.splice(indexToRemove, 1)
@@ -109,9 +110,9 @@ class EquipManager {
             this.reconsileAfterNextDOMChange()
         })
         const collectFromLazyLoad = (response) => {
-            const {items} = response
+            const { items } = response
 
-            if (!items || !items.length) {return}
+            if (!items || !items.length) { return }
 
             items.forEach(item => {
                 const key = EquipHelpers.makeEquipKey(item)
@@ -134,10 +135,10 @@ class EquipManager {
 
         Helpers.onAjaxResponse(/action=market_sell/, (response, opt) => {
             const searchParams = new URLSearchParams(opt.data)
-            const mappedParams = ['type', 'id_item'].map(key => ({[key]: searchParams.get(key)})).reduce((a,b)=>Object.assign(a,b),{})
-            const {type, id_item} = mappedParams
+            const mappedParams = ['type', 'id_item'].map(key => ({ [key]: searchParams.get(key) })).reduce((a, b) => Object.assign(a, b), {})
+            const { type, id_item } = mappedParams
 
-            if (!type === 'armor') {return}
+            if (!type === 'armor') { return }
 
             const key = this.keysForIds[id_item]
 
@@ -157,18 +158,18 @@ class EquipManager {
         })
         Helpers.onAjaxResponse(/action=market_buy/, (response, opt) => {
             const searchParams = new URLSearchParams(opt.data)
-            const mappedParams = ['type', 'id_item'].map(key => ({[key]: searchParams.get(key)})).reduce((a,b)=>Object.assign(a,b),{})
-            const {type} = mappedParams
-            const {item_ids} = response
+            const mappedParams = ['type', 'id_item'].map(key => ({ [key]: searchParams.get(key) })).reduce((a, b) => Object.assign(a, b), {})
+            const { type } = mappedParams
+            const { item_ids } = response
 
-            if (!type === 'armor') {return}
+            if (!type === 'armor') { return }
 
             const $slotsToRemove = []
 
             Object.entries(item_ids).forEach(([index, id_item]) => {
                 let $slot = $(`[id_item="${id_item}]`)
                 if (!$slot.length) {
-                    $('[id_item="null"]').each((i,el) => {
+                    $('[id_item="null"]').each((i, el) => {
                         const item = $(el).data('d')
                         if (item && `${item.index}` === index) {
                             $slot = $(el)
@@ -210,7 +211,7 @@ class EquipManager {
 
         new MutationObserver(() => {
             this.checkSelection()
-        }).observe(this.$content[0], {attributes: true, subtree: true, attributeFilter: ['class']})
+        }).observe(this.$content[0], { attributes: true, subtree: true, attributeFilter: ['class'] })
 
         FavouritesManager.onUpdate(() => {
             this.reconcileElements()
@@ -221,22 +222,22 @@ class EquipManager {
             const $upgradeButton = this.$container.find('button#level-up')
             new MutationObserver(() => {
                 const disabled = $upgradeButton.prop('disabled')
-                if (disabled) {return}
+                if (disabled) { return }
 
                 if (this.$container.find('.selected [data-is-favourite=true]').length) {
                     $upgradeButton.prop('disabled', true)
                 }
-            }).observe($upgradeButton[0], {attributes: true, attributeFilter:['disabled']})
+            }).observe($upgradeButton[0], { attributes: true, attributeFilter: ['disabled'] })
         }
     }
 
-    reconsileAfterNextDOMChange (extraCallback) {
+    reconsileAfterNextDOMChange(extraCallback) {
         this.doAfterNextDOMChange(extraCallback, () => this.reconcileElements())
     }
 
     doAfterNextDOMChange(...callbacks) {
         const observer = new MutationObserver(() => {
-            if (this.$content.children('.slot-container').length) {
+            if (this.$content.children('.slot-container, .item-container').length) {
                 callbacks.forEach(callback => {
                     if (callback && typeof callback === 'function') {
                         callback()
@@ -245,20 +246,20 @@ class EquipManager {
                 observer.disconnect()
             }
         })
-        observer.observe(this.$content[0], {childList: true})
+        observer.observe(this.$content[0], { childList: true })
     }
 
-    attachFilterButtonAndPanel () {
+    attachFilterButtonAndPanel() {
         const $btn = EquipHelpers.createFilterBtn()
         const $panel = EquipHelpers.createFilterBox(this.name)
 
         this.$container.append($btn).append($panel)
 
-        $btn.click(() => {$panel.find('.equip_filter_box').toggle()})
+        $btn.click(() => { $panel.find('.equip_filter_box').toggle() })
 
         $panel.find('input').each((i, input) => {
             $(input).change((e) => {
-                const {value, name} = e.target
+                const { value, name } = e.target
                 this.activeFilter[name.replace(`${this.name}-`, '')] = value
                 this.updateVisibleIdsForFilter()
                 this.reconcileElements()
@@ -266,16 +267,16 @@ class EquipManager {
         })
     }
 
-    updateVisibleIdsForFilter () {
+    updateVisibleIdsForFilter() {
         this.visibleEquipIds = this.allEquipIdsInOrder.filter(key => EquipHelpers.keyMatchesFilter(key, this.favouriteKeys[key], this.activeFilter))
     }
 
-    annotateEquipsWithKeys () {
+    annotateEquipsWithKeys() {
         let changed = false
         this.$container.find('.slot:not(.empty)').each((i, slot) => {
             const $slot = $(slot)
 
-            const {changed: equipChanged} = this.assertEquipAnnotatedWithKey($slot)
+            const { changed: equipChanged } = this.assertEquipAnnotatedWithKey($slot)
 
             changed |= equipChanged
         })
@@ -285,7 +286,7 @@ class EquipManager {
         }
     }
 
-    assertEquipAnnotatedWithKey ($slot) {
+    assertEquipAnnotatedWithKey($slot) {
         let key = $slot.attr('data-equip-key')
         let changed
         if (!key) {
@@ -303,12 +304,12 @@ class EquipManager {
         }
     }
 
-    annotateEquipsWithFavourites () {
+    annotateEquipsWithFavourites() {
         this.updateFavouritesAnnotationsForKeys(this.visibleEquipIds)
     }
 
-    updateFavouritesAnnotationsForKeys (keys) {
-        const favouriteKeys = keys.map(key=>({[key]: this.favouriteKeys[key]})).reduce((a,b)=>Object.assign(a,b),{})
+    updateFavouritesAnnotationsForKeys(keys) {
+        const favouriteKeys = keys.map(key => ({ [key]: this.favouriteKeys[key] })).reduce((a, b) => Object.assign(a, b), {})
         const favouritesStatus = FavouritesManager.areFavourites(Object.values(favouriteKeys))
 
         keys.forEach(key => {
@@ -331,12 +332,12 @@ class EquipManager {
         return this.$container.find(`[data-equip-key="${key}"]`)
     }
 
-    reconcileElements () {
+    reconcileElements() {
         // const $content = this.$container.find('.player-inventory-content')
         this.$content.find('.slot:not(.empty)').each((i, slot) => {
             const $slot = $(slot)
 
-            const {key} = this.assertEquipAnnotatedWithKey($slot)
+            const { key } = this.assertEquipAnnotatedWithKey($slot)
 
             const $parent = $slot.parent()
 
@@ -349,7 +350,7 @@ class EquipManager {
 
 
         this.allEquipIdsInOrder.forEach(key => {
-            if (!this.visibleEquipIds.includes(key)) {return}
+            if (!this.visibleEquipIds.includes(key)) { return }
             const $slot = this.elementCache[key]
 
             if (!$slot || !$slot.length) {
@@ -360,17 +361,19 @@ class EquipManager {
             this.$content.append($slot)
         })
 
-        this.$content.append(this.$content.find('.slot-container.empty'))
-        this.padWithEmptySlots()
-        this.$content.getNiceScroll().resize()
+        if (this.name !== 'upgrade') {
+            this.$content.append(this.$content.find('.slot-container.empty'))
+            this.padWithEmptySlots()
+            this.$content.getNiceScroll().resize()
+        }
 
         this.annotateEquipsWithFavourites()
         this.checkSelection()
     }
 
-    padWithEmptySlots () {
+    padWithEmptySlots() {
         const rowWidth = this.$content.width()
-        const slotsPerRow = Math.round(rowWidth/SLOT_CONTAINER_WIDTH)
+        const slotsPerRow = Math.round(rowWidth / SLOT_CONTAINER_WIDTH)
         const desiredRows = 4
         const desiredSlots = desiredRows * slotsPerRow
         const currentSlots = this.$content.find('.slot-container').length
@@ -403,13 +406,13 @@ class EquipManager {
         }
     }
 
-    checkSelection () {
+    checkSelection() {
         const $selected = this.$content.find('.slot.selected')
 
-        if (!$selected.length) {return}
+        if (!$selected.length) { return }
 
         const $sellButton = this.$container.find('button[rel=sell]')
-        if (!$sellButton.length) {return}
+        if (!$sellButton.length) { return }
 
         if (JSON.parse($selected.attr('data-is-favourite'))) {
             $sellButton.attr('disabled', 'disabled')
