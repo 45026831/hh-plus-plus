@@ -495,7 +495,7 @@ export default {
             key: 'jockstrap',
             world: 6,
             girls: {
-                1: ['623293037' , '764791769' , '801271903'],
+                1: ['623293037', '764791769', '801271903'],
                 2: [],
                 3: []
             },
@@ -518,14 +518,27 @@ export default {
             }]
         },
         {
+            key: 'pomelo',
             world: 8,
+            girls: {
+                1: ['364639341', '879781833', '895546748'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'psychic',
+                amount: 20,
+            }]
+        },
+        {
+            world: 9,
             girls: {
                 1: [],
                 2: [],
                 3: []
             },
             gems: [{
-                element: 'psychic',
+                element: 'water',
                 amount: 20,
             }]
         },
@@ -631,14 +644,27 @@ export default {
             }]
         },
         {
+            key: 'kellykline',
             world: 8,
+            girls: {
+                1: ['165066536', '734325005', '805020628'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'psychic',
+                amount: 20,
+            }]
+        },
+        {
+            world: 9,
             girls: {
                 1: [],
                 2: [],
                 3: []
             },
             gems: [{
-                element: 'psychic',
+                element: 'water',
                 amount: 20,
             }]
         },

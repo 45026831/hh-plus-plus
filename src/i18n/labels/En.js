@@ -47,8 +47,8 @@ export const config = {
     league: 'League information',
     league_board: 'Show the league tops',
     league_promo: 'Show promotion information',
-    simFight : 'League / Season / Villains sim',
-    simFight_logging : 'Detailed logging in the browser console',
+    simFight: 'League / Season / Villains sim',
+    simFight_logging: 'Detailed logging in the browser console',
     teamsFilter: 'Teams filter',
     champions: 'Champions information',
     champions_poseMatching: 'Add pose match indicators',
@@ -153,12 +153,14 @@ export const villain = {
     athicus: 'Athicus Ho’ole',
     jockstrap: 'The Mimic',
     cockatrice: 'Cockatrice',
+    pomelo: 'Pomelo',
     asaakira: 'Headmistress Asa Akira',
     sammyjayne: 'Sammy Jayne',
     ivywinters: 'Ivy Winters',
     lilycade: 'Lily Cade',
     amiamiley: 'Amia Miley',
     alyssareece: 'Alyssa Reece',
+    kellykline: 'Kelly Kline',
     fallback: 'World {{world}} villain',
     event: 'Event',
 }
@@ -191,6 +193,7 @@ export const villainBreadcrumbs = {
     bushexplorations: 'Bush Explorations',
     thespy: 'The Spy Who Came Inside Me',
     hornyknight: 'The Horny Knight',
+    suitdown: 'Suit Down',
 
     fukwell: 'Fukwell University',
     eurodick: 'Eurodick',
@@ -198,6 +201,7 @@ export const villainBreadcrumbs = {
     biggerintexas: 'Bigger in Texas',
     westcock: 'West Cock',
     whenangelscum: 'When Angels Cum',
+    suckramento: 'Welcome to Suckramento',
 }
 
 export const market = {

@@ -1,3 +1,4 @@
+1.28.9: Adding new world data for CxH and PSH
 1.28.8: Fixing bug where lazy loaded equips on the upgrade page were not annotated as favourites
 1.28.7: Adding favourites safety to the mythic equips upgrade page, adding mythic rarity to the equips filter
 1.28.6: Pre-emptively adding back the deeplink to the booster equip page from the resource bars

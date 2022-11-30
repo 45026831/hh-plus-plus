@@ -44,7 +44,7 @@ export const config = {
     league_board: 'Montrer les tops ligue',
     league_promo: 'Montrer les informations sur la promotion',
     simFight: 'Simu ligue / saison / combats de troll',
-    simFight_logging : 'Détails dans la console du navigateur',
+    simFight_logging: 'Détails dans la console du navigateur',
     teamsFilter: 'Filtre d\'équipes',
     champions: 'Infos champions',
     champions_poseMatching: 'Ajouter des indicateurs de correspondance de pose',
@@ -301,6 +301,7 @@ export const villainBreadcrumbs = {
     bushexplorations: 'Explorations de la brousse',
     thespy: 'L’espion qui venait en moi',
     hornyknight: 'Le chevalier corné',
+    suitdown: 'Sans costume',
 
     fukwell: 'Université de Belbaise',
     eurodick: 'Eurobite',
@@ -308,6 +309,7 @@ export const villainBreadcrumbs = {
     biggerintexas: 'Plus GROS au Texas',
     westcock: 'Con Ouest',
     whenangelscum: 'Quand les anges montent au septième ciel',
+    suckramento: 'Bienvenue à Fiakramento'
 }
 
 export const blessingSpreadsheetLink = {
