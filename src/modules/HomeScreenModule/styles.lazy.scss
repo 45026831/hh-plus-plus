@@ -74,34 +74,36 @@
         a[rel="sex-god-path"],
         a[rel="pachinko"],
         a[rel="shop"] {
-            span {
-                display: flex;
-                flex-direction: column;
-
-                p {
-                    margin-top: 0;
-                    margin-bottom: 0;
-                }
-
-                .script-timer-container {
+            .notif-position {
+                span {
                     display: flex;
-                    flex-direction: row;
-                    justify-content: center;
-                    align-items: center;
-                    width: 100%;
-                    margin-top: -5px;
+                    flex-direction: column;
 
-                    .timerClock_icn {
-                        width: 50px;
-                        background-size: 28px;
+                    p {
+                        margin-top: 0;
+                        margin-bottom: 0;
                     }
-                }
 
-                .script-home-timer {
-                    color: #fff;
-                    text-decoration: none;
-                    width: 140px;
-                    font-size: 13px;
+                    .script-timer-container {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        margin-top: -5px;
+
+                        .timerClock_icn {
+                            width: 50px;
+                            background-size: 28px;
+                        }
+                    }
+
+                    .script-home-timer {
+                        color: #fff;
+                        text-decoration: none;
+                        width: 140px;
+                        font-size: 13px;
+                    }
                 }
             }
         }
