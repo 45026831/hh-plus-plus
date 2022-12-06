@@ -10,7 +10,7 @@ const MODULE_KEY = 'upgradeQuickNav'
 const RESOURCE_TYPES = ['experience', 'affection']
 
 class UpgradeQuickNavModule extends CoreModule {
-    constructor () {
+    constructor() {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
@@ -18,21 +18,21 @@ class UpgradeQuickNavModule extends CoreModule {
         })
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
 
-        this.linkUrls = {prev: {}, next: {}}
+        this.linkUrls = { prev: {}, next: {} }
     }
 
-    shouldRun () {
+    shouldRun() {
         return Helpers.isCurrentPage('/girl/')
     }
 
-    run () {
-        if (this.hasRun || !this.shouldRun()) {return}
+    run() {
+        if (this.hasRun || !this.shouldRun()) { return }
 
         styles.use()
 
         Helpers.defer(() => {
             const filteredGirlIds = Helpers.lsGet(lsKeys.HAREM_FILTER_IDS)
-            if (!filteredGirlIds || filteredGirlIds.length < 2) {return}
+            if (!filteredGirlIds || filteredGirlIds.length < 2) { return }
             const girlDictionary = Helpers.getGirlDictionary()
             const currentGirlId = window.girl.id_girl
 
@@ -57,8 +57,8 @@ class UpgradeQuickNavModule extends CoreModule {
                 nextGirlId = filteredGirlIds[filteredGirlIds.length - 1]
             }
 
-            const previousGirl = girlDictionary.get(previousGirlId)
-            const nextGirl = girlDictionary.get(nextGirlId)
+            const previousGirl = girlDictionary.get(`${previousGirlId}`)
+            const nextGirl = girlDictionary.get(`${nextGirlId}`)
 
             const $girlAvatar = $('.girl-section .girl-avatar')
 
@@ -76,10 +76,10 @@ class UpgradeQuickNavModule extends CoreModule {
         const tabSystemHook = (...args) => {
             const ret = initTabSystem_actual(...args)
 
-            const {tab_system_instances} = window
+            const { tab_system_instances } = window
 
             const tabsInstance = tab_system_instances['girl-leveler-tabs']
-            const {tabs} = tabsInstance
+            const { tabs } = tabsInstance
 
             const switchTab_actual = tabs.affection.callback
             const hook = (tabContent) => {
@@ -97,7 +97,7 @@ class UpgradeQuickNavModule extends CoreModule {
         this.hasRun = true
     }
 
-    buildAvatarHtml (id, {pose}, className) {
+    buildAvatarHtml(id, { pose }, className) {
         const ava = `${Helpers.getCDNHost()}/pictures/girls/${id}/ava${pose}.png`
         RESOURCE_TYPES.forEach(type => {
             this.linkUrls[className][type] = `/girl/${id}?resource=${type}`
@@ -106,7 +106,7 @@ class UpgradeQuickNavModule extends CoreModule {
         return Helpers.$(`<a class="script-quicknav-${className}" href="${this.linkUrls[className][this.getCurrentResource()]}"><img girl-ava-src="${ava}"/></a>`)
     }
 
-    getCurrentResource () {
+    getCurrentResource() {
         let resource = 'experience'
         if (location.search && location.search.includes('resource')) {
             const urlPattern = new RegExp('resource=(?<resource>[a-z]+)')
