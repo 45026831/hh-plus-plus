@@ -54,24 +54,12 @@
 
     .social_links {
         margin-left: 550px;
-        flex-direction: column;
 
         @media #{$mediaDesktop} {
             margin-top: -12px;
         }
         @media #{$mediaMobile} {
             margin-left: 570px;
-        }
-
-        .redirect {
-            &.comix,
-            &.gay,
-            &.hentai {
-                margin-top: 10px;
-                @media #{$mediaMobile} {
-                    margin-left: 0;
-                }
-            }
         }
     }
 }
