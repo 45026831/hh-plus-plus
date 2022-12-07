@@ -110,9 +110,14 @@ $minus-bg: #ff2f2f28;
         margin-top: -10px;
 
         [cur="victory_points"]::before {
+            content: " ";
+            display: inline-block;
             background-image: var(--mojo-icon-s);
             width: 14px;
             height: 14px;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
             position: relative;
             top: -4px;
             filter: drop-shadow(0px 0px 1px #000);

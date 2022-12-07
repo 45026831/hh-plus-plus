@@ -6,12 +6,12 @@ import Sheet from '../../common/Sheet'
 
 import styles from './styles.lazy.scss'
 
-const {$} = Helpers
+const { $ } = Helpers
 
 const MODULE_KEY = 'haremTeamsFilter'
 
 class HaremTeamsFilterModule extends CoreModule {
-    constructor () {
+    constructor() {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
@@ -20,12 +20,12 @@ class HaremTeamsFilterModule extends CoreModule {
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
 
-    shouldRun () {
+    shouldRun() {
         return Helpers.isCurrentPage('harem') && !Helpers.isCurrentPage('hero')
     }
 
-    run () {
-        if (this.hasRun || !this.shouldRun()) {return}
+    run() {
+        if (this.hasRun || !this.shouldRun()) { return }
 
         styles.use()
 
@@ -43,7 +43,7 @@ class HaremTeamsFilterModule extends CoreModule {
         Sheet.registerVar('cross-icon', `url('${Helpers.getCDNHost()}/clubs/ic_xCross.png')`)
     }
 
-    loadFilter () {
+    loadFilter() {
         const filters = Helpers.lsGet('filters')
 
         if (filters && filters.team) {
@@ -56,18 +56,18 @@ class HaremTeamsFilterModule extends CoreModule {
                         observer.disconnect()
                     }
                 })
-                observer.observe($('.girls_list')[0], {childList: true})
+                observer.observe($('.girls_list')[0], { childList: true })
             }
         }
     }
 
-    createAndAttach () {
+    createAndAttach() {
         const $teamsButton = this.createTeamsButton()
         const $teamsBox = this.createTeamsBox()
         $('#filtering_girls .reset-filters-container').prepend($teamsButton)
         $('#harem_whole').append($teamsBox)
 
-        $teamsButton.click(()=>$teamsBox.find('.team-selection').toggle())
+        $teamsButton.click(() => $teamsBox.find('.team-selection').toggle())
         const doFilter = this.doFilter
         $teamsBox.find('.team-slot-container').click(function () {
             doFilter($(this).data('girl-ids'))
@@ -77,26 +77,26 @@ class HaremTeamsFilterModule extends CoreModule {
     }
 
     doFilter(girlIds) {
-        const {harem, hh_show_filtered_girls} = window
+        const { harem, hh_show_filtered_girls } = window
         harem.haremFilter.resetFilters()
-        harem.filteredGirlsIds = girlIds
+        harem.filteredGirlsIds = girlIds.map(id => +id)
         harem.filteredGirlsList = girlIds.map(id => harem.allGirls[id])
 
-        const filterData = girlIds.reduce((a, i) => {a[i] = {};return a}, {})
+        const filterData = girlIds.reduce((a, i) => { a[i] = {}; return a }, {})
         hh_show_filtered_girls('.girls_list', filterData)
 
         harem.resetGirlsList()
         harem.loadMoreGirlsAfterCurrent()
         harem.scrollToAndOpenGirl()
 
-        Helpers.lsSet('filters', {team: girlIds})
+        Helpers.lsSet('filters', { team: girlIds })
     }
 
-    createTeamsButton () {
+    createTeamsButton() {
         return $(`<button id="teams-filter" class="blue_button_L">${this.label('team')}</button>`)
     }
 
-    createTeamsBox () {
+    createTeamsBox() {
         const bdsmTeams = Helpers.lsGet(lsKeys.TEAMS_DICTIONARY)
         if (!bdsmTeams) {
             return $(`
@@ -107,7 +107,7 @@ class HaremTeamsFilterModule extends CoreModule {
             </div>
         </div>`)
         }
-        const {teamIds, teamsDict} = bdsmTeams
+        const { teamIds, teamsDict } = bdsmTeams
         return $(`
     <div style="position:relative">
         <div class="team-selection" style="display: none;">
@@ -118,7 +118,7 @@ class HaremTeamsFilterModule extends CoreModule {
                         <img src="${Helpers.getCDNHost()}/pictures/girls/${team.iconId}/ico${team.iconLevel}.png" />
                         ${team.themeElements ? `
                             <div class="theme-icons">
-                                ${team.themeElements.map(element=>`<img class="theme-icon" src="${Helpers.getCDNHost()}/pictures/girls_elements/${element}.png"/>`).join('')}
+                                ${team.themeElements.map(element => `<img class="theme-icon" src="${Helpers.getCDNHost()}/pictures/girls_elements/${element}.png"/>`).join('')}
                             </div>
                         ` : ''}
                     </div>
