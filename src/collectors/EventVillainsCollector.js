@@ -3,7 +3,7 @@ import { lsKeys } from '../common/Constants'
 import Helpers from '../common/Helpers'
 
 class EventVillainsCollector {
-    static collect () {
+    static collect() {
         Helpers.defer(() => {
             EventVillainsCollector.clean()
             if (Helpers.hasSearch('tab=event')) {
@@ -15,7 +15,7 @@ class EventVillainsCollector {
         })
     }
 
-    static clean () {
+    static clean() {
         const eventEndTime = Helpers.lsGetRaw(lsKeys.EVENT_TIME) || 0
         const mythicEventEndTime = Helpers.lsGetRaw(lsKeys.MYTHIC_EVENT_TIME) || 0
 
@@ -31,7 +31,7 @@ class EventVillainsCollector {
         }
     }
 
-    static collectFromEvent (eventTimeKey, eventVillainsKey) {
+    static collectFromEvent(eventTimeKey, eventVillainsKey) {
         const eventRemainingTime = $('#contains_all #events .nc-panel-header .nc-pull-right #timer').data('seconds-until-event-end')
         const eventEndTime = server_now_ts + eventRemainingTime
         Helpers.lsSetRaw(eventTimeKey, eventEndTime)
@@ -39,7 +39,7 @@ class EventVillainsCollector {
         const eventTrolls = []
 
         eventGirls.forEach(girl => {
-            const {id_girl: id, source, rarity} = girl
+            const { id_girl: id, source, rarity } = girl
             if (source.name !== 'event_troll') {
                 return
             }
@@ -47,7 +47,7 @@ class EventVillainsCollector {
             const matches = sourceUrl.match(/id_opponent=([0-9]+)/)
             if (matches) {
                 const troll = matches[1]
-                eventTrolls.push({id, troll, rarity})
+                eventTrolls.push({ id: `${id}`, troll, rarity })
             }
         })
         Helpers.lsSet(eventVillainsKey, eventTrolls)

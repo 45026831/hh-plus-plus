@@ -13,34 +13,34 @@ const upsert = (id, data) => {
 const collectFromRewards = (rewards) => {
     if (rewards && rewards.data && rewards.data.shards) {
         girlDictionary = Helpers.getGirlDictionary()
-        rewards.data.shards.forEach(({id_girl, value}) => {
+        rewards.data.shards.forEach(({ id_girl, value }) => {
             const girlId = `${id_girl}`
-            upsert(girlId, {shards: Math.min(value, 100)})
+            upsert(girlId, { shards: Math.min(value, 100) })
         })
         Helpers.setGirlDictionary(girlDictionary)
     }
 }
 const collectFromAjaxResponseSingular = (response) => {
-    const {rewards} = response
+    const { rewards } = response
     collectFromRewards(rewards)
 }
 const collectFromAjaxResponsePlural = (response) => {
-    const {rewards: rewardsSets} = response
+    const { rewards: rewardsSets } = response
     if (rewardsSets) {
         rewardsSets.forEach(collectFromRewards)
     }
 }
 const collectFromAjaxResponseLeagues = (response) => {
-    const {rewards} = response
-    if (!rewards) {return}
-    const {list} = rewards
+    const { rewards } = response
+    if (!rewards) { return }
+    const { list } = rewards
     if (list) {
         list.forEach(collectFromRewards)
     }
 }
 
 class GirlDictionaryCollector {
-    static collect () {
+    static collect() {
         Helpers.defer(() => {
             updated = false
             girlDictionary = Helpers.getGirlDictionary()
@@ -80,10 +80,10 @@ class GirlDictionaryCollector {
         })
     }
 
-    static collectFromHarem () {
-        if (!$('#harem_whole').length) {return}
+    static collectFromHarem() {
+        if (!$('#harem_whole').length) { return }
         Object.entries(girlsDataList).forEach(([girlId, girl]) => {
-            const {name, shards: girlShards, class: carac, rarity, nb_grades, fav_graded, graded} = girl
+            const { name, shards: girlShards, class: carac, rarity, nb_grades, fav_graded, graded } = girl
             const shards = (girlShards !== undefined) ? girlShards : 100
             const girlClass = parseInt(carac, 10)
             const grade = parseInt(nb_grades, 10)
@@ -106,65 +106,65 @@ class GirlDictionaryCollector {
         })
     }
 
-    static collectFromEventWidget () {
-        eventGirls.forEach(({id_girl: id, name, shards, class: girlClass, rarity}) => {
+    static collectFromEventWidget() {
+        eventGirls.forEach(({ id_girl: id, name, shards, class: girlClass, rarity }) => {
             if (shards === undefined) {
                 shards = 100
             }
             if (name) {
-                upsert(id, {name, shards, class: parseInt(girlClass, 10), rarity})
+                upsert(`${id}`, { name, shards, class: parseInt(girlClass, 10), rarity })
                 updated = true
             }
         })
     }
 
-    static collectFromClubChamp () {
+    static collectFromClubChamp() {
         if (!window.clubChampionsData) {
             return
         }
 
-        const {shards: rewardShards} = clubChampionsData.reward
+        const { shards: rewardShards } = clubChampionsData.reward
 
         if (!rewardShards || !rewardShards.length) {
             return
         }
 
-        const {id_girl, name, previous_value: shards, girl_class, rarity} = rewardShards[0]
+        const { id_girl, name, previous_value: shards, girl_class, rarity } = rewardShards[0]
 
-        upsert(id_girl, {name, shards, class: parseInt(girl_class, 10), rarity})
+        upsert(`${id_girl}`, { name, shards, class: parseInt(girl_class, 10), rarity })
         updated = true
     }
 
-    static collectFromBattleResult () {
+    static collectFromBattleResult() {
         Helpers.onAjaxResponse(/action=do_battles_(leagues|seasons|troll)/i, collectFromAjaxResponseSingular)
     }
 
-    static collectFromPachinkoRewards () {
+    static collectFromPachinkoRewards() {
         Helpers.onAjaxResponse(/action=play/i, collectFromAjaxResponseSingular)
     }
 
-    static collectFromContestRewards () {
+    static collectFromContestRewards() {
         Helpers.onAjaxResponse(/action=give_reward/i, collectFromAjaxResponseSingular)
     }
 
-    static collectFromChampions () {
+    static collectFromChampions() {
         Helpers.onAjaxResponse(/class=TeamBattle/i, (response) => {
-            const {end} = response
+            const { end } = response
             if (end) {
                 collectFromAjaxResponseSingular(end)
             }
         })
     }
 
-    static collectFromRewardsQueue () {
+    static collectFromRewardsQueue() {
         Helpers.onAjaxResponse(/action=process_rewards_queue/i, collectFromAjaxResponsePlural)
     }
 
-    static collectFromSeasons () {
+    static collectFromSeasons() {
         Helpers.onAjaxResponse(/action=claim/i, collectFromAjaxResponseSingular)
     }
 
-    static collectFromLeague () {
+    static collectFromLeague() {
         Helpers.onAjaxResponse(/action=claim_rewards/i, collectFromAjaxResponseLeagues)
     }
 }
