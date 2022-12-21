@@ -10,12 +10,12 @@ import styles from './styles.lazy.scss'
 import AvailableFeatures from '../../common/AvailableFeatures'
 import Sheet from '../../common/Sheet'
 
-const {$} = Helpers
+const { $ } = Helpers
 
 const MODULE_KEY = 'homeScreen'
 
-const makeEnergyBarHTML = ({type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max}) => {
-    const {GT} = window
+const makeEnergyBarHTML = ({ type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max }) => {
+    const { GT } = window
     return `
         <div class="energy_counter" type="${type}" id="canvas_${type}_energy">
             <div class="energy_counter_amount_container">
@@ -32,7 +32,7 @@ const makeEnergyBarHTML = ({type, timeForSinglePoint, timeOnLoad, iconClass, cur
 }
 
 class HomeScreenModule extends CoreModule {
-    constructor () {
+    constructor() {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
@@ -48,12 +48,12 @@ class HomeScreenModule extends CoreModule {
         this.label = I18n.getModuleLabel.bind(this, MODULE_KEY)
     }
 
-    shouldRun () {
+    shouldRun() {
         return Helpers.isCurrentPage('home')
     }
 
-    run ({leaguePos}) {
-        if (this.hasRun || !this.shouldRun()) {return}
+    run({ leaguePos }) {
+        if (this.hasRun || !this.shouldRun()) { return }
 
         styles.use()
 
@@ -76,11 +76,11 @@ class HomeScreenModule extends CoreModule {
         this.hasRun = true
     }
 
-    checkHomeScreenType () {
+    checkHomeScreenType() {
         this.newHomeScreen = !!$('.main-container').length
     }
 
-    injectCSSVars () {
+    injectCSSVars() {
         Sheet.registerVar('pantheon-icon', `url("${pantheonIcon}")`)
         Sheet.registerVar('champions-icon', `url("${Helpers.getCDNHost()}/design/menu/ic_champions.svg")`)
     }
@@ -94,11 +94,11 @@ class HomeScreenModule extends CoreModule {
         window.displayNotifications()
     }
 
-    addTimers () {
+    addTimers() {
         // Market
         const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
         if (marketInfo) {
-            const {refreshTime} = marketInfo
+            const { refreshTime } = marketInfo
             if (refreshTime > server_now_ts) {
                 this.attachTimer('shop', refreshTime)
             }
@@ -131,21 +131,23 @@ class HomeScreenModule extends CoreModule {
         return `[rel=${rel}] > .position > span`
     }
 
-    attachTimer (rel, endAt) {
-        const selector = this.makeLinkSelector(rel)
-        const onComplete = () => {
-            this.setNotification(rel, 'action')
-        }
-        const $container = $('<div class="script-timer-container"></div>')
-        const $elm = $('<div class="script-home-timer"></div>')
-        $container.append('<span class="timerClock_icn"></span>')
-        $container.append($elm)
+    attachTimer(rel, endAt) {
+        if (!$(`[rel=${rel}] .additional-menu-data`).length) {
+            const selector = this.makeLinkSelector(rel)
+            const onComplete = () => {
+                this.setNotification(rel, 'action')
+            }
+            const $container = $('<div class="script-timer-container"></div>')
+            const $elm = $('<div class="script-home-timer"></div>')
+            $container.append('<span class="timerClock_icn"></span>')
+            $container.append($elm)
 
-        $(selector).append($container)
-        HHTimers.initDecTimer($elm, endAt - server_now_ts, onComplete)
+            $(selector).append($container)
+            HHTimers.initDecTimer($elm, endAt - server_now_ts, onComplete)
+        }
     }
 
-    addShortcuts () {
+    addShortcuts() {
         const shortcutHtml = (className, href, title, iconClass) => `<a class="round_blue_button script-home-shortcut script-home-shortcut-${className}" href="${href}" hh_title="${title}"><div class="${iconClass}"></div></a>`
 
         // Club champ
@@ -162,7 +164,7 @@ class HomeScreenModule extends CoreModule {
             }
         }
 
-        const {champs, pantheon} = AvailableFeatures
+        const { champs, pantheon } = AvailableFeatures
 
         if (champs || pantheon) {
             const $godShortcuts = $('<div class="script-home-shortcut-container"></div>')
@@ -185,15 +187,15 @@ class HomeScreenModule extends CoreModule {
         }
     }
 
-    fixMissionsTimer () {
+    fixMissionsTimer() {
         if (this.newHomeScreen) {
             return
         }
 
-        const {missions_datas} = window
-        if (!missions_datas) {return}
+        const { missions_datas } = window
+        if (!missions_datas) { return }
 
-        const {duration, remaining_time, next_missions} = missions_datas
+        const { duration, remaining_time, next_missions } = missions_datas
 
         const existingTimers = ['#home_missions_bar1', '#home_missions_bar2']
         const findAndRemoveTimer = selector => {
@@ -208,7 +210,7 @@ class HomeScreenModule extends CoreModule {
         existingTimers.forEach(findAndRemoveTimer)
         new MutationObserver(() => {
             existingTimers.forEach(findAndRemoveTimer)
-        }).observe(document.getElementById('homepage'), {childList:true})
+        }).observe(document.getElementById('homepage'), { childList: true })
 
         const completedText = this.label('missionsReady')
         let text = completedText
@@ -256,28 +258,28 @@ class HomeScreenModule extends CoreModule {
                     window.displayNotifications()
                 }
             }
-            const noop = ()=>{}
-            const dummyElm = {show: noop, hide: noop, selector: ''}
+            const noop = () => { }
+            const dummyElm = { show: noop, hide: noop, selector: '' }
             const oldMobileCheck = window.is_mobile_size
             window.is_mobile_size = () => false
-            HHTimers.initBarTimer(timerDuration, remaining, dummyElm, {barElm: $newBar.find('.frontbar'), textElm: $newBar.find('div.text>span')}, onComplete)
+            HHTimers.initBarTimer(timerDuration, remaining, dummyElm, { barElm: $newBar.find('.frontbar'), textElm: $newBar.find('div.text>span') }, onComplete)
             window.is_mobile_size = oldMobileCheck
         }
     }
 
-    forceActivitiesTab () {
+    forceActivitiesTab() {
         $('a[rel=activities]').attr('href', '/activities.html?tab=missions')
     }
 
-    aggregateSalaries () {
-        const {GirlSalaryManager, GT, format_time_short} = window
-        const {girlsMap} = GirlSalaryManager
+    aggregateSalaries() {
+        const { GirlSalaryManager, GT, format_time_short } = window
+        const { girlsMap } = GirlSalaryManager
 
         const aggregated = {}
         let collectableNow = 0
 
-        Object.values(girlsMap).forEach(({readyForCollect, gData}) => {
-            const {salary, pay_in} = gData
+        Object.values(girlsMap).forEach(({ readyForCollect, gData }) => {
+            const { salary, pay_in } = gData
             if (readyForCollect) {
                 collectableNow += salary
             } else {
@@ -290,27 +292,27 @@ class HomeScreenModule extends CoreModule {
 
         const payTimes = Object.keys(aggregated)
 
-        if (!payTimes.length) {return}
+        if (!payTimes.length) { return }
 
-        const sortedPayTimes = payTimes.sort((a,b) => a-b)
+        const sortedPayTimes = payTimes.sort((a, b) => a - b)
 
-        const text = `${payTimes.length > 10 ? '…' : ''}<table><tbody>${sortedPayTimes.slice(0,10).sort((a,b) => b-a).map(time => `<tr><td>${GT.design.more_in.replace('+1', `+${I18n.nThousand(aggregated[time])} <span cur="soft_currency"></span>`)} </td><td>${format_time_short(time)}</td></tr>`).join('')}</tbody></table>`
+        const text = `${payTimes.length > 10 ? '…' : ''}<table><tbody>${sortedPayTimes.slice(0, 10).sort((a, b) => b - a).map(time => `<tr><td>${GT.design.more_in.replace('+1', `+${I18n.nThousand(aggregated[time])} <span cur="soft_currency"></span>`)} </td><td>${format_time_short(time)}</td></tr>`).join('')}</tbody></table>`
 
-        return {aggregated, collectableNow, text}
+        return { aggregated, collectableNow, text }
     }
 
-    manageSalaryTimers () {
-        const {GirlSalaryManager, is_mobile, is_tablet, TooltipManager, Tooltip, GT} = window
+    manageSalaryTimers() {
+        const { GirlSalaryManager, is_mobile, is_tablet, TooltipManager, Tooltip, GT } = window
         const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
 
         const handleTooltip = (target) => {
             const aggregateSalaries = this.aggregateSalaries()
-            if (!aggregateSalaries) {return}
-            const {text} = aggregateSalaries
+            if (!aggregateSalaries) { return }
+            const { text } = aggregateSalaries
 
             const wrappedText = `<div class="script-salary-summary">${text}</div>`
 
-            let newTooltip = new Tooltip($(target),'',wrappedText)
+            let newTooltip = new Tooltip($(target), '', wrappedText)
             TooltipManager.initNewTooltip(target, newTooltip)
 
             if (!this.salaryTimerHacked && GirlSalaryManager.updateHomepageTimer) {
@@ -320,7 +322,7 @@ class HomeScreenModule extends CoreModule {
                     if ($container.length) {
                         const aggregateSalaries = this.aggregateSalaries()
                         if (aggregateSalaries) {
-                            const {text} = aggregateSalaries
+                            const { text } = aggregateSalaries
                             $container.html(text)
                         } else {
                             $container.html(GT.design.full)
@@ -338,57 +340,62 @@ class HomeScreenModule extends CoreModule {
         TooltipManager.initTooltipType(isMobile, '#collect_all, #collect_all .script-event-handler-hack', false, handleTooltip)
     }
 
-    addLeaguePos () {
+    addLeaguePos() {
         const $leaguePos = $('<div class="script-league-pos"></div>')
         $('[rel=leaderboard]').wrap('<div class="quest-container"></div>').after($leaguePos)
 
-        window.$.ajax({
-            url: '/tower-of-fame.html',
-            success: (data) => {
-                let leaguesListItem
-                let leagueTag
+        const $additionalData = $('[rel=leaderboard] .additional-menu-data')
+        if ($additionalData.length) {
+            // TODO parse and put into own label again
+        } else {
+            window.$.ajax({
+                url: '/tower-of-fame.html',
+                success: (data) => {
+                    let leaguesListItem
+                    let leagueTag
 
-                const playerID = window.Hero.infos.id
+                    const playerID = window.Hero.infos.id
 
-                const leaguesListPattern = new RegExp(`leagues_list.push\\( ?(?<leaguesListItem>{"id_player":"${playerID}".*}) ?\\);`)
-                const leagueTagPattern = /league_tag = (?<leagueTag>[1-9]);/
+                    const leaguesListPattern = new RegExp(`leagues_list.push\\( ?(?<leaguesListItem>{"id_player":"${playerID}".*}) ?\\);`)
+                    const leagueTagPattern = /league_tag = (?<leagueTag>[1-9]);/
 
-                new DOMParser().parseFromString(data, 'text/html').querySelectorAll('script[type="text/javascript"]').forEach(element => {
-                    const {textContent} = element
-                    if (!textContent) {return}
-                    if (textContent.includes('leagues_list')) {
-                        const matches = textContent.match(leaguesListPattern)
-                        if (matches && matches.groups) {
-                            leaguesListItem = JSON.parse(matches.groups.leaguesListItem)
+                    new DOMParser().parseFromString(data, 'text/html').querySelectorAll('script[type="text/javascript"]').forEach(element => {
+                        const { textContent } = element
+                        if (!textContent) { return }
+                        if (textContent.includes('leagues_list')) {
+                            const matches = textContent.match(leaguesListPattern)
+                            if (matches && matches.groups) {
+                                leaguesListItem = JSON.parse(matches.groups.leaguesListItem)
+                            }
                         }
-                    }
-                    if (textContent.includes('league_tag')) {
-                        const matches = textContent.match(leagueTagPattern)
-                        if (matches && matches.groups) {
-                            leagueTag = matches.groups.leagueTag
+                        if (textContent.includes('league_tag')) {
+                            const matches = textContent.match(leagueTagPattern)
+                            if (matches && matches.groups) {
+                                leagueTag = matches.groups.leagueTag
+                            }
                         }
-                    }
-                })
+                    })
 
-                if (!leaguesListItem || !leagueTag) {return}
-                const {place} = leaguesListItem
+                    if (!leaguesListItem || !leagueTag) { return }
+                    const { place } = leaguesListItem
 
-                $leaguePos.append(`<div class="script-league-icon script-league-rank script-league-rank-digits-${`${place}`.length}" style="background-image: url(${Helpers.getCDNHost()}/leagues/${leagueTag}.png);">${place}</div>`)
-            }
-        })
+                    $leaguePos.append(`<div class="script-league-icon script-league-rank script-league-rank-digits-${`${place}`.length}" style="background-image: url(${Helpers.getCDNHost()}/leagues/${leagueTag}.png);">${place}</div>`)
+                }
+            })
+        }
     }
 
-    addReplyTimer () {
+    addReplyTimer() {
         const $messenger = $('.messenger-link')
-        if (!$messenger.length) {return}
-        const {Hero} = window
-        const {energies: {reply}} = Hero
-        if (!reply) {return}
+        if (!$messenger.length) { return }
+        const { Hero } = window
+        const { energies: { reply } } = Hero
+        if (!reply) { return }
 
         const type = 'reply'
-        const {amount, max_amount, seconds_per_point, next_refresh_ts} = reply
+        const { amount, max_amount, seconds_per_point, next_refresh_ts } = reply
 
-        const $replyTimer = Helpers.$(makeEnergyBarHTML({type: 'reply', iconClass: 'messenger_reply_currency_icn', currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts}))
+        const $replyTimer = Helpers.$(makeEnergyBarHTML({ type: 'reply', iconClass: 'messenger_reply_currency_icn', currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts }))
 
         $messenger.append($replyTimer)
 
@@ -403,7 +410,7 @@ class HomeScreenModule extends CoreModule {
             const selector = `.energy_counter[type="${type}"]`
             const destroyExistingTimer = (existingTimer) => {
                 existingOnDestroy = existingTimer.onDestroy
-                existingTimer.onDestroy = () => {}
+                existingTimer.onDestroy = () => { }
                 existingTimer.destroy()
             }
             const addTimer = () => {
@@ -420,9 +427,9 @@ class HomeScreenModule extends CoreModule {
             if (existingTimer) {
                 destroyExistingTimer(existingTimer)
             } else {
-                setTimeout(()=> {
+                setTimeout(() => {
                     // Try and catch where the game tries to add another timer after we've already added ours.
-                    const duplicateTimer = Object.values(HHTimers.timers).find(({type: ttype, $elm}) => ttype === type && $elm.selector !== selector)
+                    const duplicateTimer = Object.values(HHTimers.timers).find(({ type: ttype, $elm }) => ttype === type && $elm.selector !== selector)
                     if (duplicateTimer) {
                         destroyExistingTimer(duplicateTimer)
                         if (existingOnDestroy) {
