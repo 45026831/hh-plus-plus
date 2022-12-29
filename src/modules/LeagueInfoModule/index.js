@@ -191,7 +191,7 @@ class LeagueInfoModule extends CoreModule {
                 const scoreDisplayData = getScoreDisplayDataForTop(playerRank, playerScore, top, tops[top], tops[top+1])
                 const {diff, score, symbol, labelKey} = scoreDisplayData
 
-                return `<span class="minTop${top}" hh_title="${this.label(labelKey, {points: I18n.nThousand(score), top})}"><span class="scriptLeagueInfoIcon top${top}"></span>${symbol}${I18n.nThousand(diff)}</span>`
+                return `<span class="minTop${top}" hh_title="${this.label(labelKey, {points: I18n.nThousand(score), top})}" tooltip><span class="scriptLeagueInfoIcon top${top}"></span>${symbol}${I18n.nThousand(diff)}</span>`
             }).join('')
         }
         if (promo) {
@@ -235,7 +235,7 @@ class LeagueInfoModule extends CoreModule {
             const promotionInfoTooltip = [textStagnate, textNonDemote, textDemote].filter(a=>a).map(text=>`<p>${text}</p>`).join('')
 
             promoHtml = `
-                <span class="promotionInfo" hh_title="${promotionInfoTooltip}">
+                <span class="promotionInfo" hh_title="${promotionInfoTooltip}" tooltip>
                     <img src="${Helpers.getCDNHost()}/leagues/ic_rankup.png" style="height: 15px; width: 12px; margin-left: 6px; margin-bottom: 0px;">
                 </span>
             `
@@ -247,8 +247,8 @@ class LeagueInfoModule extends CoreModule {
 
         const summaryHtml = `
             <div class="scriptLeagueInfo">
-                <span class="averageScore" hh_title="${this.label('averageScore', {average: I18n.nThousand(avg)})}<br/>${this.label('scoreExpected', {score: I18n.nThousand(scoreExpected)})}"><img src="${meanIcon}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${I18n.nThousand(avg)}</span>
-                <span class="possibleChallenges" hh_title="${this.possibleChallengesTooltip}"><img src="${Helpers.getCDNHost()}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
+                <span class="averageScore" hh_title="${this.label('averageScore', {average: I18n.nThousand(avg)})}<br/>${this.label('scoreExpected', {score: I18n.nThousand(scoreExpected)})}" tooltip><img src="${meanIcon}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${I18n.nThousand(avg)}</span>
+                <span class="possibleChallenges" hh_title="${this.possibleChallengesTooltip}" tooltip><img src="${Helpers.getCDNHost()}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
                 ${topsHtml}
                 ${promoHtml}
             </div>

@@ -7,19 +7,20 @@ import styles from './styles.lazy.scss'
 import Sheet from '../../common/Sheet'
 import { lsKeys } from '../../common/Constants'
 import AvailableFeatures from '../../common/AvailableFeatures'
+import TooltipManager from '../../common/TooltipManager'
 
-const {$} = Helpers
+const { $ } = Helpers
 
 const MODULE_KEY = 'resourceBars'
 
-const makeEnergyBarHTML = ({type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max, shortcutLink}) => {
+const makeEnergyBarHTML = ({ type, timeForSinglePoint, timeOnLoad, iconClass, currentVal, max, shortcutLink }) => {
     return `
         <div class="energy_counter" type="${type}" id="canvas_${type}_energy">
             <div class="energy_counter_bar">
                 <div class="energy_counter_icon"><span class="${iconClass}"></span></div>
                 <a href="${shortcutLink}">
                     <div class="bar-wrapper">
-                        <div class="bar red" style="width:${100*Math.min(currentVal,max)/max}%"></div>
+                        <div class="bar red" style="width:${100 * Math.min(currentVal, max) / max}%"></div>
                         <div class="over">
                             <div class="energy_counter_amount">
                                 <span energy>${currentVal}</span>/<span rel="max">${max}</span>
@@ -42,7 +43,7 @@ const CIRCULAR_THRESHOLDS = {
 }
 
 class ResourceBarsModule extends CoreModule {
-    constructor () {
+    constructor() {
         super({
             baseKey: MODULE_KEY,
             label: I18n.getModuleLabel('config', MODULE_KEY),
@@ -53,12 +54,12 @@ class ResourceBarsModule extends CoreModule {
         this.activeBoosters = {}
     }
 
-    shouldRun () {
+    shouldRun() {
         return !Helpers.isCurrentPage('messenger')
     }
 
-    run () {
-        if (this.hasRun || !this.shouldRun()) {return}
+    run() {
+        if (this.hasRun || !this.shouldRun()) { return }
 
         styles.use()
 
@@ -74,29 +75,38 @@ class ResourceBarsModule extends CoreModule {
             this.addBoosterStatus()
             this.overrideGlitter()
 
-            const xpObserver = new MutationObserver(() => {this.betterXP()})
-            xpObserver.observe($('[hero=xp]')[0], {childList: true})
+            const xpObserver = new MutationObserver(() => { this.betterXP() })
+            xpObserver.observe($('[hero=xp]')[0], { childList: true })
 
-            const moneyObserver = new MutationObserver(() => {this.betterMoney()})
-            moneyObserver.observe($('[hero=soft_currency]')[0], {childList: true})
+            const moneyObserver = new MutationObserver(() => { this.betterMoney() })
+            moneyObserver.observe($('[hero=soft_currency]')[0], { childList: true })
 
             // Catch late tooltip inits
-            const {TooltipManager} = window
-            const actualInit = TooltipManager.init.bind(TooltipManager)
-            TooltipManager.init = () => {
-                actualInit()
-                this.initTooltips()
+            const { TooltipManager, init } = window
+            if (TooltipManager) {
+                const actualInit = TooltipManager.init.bind(TooltipManager)
+                TooltipManager.init = () => {
+                    actualInit()
+                    this.initTooltips()
+                }
+            } else if (window.init) {
+                const actualInit = init
+                window.init = () => {
+                    actualInit()
+                    this.initTooltips()
+                }
             }
+
         })
 
         this.hasRun = true
     }
 
-    injectCSSVars () {
+    injectCSSVars() {
         Sheet.registerVar('challenge-token-icon', `url("${Helpers.getCDNHost()}/league_points.png")`)
     }
 
-    initTooltips () {
+    initTooltips() {
         const types = {
             quest: 'hudEnergy_mix_icn',
             fight: 'hudBattlePts_mix_icn',
@@ -104,9 +114,6 @@ class ResourceBarsModule extends CoreModule {
             challenge: 'hudChallenge_mix_icn',
             worship: 'hudWorship_mix_icn'
         }
-
-        const {is_mobile, is_tablet, TooltipManager, Tooltip} = window
-        const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
 
         Object.entries(types).forEach(([type, icon]) => {
             const selector = `header .energy_counter .${icon}`
@@ -118,7 +125,7 @@ class ResourceBarsModule extends CoreModule {
             $('body').off('mouseenter', selector)
             $('body').off('mouseleave', selector)
 
-            TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
+            TooltipManager.initTooltipType(selector, () => {
                 let text
                 if (Hero.energies[type].amount >= Hero.energies[type].max_amount)
                     text = `<span class="orange">${GT.design.Full}</span>`
@@ -126,38 +133,37 @@ class ResourceBarsModule extends CoreModule {
                     const fullIn = Hero.c[type].getTotalRemainingTime()
                     const now = Math.round(new Date().getTime() / 1000)
                     const fullAt = now + fullIn
-                    const formattedDate = `<span class="orange">${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
+                    const formattedDate = `<span class="orange">${new Date(fullAt * 1000).toLocaleTimeString(I18n.getLang(), { hour: '2-digit', minute: '2-digit' })}</span>`
                     const formattedIn = `${GT.design.full_in}<span class="orange" rel="timer">${format_time_short(fullIn)}</span>`
-                    text = `${formattedIn}<br/>${this.label('fullAt', {time: formattedDate})}`
+                    text = `${formattedIn}<br/>${this.label('fullAt', { time: formattedDate })}`
                 }
-                let newTooltip = new Tooltip($(target),'',text)
-                TooltipManager.initNewTooltip(target, newTooltip)
+                return {title: '', body: text}
             })
         })
     }
 
-    betterXP () {
+    betterXP() {
         const $wrapper = $('[rel=xp] .bar-wrapper .over')
         if (!this.$xpContainer) {
             this.$xpContainer = $('<span class="scriptXPContainer"></span>')
             $wrapper.append(this.$xpContainer)
         }
 
-        const {level, left, cur, max} = Hero.infos.Xp
+        const { level, left, cur, max } = Hero.infos.Xp
         let leftText
         let maxText = GT.design.Max
         if (level < HH_MAX_LEVEL) {
-            leftText = this.label('xp', {xp: I18n.nThousand(left)})
+            leftText = this.label('xp', { xp: I18n.nThousand(left) })
             maxText = I18n.nThousand(max)
         }
 
-        this.$xpContainer.text(`${I18n.nThousand(cur)} / ${maxText}${leftText? ` (${leftText})` : ''}`)
+        this.$xpContainer.text(`${I18n.nThousand(cur)} / ${maxText}${leftText ? ` (${leftText})` : ''}`)
         $wrapper.addClass('hideDefault')
     }
 
-    betterMoney () {
+    betterMoney() {
         if (!this.$moneyContainer) {
-            this.$moneyContainer = $('<span class="scriptMoneyContainer"></span>')
+            this.$moneyContainer = $('<span class="scriptMoneyContainer" tooltip></span>')
             $('[hero=soft_currency]').after(this.$moneyContainer)
         }
 
@@ -174,9 +180,9 @@ class ResourceBarsModule extends CoreModule {
 
     }
 
-    forceTimerInterval () {
-        HHTimers.thresholdSec = 24*60*60
-        HHTimers.thresholdTenSec = 36*30*60
+    forceTimerInterval() {
+        HHTimers.thresholdSec = 24 * 60 * 60
+        HHTimers.thresholdTenSec = 36 * 30 * 60
 
         const existingTimers = [...HHTimers.timersListMin, ...HHTimers.timersListTenSec]
         HHTimers.timersListMin = []
@@ -185,7 +191,7 @@ class ResourceBarsModule extends CoreModule {
         HHTimers.timersListSec.push(...existingTimers)
     }
 
-    addEnergyBarShortcut () {
+    addEnergyBarShortcut() {
         let shortcutLink
 
         const questLink = Hero.infos.questing.current_url
@@ -203,16 +209,16 @@ class ResourceBarsModule extends CoreModule {
         $('.energy_counter[type=quest] .bar-wrapper').wrap(`<a href="${shortcutLink}"></a>`)
     }
 
-    addAdditionalBars () {
+    addAdditionalBars() {
         const barTypes = [
-            {type: 'kiss', feature: 'seasons', iconClass: 'hudKiss_mix_icn', shortcutLink: '/season-arena.html'},
-            {type: 'challenge', feature: 'leagues', iconClass: 'hudChallenge_mix_icn', shortcutLink: '/tower-of-fame.html'},
-            {type: 'worship', feature: 'pantheon', iconClass: 'hudWorship_mix_icn', shortcutLink: '/pantheon.html'},
+            { type: 'kiss', feature: 'seasons', iconClass: 'hudKiss_mix_icn', shortcutLink: '/season-arena.html' },
+            { type: 'challenge', feature: 'leagues', iconClass: 'hudChallenge_mix_icn', shortcutLink: '/tower-of-fame.html' },
+            { type: 'worship', feature: 'pantheon', iconClass: 'hudWorship_mix_icn', shortcutLink: '/pantheon.html' },
         ]
 
         let $elemToAppendAfter = $('header .energy_counter[type=fight]')
 
-        barTypes.forEach(({type, feature, iconClass, shortcutLink}) => {
+        barTypes.forEach(({ type, feature, iconClass, shortcutLink }) => {
             if (!AvailableFeatures[feature]) {
                 const $dummySpacer = $(`<div class="script-bar-spacer" type="${type}" id="canvas_${type}_energy"></div>`)
                 $elemToAppendAfter.after($dummySpacer)
@@ -220,9 +226,9 @@ class ResourceBarsModule extends CoreModule {
                 return
             }
 
-            const {amount, max_amount, seconds_per_point, next_refresh_ts} = Hero.energies[type]
+            const { amount, max_amount, seconds_per_point, next_refresh_ts } = Hero.energies[type]
 
-            const $barHTML = $(makeEnergyBarHTML({type, iconClass, shortcutLink, currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts}))
+            const $barHTML = $(makeEnergyBarHTML({ type, iconClass, shortcutLink, currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts }))
 
             $elemToAppendAfter.after($barHTML)
             $elemToAppendAfter = $barHTML
@@ -238,7 +244,7 @@ class ResourceBarsModule extends CoreModule {
                 const selector = `.energy_counter[type="${type}"]`
                 const destroyExistingTimer = (existingTimer) => {
                     existingOnDestroy = existingTimer.onDestroy
-                    existingTimer.onDestroy = () => {}
+                    existingTimer.onDestroy = () => { }
                     existingTimer.destroy()
                 }
                 const addTimer = () => {
@@ -255,9 +261,9 @@ class ResourceBarsModule extends CoreModule {
                 if (existingTimer) {
                     destroyExistingTimer(existingTimer)
                 } else {
-                    setTimeout(()=> {
+                    setTimeout(() => {
                         // Try and catch where the game tries to add another timer after we've already added ours.
-                        const duplicateTimer = Object.values(HHTimers.timers).find(({type: ttype, $elm}) => ttype === type && $elm.selector !== selector)
+                        const duplicateTimer = Object.values(HHTimers.timers).find(({ type: ttype, $elm }) => ttype === type && $elm.selector !== selector)
                         if (duplicateTimer) {
                             destroyExistingTimer(duplicateTimer)
                             if (existingOnDestroy) {
@@ -270,7 +276,7 @@ class ResourceBarsModule extends CoreModule {
                 addTimer()
 
 
-                if (type==='challenge' && !Helpers.isCurrentPage('tower-of-fame')) {
+                if (type === 'challenge' && !Helpers.isCurrentPage('tower-of-fame')) {
                     window.hasMultipleLeagueBattles = false
                 }
             }
@@ -278,7 +284,7 @@ class ResourceBarsModule extends CoreModule {
         })
     }
 
-    addPoPTimer () {
+    addPoPTimer() {
         if (!AvailableFeatures.pop) {
             return
         }
@@ -292,7 +298,7 @@ class ResourceBarsModule extends CoreModule {
         if (times && times.pop) {
             popEndIn = Math.max(times.pop - server_now_ts, 0)
             popDuration = times.popDuration
-            formattedDate = `<span class=&quot;orange&quot;>${new Date(times.pop * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'})}</span>`
+            formattedDate = `<span class=&quot;orange&quot;>${new Date(times.pop * 1000).toLocaleTimeString(I18n.getLang(), { hour: '2-digit', minute: '2-digit' })}</span>`
         }
 
         const inProgress = popEndIn > 0
@@ -304,11 +310,11 @@ class ResourceBarsModule extends CoreModule {
 
         const $barHTML = $(`
             <a class="script-pop-timer" href="/activities.html?tab=pop">
-                <div class="hh_bar" ${inProgress ? `generic-tooltip="${this.label('readyAt', {time: formattedDate})}"` : ''}>
+                <div class="hh_bar" ${inProgress ? `generic-tooltip="${this.label('readyAt', { time: formattedDate })}"` : ''}>
                     <div class="backbar borderbar">
                         <div class="frontbar ${inProgress ? 'pinkbar' : 'bluebar'}" style="width: ${barWidth}%"></div>
                     </div>
-                    <div class="text">${inProgress ? this.label('popsIn', {time: `<span>${window.format_time_short(popEndIn)}</span>`}) : this.label('popsReady')}</div>
+                    <div class="text">${inProgress ? this.label('popsIn', { time: `<span>${window.format_time_short(popEndIn)}</span>` }) : this.label('popsReady')}</div>
                 </div>
             </a>
         `)
@@ -324,54 +330,54 @@ class ResourceBarsModule extends CoreModule {
                     window.displayNotifications()
                 }
             }
-            const noop = ()=>{}
-            const dummyElm = {show: noop, hide: noop, selector: ''}
+            const noop = () => { }
+            const dummyElm = { show: noop, hide: noop, selector: '' }
             const oldMobileCheck = window.is_mobile_size
             window.is_mobile_size = () => false
-            HHTimers.initBarTimer(popDuration, popEndIn, dummyElm, {barElm: $barHTML.find('.frontbar'), textElm: $barHTML.find('div.text>span')}, onComplete)
+            HHTimers.initBarTimer(popDuration, popEndIn, dummyElm, { barElm: $barHTML.find('.frontbar'), textElm: $barHTML.find('div.text>span') }, onComplete)
             window.is_mobile_size = oldMobileCheck
         }
     }
 
     addBoosterStatus() {
-        const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || {normal: [], mythic: []}
+        const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || { normal: [], mythic: [] }
 
-        boosterStatus.normal = boosterStatus.normal.filter(({endAt}) => endAt > server_now_ts)
+        boosterStatus.normal = boosterStatus.normal.filter(({ endAt }) => endAt > server_now_ts)
 
         Object.keys(boosterStatus).forEach(key => {
             if (boosterStatus[key].length < 3) {
                 // fill the rest with empty
-                boosterStatus[key] = [...boosterStatus[key], ...Array(3-boosterStatus[key].length).fill({empty:true})]
+                boosterStatus[key] = [...boosterStatus[key], ...Array(3 - boosterStatus[key].length).fill({ empty: true })]
             }
         })
 
         const $boosterStatusHTML = $('<a class="script-booster-status" href="/shop.html?type=player-stats&subtab=booster"></a>')
 
         const buildNormalSlot = (data) => {
-            const {empty, id_item, ico, identifier, rarity, endAt} = {...data, ...data.item}
+            const { empty, id_item, ico, identifier, rarity, endAt } = { ...data, ...data.item }
             if (empty) {
                 return '<div class="slot empty"></div>'
             }
             data.expiry = endAt - server_now_ts
-            const formattedDate = new Date(endAt * 1000).toLocaleTimeString(I18n.getLang(), {hour: '2-digit', minute: '2-digit'}).replace(/(\d)/g, (x)=>`${x}<i></i>`)
+            const formattedDate = new Date(endAt * 1000).toLocaleTimeString(I18n.getLang(), { hour: '2-digit', minute: '2-digit' }).replace(/(\d)/g, (x) => `${x}<i></i>`)
             return $(`
-                <div class="slot ${rarity}" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({additionalText: `<span class="script-tooltip"></span>${this.label('endAt', { time: formattedDate })}`}).replace(/"/g, '&quot;')}">
+                <div class="slot ${rarity}" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({ additionalText: `<span class="script-tooltip"></span>${this.label('endAt', { time: formattedDate })}` }).replace(/"/g, '&quot;')}">
                     <img src="${ico || `${Helpers.getCDNHost()}/pictures/items/${identifier}.png`}"/>
                 </div>`)
         }
         const buildMythicSlot = (data) => {
-            const {empty, id_item, ico, identifier} = {...data, ...data.item}
+            const { empty, id_item, ico, identifier } = { ...data, ...data.item }
             if (empty) {
                 return '<div class="slot mythic empty"></div>'
             }
             return $(`
-                <div class="slot mythic" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({additionalText: '<span class="script-tooltip"></span>'}).replace(/"/g, '&quot;')}">
+                <div class="slot mythic" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({ additionalText: '<span class="script-tooltip"></span>' }).replace(/"/g, '&quot;')}">
                     <img src="${ico || `${Helpers.getCDNHost()}/pictures/items/${identifier}.png`}"/>
                 </div>
             `)
         }
         const buildProgressWrapper = (current, max, useTimer) => {
-            const percentage = Math.min(current/max, 1)
+            const percentage = Math.min(current / max, 1)
             const firstHalf = Math.min(percentage, 0.5) * 2
             const secondHalf = Math.max(percentage - 0.5, 0) * 2
 
@@ -422,7 +428,7 @@ class ResourceBarsModule extends CoreModule {
                     const timer = HHTimers.timers[timerId]
                     const remainingTime = timer.remainingTime
 
-                    const percentage = remainingTime/max
+                    const percentage = remainingTime / max
                     const firstHalf = Math.min(percentage, 0.5) * 2
                     const secondHalf = Math.max(percentage - 0.5, 0) * 2
 
@@ -453,8 +459,8 @@ class ResourceBarsModule extends CoreModule {
             return $wrapper
         }
         const buildSlotAndAddTooltip = (buildSlot, data, replaceEmpty) => {
-            const {empty, id_member_booster_equipped, usages_remaining, endAt, item} = data
-            const {rarity, default_usages, duration} = item || {}
+            const { empty, id_member_booster_equipped, usages_remaining, endAt, item } = data
+            const { rarity, default_usages, duration } = item || {}
             const $slot = buildSlot(data)
             let current = 0
             let max = 1
@@ -477,7 +483,7 @@ class ResourceBarsModule extends CoreModule {
             $progressWrapper.prepend($slot)
 
             if (replaceEmpty) {
-                $boosterStatusHTML.find(`.circular-progress:has(.empty${isMythic? '.mythic':':not(.mythic)'})`).first().replaceWith($progressWrapper)
+                $boosterStatusHTML.find(`.circular-progress:has(.empty${isMythic ? '.mythic' : ':not(.mythic)'})`).first().replaceWith($progressWrapper)
             } else {
                 $boosterStatusHTML.append($progressWrapper)
             }
@@ -497,10 +503,10 @@ class ResourceBarsModule extends CoreModule {
 
         $('header .currency').before($boosterStatusHTML)
 
-        $(document).on('boosters:equipped', (event, {id_item, isMythic, new_id}) => {
-            const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || {normal: [], mythic: []}
+        $(document).on('boosters:equipped', (event, { id_item, isMythic, new_id }) => {
+            const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || { normal: [], mythic: [] }
 
-            const newBoosterData = boosterStatus[isMythic ? 'mythic' : 'normal'].find(data=>data.id_item===id_item&&(new_id && data.id_member_booster_equipped===new_id))
+            const newBoosterData = boosterStatus[isMythic ? 'mythic' : 'normal'].find(data => data.id_item === id_item && (new_id && data.id_member_booster_equipped === new_id))
 
             if (newBoosterData) {
                 const $slotToReplace = $boosterStatusHTML.find(`.slot.empty${isMythic ? '.mythic' : ':not(.mythic)'}`)
@@ -516,7 +522,7 @@ class ResourceBarsModule extends CoreModule {
         })
 
         $(document).on('boosters:updated-mythic', () => {
-            const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || {normal: [], mythic: []}
+            const boosterStatus = Helpers.lsGet(lsKeys.BOOSTER_STATUS) || { normal: [], mythic: [] }
 
             const boostersByIdmi = {}
             boosterStatus.mythic.forEach(data => boostersByIdmi[data.id_member_booster_equipped] = data)
@@ -529,8 +535,8 @@ class ResourceBarsModule extends CoreModule {
                     $elem.find('.slot').attr('class', 'slot mythic empty').empty().attr('data-d', '').attr('tooltip-id', '').attr('id_item', '')
                     $elem.find('.progress').css('transform', 'rotate(0deg)')
                 } else {
-                    const {item: {default_usages}, usages_remaining} = updatedData
-                    const percentage = Math.min(usages_remaining/default_usages, 1)
+                    const { item: { default_usages }, usages_remaining } = updatedData
+                    const percentage = Math.min(usages_remaining / default_usages, 1)
                     const firstHalf = Math.min(percentage, 0.5) * 2
                     const secondHalf = Math.max(percentage - 0.5, 0) * 2
                     let colorClass = 'green'
@@ -557,11 +563,11 @@ class ResourceBarsModule extends CoreModule {
         new MutationObserver(() => {
             // Nasty hack. Wish there was a better way of setting a custom class on a tooltip
             $('.hh_tooltip_new:has(.script-tooltip)').addClass('script-booster-status-item')
-        }).observe(document.body, {childList: true})
+        }).observe(document.body, { childList: true })
     }
 
     overrideGlitter() {
-        const {is_mobile_size, star_glitter} = window
+        const { is_mobile_size, star_glitter } = window
         window.glitter_me = (field) => {
             let x, y, w, h
             switch (field) {
@@ -645,7 +651,7 @@ class ResourceBarsModule extends CoreModule {
             default:
                 return
             }
-            new star_glitter(x,y,w,h)
+            new star_glitter(x, y, w, h)
         }
     }
 }

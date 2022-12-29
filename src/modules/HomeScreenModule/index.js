@@ -9,6 +9,7 @@ import pantheonIcon from '../../assets/pantheon.svg'
 import styles from './styles.lazy.scss'
 import AvailableFeatures from '../../common/AvailableFeatures'
 import Sheet from '../../common/Sheet'
+import TooltipManager from '../../common/TooltipManager'
 
 const { $ } = Helpers
 
@@ -302,18 +303,14 @@ class HomeScreenModule extends CoreModule {
     }
 
     manageSalaryTimers() {
-        const { GirlSalaryManager, is_mobile, is_tablet, TooltipManager, Tooltip, GT } = window
-        const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
+        const { GirlSalaryManager, GT } = window
 
-        const handleTooltip = (target) => {
+        const handleTooltip = () => {
             const aggregateSalaries = this.aggregateSalaries()
             if (!aggregateSalaries) { return }
             const { text } = aggregateSalaries
 
             const wrappedText = `<div class="script-salary-summary">${text}</div>`
-
-            let newTooltip = new Tooltip($(target), '', wrappedText)
-            TooltipManager.initNewTooltip(target, newTooltip)
 
             if (!this.salaryTimerHacked && GirlSalaryManager.updateHomepageTimer) {
                 const existingUpdate = GirlSalaryManager.updateHomepageTimer.bind(GirlSalaryManager)
@@ -333,11 +330,13 @@ class HomeScreenModule extends CoreModule {
 
                 this.salaryTimerHacked = true
             }
+
+            return {title: '', body: wrappedText}
         }
 
         $('#collect_all').append('<span class="script-event-handler-hack"></span>')
 
-        TooltipManager.initTooltipType(isMobile, '#collect_all, #collect_all .script-event-handler-hack', false, handleTooltip)
+        TooltipManager.initTooltipType('#collect_all, #collect_all .script-event-handler-hack', handleTooltip)
     }
 
     addLeaguePos() {

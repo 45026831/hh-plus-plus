@@ -49,7 +49,7 @@ class GemStockModule extends CoreModule {
     }
 
     buildGemsStockElem () {
-        return $('<div class="gemStock"></div>').attr('hh_title', this.buildGemsTable())
+        return $('<div class="gemStock" tooltip></div>').attr('hh_title', this.buildGemsTable())
     }
 
     run () {

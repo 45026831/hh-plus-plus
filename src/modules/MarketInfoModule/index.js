@@ -1,7 +1,8 @@
-/* global Hero, heroStatsPrices, GT */
+/* global Hero, heroStatsPrices */
 import { lsKeys } from '../../common/Constants'
 import Helpers from '../../common/Helpers'
 import Sheet from '../../common/Sheet'
+import TooltipManager from '../../common/TooltipManager'
 import {HC, CH, KH} from '../../data/Classes'
 import {POINTS_PER_LEVEL, calculateTotalPrice, SELLABLE, TYPES, NEW_TYPES} from '../../data/Market'
 import I18n from '../../i18n'
@@ -48,8 +49,6 @@ class MarketInfoModule extends CoreModule {
             this.updateStats()
             this.updateInventory()
             this.updateEquips()
-
-            this.attachGirlQuota()
         })
 
         this.hasRun = true
@@ -227,24 +226,6 @@ class MarketInfoModule extends CoreModule {
         this.$tooltips[type].html(this.buildEquipsTooltipHtml(marketInfo.equipsAggregate))
     }
 
-    attachGirlQuota () {
-        const {is_mobile, is_tablet, TooltipManager, Tooltip} = window
-        const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
-
-        TooltipManager.initTooltipType(isMobile, '#girls_list > .level_target', false, (target) => {
-            const awakeningThreshold = Helpers.getAwakeningThreshold()
-
-            if (awakeningThreshold) {
-                const {currentThreshold, currentThresholdOwned, currentThresholdMin} = awakeningThreshold
-
-                const levelText = `${GT.design.Lvl} ${currentThreshold} : ${currentThresholdOwned} / ${currentThresholdMin} ${GT.design.Girls}`
-
-                let newTooltip = new Tooltip($(target),'',levelText)
-                TooltipManager.initNewTooltip(target, newTooltip)
-            }
-        })
-    }
-
     setupHooks () {
         // Purchase stat points
         Helpers.onAjaxResponse(/action=update_stats/, (response, xhr) => {
@@ -276,20 +257,16 @@ class MarketInfoModule extends CoreModule {
 
         if (window.market_inventory) {
             // new market, new tooltips
-
-            const {is_mobile, is_tablet, TooltipManager, Tooltip} = window
-            const isMobile = is_mobile && is_mobile() || is_tablet && is_tablet()
-
             CLASSES.forEach(carac => {
                 const selector = `.my-hero-stats [hero=carac${carac}] [carac=${carac}]`
                 const title = $(selector).attr('hh_title')
                 $(selector).removeAttr('hh_title')
+                $(selector).removeAttr('tooltip')
 
-                TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
+                TooltipManager.initTooltipType(selector, () => {
                     const data = this.toolipData.caracs[carac]
                     const html = this.buildCaracTooltipHtml(data)
-                    let newTooltip = new Tooltip($(target),title,html)
-                    TooltipManager.initNewTooltip(target, newTooltip)
+                    return {title, body: html}
                 })
             })
 
@@ -299,12 +276,11 @@ class MarketInfoModule extends CoreModule {
                 const $infoIcon = $('<div class="marketInfoIcon inventoryInfo"></div>')
                 $(parentSelector).append($infoIcon)
 
-                TooltipManager.initTooltipType(isMobile, selector, false, (target) => {
+                TooltipManager.initTooltipType(selector, () => {
                     const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
                     const data = marketInfo.sellableItems[type]
                     const html = this.buildItemTooltipHtml(type, data)
-                    let newTooltip = new Tooltip($(target),'',html)
-                    TooltipManager.initNewTooltip(target, newTooltip)
+                    return {title: '', body: html}
                 })
             })
 
@@ -313,12 +289,11 @@ class MarketInfoModule extends CoreModule {
             const $infoIcon = $('<div class="marketInfoIcon inventoryInfo"></div>')
             $(equipsParentSelector).append($infoIcon)
 
-            TooltipManager.initTooltipType(isMobile, equipsSelector, false, (target) => {
+            TooltipManager.initTooltipType(equipsSelector, () => {
                 const marketInfo = Helpers.lsGet(lsKeys.MARKET_INFO)
                 const data = marketInfo.equipsAggregate
                 const html = this.buildEquipsTooltipHtml(data)
-                let newTooltip = new Tooltip($(target),'',html)
-                TooltipManager.initNewTooltip(target, newTooltip)
+                return {title: '', body: html}
             })
         }
     }

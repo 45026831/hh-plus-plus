@@ -192,7 +192,7 @@ class Config {
     }
 
     renderConfigButton () {
-        this.$configButton = $(`<div class="hh-plus-plus-config-button" hh_title="${this.gameTitle} ++"></div>`)
+        this.$configButton = $(`<div class="hh-plus-plus-config-button" hh_title="${this.gameTitle} ++" tooltip></div>`)
         this.$configButton.click(this.openConfigPane.bind(this))
         $('#contains_all').append(this.$configButton)
     }
