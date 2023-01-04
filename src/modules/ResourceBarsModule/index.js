@@ -310,7 +310,7 @@ class ResourceBarsModule extends CoreModule {
 
         const $barHTML = $(`
             <a class="script-pop-timer" href="/activities.html?tab=pop">
-                <div class="hh_bar" ${inProgress ? `generic-tooltip="${this.label('readyAt', { time: formattedDate })}"` : ''}>
+                <div class="hh_bar" ${inProgress ? `tooltip="${this.label('readyAt', { time: formattedDate })}"` : ''}>
                     <div class="backbar borderbar">
                         <div class="frontbar ${inProgress ? 'pinkbar' : 'bluebar'}" style="width: ${barWidth}%"></div>
                     </div>
@@ -361,7 +361,7 @@ class ResourceBarsModule extends CoreModule {
             data.expiry = endAt - server_now_ts
             const formattedDate = new Date(endAt * 1000).toLocaleTimeString(I18n.getLang(), { hour: '2-digit', minute: '2-digit' }).replace(/(\d)/g, (x) => `${x}<i></i>`)
             return $(`
-                <div class="slot ${rarity}" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({ additionalText: `<span class="script-tooltip"></span>${this.label('endAt', { time: formattedDate })}` }).replace(/"/g, '&quot;')}">
+                <div class="slot ${rarity}" id_item="${id_item}" booster-item-tooltip data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({ additionalText: `<span class="script-tooltip"></span>${this.label('endAt', { time: formattedDate })}` }).replace(/"/g, '&quot;')}">
                     <img src="${ico || `${Helpers.getCDNHost()}/pictures/items/${identifier}.png`}"/>
                 </div>`)
         }
@@ -371,7 +371,7 @@ class ResourceBarsModule extends CoreModule {
                 return '<div class="slot mythic empty"></div>'
             }
             return $(`
-                <div class="slot mythic" id_item="${id_item}" data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({ additionalText: '<span class="script-tooltip"></span>' }).replace(/"/g, '&quot;')}">
+                <div class="slot mythic" id_item="${id_item}" booster-item-tooltip data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({ additionalText: '<span class="script-tooltip"></span>' }).replace(/"/g, '&quot;')}">
                     <img src="${ico || `${Helpers.getCDNHost()}/pictures/items/${identifier}.png`}"/>
                 </div>
             `)

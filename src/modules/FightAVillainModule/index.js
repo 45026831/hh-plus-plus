@@ -118,7 +118,7 @@ class FightAVillainModule extends CoreModule {
             const $villainDrops = $('<div class="menu-villain-drops"></div>')
             if (gems) {
                 gems.forEach(({element, amount}) => {
-                    $villainDrops.append(`<div class="menu-villain-gem-drop-container" generic-tooltip="${GT.design[`${element}_gem`]}"><img class="menu-villain-drop" src="${Helpers.getCDNHost()}/pictures/design/gems/${element}.png" /><span class="menu-villain-gem-drop-amount">${amount}</span></div>`)
+                    $villainDrops.append(`<div class="menu-villain-gem-drop-container" tooltip="${GT.design[`${element}_gem`]}"><img class="menu-villain-drop" src="${Helpers.getCDNHost()}/pictures/design/gems/${element}.png" /><span class="menu-villain-gem-drop-amount">${amount}</span></div>`)
                 })
             }
             if (items) {

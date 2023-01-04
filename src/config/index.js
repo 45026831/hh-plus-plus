@@ -243,14 +243,14 @@ class Config {
 
         return `
         <div class="credits-contents">
-            <p>You're running ${name} <a class="changelog" generic-tooltip="Click to open CHANGELOG" href="${CHANGELOG}" target="_blank">v${version}</a> by ${author}</p>
+            <p>You're running ${name} <a class="changelog" tooltip="Click to open CHANGELOG" href="${CHANGELOG}" target="_blank">v${version}</a> by ${author}</p>
             <p>Enjoying the script? Want to throw money at me for some reason? You can <a href="${BMAC}" target="_blank">Buy Me A Coffee</a> or <a href="${PATREON}" target="_blank">support me on Patreon</a> if you'd like.</p>
             <p>Join us on <a href="${DISCORD}" target="_blank">Discord</a>!</p>
             <h2>Special Thanks</h2>
             <div class="thanks-container">
                 <div class="thanks-supporters">
                     <h3>Patrons</h3>
-                    <ul class="script-supporters">${this.supporters.sort(sortSupporters).map(({name, tier}) => `<li class="script-supporter-${tier}">${name}${['gold', 'silver'].includes(tier) ? `<img class="tier-icon" src="${TIER_ICONS[tier]}" generic-tooltip="${tier.substring(0,1).toUpperCase()}${tier.substring(1)} Tier Supporter"/>` : '' }</li>`).join('')}</ul>
+                    <ul class="script-supporters">${this.supporters.sort(sortSupporters).map(({name, tier}) => `<li class="script-supporter-${tier}">${name}${['gold', 'silver'].includes(tier) ? `<img class="tier-icon" src="${TIER_ICONS[tier]}" tooltip="${tier.substring(0,1).toUpperCase()}${tier.substring(1)} Tier Supporter"/>` : '' }</li>`).join('')}</ul>
                 </div>
                 <div class="thanks-code">
                     <h3>Code Contributions</h3>

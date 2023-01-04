@@ -144,7 +144,7 @@ class League {
                 `<div class="matchRating-${key} ${className}"><span class="matchRating-label">${label}:</span><span class="matchRating-value">${value}</span></div>`
             ).join('')
 
-        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" generic-tooltip="${probabilityTooltip}">${matchRatingHtml}</div>`)
+        const $rating = $(`<div class="matchRating" style="color:${pointGrade[Math.round(expectedValue)]};" tooltip="${probabilityTooltip}">${matchRatingHtml}</div>`)
         $('#leagues_right .average-lvl').wrap('<div class="gridWrapper"></div>').after($rating)
         $('.lead_table_default > td:nth-child(1) > div:nth-child(1) > div:nth-child(2) .level').append($rating)
     }
