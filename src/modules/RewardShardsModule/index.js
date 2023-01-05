@@ -17,7 +17,7 @@ const extractIdFromUrl = (url) => {
     const { groups: { id } } = matches
     return id
 }
-const makeShardCount = ({ shards, name, className }) => `<div class="script-shard-count ${className ? className : ''}" shards="${shards}" name="${name}"><span class="shard"></span> ${shards}</div>`
+const makeShardCount = ({ shards, name, className }) => `<div class="script-shard-count ${className ? className : ''}" shards="${shards}" name="${name}" shards-tooltip><span class="shard"></span> ${shards}</div>`
 
 class RewardShardsModule extends CoreModule {
     constructor() {

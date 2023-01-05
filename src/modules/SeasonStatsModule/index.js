@@ -59,7 +59,7 @@ class SeasonStatsModule extends CoreModule {
             </span>
         `.replace(/( {4}|\n)/g, '')
 
-            const $stats = $('<span class="scriptSeasonStats">Stats</span>').attr('hh_title', statsTooltip)
+            const $stats = $('<span class="scriptSeasonStats">Stats</span>').attr('tooltip', statsTooltip)
             if (Helpers.isCurrentPage('season.html')) {
                 $('div#seasons_tab_title').append($stats)
             } else {
