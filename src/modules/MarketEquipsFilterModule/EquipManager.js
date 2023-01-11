@@ -109,7 +109,7 @@ class EquipManager {
 
             this.reconsileAfterNextDOMChange()
         })
-        const collectFromLazyLoad = (response) => {
+        const collectFromLazyLoad = (response, annotateOnly) => {
             const { items } = response
 
             if (!items || !items.length) { return }
@@ -128,10 +128,10 @@ class EquipManager {
                 this.keysForIds[item.id_member_armor] = key
             })
 
-            this.reconsileAfterNextDOMChange()
+            this.reconsileAfterNextDOMChange(null, annotateOnly)
         }
-        Helpers.onAjaxResponse(/action=market_get_armor/, collectFromLazyLoad)
-        Helpers.onAjaxResponse(/action=mythic_armor_load_material_items/, collectFromLazyLoad)
+        Helpers.onAjaxResponse(/action=market_get_armor/, (response) => collectFromLazyLoad(response, false))
+        Helpers.onAjaxResponse(/action=mythic_armor_load_material_items/, (response) => collectFromLazyLoad(response, true))
 
         Helpers.onAjaxResponse(/action=market_sell/, (response, opt) => {
             const searchParams = new URLSearchParams(opt.data)
@@ -231,8 +231,8 @@ class EquipManager {
         }
     }
 
-    reconsileAfterNextDOMChange(extraCallback) {
-        this.doAfterNextDOMChange(extraCallback, () => this.reconcileElements())
+    reconsileAfterNextDOMChange(extraCallback, annotateOnly) {
+        this.doAfterNextDOMChange(extraCallback, () => this.reconcileElements(annotateOnly))
     }
 
     doAfterNextDOMChange(...callbacks) {
@@ -332,36 +332,37 @@ class EquipManager {
         return this.$container.find(`[data-equip-key="${key}"]`)
     }
 
-    reconcileElements() {
+    reconcileElements(annotateOnly) {
         // const $content = this.$container.find('.player-inventory-content')
         this.$content.find('.slot:not(.empty)').each((i, slot) => {
             const $slot = $(slot)
 
             const { key } = this.assertEquipAnnotatedWithKey($slot)
 
-            const $parent = $slot.parent()
+            if (!annotateOnly) {
+                const $parent = $slot.parent()
 
-            this.elementCache[key] = $parent
+                this.elementCache[key] = $parent
 
-            if (!this.visibleEquipIds.includes(key)) {
-                $parent.detach()
+                if (!this.visibleEquipIds.includes(key)) {
+                    $parent.detach()
+                }
             }
         })
 
+        if (!annotateOnly) {
+            this.allEquipIdsInOrder.forEach(key => {
+                if (!this.visibleEquipIds.includes(key)) { return }
+                const $slot = this.elementCache[key]
 
-        this.allEquipIdsInOrder.forEach(key => {
-            if (!this.visibleEquipIds.includes(key)) { return }
-            const $slot = this.elementCache[key]
+                if (!$slot || !$slot.length) {
+                    console.log('no cache entry for key', key)
+                    return
+                }
 
-            if (!$slot || !$slot.length) {
-                console.log('no cache entry for key', key)
-                return
-            }
+                this.$content.append($slot)
+            })
 
-            this.$content.append($slot)
-        })
-
-        if (this.name !== 'upgrade') {
             this.$content.append(this.$content.find('.slot-container.empty'))
             this.padWithEmptySlots()
             this.$content.getNiceScroll().resize()
