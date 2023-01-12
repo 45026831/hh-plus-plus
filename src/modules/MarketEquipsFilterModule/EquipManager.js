@@ -54,9 +54,8 @@ class EquipManager {
             } else {
                 FavouritesManager.addToFavourites(favouriteKey)
             }
-            $slot.attr('data-is-favourite', !isFavourite)
-            this.updateVisibleIdsForFilter()
-            this.reconcileElements()
+            // this.updateVisibleIdsForFilter()
+            // this.reconcileElements()
         }
 
         if (this.$content.length && this.$content.children('div').length) {
@@ -214,7 +213,8 @@ class EquipManager {
         }).observe(this.$content[0], { attributes: true, subtree: true, attributeFilter: ['class'] })
 
         FavouritesManager.onUpdate(() => {
-            this.reconcileElements()
+            this.updateVisibleIdsForFilter()
+            this.reconcileElements(this.name === 'upgrade')
             this.checkSelection()
         })
 
