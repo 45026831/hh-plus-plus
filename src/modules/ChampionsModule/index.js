@@ -326,7 +326,7 @@ class ChampionsModule extends CoreModule {
             if (!$('.champions-bottom__ticket-amount').length) {
                 const {championData} = window
                 $('.champions-bottom__rest').css({'width': '280px'})
-                    .before(`<div class="champions-bottom__ticket-amount"><span cur="ticket">x ${championData.champion.currentTickets}</span></div>`)
+                    .before(`<div class="champions-bottom__ticket-amount"><span class="ticket_icn"></span>x ${championData.champion.currentTickets}</div>`)
             }
         }
         attachCount()

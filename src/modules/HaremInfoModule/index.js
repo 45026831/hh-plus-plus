@@ -128,23 +128,23 @@ class HaremInfoModule extends CoreModule {
                 <h1>${this.label('haremStats')}</h1>
                 <div>${this.aggregates.girls} <span class="clubGirl_mix_icn"></span></div>
                 <ul class="summary-grid caracs-summary">
-                    ${Object.entries(this.aggregates.caracs).map(([carac, count]) => `<li><span hh_title="${GT.caracs[carac]}" tooltip><span carac="${carac}"></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
+                    ${Object.entries(this.aggregates.caracs).map(([carac, count]) => `<li><span tooltip="${GT.caracs[carac]}"><span carac="${carac}"></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
                 </ul>
                 <ul class="summary-grid elements-summary">
-                    ${Object.entries(this.aggregates.elements).map(([element, count]) => `<li><span hh_title="${GT.design[`${element}_flavor_element`]}" tooltip><span class="${element}_element_icn"></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
+                    ${Object.entries(this.aggregates.elements).map(([element, count]) => `<li><span tooltip="${GT.design[`${element}_flavor_element`]}"><span class="${element}_element_icn"></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
                 </ul>
                 <ul class="summary-grid rarity-summary">
-                    ${Object.entries(this.aggregates.rarities).map(([rarity, count]) => `<li><span hh_title="${GT.design[`girls_rarity_${rarity}`]}" tooltip><span class="rarity-icon slot ${rarity}"><span class="initial">${GT.design[`girls_rarity_${rarity}`][0].normalize('NFD').replace(/[\u0300-\u036f]/g, '')}</span></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
+                    ${Object.entries(this.aggregates.rarities).map(([rarity, count]) => `<li><span tooltip="${GT.design[`girls_rarity_${rarity}`]}"><span class="rarity-icon slot ${rarity}"><span class="initial">${GT.design[`girls_rarity_${rarity}`][0].normalize('NFD').replace(/[\u0300-\u036f]/g, '')}</span></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
                 </ul>
                 <ul class="summary-grid xp-aff-summary">
                     <li>
-                        <span hh_title="${this.label('haremLevel')}" tooltip>
+                        <span tooltip="${this.label('haremLevel')}">
                             <span class="xp-aff-label">${GT.design.Lvl}</span>
                             <span>${I18n.nThousand(this.aggregates.levelSum)}<br>/ ${I18n.nThousand(GIRL_MAX_LEVEL * this.aggregates.girls)}</span>
                         </span>
                     </li>
                     <li>
-                        <span hh_title="${this.label('unlockedScenes')}" tooltip>
+                        <span tooltip="${this.label('unlockedScenes')}">
                             <span class="xp-aff-label unlocked-scenes-icon" style="background-image:url(${Helpers.getCDNHost()}/design_v2/affstar.png);"></span>
                             <span>${I18n.nThousand(this.aggregates.unlockedScenes)}<br>/ ${I18n.nThousand(this.aggregates.totalScenes)}</span>
                         </span>
@@ -152,8 +152,8 @@ class HaremInfoModule extends CoreModule {
                 </ul>
                 <ul class="summary-grid salary-summary">
                     <li>
-                        <span hh_title="${this.label('income')}" tooltip>
-                            <span class="salary-label" cur="soft_currency"></span>
+                        <span tooltip="${this.label('income')}">
+                            <span class="salary-label"><span class="hudSC_mix_icn"></span></span>
                             <span>${I18n.nThousand(this.aggregates.scPerHour)} / ${GT.time.h}<br>${I18n.nThousand(this.aggregates.scCollectAll)} / ${GT.design.harem_collect}</span>
                         </span>
                     </li>
@@ -172,15 +172,15 @@ class HaremInfoModule extends CoreModule {
                 <span>${this.label('toUpgrade')}</span>
                 <ul class="summary-grid upgrade-costs">
                     <li>
-                        <span hh_title="${GT.design.Affection}" tooltip>
+                        <span tooltip="${GT.design.Affection}">
                             <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design/ic_gifts_gray.svg)"></span>
-                            <span class="cost-value">${I18n.nThousand(this.aggregates.aff)} ${GT.design.Aff}<br>(<span cur="soft_currency"> ${I18n.nThousand(this.aggregates.aff * SC_PER_AFF)}</span>)</span>
+                            <span class="cost-value">${I18n.nThousand(this.aggregates.aff)} ${GT.design.Aff}<br>(<span class="hudSC_mix_icn"></span> ${I18n.nThousand(this.aggregates.aff * SC_PER_AFF)})</span>
                         </span>
                     </li>
                     <li>
-                        <span hh_title="${this.label('affectionScenes')}" tooltip>
+                        <span tooltip="${this.label('affectionScenes')}">
                             <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design_v2/affstar.png)"></span>
-                            <span class="cost-value">${this.label('or', {left: `<span cur="soft_currency"> ${I18n.nThousand(this.aggregates.affSC)}</span><br>`, right: `<span cur="hard_currency"> ${I18n.nThousand(this.aggregates.affHC)}</span>`})}</span>
+                            <span class="cost-value">${this.label('or', {left: `<span class="hudSC_mix_icn"></span> ${I18n.nThousand(this.aggregates.affSC)}<br>`, right: `<span class="hudHC_mix_icn"></span> ${I18n.nThousand(this.aggregates.affHC)}`})}</span>
                         </span>
                     </li>
                 </ul>
@@ -188,9 +188,9 @@ class HaremInfoModule extends CoreModule {
                 <span>${this.label('toLevelCap')}</span>
                 <ul class="summary-grid upgrade-costs">
                     <li>
-                        <span hh_title="${GT.design.Experience}" tooltip>
+                        <span tooltip="${GT.design.Experience}">
                             <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design/ic_books_gray.svg)"></span>
-                            <span class="cost-value">${I18n.nThousand(this.aggregates.xpToCap)} ${GT.design.XP}<br>(<span cur="soft_currency"> ${I18n.nThousand(this.aggregates.xpToCap * SC_PER_XP)}</span>)</span>
+                            <span class="cost-value">${I18n.nThousand(this.aggregates.xpToCap)} ${GT.design.XP}<br>(<span class="hudSC_mix_icn"></span> ${I18n.nThousand(this.aggregates.xpToCap * SC_PER_XP)})</span>
                         </span>
                     </li>
                 </ul>
@@ -198,14 +198,14 @@ class HaremInfoModule extends CoreModule {
                 <div class="to-max-combi">
                     <ul class="summary-grid upgrade-costs">
                         <li>
-                            <span hh_title="${GT.design.Experience}" tooltip>
+                            <span tooltip="${GT.design.Experience}">
                                 <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design/ic_books_gray.svg)"></span>
-                                <span class="cost-value">${I18n.nThousand(this.aggregates.xpToMax)} ${GT.design.XP}<br>(<span cur="soft_currency"> ${I18n.nThousand(this.aggregates.xpToMax * SC_PER_XP)}</span>)</span>
+                                <span class="cost-value">${I18n.nThousand(this.aggregates.xpToMax)} ${GT.design.XP}<br>(<span class="hudSC_mix_icn"></span> ${I18n.nThousand(this.aggregates.xpToMax * SC_PER_XP)})</span>
                             </span>
                         </li>
                     </ul>
                     <ul class="summary-grid gems-summary">
-                        ${Object.entries(this.aggregates.gems).map(([element, count]) => `<li><span hh_title="${GT.design[`${element}_gem`]}" tooltip><span class="gem-icon" style="background-image: url(${Helpers.getCDNHost()}/pictures/design/gems/${element}.png)"></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
+                        ${Object.entries(this.aggregates.gems).map(([element, count]) => `<li><span tooltip="${GT.design[`${element}_gem`]}"><span class="gem-icon" style="background-image: url(${Helpers.getCDNHost()}/pictures/design/gems/${element}.png)"></span><span>${I18n.nThousand(count)}</span></span></li>`).join('')}
                     </ul>
                 </div>
             </div>
@@ -237,20 +237,20 @@ class HaremInfoModule extends CoreModule {
                     <span>${this.label('buyable')}</span>
                     <ul class="summary-grid upgrade-costs">
                         <li>
-                            <span hh_title="${this.label('books')}" tooltip>
+                            <span tooltip="${this.label('books')}">
                                 <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design/ic_books_gray.svg)"></span>
                                 <span class="cost-value">
-                                    ${this.label('canBeBought', {item: `${I18n.nThousand(xp.sc.value)} ${GT.design.XP} (${xp.sc.count})`, amount: `<span cur="soft_currency"> ${I18n.nThousand(xp.sc.cost)}</span>`})}<br>
-                                    ${this.label('canBeBought', {item: `${I18n.nThousand(xp.hc.value)} ${GT.design.XP} (${xp.hc.count})`, amount: `<span cur="hard_currency"> ${I18n.nThousand(xp.hc.cost)}</span>`})}
+                                    ${this.label('canBeBought', {item: `${I18n.nThousand(xp.sc.value)} ${GT.design.XP} (${xp.sc.count})`, amount: `<span class="hudSC_mix_icn"></span> ${I18n.nThousand(xp.sc.cost)}`})}<br>
+                                    ${this.label('canBeBought', {item: `${I18n.nThousand(xp.hc.value)} ${GT.design.XP} (${xp.hc.count})`, amount: `<span class="hudHC_mix_icn"></span> ${I18n.nThousand(xp.hc.cost)}`})}
                                 </span>
                             </span>
                         </li>
                         <li>
-                            <span hh_title="${this.label('gifts')}" tooltip>
+                            <span tooltip="${this.label('gifts')}">
                                 <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design/ic_gifts_gray.svg)"></span>
                                 <span class="cost-value">
-                                    ${this.label('canBeBought', {item: `${I18n.nThousand(aff.sc.value)} ${GT.design.Aff} (${aff.sc.count})`, amount: `<span cur="soft_currency"> ${I18n.nThousand(aff.sc.cost)}</span>`})}<br>
-                                    ${this.label('canBeBought', {item: `${I18n.nThousand(aff.hc.value)} ${GT.design.Aff} (${aff.hc.count})`, amount: `<span cur="hard_currency"> ${I18n.nThousand(aff.hc.cost)}</span>`})}
+                                    ${this.label('canBeBought', {item: `${I18n.nThousand(aff.sc.value)} ${GT.design.Aff} (${aff.sc.count})`, amount: `<span class="hudSC_mix_icn"></span> ${I18n.nThousand(aff.sc.cost)}`})}<br>
+                                    ${this.label('canBeBought', {item: `${I18n.nThousand(aff.hc.value)} ${GT.design.Aff} (${aff.hc.count})`, amount: `<span class="hudHC_mix_icn"></span> ${I18n.nThousand(aff.hc.cost)}`})}
                                 </span>
                             </span>
                         </li>
@@ -272,26 +272,26 @@ class HaremInfoModule extends CoreModule {
                     <span>${this.label('sellable')}</span>
                     <ul class="summary-grid upgrade-costs">
                         <li>
-                            <span hh_title="${this.label('books')}" tooltip>
+                            <span tooltip="${this.label('books')}">
                                 <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design/ic_books_gray.svg)"></span>
                                 <span class="cost-value">
                                     ${I18n.nThousand(xp.value)} ${GT.design.XP} (${xp.count})<br>
-                                    ${this.label('canBeSold', {sc: `<span cur="soft_currency"> ${I18n.nThousand(xp.cost)}</span>`})}
+                                    ${this.label('canBeSold', {sc: `<span class="hudSC_mix_icn"></span> ${I18n.nThousand(xp.cost)}`})}
                                 </span>
                             </span>
                         </li>
                         <li>
-                            <span hh_title="${this.label('gifts')}" tooltip>
+                            <span tooltip="${this.label('gifts')}">
                                 <span class="affection-label" style="background-image:url(${Helpers.getCDNHost()}/design/ic_gifts_gray.svg)"></span>
                                 <span class="cost-value">
                                     ${I18n.nThousand(aff.value)} ${GT.design.Aff} (${aff.count})<br>
-                                    ${this.label('canBeSold', {sc: `<span cur="soft_currency"> ${I18n.nThousand(aff.cost)}</span>`})}
+                                    ${this.label('canBeSold', {sc: `<span class="hudSC_mix_icn"></span> ${I18n.nThousand(aff.cost)}`})}
                                 </span>
                             </span>
                         </li>
                     </ul>
                     <ul class="summary-grid gems-stock">
-                        ${ELEMENTS.map((element) => `<li><span hh_title="${GT.design[`${element}_gem`]}" tooltip><span class="gem-icon" style="background-image: url(${Helpers.getCDNHost()}/pictures/design/gems/${element}.png)"></span><span>${I18n.nThousand(parseInt(player_gems_amount[element].amount),10)}</span></span></li>`).join('')}
+                        ${ELEMENTS.map((element) => `<li><span tooltip="${GT.design[`${element}_gem`]}"><span class="gem-icon" style="background-image: url(${Helpers.getCDNHost()}/pictures/design/gems/${element}.png)"></span><span>${I18n.nThousand(parseInt(player_gems_amount[element].amount),10)}</span></span></li>`).join('')}
                     </ul>
                 `
             } else {
@@ -383,12 +383,11 @@ class HaremInfoModule extends CoreModule {
             const ttContent = `
                 <div class="scene-costs-tooltip">
                     ${I18n.nThousand(remainingAffection)} ${GT.design.Aff}<br>
-                    ${this.label('or', {left: `<span cur="soft_currency"> ${I18n.nThousand(sc)}</span><br>`, right: `<span cur="hard_currency"> ${I18n.nThousand(Math.ceil(hc * hcMultiplier))}</span>` })}
+                    ${this.label('or', {left: `<span class="hudSC_mix_icn"></span> ${I18n.nThousand(sc)}<br>`, right: `<span class="hudHC_mix_icn"></span> ${I18n.nThousand(Math.ceil(hc * hcMultiplier))}` })}
                 </div>
             `.replace(/(\n| {4})/g, '')
 
-            $el.attr('hh_title', ttContent)
-            $el.attr('tooltip', '')
+            $el.attr('tooltip', ttContent)
         })
     }
 

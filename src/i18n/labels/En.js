@@ -228,8 +228,6 @@ export const harem = {
     marketRestocked: '> The <a href="../shop.html">Market</a> restocked since your last visit.',
     visitMarket: '> Visit the <a href="../shop.html">Market</a> first to see an inventory summary here',
     itemSummary: '{{count}} ({{value}} {{type}})',
-    costSC: '{{cost}} <span cur="soft_currency"></span>',
-    costHC: '{{cost}} <span cur="hard_currency"></span>',
     haremStats: 'Harem Stats',
     upgrades: 'Upgrades',
     levelsAwakening: 'Levels & Awakening',

@@ -178,11 +178,13 @@
         }
         &.salary-summary {
             grid-template-columns: 1fr;
-            .salary-label::before {
-                height: 40px;
-                width: 40px;
-                background-size: contain;
-                background-repeat: no-repeat;
+            .salary-label {
+                .hudSC_mix_icn {
+                    height: 40px;
+                    width: 40px;
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                }
             }
             li {
                 margin-left: 0px;
@@ -198,12 +200,13 @@
 
             .cost-value {
                 text-align: right;
-                [cur] {
-                    white-space: nowrap;
-                    &::before {
-                        height: 18px;
-                        width: 18px;
-                    }
+
+                .hudSC_mix_icn,
+                .hudHC_mix_icn {
+                    display: inline-block;
+                    height: 18px;
+                    width: 18px;
+                    background-size: contain;
                 }
             }
 
@@ -288,7 +291,17 @@
     }
 }
 
-.scene-costs-tooltip [cur]::before {
-    height: 18px;
-    width: 18px;
+.scene-costs-tooltip {
+    [cur]::before {
+        height: 18px;
+        width: 18px;
+    }
+
+    .hudSC_mix_icn,
+    .hudHC_mix_icn {
+        display: inline-block;
+        height: 18px;
+        width: 18px;
+        background-size: contain;
+    }
 }

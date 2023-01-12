@@ -2,14 +2,18 @@
     .product-info {
         line-height: 19px;
 
-        [cur="hard_currency"]::before {
+        .hard_currency_icn {
             max-width: 5%;
         }
-        [cur="energy_kiss"]::before {
+        .energy_kiss_icn,
+        .energy_quest_icn,
+        .energy_fight_icn,
+        .energy_challenge_icn,
+        .energy_worship_icn {
             max-width: 6%;
             height: 19px;
         }
-        [cur="g_a"]::before {
+        .g_a_icn {
             max-width: 6%;
             height: 19px;
         }

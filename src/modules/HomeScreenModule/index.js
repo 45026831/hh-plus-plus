@@ -297,7 +297,7 @@ class HomeScreenModule extends CoreModule {
 
         const sortedPayTimes = payTimes.sort((a, b) => a - b)
 
-        const text = `${payTimes.length > 10 ? '…' : ''}<table><tbody>${sortedPayTimes.slice(0, 10).sort((a, b) => b - a).map(time => `<tr><td>${GT.design.more_in.replace('+1', `+${I18n.nThousand(aggregated[time])} <span cur="soft_currency"></span>`)} </td><td>${format_time_short(time)}</td></tr>`).join('')}</tbody></table>`
+        const text = `${payTimes.length > 10 ? '…' : ''}<table><tbody>${sortedPayTimes.slice(0, 10).sort((a, b) => b - a).map(time => `<tr><td>${GT.design.more_in.replace('+1', `+${I18n.nThousand(aggregated[time])} <span class="hudSC_mix_icn"></span>`)} </td><td>${format_time_short(time)}</td></tr>`).join('')}</tbody></table>`
 
         return { aggregated, collectableNow, text }
     }

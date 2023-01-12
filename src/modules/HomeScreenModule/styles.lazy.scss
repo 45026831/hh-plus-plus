@@ -235,9 +235,11 @@
         width: 3.5rem;
     }
 
-    [cur="soft_currency"]::before {
+    .hudSC_mix_icn {
+        display: inline-block;
         width: 14px;
         height: 14px;
+        background-size: contain;
     }
 }
 

@@ -60,7 +60,7 @@ class LeaderboardFixModule extends CoreModule {
         } else if (['path-of-valor', 'path-of-glory'].some(page => Helpers.isCurrentPage(page))) {
             this.fixPathLeaderboard($leaderboardList)
         } else if (Helpers.isCurrentPage('pantheon.html')) {
-            this.fixPantheonLeaderboard($leaderboardList)
+            this.fixPathLeaderboard($leaderboardList)
         }
     }
 
@@ -81,15 +81,6 @@ class LeaderboardFixModule extends CoreModule {
             .clone()
             .addClass('build-at-bottom')
         $leaderboardList.append($ownRow)
-    }
-
-    fixPantheonLeaderboard ($leaderboardList) {
-        const $ownRow = $leaderboardList.find('.leaderboard_row.player-row')
-            .addClass('script-pantheon-leaderboard-fix')
-            .clone()
-            .removeClass('script-pantheon-leaderboard-fix')
-        $leaderboardList.append($ownRow)
-        $leaderboardList.getNiceScroll().resize()
     }
 }
 

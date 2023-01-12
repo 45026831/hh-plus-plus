@@ -7,6 +7,16 @@ class Simulator {
     }
 
     run () {
+        if (this.logging) {
+            console.log('Running simulation against', this.opponent.name)
+            console.groupCollapsed('Player')
+            console.dir({...this.player})
+            console.groupEnd()
+            console.groupCollapsed(this.opponent.name)
+            console.dir({...this.opponent})
+            console.groupEnd()
+        }
+
         const setup = x => {
             x.critMultiplier = 2 + x.bonuses.critDamage
             x.dmg = Math.max(0, x.dmg)
@@ -34,7 +44,7 @@ class Simulator {
             // start simulation from player's turn
             ret = this.playerTurn(this.player.hp, this.opponent.hp, 0)
         } catch (error) {
-            if (this.logging) console.log(`An error occurred during the simulation against ${this.opponent.name}`)
+            if (this.logging) console.log(`An error occurred during the simulation against ${this.opponent.name}`, error)
             return {
                 points: [],
                 win: Number.NaN,
@@ -49,7 +59,7 @@ class Simulator {
         ret.loss /= sum
         ret.scoreClass = ret.win>0.9?'plus':ret.win<0.5?'minus':'close'
 
-        if (this.logging) {console.log(`Ran ${this.runs} simulations against ${this.opponent.name}, won ${ret.win * 100}% of simulated fights, average turns: ${ret.avgTurns}`)}
+        if (this.logging) {console.log(`Ran ${this.runs} simulations against ${this.opponent.name}; aggregated win chance: ${ret.win * 100}%, average turns: ${ret.avgTurns}`)}
 
         if (this.preSim) {
             if (ret.win <= 0) ret.impossible = true
