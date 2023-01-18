@@ -246,6 +246,20 @@ class Helpers {
         })
     }
 
+    static doWhenSelectorAvailable (selector, callback) {
+        if ($(selector).length) {
+            callback()
+        } else {
+            const observer = new MutationObserver(() => {
+                if ($(selector).length) {
+                    observer.disconnect()
+                    callback()
+                }
+            })
+            observer.observe(document.documentElement, {childList: true, subtree: true})
+        }
+    }
+
     static isInClub () {
         return window.Chat_vars && (window.Chat_vars.CLUB_ID || (window.Chat_vars.CLUB_INFO && window.Chat_vars.CLUB_INFO.id_club))
     }
