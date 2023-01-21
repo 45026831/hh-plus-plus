@@ -87,6 +87,7 @@ export const config = {
     haremTeamsFilter: 'Filtro de equipos de harén',
     upgradeQuickNav: 'Navegación rápida en la página de actualización',
     leaderboardClubmateIndicators: 'Destacar a los compañeros de club en las tablas de clasificación',
+    leaderboardProfilePopups: 'Enlaces a perfiles de jugadores desde tablas de clasificación',
 }
 export const stConfig = {
     missionsBackground: 'Cambiar el fondo de las misiones',

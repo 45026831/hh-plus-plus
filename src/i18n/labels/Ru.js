@@ -76,6 +76,8 @@ export const config = {
     eventEndIndicators: 'Индикаторы окончания событий на главном экране',
     haremTeamsFilter: 'Фильтр команд в гареме',
     upgradeQuickNav: 'Быстрая навигация на экране апгрейдов',
+    leaderboardClubmateIndicators: 'Выделять членов клуба в списках игроков',
+    leaderboardProfilePopups: 'Ссылки на профили в списках игроков',
 }
 export const stConfig = {
     missionsBackground: 'Изменить фон миссий',
@@ -312,4 +314,8 @@ export const blessingSpreadsheetLink = {
 export const haremTeamsFilter = {
     team: 'Команда',
     visitTeams: 'Сначала посетите <a href="../teams.html">Команды</a>.',
+}
+
+export const leaderboardClubmateIndicators = {
+    clubmate: 'Член Клуба',
 }

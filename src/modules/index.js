@@ -32,6 +32,7 @@ export {default as EventEndIndicatorsModule} from './EventEndIndicatorsModule'
 export {default as HaremTeamsFilterModule} from './HaremTeamsFilterModule'
 export {default as UpgradeQuickNavModule} from './UpgradeQuickNavModule'
 export {default as LeaderboardClubmateIndicatorsModule} from './LeaderboardClubmateIndicatorsModule'
+export {default as LeaderboardProfilePopupsModule} from './LeaderboardProfilePopupsModule'
 
 export {default as HomeScreenRightSideRearrangeStyleTweak} from './HomeScreenRightSideRearrangeStyleTweak'
 export {default as ContestNotifsStyleTweak} from './ContestNotifsStyleTweak'

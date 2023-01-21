@@ -82,6 +82,7 @@ export const config = {
     haremTeamsFilter: 'Harem teams filter',
     upgradeQuickNav: 'Upgrade page quick navigation',
     leaderboardClubmateIndicators: 'Highlight clubmates on leaderboards',
+    leaderboardProfilePopups: 'Links to player profiles from leaderboards',
 }
 export const stConfig = {
     missionsBackground: 'Change missions background',
