@@ -16,6 +16,7 @@ import Helpers from './common/Helpers'
 import TableAnnotation from './common/TableAnnotation'
 import Config from './config'
 import * as modules from './modules'
+import LeaderboardSupportersIndicatorsModule from './modules/LeaderboardSupportersIndicatorsModule'
 
 const runScript = () => {
     const config = new Config()
@@ -35,6 +36,8 @@ const runScript = () => {
     HaremFilterCollector.collect()
 
     TableAnnotation.run()
+
+    new LeaderboardSupportersIndicatorsModule().run()
 
     // configurable modules
 

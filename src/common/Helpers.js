@@ -10,6 +10,7 @@ let isNutakuKobans
 let cdnHost
 let girlDictionary
 let teamsDictionary
+let platform
 
 const deferred = []
 
@@ -92,6 +93,22 @@ class Helpers {
         if (Helpers.isHoH()) {
             return 'HoH'
         }
+    }
+
+    static getPlatform () {
+        if (!platform) {
+            const host = Helpers.getHost()
+            if (host.includes('nutaku')) {
+                platform = 'nutaku'
+            } else if (host.includes('erogames')) {
+                platform = 'erogames'
+            } else if (host.includes('thrixxx')) {
+                platform = 'thrixxx'
+            } else {
+                platform = '.com'
+            }
+        }
+        return platform
     }
 
     static isNutakuKobans () {

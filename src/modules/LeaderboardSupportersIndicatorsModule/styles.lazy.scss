@@ -1,0 +1,12 @@
+.script-flair {
+    display: inline-flex;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+
+    .tier-icon {
+        display: inline-block;
+        margin-left: 5px;
+        height: 21px;
+    }
+}
