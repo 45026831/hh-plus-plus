@@ -33,6 +33,7 @@ class LeaderboardClubmateIndicatorsModule extends CoreModule {
         })
 
         $(document).on('leaderboard-annotated', (event, data) => this.addClubmateAnnotations(data))
+        $(document).on('league:table-sorted', () => {this.addClubmateAnnotations()})
 
         this.hasRun = true
     }

@@ -40,6 +40,7 @@ class LeaderboardSupportersIndicatorsModule extends CoreModule {
         })
 
         $(document).on('leaderboard-annotated', (event, data) => this.addSupporterAnnotations(data))
+        $(document).on('league:table-sorted', () => {this.addSupporterAnnotations()})
 
         this.hasRun = true
     }

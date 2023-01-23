@@ -284,6 +284,15 @@ body > div > header {
         margin-left: 20px;
         margin-top: 4px;
     }
+
+    #show-hero-resources {
+        margin-top: 4px;
+        margin-left: 15px;
+
+        & + #blessings-button {
+            margin-left: 5px;
+        }
+    }
 }
 
 body > div > header > div.energy_counter {

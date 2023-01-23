@@ -92,6 +92,7 @@ export const config = {
     haremTeamsFilter: 'Filtro squadra per harem',
     upgradeQuickNav: 'Navigazione rapida sulla pagina di aggiornamento',
     leaderboardClubmateIndicators: 'Evidenziare i soci del club nelle classifiche',
+    leaderboardProfilePopups: 'Link ai profili dei giocatori nelle classifiche',
 }
 export const stConfig = {
     missionsBackground: 'Cambiare lo sfondo delle missioni',
