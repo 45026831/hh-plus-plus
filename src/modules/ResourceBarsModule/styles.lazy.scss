@@ -501,8 +501,13 @@ body#hh_comix > div > header div[rel="xp"] {
             margin-top: 4px;
         }
 
+        & > a.hh_logo,
+        a#chat_btn {
+            margin-right: 5px;
+        }
+
         div[rel="xp"] div[rel="level"] {
-            left: 154px;
+            left: 144px;
             top: 4px;
 
             & > div {
@@ -673,8 +678,10 @@ body#hh_comix > div > header div[rel="xp"] {
             left: 24px;
         }
 
-        #blessings-button {
+        #blessings-button,
+        #show-hero-resources {
             height: 60px;
+            width: 34px;
             border-radius: 8px;
         }
     }
