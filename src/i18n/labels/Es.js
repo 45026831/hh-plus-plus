@@ -131,6 +131,7 @@ export const stConfig = {
     seasonalEventTweaks: 'Optimierungen für Saisonales Event',
     compactHaremFilters: 'Filtros de harén compactos',
     expandedMarketInventory: 'Ampliación del inventario de mercado',
+    compactResourceSummary: 'Inventario de recursos compacto',
 }
 
 export const villain = {

@@ -43,5 +43,6 @@ export const PSH = [
     'biggerintexas',
     'westcock',
     'whenangelscum',
-    'suckramento'
+    'suckramento',
+    'friskyfresno',
 ]

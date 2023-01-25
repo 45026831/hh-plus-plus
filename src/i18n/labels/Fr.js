@@ -121,6 +121,7 @@ export const stConfig = {
     seasonalEventTweaks: 'Modifications pour les Evènements Saisonniers',
     compactHaremFilters: 'Filtres de harem compacts',
     expandedMarketInventory: 'Inventaire du marché élargi',
+    compactResourceSummary: 'Inventaire de ressources compact',
 }
 
 export const villain = {
@@ -311,7 +312,8 @@ export const villainBreadcrumbs = {
     biggerintexas: 'Plus GROS au Texas',
     westcock: 'Con Ouest',
     whenangelscum: 'Quand les anges montent au septième ciel',
-    suckramento: 'Bienvenue à Fiakramento'
+    suckramento: 'Bienvenue à Fiakramento',
+    fiskyfresno: 'Des folies à Fresno',
 }
 
 export const blessingSpreadsheetLink = {

@@ -657,14 +657,27 @@ export default {
             }]
         },
         {
+            key: 'jamiebrooks',
             world: 9,
+            girls: {
+                1: ['191661045', '369105612', '665836932'],
+                2: [],
+                3: []
+            },
+            gems: [{
+                element: 'water',
+                amount: 20,
+            }]
+        },
+        {
+            world: 10,
             girls: {
                 1: [],
                 2: [],
                 3: []
             },
             gems: [{
-                element: 'water',
+                element: 'fire',
                 amount: 20,
             }]
         },

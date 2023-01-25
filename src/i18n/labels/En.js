@@ -126,6 +126,7 @@ export const stConfig = {
     seasonalEventTweaks: 'Seasonal Event tweaks',
     compactHaremFilters: 'Compact Harem filters',
     expandedMarketInventory: 'Expanded Market inventory',
+    compactResourceSummary: 'Compact resource summary',
 }
 
 export const villain = {
@@ -163,6 +164,7 @@ export const villain = {
     amiamiley: 'Amia Miley',
     alyssareece: 'Alyssa Reece',
     kellykline: 'Kelly Kline',
+    jamiebrooks: 'Jamie Brooks',
     fallback: 'World {{world}} villain',
     event: 'Event',
 }
@@ -204,6 +206,7 @@ export const villainBreadcrumbs = {
     westcock: 'West Cock',
     whenangelscum: 'When Angels Cum',
     suckramento: 'Welcome to Suckramento',
+    fiskyfresno: 'Frisky in Fresno',
 }
 
 export const market = {

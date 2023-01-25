@@ -1,3 +1,4 @@
+1.31.0: Adding style tweak to make the new resource summary more compact. Adding PSH world 9 data.
 1.30.3: Fixing resource bars on mobile
 1.30.2: Fixing resource bars after 25/01 update
 1.30.1: Fixing bug where flairs would disappear when sorting the league table, pre-empting addition of resource summary button in resource bars module (fix for position of level indicator will have to happen after it goes live)
