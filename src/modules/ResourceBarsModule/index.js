@@ -167,7 +167,7 @@ class ResourceBarsModule extends CoreModule {
             $('[hero=soft_currency]').after(this.$moneyContainer)
         }
 
-        const money = Hero.infos.soft_currency
+        const money = Hero.currencies.soft_currency
         let displayAmount
         const thousandSeparatedMoney = I18n.nThousand(money)
 
