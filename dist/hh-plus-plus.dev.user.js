@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.31.1
+// @version         1.31.2
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -3255,7 +3255,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
 /***/ ((module) => {
 
 "use strict";
-eval("module.exports = JSON.parse('[{\"name\":\"Safi\",\"tier\":\"gold\",\"flairs\":[{\"game\":\"HH\",\"platform\":\".com\",\"id\":\"5248781\"}]},{\"name\":\"Darkyz\",\"tier\":\"silver\",\"flairs\":[{\"game\":\"HH\",\"platform\":\".com\",\"id\":\"124704\"},{\"game\":\"CxH\",\"platform\":\".com\",\"id\":\"29164\"},{\"game\":\"PSH\",\"platform\":\".com\",\"id\":\"1851\"}]},{\"name\":\"bla\",\"tier\":\"silver\",\"flairs\":[{\"game\":\"HH\",\"platform\":\"nutaku\",\"id\":\"2269930\"}]},{\"name\":\"Z-Wave\",\"tier\":\"bronze\"},{\"name\":\"Khole\",\"tier\":\"bronze\"}]');\n\n//# sourceURL=webpack://hh-plus-plus/./src/data/patrons.json?");
+eval("module.exports = JSON.parse('[{\"name\":\"Safi\",\"tier\":\"gold\",\"flairs\":[{\"game\":\"HH\",\"platform\":\".com\",\"id\":\"5248781\"}]},{\"name\":\"haven4ever\",\"tier\":\"gold\",\"flairs\":[{\"game\":\"GH\",\"platform\":\".com\",\"id\":\"26313\"}]},{\"name\":\"Darkyz\",\"tier\":\"silver\",\"flairs\":[{\"game\":\"HH\",\"platform\":\".com\",\"id\":\"124704\"},{\"game\":\"CxH\",\"platform\":\".com\",\"id\":\"29164\"},{\"game\":\"PSH\",\"platform\":\".com\",\"id\":\"1851\"}]},{\"name\":\"bla\",\"tier\":\"silver\",\"flairs\":[{\"game\":\"HH\",\"platform\":\"nutaku\",\"id\":\"2269930\"}]},{\"name\":\"Z-Wave\",\"tier\":\"bronze\"},{\"name\":\"Khole\",\"tier\":\"bronze\"}]');\n\n//# sourceURL=webpack://hh-plus-plus/./src/data/patrons.json?");
 
 /***/ })
 
