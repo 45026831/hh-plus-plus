@@ -127,6 +127,7 @@ export const stConfig = {
     compactHaremFilters: 'Compact Harem filters',
     expandedMarketInventory: 'Expanded Market inventory',
     compactResourceSummary: 'Compact resource summary',
+    hideClaimAllButton: 'Hide "Claim All" button on Season rewards screen',
 }
 
 export const villain = {

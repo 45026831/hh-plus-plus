@@ -122,6 +122,7 @@ export const stConfig = {
     compactHaremFilters: 'Компактные фильтры Гарема',
     expandedMarketInventory: 'Расширенный список предметов Рынка',
     compactResourceSummary: 'Компактный перечень ресурсов',
+    hideClaimAllButton: 'Скрыть кнопку "Получить Все" на экране наград Сезона',
 }
 
 export const villain = {

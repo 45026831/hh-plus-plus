@@ -132,6 +132,7 @@ export const stConfig = {
     compactHaremFilters: 'Filtros de harén compactos',
     expandedMarketInventory: 'Ampliación del inventario de mercado',
     compactResourceSummary: 'Inventario de recursos compacto',
+    hideClaimAllButton: 'Ocultar el botón "Reclamar todo" en la pantalla de recompensas de temporada',
 }
 
 export const villain = {

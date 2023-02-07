@@ -122,6 +122,7 @@ export const stConfig = {
     compactHaremFilters: 'Filtres de harem compacts',
     expandedMarketInventory: 'Inventaire du marché élargi',
     compactResourceSummary: 'Inventaire de ressources compact',
+    hideClaimAllButton: 'Cacher le bouton "Tout réclamer" pour les récompenses de saison',
 }
 
 export const villain = {
