@@ -137,6 +137,7 @@ export const stConfig = {
     compactHaremFilters: 'Filtri del Harem Compatti',
     expandedMarketInventory: 'Inventario del mercato allargato',
     compactResourceSummary: 'Inventario compatto delle risorse',
+    hideClaimAllButton: 'Nascondere il bottone "Richiedi tutto" nella stagione',
 }
 
 export const villain = {
