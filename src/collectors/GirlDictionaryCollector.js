@@ -11,7 +11,7 @@ const upsert = (id, data) => {
 }
 
 const collectFromRewards = (rewards) => {
-    if (rewards && rewards.data && rewards.data.shards) {
+    if (rewards && rewards.data && !rewards.data.draft && rewards.data.shards) {
         girlDictionary = Helpers.getGirlDictionary()
         rewards.data.shards.forEach(({ id_girl, value }) => {
             const girlId = `${id_girl}`
@@ -141,6 +141,7 @@ class GirlDictionaryCollector {
 
     static collectFromPachinkoRewards() {
         Helpers.onAjaxResponse(/action=play/i, collectFromAjaxResponseSingular)
+        Helpers.onAjaxResponse(/action=claim/i, collectFromAjaxResponseSingular)
     }
 
     static collectFromContestRewards() {
