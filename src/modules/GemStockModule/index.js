@@ -49,7 +49,7 @@ class GemStockModule extends CoreModule {
     }
 
     buildGemsStockElem () {
-        return $('<div class="gemStock" tooltip></div>').attr('hh_title', this.buildGemsTable())
+        return $('<div class="gemStock" tooltip></div>').attr('tooltip', this.buildGemsTable())
     }
 
     run () {
@@ -62,7 +62,7 @@ class GemStockModule extends CoreModule {
 
             const $gemStock = this.buildGemsStockElem()
 
-            const $container = $('#harem_whole #harem_right')
+            const $container = $('#harem_whole .haremdex-wrapper')
 
             $container.prepend($gemStock)
         })

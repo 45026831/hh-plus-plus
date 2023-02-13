@@ -8,24 +8,12 @@
     width: 34px;
     z-index: 30;
     background-image: var(--gem-stock-icon);
+    top: 12px;
+    right: 200px;
 
-    #shops_right #girls_list > & {
-        top: -12px;
-        left: 38px;
-
-        @media #{$mediaMobile} {
-            top: -1px;
-        }
-    }
-
-    #harem_whole #harem_right > & {
-        top: 4px;
-        right: 200px;
-
-        @media #{$mediaMobile} {
-            top: 92px;
-            right: 62px;
-        }
+    @media #{$mediaMobile} {
+        top: 23px;
+        right: 405px;
     }
 
     &-table img {
