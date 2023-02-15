@@ -1,4 +1,4 @@
-/* global girlsDataList, eventGirls, clubChampionsData */
+/* global girlsDataList, event_girls, clubChampionsData */
 import Helpers from '../common/Helpers'
 
 let girlDictionary
@@ -107,7 +107,7 @@ class GirlDictionaryCollector {
     }
 
     static collectFromEventWidget() {
-        eventGirls.forEach(({ id_girl: id, name, shards, class: girlClass, rarity }) => {
+        event_girls.forEach(({ id_girl: id, name, shards, class: girlClass, rarity }) => {
             if (shards === undefined) {
                 shards = 100
             }

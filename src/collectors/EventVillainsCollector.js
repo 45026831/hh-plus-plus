@@ -1,4 +1,4 @@
-/* global eventGirls, server_now_ts */
+/* global event_girls, server_now_ts */
 import { lsKeys } from '../common/Constants'
 import Helpers from '../common/Helpers'
 
@@ -38,7 +38,7 @@ class EventVillainsCollector {
 
         const eventTrolls = []
 
-        eventGirls.forEach(girl => {
+        event_girls.forEach(girl => {
             const { id_girl: id, source, rarity } = girl
             if (source.name !== 'event_troll') {
                 return
