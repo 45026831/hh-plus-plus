@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.32.4
+// @version         1.32.5
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -83,11 +83,10 @@ window.HHPlusPlus={CHANGELOG:"https://raw.githubusercontent.com/45026831/hh-plus
                 </div>`}).join("")}
                 </div>
             </div>`).join("")}
-            <div class="credits-panel">${this.buildCreditsPane()}</div>`)}buildCreditsPane(){var{CHANGELOG:e,SPECIAL_THANKS:t,BMAC:a,PATREON:i,DISCORD:n}=window.HHPlusPlus,o=GM_info["script"];const{CODE_CONTRIBUTIONS:r,TRANSLATIONS:s}=t;var{name:l,author:t,version:o}=o;return`
+            <div class="credits-panel">${this.buildCreditsPane()}</div>`)}buildCreditsPane(){var{CHANGELOG:e,SPECIAL_THANKS:t,DISCORD:a}=window.HHPlusPlus,i=GM_info["script"];const{CODE_CONTRIBUTIONS:n,TRANSLATIONS:o}=t;var{name:r,author:t,version:i}=i;return`
         <div class="credits-contents">
-            <p>You're running ${l} <a class="changelog" tooltip="Click to open CHANGELOG" href="${e}" target="_blank">v${o}</a> by ${t}</p>
-            <p>Enjoying the script? Want to throw money at me for some reason? You can <a href="${a}" target="_blank">Buy Me A Coffee</a> or <a href="${i}" target="_blank">support me on Patreon</a> if you'd like.</p>
-            <p>Join us on <a href="${n}" target="_blank">Discord</a>!</p>
+            <p>You're running ${r} <a class="changelog" tooltip="Click to open CHANGELOG" href="${e}" target="_blank">v${i}</a> by ${t}</p>
+            <p>Join us on <a href="${a}" target="_blank">Discord</a>!</p>
             <h2>Special Thanks</h2>
             <div class="thanks-container">
                 <div class="thanks-supporters">
@@ -96,11 +95,11 @@ window.HHPlusPlus={CHANGELOG:"https://raw.githubusercontent.com/45026831/hh-plus
                 </div>
                 <div class="thanks-code">
                     <h3>Code Contributions</h3>
-                    <ul>${r.map(e=>`<li>${e}</li>`).join("")}</ul>
+                    <ul>${n.map(e=>`<li>${e}</li>`).join("")}</ul>
                 </div>
                 <div class="thanks-translations">
                     <h3>Translations</h3>
-                    <ul>${Object.entries(s).map(([e,t])=>`<li>${e} ${t.map(e=>`<span class="country country-${e}"></span>`).join("")}</li>`).join("")}</ul>
+                    <ul>${Object.entries(o).map(([e,t])=>`<li>${e} ${t.map(e=>`<span class="country country-${e}"></span>`).join("")}</li>`).join("")}</ul>
                 </div>
             </div>
         </div>
