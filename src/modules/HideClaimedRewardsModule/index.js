@@ -229,13 +229,13 @@ class HideClaimedRewardsModule extends CoreModule {
     poa () {
         if(!$('a.active[href*="?tab=path_event_"]').length){return}
 
-        const {bonusRewardsUnlocked} = window
+        const {bonus_rewards_unlocked} = window
 
         const assertHidden = () => {
             $('.nc-poa-reward-pair').each((i, el) => {
                 const $free = $(el).find('.nc-poa-free-reward')
                 const $pass = $(el).find('.nc-poa-locked-reward')
-                if ( $free.hasClass('claimed') && ( $pass.hasClass('claimed') || !bonusRewardsUnlocked)) {
+                if ( $free.hasClass('claimed') && ( $pass.hasClass('claimed') || !bonus_rewards_unlocked)) {
                     $(el).addClass('script-hide-claimed')
                 }
             })
