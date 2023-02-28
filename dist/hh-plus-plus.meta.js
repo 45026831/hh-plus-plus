@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            Hentai Heroes++ BDSM version
 // @description     Adding things here and there in the Hentai Heroes game. Also supports HHCore-based games such as GH and CxH.
-// @version         1.32.6
+// @version         1.32.7
 // @match           https://*.hentaiheroes.com/*
 // @match           https://nutaku.haremheroes.com/*
 // @match           https://*.gayharem.com/*
@@ -9,16 +9,16 @@
 // @match           https://*.hornyheroes.com/*
 // @match           https://*.pornstarharem.com/*
 // @run-at          document-body
-// @namespace       https://github.com/45026831/hh-plus-plus
-// @updateURL       https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.meta.js
-// @downloadURL     https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.user.js
+// @namespace       https://github.com/zoop0kemon/hh-plus-plus
+// @updateURL       https://raw.githubusercontent.com/zoop0kemon/hh-plus-plus/main/dist/hh-plus-plus.user.js
+// @downloadURL     https://raw.githubusercontent.com/zoop0kemon/hh-plus-plus/main/dist/hh-plus-plus.user.js
 // @grant           none
-// @author          45026831 (Numbers)
+// @author          45026831 (Numbers), zoopokemon
 // ==/UserScript==
 
 window.HHPlusPlus={
     // The changelog can be found at:
-    CHANGELOG: 'https://raw.githubusercontent.com/45026831/hh-plus-plus/main/CHANGELOG',
+    CHANGELOG: 'https://raw.githubusercontent.com/zoop0kemon/hh-plus-plus/main/CHANGELOG',
     SPECIAL_THANKS: {
         CODE_CONTRIBUTIONS: [
             'Raphael',

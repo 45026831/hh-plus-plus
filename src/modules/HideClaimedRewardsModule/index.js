@@ -189,7 +189,7 @@ class HideClaimedRewardsModule extends CoreModule {
             observer.observe(document.getElementById('seasons_tab_container'), {childList: true, subtree: true})
         }
 
-        Helpers.onAjaxResponse(/action=claim/, (response, opt) => {
+        Helpers.onAjaxResponse(/action=season_claim/, (response, opt) => {
             const searchParams = new URLSearchParams(opt.data)
 
             // key is free/pass_<tier>
