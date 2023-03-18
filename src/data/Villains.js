@@ -602,7 +602,7 @@ export default {
             ]
         },
         {
-            key: 'lilycade',
+            key: 'sophiajade',
             world: 5,
             girls: {
                 1: ['564593641', '719705773', '934421949'],
@@ -615,7 +615,8 @@ export default {
             }, {
                 element: 'stone',
                 amount: 15,
-            }]
+            }],
+            v: 1
         },
         {
             key: 'amiamiley',

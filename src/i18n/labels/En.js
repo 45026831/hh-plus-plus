@@ -161,7 +161,7 @@ export const villain = {
     asaakira: 'Headmistress Asa Akira',
     sammyjayne: 'Sammy Jayne',
     ivywinters: 'Ivy Winters',
-    lilycade: 'Lily Cade',
+    sophiajade: 'Sophia Jade',
     amiamiley: 'Amia Miley',
     alyssareece: 'Alyssa Reece',
     kellykline: 'Kelly Kline',

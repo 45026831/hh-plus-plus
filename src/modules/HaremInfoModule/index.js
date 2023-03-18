@@ -418,7 +418,7 @@ class HaremInfoModule extends CoreModule {
                 this.onGirlSelectionChanged(girlId, $girl)
             }
 
-            new MutationObserver(checkSelectionChange).observe($('#harem_right')[0], {childList: true})
+            new MutationObserver(checkSelectionChange).observe($('#harem_right')[0], {childList: true, subtree: true})
             checkSelectionChange()
         })
 
