@@ -28,16 +28,16 @@ class BattleEndstateModule extends CoreModule {
                 const nBattlesCount = parseInt(location.search.match(/number_of_battles=(\d+)/i)[1], 10)
                 if($.isNumeric(nBattlesCount)) {
                     if (Helpers.isCurrentPage('troll-battle')) {
-                        Hero.update('energy_fight', -1 * nBattlesCount, true)
+                        Hero.update('energy_fight', Hero.energies.fight.amount - nBattlesCount, false)
                     }
                     if (Helpers.isCurrentPage('season-battle')) {
-                        Hero.update('energy_kiss', -1 * nBattlesCount, true)
+                        Hero.update('energy_kiss', Hero.energies.kiss.amount - nBattlesCount, false)
                     }
                     if (Helpers.isCurrentPage('league-battle')) {
-                        Hero.update('energy_challenge', -1 * nBattlesCount, true)
+                        Hero.update('energy_challenge', Hero.energies.challenge.amount - nBattlesCount, false)
                     }
                     if (Helpers.isCurrentPage('pantheon-battle')) {
-                        Hero.update('energy_worship', -1 * nBattlesCount, true)
+                        Hero.update('energy_worship', Hero.energies.worship.amount - nBattlesCount, false)
                     }
                 }
             }
