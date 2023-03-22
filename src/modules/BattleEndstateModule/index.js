@@ -1,4 +1,4 @@
-/* global Hero, GT, newBattles */
+/* global Hero, GT, setRounds */
 import Helpers from '../../common/Helpers'
 import I18n from '../../i18n'
 import CoreModule from '../CoreModule'
@@ -150,7 +150,7 @@ class BattleEndstateModule extends CoreModule {
                 ]
 
                 $('.velocity-animating').velocity('stop', true)
-                newBattles.setRounds([])
+                setRounds([])
                 $.Velocity.RunSequence(arrPlayerAnimationSequence)
                 $.Velocity.RunSequence(arrOpponentAnimationSequence)
             })

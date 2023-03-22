@@ -1,3 +1,4 @@
+1.32.10: Fixing League Info, Battle Simulator, and Battle Endstate Module due to variable name and behavior changes after 22/03 update
 1.32.9: Fixing resource bar update in battle end state module after 15/03 game update
 1.32.8: Fixing Harem info not updating when girl selection changes, updated PsH World 5 villain data
 1.32.7: Fixing Hide Claimed Rewards for Seasons after 22/02 update, cleaning up transfer to new fork

@@ -7,40 +7,89 @@ class Season {
     }
 
     extract() {
-        const { caracs_per_opponent } = window
-
-        const $playerData = $('#season-arena .battle_hero')
-        const $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2 * this.idOpponent + 1) + ')')
-        const opponentId = $opponentData.attr('data-opponent') // using attr as we want a string, not a number
-
+        const { opponents, hero_data, caracs_per_opponent } = window
+        const opponent_data = opponents[this.idOpponent - 1].player
+        const opponentId = opponent_data.id_fighter
         const {
-            total_ego: playerTotalEgo,
-            remaining_ego: playerRemainingEgo,
+            chance: playerCrit,
             damage: playerAtk,
             defense: playerDef,
-            chance: playerCrit
+            remaining_ego: playerRemainingEgo,
+            total_ego: playerTotalEgo,
         } = caracs_per_opponent[opponentId]
-        const playerEgo = playerTotalEgo || playerRemainingEgo
+        const playerEgo = playerRemainingEgo || playerTotalEgo
+        const {
+            team: playerTeam
+        } = hero_data
+        let normalisedElements = playerTeam.theme_elements
+        let normalisedSynergies = playerTeam.synergies
 
-        const playerSynergyDataJSON = $playerData.find('.hero_team .icon-area').attr('synergy-data')
-        const playerSynergies = JSON.parse(playerSynergyDataJSON)
-        const playerTeam = $playerData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
-        const playerTeamMemberElements = playerTeam.map(({ element_data }) => element_data.type)
-        const playerElements = SimHelpers.calculateThemeFromElements(playerTeamMemberElements)
+        if (!normalisedElements) {
+            normalisedElements = []
+            const teamElementCounts = SimHelpers.countElementsInTeam([0,1,2,3,4,5,6].map(key => playerTeam.girls[key].element_data.type))
+            Object.entries(teamElementCounts).forEach(([type, count]) => {
+                if (count >= 3) {
+                    normalisedElements.push({type})
+                }
+            })
+        }
+
+        if (!normalisedSynergies) {
+            normalisedSynergies = JSON.parse($('#leagues_left .hexa .icon-area').attr('synergy-data'))
+        }
+
+        const playerElements = normalisedElements.map(({type}) => type)
+        const playerSynergies = normalisedSynergies
         const playerBonuses = {
             critDamage: SimHelpers.findBonusFromSynergies(playerSynergies, 'fire'),
             critChance: SimHelpers.findBonusFromSynergies(playerSynergies, 'stone'),
             healOnHit: SimHelpers.findBonusFromSynergies(playerSynergies, 'water'),
         }
 
-        const opponentEgo = parseInt($opponentData.find('.hero_stats div:nth-child(2) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10)
-        const opponentDef = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10)
-        const opponentAtk = parseInt($opponentData.find('.hero_stats div:nth-child(1) div:nth-child(1) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10)
-        const opponentCrit = parseInt($opponentData.find('.hero_stats div:nth-child(2) div:nth-child(2) span:nth-child(2)').text().replace(/[^0-9]/gi, ''), 10)
-        const opponentTeam = $opponentData.find('.hero_team .team-member img').map((i, el) => $(el).data('new-girl-tooltip')).toArray()
-        const opponentTeamMemberElements = opponentTeam.map(({ element }) => element)
-        const opponentElements = SimHelpers.calculateThemeFromElements(opponentTeamMemberElements)
-        const opponentBonuses = SimHelpers.calculateSynergiesFromTeamMemberElements(opponentTeamMemberElements)
+        const {
+            chance: opponentCrit,
+            damage: opponentAtk,
+            defense: opponentDef,
+            remaining_ego: opponentRemainingEgo,
+            total_ego: opponentTotalEgo,
+            nickname: name
+        } = opponent_data
+        const opponentEgo = opponentRemainingEgo || opponentTotalEgo
+        const {
+            team: opponentTeam
+        } = opponent_data
+        const opponentTeamMemberElements = [];
+        [0,1,2,3,4,5,6].forEach(key => {
+            const teamMember = opponentTeam.girls[key]
+            if (teamMember && teamMember.element) {
+                opponentTeamMemberElements.push(teamMember.element)
+            }
+        })
+        const opponentElements = opponentTeam.theme_elements.map(({type}) => type)
+
+        const opponentSynergies = opponentTeam.synergies
+        const teamGirlSynergyBonusesMissing = opponentSynergies.every(({team_girls_count}) => !team_girls_count)
+        let counts
+        if (teamGirlSynergyBonusesMissing) {
+            // Open bug, sometimes opponent syergy data is missing team bonuses, so we need to rebuild it from the team
+            counts = opponentTeamMemberElements.reduce((a,b)=>{a[b]++;return a}, {
+                fire: 0,
+                stone: 0,
+                sun: 0,
+                water: 0,
+                nature: 0,
+                darkness: 0,
+                light: 0,
+                psychic: 0
+            })
+        }
+
+        const opponentBonuses = {
+            critDamage: SimHelpers.findBonusFromSynergies(opponentSynergies, 'fire', teamGirlSynergyBonusesMissing, counts),
+            critChance: SimHelpers.findBonusFromSynergies(opponentSynergies, 'stone', teamGirlSynergyBonusesMissing, counts),
+            healOnHit: SimHelpers.findBonusFromSynergies(opponentSynergies, 'water', teamGirlSynergyBonusesMissing, counts),
+        }
+
 
         const dominanceBonuses = SimHelpers.calculateDominationBonuses(playerElements, opponentElements)
 
@@ -48,21 +97,23 @@ class Season {
             hp: playerEgo,
             dmg: playerAtk - opponentDef,
             critchance: SimHelpers.calculateCritChanceShare(playerCrit, opponentCrit) + dominanceBonuses.player.chance + playerBonuses.critChance,
-            bonuses: playerBonuses
+            bonuses: {...playerBonuses, dominance: dominanceBonuses.player},
+            theme: playerElements,
         }
         const opponent = {
             hp: opponentEgo,
             dmg: opponentAtk - playerDef,
             critchance: SimHelpers.calculateCritChanceShare(opponentCrit, playerCrit) + dominanceBonuses.opponent.chance + opponentBonuses.critChance,
-            name: $('.season_arena_opponent_container:nth-child(' + (2 * this.idOpponent + 1) + ') > div:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(1)').text(),
-            bonuses: opponentBonuses
+            name,
+            bonuses: {...opponentBonuses, dominance: dominanceBonuses.opponent},
+            theme: opponentElements,
         }
 
         return { player, opponent }
     }
 
     display(result) {
-        const $opponentData = $('#season-arena .opponents_arena .season_arena_opponent_container:nth-child(' + (2 * this.idOpponent + 1) + ')')
+        const $opponentData = $(`#season-arena .opponents_arena .season_arena_opponent_container.opponent-${this.idOpponent - 1}`)
         let $gridWrapper = $opponentData.find('.gridWrapper')
         if (!$gridWrapper.length) {
             $opponentData.find('.average-lvl').wrap('<div class="gridWrapper"></div>')
@@ -70,7 +121,7 @@ class Season {
         }
 
         $gridWrapper.find('.matchRating').remove()
-        const { rewards } = $opponentData.find('.rewards_list').data('reward-display')
+        const { rewards } = opponents[this.idOpponent - 1].rewards
         const pointsReward = rewards.find(({ type }) => type === 'victory_points')
         const points = parseInt($(pointsReward.value).text())
         const expected = result.win * points - (1 - result.win) * (40 - points)

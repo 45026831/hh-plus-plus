@@ -1,4 +1,4 @@
-/* global leagues_list, playerLeaguesData */
+/* global leagues_list, opponent_fighter, loadedLeaguePlayers */
 
 import CoreModule from '../CoreModule'
 import Helpers from '../../common/Helpers'
@@ -349,7 +349,7 @@ class LeagueInfoModule extends CoreModule {
         }
 
         const displayLeaguePlayersInfo = () => {
-            let player = playerLeaguesData.id_fighter
+            let player = $('#leagues_right .avatar_border>img').attr('hero-page-id')
             let points
             try{
                 points=Helpers.lsGet(lsKeys.LEAGUE_POINT_HISTORY)[player].points
@@ -503,14 +503,21 @@ class LeagueInfoModule extends CoreModule {
 
         const saveVictories = () => {
             let data = Helpers.lsGet(lsKeys.LEAGUE_RESULTS) || {}
-            let player = `${playerLeaguesData.id_fighter}`
-            let spec = playerLeaguesData.class
+            let player, spec, results
+            if (Object.keys(loadedLeaguePlayers)?.length) {
+                player = $('#leagues_right .avatar_border>img').attr('hero-page-id')
+                spec = loadedLeaguePlayers[player].player.class
+                results = loadedLeaguePlayers[player].match_history[player]
+            } else {
+                player = opponent_fighter.player.id_fighter
+                spec = opponent_fighter.player.class
+                results = window.match_history[player]
+            }
             let $themeIcons = $('#leagues_middle .selected-player-leagues .theme-container img')
             if (!$themeIcons.length) {
                 $themeIcons = $('#leagues_right .team-theme')
             }
             const themeIcons = $themeIcons.map((i,el)=>$(el).attr('src')).toArray()
-            let results = window.match_history[player]
             const nb_victories = results.filter(match => match === 'won').length
             const nb_defeats = results.filter(match => match === 'lost').length
 
@@ -526,8 +533,17 @@ class LeagueInfoModule extends CoreModule {
             calculateVictories()
         }
 
-        saveVictories()
-        displayLeaguePlayersInfo()
+        const waitOpnt = () => {
+            setTimeout(function() {
+                if ($('.result')) {
+                    saveVictories()
+                    displayLeaguePlayersInfo()
+                } else {
+                    waitOpnt()
+                }
+            }, 50);
+        }
+        waitOpnt()
 
         let observeCallback = () => {
             saveVictories()

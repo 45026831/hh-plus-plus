@@ -3,19 +3,28 @@ import SimHelpers from './SimHelpers'
 
 class League {
     extract () {
-        const {playerLeaguesData, heroLeaguesData, caracs_per_opponent} = window
-        const opponentId = playerLeaguesData.id_fighter
+        const {opponent_fighter, hero_fighter, caracs_per_opponent, loadedLeaguePlayers} = window
+        let opponent_data, opponent_caracs
+        if (Object.keys(loadedLeaguePlayers)?.length) {
+            let opponentId = $('#leagues_right .avatar_border>img').attr('hero-page-id')
+            opponent_data = loadedLeaguePlayers[opponentId].player
+            opponent_caracs = caracs_per_opponent[opponentId]
+
+        } else {
+            opponent_data = opponent_fighter.player
+            opponent_caracs = hero_fighter
+        }
         const {
             chance: playerCrit,
             damage: playerAtk,
             defense: playerDef,
             remaining_ego: playerRemainingEgo,
             total_ego: playerTotalEgo,
-        } = caracs_per_opponent[opponentId]
+        } = opponent_caracs
         const playerEgo = playerRemainingEgo || playerTotalEgo
         const {
             team: playerTeam
-        } = heroLeaguesData
+        } = hero_fighter
         let normalisedElements = playerTeam.theme_elements
         let normalisedSynergies = playerTeam.synergies
 
@@ -48,11 +57,11 @@ class League {
             remaining_ego: opponentRemainingEgo,
             total_ego: opponentTotalEgo,
             nickname: name
-        } = playerLeaguesData
+        } = opponent_data
         const opponentEgo = opponentRemainingEgo || opponentTotalEgo
         const {
             team: opponentTeam
-        } = playerLeaguesData
+        } = opponent_data
         const opponentTeamMemberElements = [];
         [0,1,2,3,4,5,6].forEach(key => {
             const teamMember = opponentTeam.girls[key]
