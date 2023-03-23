@@ -63,7 +63,10 @@ class SeasonStatsModule extends CoreModule {
             if (Helpers.isCurrentPage('season.html')) {
                 $('div#seasons_tab_title').append($stats)
             } else {
-                $('.hero .hero_details .center_y').append($stats)
+                const attach_stats = () => {
+                    $('.battle_hero .player_details').append($stats)
+                }
+                Helpers.doWhenSelectorAvailable('.battle_hero .player_details', attach_stats)
             }
 
         })

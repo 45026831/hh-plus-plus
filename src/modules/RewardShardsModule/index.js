@@ -30,7 +30,7 @@ class RewardShardsModule extends CoreModule {
     }
 
     shouldRun() {
-        return ['pre-battle', 'clubs', 'pachinko', 'season-arena', 'tower-of-fame'].some(page => Helpers.isCurrentPage(page))
+        return ['pre-battle', 'clubs', 'pachinko', 'season-arena'].some(page => Helpers.isCurrentPage(page))
     }
 
     run() {
@@ -40,7 +40,7 @@ class RewardShardsModule extends CoreModule {
 
         Helpers.defer(() => {
             if (Helpers.isCurrentPage('pre-battle')) {
-                this.displayOnPreBattle()
+                Helpers.doWhenSelectorAvailable('.rewards_list', this.displayOnPreBattle)
             }
             if (Helpers.isCurrentPage('clubs')) {
                 this.displayOnClubChampion()
@@ -49,10 +49,7 @@ class RewardShardsModule extends CoreModule {
                 this.displayOnPachinko()
             }
             if (Helpers.isCurrentPage('season-arena')) {
-                this.displayOnSeason()
-            }
-            if (Helpers.isCurrentPage('tower-of-fame')) {
-                this.displayOnLeague()
+                Helpers.doWhenSelectorAvailable('.rewards_list', this.displayOnSeason)
             }
         })
 

@@ -21,9 +21,11 @@ class LeaderboardProfilePopupsModule extends CoreModule {
     run () {
         if (this.hasRun || !this.shouldRun()) {return}
 
-        $(document.body).on('click', '[sorting_id]', (e) => {
-            const id = $(e.currentTarget).attr('sorting_id')
-            window.hero_page_popup({id})
+        Helpers.defer(() => {
+            $(document.body).on('click', '[sorting_id]', (e) => {
+                const id = $(e.currentTarget).attr('sorting_id')
+                window.hero_page_popup({id})
+            })
         })
 
         this.hasRun = true

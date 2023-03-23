@@ -4,13 +4,13 @@
 
 ### Desktop (Chrome, Firefox, Opera, Edge)
 a) Install TamperMonkey or Violentmonkey  
-b) Click the script URL: https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.user.js  
+b) Click the script URL: https://raw.githubusercontent.com/zoop0kemon/hh-plus-plus/main/dist/hh-plus-plus.user.js  
 c) TamperMonkey should automatically prompt you to install/update the script. If it doesn't, open up the TM Dashboard, go to the Utilities tab, scroll down to "Install from URL" and paste the above URL in there.  
 
 ### iOS (Safari Only)
 a) Install Userscripts from the App Store  
 b) Set a location to save scripts  
-c) Tap the script URL: https://raw.githubusercontent.com/45026831/hh-plus-plus/main/dist/hh-plus-plus.user.js  
+c) Tap the script URL: https://raw.githubusercontent.com/zoop0kemon/hh-plus-plus/main/dist/hh-plus-plus.user.js  
 d) Open up the Userscrips extension from the URL bar and install the script.  
 
 ### Android

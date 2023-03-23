@@ -80,7 +80,20 @@ class BattleSimulatorModule extends CoreModule {
             const simulator = new Simulator({player, opponent, logging, preSim})
             const result = simulator.run()
 
-            simManager.display(result)
+            if (!Helpers.isCurrentPage('tower-of-fame')) {
+                const waitOpnt = () => {
+                    setTimeout(function() {
+                        if ($('.average-lvl')) {
+                            simManager.display(result)
+                        } else {
+                            waitOpnt()
+                        }
+                    }, 50)
+                }
+                waitOpnt()
+            } else {
+                simManager.display(result)
+            }
         })
     }
 }
