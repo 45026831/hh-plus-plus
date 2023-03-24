@@ -26,6 +26,8 @@ class TeamsCollector {
     static collect() {
         if (Helpers.isCurrentPage('teams')) {
             Helpers.defer(() => {
+                const {teams_data} = window
+                const team_list = Object.keys(teams_data).map((key) => teams_data[key])
                 const teamsDict = {}
                 const teamIds = []
 
@@ -51,15 +53,7 @@ class TeamsCollector {
                 })
 
                 teamIds.forEach(teamId => {
-                    const $teamGirlContainer = $(`.team-info-girls-container[data-id-team=${teamId}]`)
-                    const girls = []
-                    $teamGirlContainer.find('.team-member-container').each((i, girl) => {
-                        const girlId = $(girl).data('girl-id')
-                        if (girlId) {
-                            girls.push(`${girlId}`)
-                        }
-                    })
-                    teamsDict[teamId].girls = girls
+                    teamsDict[teamId].girls = team_list.find((team) => team.id_team == teamId).girls_ids
                 })
 
                 const teams = {

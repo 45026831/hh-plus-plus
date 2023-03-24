@@ -1,3 +1,4 @@
+1.32.12: Fixing teams collector and league buttons style tweak
 1.32.11: Fixing race conditions and other bugs after 22/03 update
 1.32.10: Fixing League Info, Battle Simulator, and Battle Endstate Module due to variable name and behavior changes after 22/03 update
 1.32.9: Fixing resource bar update in battle end state module after 15/03 game update
