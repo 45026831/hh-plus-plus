@@ -1,14 +1,35 @@
 @import "../../common/constants.scss";
 @import "../../common//mixins.scss";
 
+#leagues_middle {
+    @media #{$mediaDesktop} {
+        margin-top: 1rem!important;
+    }
+
+    @media #{$mediaMobile} {
+        margin-top: 2rem!important;
+    }
+}
+
 #leagues_middle .league_end_in {
-    line-height: 16px;
+    position: relative;
+    top: 20px;
+
+    @media #{$mediaMobile} {
+        left: 70px;
+    }
+}
+
+.leagues_middle_header_script {
+    display: flow-root;
+    margin-top: 4px;
 }
 
 .scriptLeagueInfo {
     display: block;
     float: right;
     margin-right: 9px;
+    line-height: 16px;
 
     @media #{$mediaDesktop} {
         font-size: 13px;
@@ -17,14 +38,12 @@
     @media #{$mediaMobile} {
         position: absolute;
         right: 300px;
-        top: -20px;
+        top: 20px;
         font-size: 14px;
     }
 }
 
 .scriptLeagueInfoIcon {
-    position: relative;
-    top: 1px;
     display: inline-block;
     height: 16px;
     width: 16px;
@@ -36,9 +55,6 @@
 
     &:after {
         display: block;
-        position: relative;
-        top: 2px;
-        left: 0;
         width: 100%;
         text-align: center;
     }
@@ -71,11 +87,6 @@
     color: white;
 }
 
-#leagues_middle .leagues_middle_header .leagues_girl_reward_container {
-    right: 9px;
-    top: -35px;
-}
-
 #beaten_opponents {
     position: absolute;
     padding-left: 5px;
@@ -86,14 +97,15 @@
 
     @media #{$mediaDesktop} {
         height: 28px;
-        top: -40px;
-        left: 10px;
+        top: 2px;
+        left: 200px;
     }
 
     @media #{$mediaMobile} {
         height: 32px;
         z-index: 1;
-        right: 517px;
+        right: 540px;
+        top: 40px;
     }
 }
 
@@ -176,12 +188,13 @@
     }
 
     @media #{$mediaDesktop} {
-        top: -33px;
-        left: 90px;
+        top: 10px;
+        left: 260px;
+        font-size: 13px;
     }
 
     @media #{$mediaMobile} {
-        top: 10px;
+        top: 44px;
         left: 335px;
         font-size: 16px;
     }

@@ -253,8 +253,8 @@ class LeagueInfoModule extends CoreModule {
                 ${promoHtml}
             </div>
         `
-
-        $('div.league_end_in').append(summaryHtml)
+        $('.leagues_middle_header').after('<div class="leagues_middle_header_script"></div>')
+        $('.leagues_middle_header_script').append(summaryHtml)
     }
 
     manageHideFoughtOpponents () {
@@ -290,7 +290,7 @@ class LeagueInfoModule extends CoreModule {
         }
 
         let hidden = Helpers.lsGet(lsKeys.FOUGHT_OPPONENTS_HIDDEN)
-        $('.league_end_in').append('<button id="beaten_opponents" class=""><span id="hide_beaten"></span></button>')
+        $('.leagues_middle_header_script').append('<button id="beaten_opponents" class=""><span id="hide_beaten"></span></button>')
 
         const setButtonDisplay = () => {
             const label = this.label('showFoughtOpponents')
@@ -575,7 +575,7 @@ class LeagueInfoModule extends CoreModule {
             individualDisplaySwitch.append(option)
         })
 
-        $('.league_end_in').append(individualDisplaySwitch)
+        $('.leagues_middle_header_script').append(individualDisplaySwitch)
 
         $(document).on('league:player-selected', () => {
             observeCallback()
