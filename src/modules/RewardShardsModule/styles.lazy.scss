@@ -25,8 +25,8 @@
     .shard {
         height: 1rem;
         width: 1rem;
-        margin-left: -0.25rem;
-        display: inline-block;
+        margin-left: -0.25rem!important;
+        display: inline-block!important;
         background-size: 140%;
         background-position: center;
     }
@@ -58,4 +58,8 @@
             }
         }
     }
+}
+
+.player_team_block .opponent_rewards .rewards_list .slot .slot_girl_shards.slot {
+    border-radius: unset!important;
 }

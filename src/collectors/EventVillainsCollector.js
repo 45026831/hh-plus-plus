@@ -32,7 +32,7 @@ class EventVillainsCollector {
     }
 
     static collectFromEvent(eventTimeKey, eventVillainsKey) {
-        const eventRemainingTime = $('#contains_all #events .nc-panel-header .nc-pull-right #timer').data('seconds-until-event-end')
+        const eventRemainingTime = parseInt($('#contains_all #events .nc-panel-header .nc-pull-right .timer').attr('data-time-stamp'))
         const eventEndTime = server_now_ts + eventRemainingTime
         Helpers.lsSetRaw(eventTimeKey, eventEndTime)
 

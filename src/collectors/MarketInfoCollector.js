@@ -58,7 +58,7 @@ class MarketInfoCollector {
     }
 
     static collectRefreshTime () {
-        marketInfo.refreshTime = server_now_ts + parseInt($('.shop_count [rel=count]').attr('time'), 10)
+        marketInfo.refreshTime = server_now_ts + parseInt($('.shop_count .restock-timer').attr('data-time-stamp'), 10)
         marketInfo.refreshLevel = Hero.infos.level
     }
 

@@ -67,10 +67,7 @@ class TimerCollector {
         const {server_now_ts, pachinkoVar} = window
         const {next_game} = pachinkoVar
 
-        if (next_game > 86400) {
-            // When updated in real time, it's set to a full millisecond timestamp instead of seconds until...
-            times.gp = Math.round(next_game / 1000)
-        } else {
+        if (next_game <= 86400) {// (Old behavior) When updated in real time, it's set to a full millisecond timestamp instead of seconds until...
             times.gp = server_now_ts + next_game
         }
 
@@ -79,7 +76,11 @@ class TimerCollector {
     static collectRealtimePachinkoUpdateFromAjax() {
         Helpers.onAjaxResponse(/action=play/, (response) => {
             if (response.success) {
-                TimerCollector.collectPachinkoTime()
+                const times = loadTimes()
+                
+                times.gp = Math.round(new Date().getTime()/1000) + (24*60*60)
+
+                saveTimes(times)
             }
         })
     }

@@ -6,14 +6,14 @@
     background-size: contain;
     height: 34px;
     width: 34px;
-    z-index: 30;
+    z-index: 15;
     background-image: var(--gem-stock-icon);
-    top: 12px;
-    right: 200px;
+    top: 5px;
+    right: -435px;
 
     @media #{$mediaMobile} {
-        top: 23px;
-        right: 405px;
+        top: 32px;
+        right: -650px;
     }
 
     &-table img {

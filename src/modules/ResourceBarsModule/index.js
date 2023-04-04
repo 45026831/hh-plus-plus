@@ -358,7 +358,7 @@ class ResourceBarsModule extends CoreModule {
             if (empty) {
                 return '<div class="slot empty"></div>'
             }
-            data.expiry = endAt - server_now_ts
+            data.expiration = endAt - server_now_ts
             const formattedDate = new Date(endAt * 1000).toLocaleTimeString(I18n.getLang(), { hour: '2-digit', minute: '2-digit' }).replace(/(\d)/g, (x) => `${x}<i></i>`)
             return $(`
                 <div class="slot ${rarity}" id_item="${id_item}" booster-item-tooltip data-d="${JSON.stringify(data).replace(/"/g, '&quot;')}" additional-tooltip-info="${JSON.stringify({ additionalText: `<span class="script-tooltip"></span>${this.label('endAt', { time: formattedDate })}` }).replace(/"/g, '&quot;')}">

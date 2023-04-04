@@ -62,7 +62,7 @@ class GemStockModule extends CoreModule {
 
             const $gemStock = this.buildGemsStockElem()
 
-            const $container = $('#harem_whole .haremdex-wrapper')
+            const $container = $('#harem_left')
 
             $container.prepend($gemStock)
         })

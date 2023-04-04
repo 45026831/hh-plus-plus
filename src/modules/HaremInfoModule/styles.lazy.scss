@@ -230,7 +230,8 @@
         }
         &.gems-summary,
         &.gems-stock {
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-auto-flow: column;
+            grid-template-rows: repeat(4, 1fr);
             margin-block-start: 0px;
 
             .gem-icon {
@@ -240,11 +241,7 @@
                 background-size: contain;
             }
         }
-        &.gems-summary {
-            font-size: 10px;
-        }
         &.gems-stock {
-            font-size: 12px;
             margin-block-end: 1em;
         }
     }
