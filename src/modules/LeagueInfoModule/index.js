@@ -150,7 +150,7 @@ class LeagueInfoModule extends CoreModule {
         })
 
         const challengesPossibleMinutes = parseInt(Math.floor(season_end_at/60), 10)
-        const challengesPossible = (Hero.energies.challenge.amount !== Hero.energies.challenge.max_amount)? Math.floor((challengesPossibleMinutes + (35 - Hero.energies.challenge.next_refresh_ts / 60))/35) + parseInt(Hero.energies.challenge.amount, 10) : Math.floor(challengesPossibleMinutes/35) + parseInt(Hero.energies.challenge.amount, 10)
+        const challengesPossible = (Hero.energies.challenge.amount !== Hero.energies.challenge.max_regen_amount)? Math.floor((challengesPossibleMinutes + (35 - Hero.energies.challenge.next_refresh_ts / 60))/35) + parseInt(Hero.energies.challenge.amount, 10) : Math.floor(challengesPossibleMinutes/35) + parseInt(Hero.energies.challenge.amount, 10)
         this.aggregates.challengesPossible = challengesPossible
 
         levels.sort((a,b) => a-b)
@@ -248,7 +248,7 @@ class LeagueInfoModule extends CoreModule {
         const summaryHtml = `
             <div class="scriptLeagueInfo">
                 <span class="averageScore" hh_title="${this.label('averageScore', {average: I18n.nThousand(avg)})}<br/>${this.label('scoreExpected', {score: I18n.nThousand(scoreExpected)})}" tooltip><img src="${meanIcon}" style="height: 15px; width: 16px; margin-left: 2px; margin-bottom: 0px;">${I18n.nThousand(avg)}</span>
-                <span class="possibleChallenges" hh_title="${this.possibleChallengesTooltip}" tooltip><img src="${Helpers.getCDNHost()}/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
+                <span class="possibleChallenges" hh_title="${this.possibleChallengesTooltip}" tooltip><img src="${Helpers.getCDNHost()}/pictures/design/league_points.png" style="height: 15px; width: 16px; margin-left: 6px; margin-bottom: 0px;">${challengesPossible}/${challengesLeft}</span>
                 ${topsHtml}
                 ${promoHtml}
             </div>

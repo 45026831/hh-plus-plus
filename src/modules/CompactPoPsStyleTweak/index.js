@@ -32,9 +32,9 @@ class CompactPoPsStyleTweak extends STModule {
     }
 
     injectCSSVars() {
-        Sheet.registerVar('compact-pop-class-icon-hc', `url('${Helpers.getCDNHost()}/caracs/hardcore.png')`)
-        Sheet.registerVar('compact-pop-class-icon-ch', `url('${Helpers.getCDNHost()}/caracs/charm.png')`)
-        Sheet.registerVar('compact-pop-class-icon-kh', `url('${Helpers.getCDNHost()}/caracs/knowhow.png')`)
+        Sheet.registerVar('compact-pop-class-icon-hc', `url('${Helpers.getCDNHost()}/pictures/misc/items_icons/1.png')`)
+        Sheet.registerVar('compact-pop-class-icon-ch', `url('${Helpers.getCDNHost()}/pictures/misc/items_icons/2.png')`)
+        Sheet.registerVar('compact-pop-class-icon-kh', `url('${Helpers.getCDNHost()}/pictures/misc/items_icons/3.png')`)
 
         Sheet.registerVar('compact-pop-reward-icon-shard', `url('${Helpers.getCDNHost()}/shards.png')`)
         Sheet.registerVar('compact-pop-reward-icon-ymen', `url('${Helpers.getCDNHost()}/pictures/design/ic_topbar_soft_currency.png')`)

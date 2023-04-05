@@ -392,13 +392,13 @@ class HomeScreenModule extends CoreModule {
         if (!reply) { return }
 
         const type = 'reply'
-        const { amount, max_amount, seconds_per_point, next_refresh_ts } = reply
+        const { amount, max_regen_amount, seconds_per_point, next_refresh_ts } = reply
 
-        const $replyTimer = Helpers.$(makeEnergyBarHTML({ type: 'reply', iconClass: 'messenger_reply_currency_icn', currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts }))
+        const $replyTimer = Helpers.$(makeEnergyBarHTML({ type: 'reply', iconClass: 'messenger_reply_currency_icn', currentVal: amount, max: max_regen_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts }))
 
         $messenger.append($replyTimer)
 
-        if (amount < max_amount) {
+        if (amount < max_regen_amount) {
             if (!Hero.c) {
                 Hero.c = {}
             }

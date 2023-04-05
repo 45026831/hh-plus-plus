@@ -103,7 +103,7 @@ class ResourceBarsModule extends CoreModule {
     }
 
     injectCSSVars() {
-        Sheet.registerVar('challenge-token-icon', `url("${Helpers.getCDNHost()}/league_points.png")`)
+        Sheet.registerVar('challenge-token-icon', `url("${Helpers.getCDNHost()}/pictures/design/league_points.png")`)
     }
 
     initTooltips() {
@@ -127,7 +127,7 @@ class ResourceBarsModule extends CoreModule {
 
             TooltipManager.initTooltipType(selector, () => {
                 let text
-                if (Hero.energies[type].amount >= Hero.energies[type].max_amount)
+                if (Hero.energies[type].amount >= Hero.energies[type].max_regen_amount)
                     text = `<span class="orange">${GT.design.Full}</span>`
                 else {
                     const fullIn = Hero.c[type].getTotalRemainingTime()
@@ -226,14 +226,14 @@ class ResourceBarsModule extends CoreModule {
                 return
             }
 
-            const { amount, max_amount, seconds_per_point, next_refresh_ts } = Hero.energies[type]
+            const { amount, max_regen_amount, seconds_per_point, next_refresh_ts } = Hero.energies[type]
 
-            const $barHTML = $(makeEnergyBarHTML({ type, iconClass, shortcutLink, currentVal: amount, max: max_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts }))
+            const $barHTML = $(makeEnergyBarHTML({ type, iconClass, shortcutLink, currentVal: amount, max: max_regen_amount, timeForSinglePoint: seconds_per_point, timeOnLoad: next_refresh_ts }))
 
             $elemToAppendAfter.after($barHTML)
             $elemToAppendAfter = $barHTML
 
-            if (amount < max_amount) {
+            if (amount < max_regen_amount) {
                 if (!Hero.c) {
                     Hero.c = {}
                 }
